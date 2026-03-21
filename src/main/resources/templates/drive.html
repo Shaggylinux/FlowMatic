@@ -1,10 +1,10 @@
-<form th:action="@{/drive/crear-carpeta}" method="post">
+<form th:action="@{/crear-carpeta}" method="post">
     <input type="hidden" name="folderDestino" th:value="${folderActual}">
     <input type="text" name="nombre" placeholder="Nueva carpeta..." required>
     <button type="submit">Crear</button>
 </form>
 
-<form th:action="@{/drive/subir-archivo}" method="post" enctype="multipart/form-data">
+<form th:action="@{/subir-archivo}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="folderDestino" th:value="${folderActual}">
     <input type="file" name="archivo" required>
     <button type="submit">Subir</button>
@@ -14,7 +14,7 @@
 <tr th:each="item : ${objetos}">
     <td>
         <span th:if="${item.esCarpeta}">
-            📁 <a th:href="@{/drive(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}" 
+            📁 <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}" 
                   th:text="${item.nombre}"></a>
         </span>
         <span th:if="${!item.esCarpeta}">

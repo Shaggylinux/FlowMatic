@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/drive")
+@RequestMapping("/")
 public class DriveController {
     
     private final String ROOT_DIR = "mis_archivos/";
@@ -61,14 +61,14 @@ public String crearCarpeta(@RequestParam("nombre") String nombre,
     } catch (IOException e) {
         e.printStackTrace();
     }
-    return "redirect:/drive?folder=" + folderDestino;
+    return "redirect:/?folder=" + folderDestino;
 }
 
 @PostMapping("/subir-archivo")
 public String subirArchivo(@RequestParam("archivo") MultipartFile file, 
                            @RequestParam("folderDestino") String folderDestino) {
     if (file.isEmpty()) {
-        return "redirect:/drive?folder=" + folderDestino;
+        return "redirect:/?folder=" + folderDestino;
     }
 
     try {
@@ -88,6 +88,6 @@ public String subirArchivo(@RequestParam("archivo") MultipartFile file,
         e.printStackTrace();
     }
     
-    return "redirect:/drive?folder=" + folderDestino;
+    return "redirect:/?folder=" + folderDestino;
     }
 }
