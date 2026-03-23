@@ -1,0 +1,136 @@
+[0.047s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-22 20:47:49,409 [   8735]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-22 20:47:50,363 [   9689]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-22 20:47:50,364 [   9690]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-22 20:48:05,464 [  24790]   WARN - #c.i.o.a.i.ActionUpdater - 10726 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-22 20:48:06,905 [  26231]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-22 20:48:06,991 [  26317]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-22 20:48:16,442 [  35768]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-22 20:48:20,666 [  39992]   WARN - #c.i.o.a.i.ActionUpdater - 2234 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-22 20:48:20,668 [  39994]   WARN - #c.i.o.a.i.ActionUpdater - 2250 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-22 20:48:36,716 [  56042]   WARN - #c.i.i.p.i.AbstractProjectViewPane - unsupported object: Module: 'back'
+2026-03-22 20:48:37,573 [  56899]   WARN - #c.i.i.p.i.AbstractProjectViewPane - unsupported object: Module: 'back'
+2026-03-22 20:48:38,586 [  57912]   WARN - #c.i.i.p.i.AbstractProjectViewPane - unsupported object: Module: 'back'
+2026-03-22 20:50:21,276 [ 160602]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2026-03-22 20:50:21,279 [ 160605]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.instance' has been deprecated in favor of 'resource.loader.includes.instance'
+2026-03-22 20:54:17,889 [ 397215]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2026-03-22 20:54:17,890 [ 397216]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.class' has been deprecated in favor of 'resource.loader.includes.class'
+2026-03-22 23:48:36,318 [10855644]   WARN - #c.i.o.p.u.AbstractProgressIndicatorBase - Suppressed a frequent exception logged for the 2nd time: null
+2026-03-22 23:51:22,437 [11021763]   WARN - #o.j.i.maven - updateAllMavenProjects started: incremental=true, IncrementalSyncAction Gestion
+2026-03-22 23:51:23,416 [11022742]   WARN - #o.j.i.maven - updateAllMavenProjects finished: incremental=true, IncrementalSyncAction Gestion
+2026-03-23 00:07:39,594 [11998920]   WARN - #c.i.o.v.i.LineStatusTrackerManager - Tracker is being held on dispose by EditorImpl[LightVirtualFile: /terminal_output]; file: /terminal_output
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 09:42:38.995: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 09:42:45.137: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 09:43:03.692: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+[0.228s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-23 09:43:38,473 [  21765]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-23 09:43:38,539 [  21831]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-23 09:43:38,540 [  21832]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-23 09:43:56,604 [  39896]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-23 09:43:56,658 [  39950]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-23 09:43:57,166 [  40458]   WARN - #c.i.o.a.i.ActionUpdater - 13222 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-23 09:43:57,378 [  40670]   WARN - #c.i.o.a.i.ActionUpdater - 3824 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-23 09:43:58,249 [  41541]   WARN - #c.i.o.a.i.ActionUpdater - 3387 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-23 09:44:12,378 [  55670]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 26.0.1.202603221810]
+> Start DBeaver Command Line Model [org.jkiss.dbeaver.model.cli 1.0.20.202603221810]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.6.0.v20251217-1052]
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.700.v20250725-1147]
+> Start Expression Language [org.eclipse.core.expressions 3.9.500.v20250608-0434]
+> Start DBeaver Model Registry [org.jkiss.dbeaver.registry 1.0.169.202603221810]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.23.0.v20260103-1639]
+> Start jna [com.sun.jna 5.18.1.v20251001-0800]
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.175.202603221810]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.190.202603221810]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.71.202603221810]
+> Start DBeaver UI Editors - Connections [org.jkiss.dbeaver.ui.editors.connection 1.0.166.202603221810]
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 26.0.1.202603221810]
+2026-03-23 09:55:24.107 - DBeaver 26.0.1.202603221810 is starting
+2026-03-23 09:55:24.109 - OS: Linux 6.17.0-19-generic (amd64)
+2026-03-23 09:55:24.110 - Java version: 21.0.8 by Eclipse Adoptium (64bit)
+2026-03-23 09:55:24.111 - Install path: '/usr/share/dbeaver-ce'
+2026-03-23 09:55:24.111 - Instance path: 'file:/home/julieth/.local/share/DBeaverData/workspace6/'
+2026-03-23 09:55:24.119 - Memory available 107Mb/1024Mb
+2026-03-23 09:55:24.140 - Initialize desktop platform...
+2026-03-23 09:55:24.911 - BounceCastle bundle found. Use JCE provider BC
+> Start Core File Systems [org.eclipse.core.filesystem 1.11.400.v20251107-0507]
+> Start Core Resource Management [org.eclipse.core.resources 3.23.200.v20251217-0810]
+> Start Team Support Core [org.eclipse.team.core 3.10.1000.v20260112-1030]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.175.202603221810]
+2026-03-23 09:55:25.444 - Initialize base platform...
+2026-03-23 09:55:25.480 - Schedule collected statistics send
+2026-03-23 09:55:25.482 - Platform initialized (1341ms)
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.700.v20250622-1644]
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.6.0.v20251219-1227]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.800.v20250613-1119]
+2026-03-23 09:55:25.524 - Proxy service 'org.eclipse.core.net.proxy.IProxyService' loaded
+2026-03-23 09:55:25.529 - Create display
+2026-03-23 09:55:26.161 - Starting instance server at http://localhost:46407
+2026-03-23 09:55:26.176 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.18.0.v20260119-0835]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.5.300.v20251112-1253]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.600.v20251023-1358]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.5.0.v20251217-1052]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.15.0.v20251216-1230]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.700.v20250916-0927]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.40.0.v20251210-1145]
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.15.0.v20251216-1230]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.6.0.v20251216-1230]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.17.0.v20260131-0926]
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.300.v20240413-1529]
+> Start DBeaver AI Model [org.jkiss.dbeaver.model.ai 2.0.18.202603221810]
+> Start DBeaver AI UI [org.jkiss.dbeaver.ui.ai 1.0.77.202603221810]
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.16.0.v20251216-1230]
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.22.0.202602231721]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.25.0.202602162234]
+> Start JFace Text [org.eclipse.jface.text 3.30.0.v20260203-0841]
+> Start Eclipse SDK Themes [org.eclipse.ui.themes 1.2.2900.v20250806-1940]
+2026-03-23 09:55:29.962 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.165.202603221810]
+2026-03-23 09:55:30.403 - Total database drivers: 127 (127)
+> Start Help System Core [org.eclipse.help 3.11.0.v20251227-1159]
+2026-03-23 09:55:30.683 - Create actions
+2026-03-23 09:55:31.910 - Initialize workbench window
+2026-03-23 09:55:32.000 - Finish initialization
+> Start Default Text Editor [org.eclipse.ui.editors 3.21.0.v20260218-1452]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.20.0.v20260127-1637]
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.175.202603221810]
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.175.202603221810]
+> Start DBeaver SQL Terminal [org.jkiss.dbeaver.ui.editors.sql.terminal 1.0.151.202603221810]
+
+(DBeaver:8906): Gtk-WARNING **: 09:55:33.327: Negative content height -7 (allocation 6, extents 6x7) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:8906): Gtk-WARNING **: 09:55:33.348: Negative content height -7 (allocation 6, extents 6x7) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start Core Compare Support [org.eclipse.compare.core 3.8.800.v20250718-1505]
+
+(DBeaver:8906): Gtk-WARNING **: 09:55:34.001: Negative content width -12 (allocation 1, extents 6x7) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ui.config.sample 1.0.212.202603221810]
+2026-03-23 09:55:36.466 - Open [https://dbeaver.io/product/version.xml]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.ui.editors.erd 3.1.16.202603221810]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.model.erd 1.1.16.202603221810]
+> Start DBeaver Dashboard UI [org.jkiss.dbeaver.ui.dashboard 1.0.172.202603221810]
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.68.202603221810]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.248.202603221810]
+> Start Console [org.eclipse.ui.console 3.16.0.v20260123-1616]
+> Start Debug Core [org.eclipse.debug.core 3.23.200.v20251107-0507]
+2026-03-23 09:55:38.042 - Connect with 'pruebas' (postgres-jdbc-19cd848b46c-9b65f75fd8945d5)
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.199.202603221810]
+> Start DBeaver SQL Language Semantic Model [org.jkiss.dbeaver.model.lsm 1.0.70.202603221810]
+2026-03-23 09:55:38.264 - Execution context opened (pruebas; Main <pruebas>; 0)
+2026-03-23 09:55:38.324 - Initiate connection to PostgreSQL database [pruebas@localhost] for Main <pruebas>
+2026-03-23 09:55:38.998 - Execution context closed (pruebas, 0)
+> Start DBeaver Tasks - Native Tools UI [org.jkiss.dbeaver.tasks.native.ui 1.0.153.202603221810]
+> Start DBeaver PostgreSQL UI [org.jkiss.dbeaver.ext.postgresql.ui 1.0.151.202603221810]
+> Start DBeaver Tasks - General UI [org.jkiss.dbeaver.tasks.ui 1.0.153.202603221810]
+2026-03-23 09:57:13.668 - Connect with 'postgres 6' (postgres-jdbc-19d17b8d10f-1e9a5d258ae24834)
+2026-03-23 09:57:13.672 - Execution context opened (postgres 6; Main <gestion>; 1)
+2026-03-23 09:57:13.674 - Initiate connection to PostgreSQL database [gestion@localhost] for Main <gestion>
+2026-03-23 09:57:14.577 - Execution context opened (postgres 6; Metadata <gestion>; 2)
+2026-03-23 09:57:14.579 - Initiate connection to PostgreSQL database [gestion@localhost] for Metadata <gestion>
+2026-03-23 09:57:14.735 - Connected (postgres-jdbc-19d17b8d10f-1e9a5d258ae24834, PostgreSQL JDBC Driver [42.7.2])

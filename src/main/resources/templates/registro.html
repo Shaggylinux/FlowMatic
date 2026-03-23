@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Registro</title></head>
+<body>
+
+<div th:if="${mensajeExito}">
+    <p>Cuenta creada exitosamente.</p>
+</div>
+
+<div th:if="${errorDuplicado}">
+    <p>Error. Correo ya registrado.
+        <a th:href="@{/olvide-contrasena}">Olvidé mi contraseña</a>
+    </p>
+</div>
+
+<form th:action="@{/registro}" th:object="${usuario}" method="post">
+
+    <label>Nombre</label>
+    <input type="text" th:field="*{nombre}" placeholder="Nombre completo"/>
+    <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
+
+    <label>Correo</label>
+    <input type="email" th:field="*{correo}" placeholder="tu@correo.com"/>
+    <p th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></p>
+
+    <label>Contraseña</label>
+    <input type="password" th:field="*{contrasena}" placeholder="Mínimo 8 caracteres"/>
+    <p th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"></p>
+
+    <button type="submit">Registrarse</button>
+</form>
+
+<a th:href="@{/login}">¿Ya tienes cuenta? Inicia sesión</a>
+
+</body>
+</html>
