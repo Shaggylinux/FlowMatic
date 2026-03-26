@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+
+<div class="login-container">
+    
+    <div class="login-box">
+        <h2>Iniciar Sesión</h2>
+
+        <form th:action="@{/login}" method="post">
+            
+            <div class="input-group">
+                <label>Usuario</label>
+                <input type="text" name="username" placeholder="Ingresa tu usuario" required>
+            </div>
+
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" name="password" placeholder="Ingresa tu contraseña" required>
+            </div>
+
+            <button type="submit">Ingresar</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

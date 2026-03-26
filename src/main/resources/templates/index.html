@@ -1,4 +1,25 @@
-<form th:action="@{/drive/crear-carpeta}" method="post">
-    <input type="text" name="nombre" placeholder="Nombre de la nueva carpeta" required>
-    <button type="submit">Crear Carpeta</button>
-</form>host:8080/creahost:8080/crear-carpeta?continuer-carpeta?continue
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <h1>Gestor de Archivos</h1>
+        <p>Crea una nueva carpeta para comenzar</p>
+
+        <form th:action="@{/drive/crear-carpeta}" method="post">
+            <input type="text" name="nombre" placeholder="Nombre de la carpeta" required>
+            <button type="submit">Crear Carpeta</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

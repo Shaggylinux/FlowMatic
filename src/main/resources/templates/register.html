@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear cuenta</title>
+    <link rel="stylesheet" href="/css/register.css">
+</head>
+<body>
+
+<div class="register-container">
+
+    <div class="register-box">
+        <h2>Crear Cuenta</h2>
+
+        <form th:action="@{/register}" method="post">
+
+            <div class="input-group">
+                <label>Nombre completo</label>
+                <input type="text" name="nombre" placeholder="Ingresa tu nombre" required>
+            </div>
+
+            <div class="input-group">
+                <label>Usuario</label>
+                <input type="text" name="username" placeholder="Crea un usuario" required>
+            </div>
+
+            <div class="input-group">
+                <label>Correo electrónico</label>
+                <input type="email" name="email" placeholder="ejemplo@email.com" required>
+            </div>
+
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" name="password" placeholder="Crea una contraseña" required>
+            </div>
+
+            <div class="input-group">
+                <label>Confirmar contraseña</label>
+                <input type="password" name="confirmPassword" placeholder="Repite la contraseña" required>
+            </div>
+
+            <button type="submit">Registrarse</button>
+
+        </form>
+
+        <p class="login-link">
+            ¿Ya tienes cuenta? 
+            <a href="/login">Inicia sesión</a>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,26 +1,63 @@
-<form th:action="@{/crear-carpeta}" method="post">
-    <input type="hidden" name="folderDestino" th:value="${folderActual}">
-    <input type="text" name="nombre" placeholder="Nueva carpeta..." required>
-    <button type="submit">Crear</button>
-</form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Drive</title>
+    <link rel="stylesheet" href="/css/drive.css">
+</head>
+<body>
 
-<form th:action="@{/subir-archivo}" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="folderDestino" th:value="${folderActual}">
-    <input type="file" name="archivo" required>
-    <button type="submit">Subir</button>
-</form>
+<div class="drive-container">
 
+    <header class="header">
+        <h2>📁 Mi Drive</h2>
+    </header>
 
-<tr th:each="item : ${objetos}">
-    <td>
-        <span th:if="${item.esCarpeta}">
-            📁 <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}" 
-                  th:text="${item.nombre}"></a>
-        </span>
-        <span th:if="${!item.esCarpeta}">
-            📄 [[${item.nombre}]]
-        </span>
-    </td>
-    <td th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}"></td>
-    <td></td>
-</tr>
+    <div class="actions">
+
+        <form th:action="@{/crear-carpeta}" method="post">
+            <input type="hidden" name="folderDestino" th:value="${folderActual}">
+            <input type="text" name="nombre" placeholder="Nueva carpeta..." required>
+            <button type="submit">Crear</button>
+        </form>
+
+        <form th:action="@{/subir-archivo}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="folderDestino" th:value="${folderActual}">
+            <input type="file" name="archivo" required>
+            <button type="submit">Subir</button>
+        </form>
+
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${objetos}">
+                    <td>
+                        <span th:if="${item.esCarpeta}">
+                            📁 
+                            <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}" 
+                               th:text="${item.nombre}">
+                            </a>
+                        </span>
+                        <span th:if="${!item.esCarpeta}">
+                            📄 [[${item.nombre}]]
+                        </span>
+                    </td>
+
+                    <td th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
