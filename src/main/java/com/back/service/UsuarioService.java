@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UsuarioService {
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -18,7 +17,7 @@ public class UsuarioService {
         if (usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()) {
             return "DUPLICADO";
         }
-        usuario.setContrasena(encoder.encode(usuario.getContrasena()));
+        usuario.setClave(encoder.encode(usuario.getClave()));
         usuarioRepository.save(usuario);
         return "EXITOSO";
     }

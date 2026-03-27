@@ -16,16 +16,20 @@
 <form th:action="@{/registro}" th:object="${usuario}" method="post">
 
     <label>Nombre</label>
-    <input type="text" th:field="*{nombre}" placeholder="Nombre completo"/>
-    <p th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
+    <input type="text" th:field="*{username}" placeholder="Nombre completo"/>
+    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
 
     <label>Correo</label>
     <input type="email" th:field="*{correo}" placeholder="tu@correo.com"/>
     <p th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></p>
 
     <label>Contraseña</label>
-    <input type="password" th:field="*{contrasena}" placeholder="Mínimo 8 caracteres"/>
-    <p th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"></p>
+    <input type="password" th:field="*{clave}" placeholder="Mínimo 8 caracteres"/>
+    <p th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></p>
+
+    <label>Rol</label>
+    <input type="text" th:field="*{rol}" placeholder="Ponte un rol"/>
+    <p th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}"></p>
 
     <button type="submit">Registrarse</button>
 </form>

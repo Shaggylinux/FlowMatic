@@ -16,7 +16,7 @@ public class Usuario {
 
     @NotBlank(message = "El nombre es obligatorio")
     @Column(nullable = false)
-    private String nombre;
+    private String username;
 
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "Ingresa un correo válido")
@@ -26,6 +26,9 @@ public class Usuario {
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 8, message = "La contraseña debe tener mínimo 8 caracteres")
     @Column(nullable = false)
-    private String contrasena;
+    private String clave;
 
+    @NotBlank(message = "El rol es obligatorio")
+    @Column(nullable = false)
+    private String rol;
 }

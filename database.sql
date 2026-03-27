@@ -2,8 +2,9 @@ create database gestion;
 
 create table if not exists usuarios (
 	id serial primary key,
-	nombre text,
+	username text,
 	correo text,
 	clave text,
-	cedula text
+	cedula text,
+	role text
 );

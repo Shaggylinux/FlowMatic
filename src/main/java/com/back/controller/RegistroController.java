@@ -28,6 +28,10 @@ public class RegistroController {
             BindingResult resultado,
             Model model) {
 
+        if (usuario.getRol() == null || usuario.getRol().isEmpty()){
+            usuario.setRol("ROLE_USER");
+        }
+
         if (resultado.hasErrors()) {
             return "registro";
         }
