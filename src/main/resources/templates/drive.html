@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Drive</title>
-    <link rel="stylesheet" href="/css/drive.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
+
 <body>
 
-<div class="drive-container">
+<div class="container" style="width: 600px;">
 
-    <header class="header">
-        <h2>📁 Mi Drive</h2>
-    </header>
+    <h2>📁 Mi Drive</h2>
 
-    <div class="actions">
+    <div style="margin-bottom: 20px;">
 
-        <form th:action="@{/crear-carpeta}" method="post">
+        <form th:action="@{/crear-carpeta}" method="post" style="margin-bottom:10px;">
             <input type="hidden" name="folderDestino" th:value="${folderActual}">
             <input type="text" name="nombre" placeholder="Nueva carpeta..." required>
             <button type="submit">Crear</button>
@@ -29,34 +28,47 @@
 
     </div>
 
-    <div class="table-container">
-        <table>
+    <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse: collapse;">
+
             <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Tipo</th>
+                <tr style="background:#f0f0f0;">
+                    <th style="padding:10px; text-align:left;">Nombre</th>
+                    <th style="padding:10px;">Tipo</th>
                 </tr>
             </thead>
+
             <tbody>
-                <tr th:each="item : ${objetos}">
-                    <td>
+                <tr th:each="item : ${objetos}" style="border-bottom:1px solid #ddd;">
+
+                    <td style="padding:10px;">
                         <span th:if="${item.esCarpeta}">
                             📁 
                             <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}" 
-                               th:text="${item.nombre}">
+                               th:text="${item.nombre}"
+                               style="text-decoration:none; color:#4facfe;">
                             </a>
                         </span>
+
                         <span th:if="${!item.esCarpeta}">
                             📄 [[${item.nombre}]]
                         </span>
                     </td>
 
-                    <td th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}"></td>
+                    <td style="text-align:center;" 
+                        th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}">
+                    </td>
+
                 </tr>
             </tbody>
+
         </table>
     </div>
-<a th:href="@{/login?logout}">Cerrar sesion</a>
+
+    <div class="link">
+        <a th:href="@{/login?logout}">Cerrar sesión</a>
+    </div>
+
 </div>
 
 </body>

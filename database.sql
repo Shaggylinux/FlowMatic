@@ -1,5 +1,3 @@
-create database gestion;
-
 create table if not exists usuarios (
 	id serial primary key,
 	username text,

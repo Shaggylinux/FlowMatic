@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Inicio</title>
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
+
 <body>
 
 <div class="container">
 
-    <div class="card">
-        <h1>Gestor de Archivos</h1>
-        <p>Crea una nueva carpeta para comenzar</p>
+    <h2>Gestor de Archivos</h2>
 
-        <form th:action="@{/drive/crear-carpeta}" method="post">
-            <input type="text" name="nombre" placeholder="Nombre de la carpeta" required>
-            <button type="submit">Crear Carpeta</button>
-        </form>
-    </div>
+    <p style="text-align:center; margin-bottom:15px;">
+        Crea una nueva carpeta para comenzar
+    </p>
+
+    <form th:action="@{/drive/crear-carpeta}" method="post">
+
+        <input type="text" name="nombre" placeholder="Nombre de la carpeta" required>
+
+        <button type="submit">Crear Carpeta</button>
+
+    </form>
 
 </div>
 

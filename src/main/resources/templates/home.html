@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Flowmatic</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container nav-content">
+        <h2 class="logo">Flowmatic</h2>
+
+        <div class="nav-links">
+            <a href="#home">Inicio</a>
+            <a href="#features">Características</a>
+            <a href="#services">Servicios</a>
+            <a href="#contact">Contacto</a>
+        </div>
+
+        <div class="nav-buttons">
+            <a th:href="@{/login}" class="btn-outline">Login</a>
+            <a th:href="@{/registro}" class="btn-primary">Comenzar</a>
+        </div>
+    </div>
+</nav>
+
+<section id="home" class="hero">
+    <div class="container hero-content">
+        <div class="hero-text">
+            <span class="badge">Gestión Documental Empresarial</span>
+
+            <h1>
+                Gestión de Documentos 
+                <span class="highlight">Segura y Eficiente</span>
+            </h1>
+
+            <p>
+                Organiza, protege y accede a tus archivos desde cualquier lugar
+                con una plataforma moderna y confiable.
+            </p>
+
+            <div class="hero-buttons">
+                <button class="btn-primary">Comenzar Ahora</button>
+                <button class="btn-secondary">Ver Demo</button>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <div class="circle"></div>
+            <img src="https://via.placeholder.com/350" alt="Flowmatic">
+        </div>
+    </div>
+</section>
+
+<section id="features" class="features">
+    <div class="container">
+        <h2>Características</h2>
+
+        <div class="grid">
+            <div class="card">
+                <h3>🔒 Seguridad</h3>
+                <p>Cifrado avanzado y protección de datos.</p>
+            </div>
+
+            <div class="card">
+                <h3>☁️ Nube</h3>
+                <p>Accede a tus archivos desde cualquier lugar.</p>
+            </div>
+
+            <div class="card">
+                <h3>⚡ Velocidad</h3>
+                <p>Plataforma rápida y optimizada.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="services" class="services">
+    <div class="container">
+        <h2>Servicios</h2>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Gestión de Archivos</h3>
+                <p>Administra documentos fácilmente.</p>
+            </div>
+
+            <div class="card">
+                <h3>Backup</h3>
+                <p>Respaldo automático seguro.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="contact">
+    <div class="container contact-grid">
+
+        <div>
+            <h2>Contáctanos</h2>
+            <p>Estamos listos para ayudarte.</p>
+        </div>
+
+        <form class="contact-form">
+            <input type="text" placeholder="Nombre">
+            <input type="email" placeholder="Correo">
+            <textarea placeholder="Mensaje"></textarea>
+            <button class="btn-primary">Enviar</button>
+        </form>
+
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 2026 Flowmatic - Todos los derechos reservados</p>
+</footer>
+
+</body>
+</html>
