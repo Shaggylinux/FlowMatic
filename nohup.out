@@ -134,3 +134,1621 @@ Gtk-Message: 09:43:03.692: Not loading module "atk-bridge": The functionality is
 2026-03-23 09:57:14.577 - Execution context opened (postgres 6; Metadata <gestion>; 2)
 2026-03-23 09:57:14.579 - Initiate connection to PostgreSQL database [gestion@localhost] for Metadata <gestion>
 2026-03-23 09:57:14.735 - Connected (postgres-jdbc-19d17b8d10f-1e9a5d258ae24834, PostgreSQL JDBC Driver [42.7.2])
+2026-03-23 13:16:22,172 [12785464]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2026-03-23 13:16:22,204 [12785496]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.class' has been deprecated in favor of 'resource.loader.includes.class'
+2026-03-23 13:58:53.564 - Execution context closed (postgres 6, 1)
+2026-03-23 13:58:53.577 - Execution context closed (postgres 6, 2)
+2026-03-23 13:58:53.582 - Disconnected (postgres-jdbc-19d17b8d10f-1e9a5d258ae24834)
+2026-03-23 19:01:18,186 [33481478]   WARN - #c.i.o.v.i.LineStatusTrackerManager - Tracker is being held on dispose by EditorImpl[LightVirtualFile: /terminal_output]; file: /terminal_output
+2026-03-23 19:01:38,355 [33501647]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-23 19:03:09.810 - Connect with 'pruebas' (postgres-jdbc-19cd848b46c-9b65f75fd8945d5)
+2026-03-23 19:03:09.817 - Execution context opened (pruebas; Main <pruebas>; 3)
+2026-03-23 19:03:09.818 - Initiate connection to PostgreSQL database [pruebas@localhost] for Main <pruebas>
+2026-03-23 19:03:10.571 - Execution context opened (pruebas; Metadata <pruebas>; 4)
+2026-03-23 19:03:10.572 - Initiate connection to PostgreSQL database [pruebas@localhost] for Metadata <pruebas>
+2026-03-23 19:03:10.722 - Connected (postgres-jdbc-19cd848b46c-9b65f75fd8945d5, PostgreSQL JDBC Driver [42.7.2])
+2026-03-23 19:03:10.796 - Execution context opened (pruebas; SQLEditor <Script.sql>; 5)
+2026-03-23 19:03:10.802 - Initiate connection to PostgreSQL database [pruebas@localhost] for SQLEditor <Script.sql>
+2026-03-23 19:04:38,519 [33681811]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-23 19:09:31,504 [33974796]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-23 19:14:58,484 [34301776]   WARN - #c.i.o.a.i.ActionUpdater - 1723 ms to call on BGT CreateFromTemplateGroup#children@ProjectViewPopup (com.intellij.ide.fileTemplates.actions.CreateFromTemplateGroup)
+2026-03-23 19:14:58,486 [34301778]   WARN - #c.i.o.a.i.Utils - 1746 ms to fillMenu@ProjectViewPopup
+2026-03-23 19:15:34,638 [34337930]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2026-03-23 19:15:34,639 [34337931]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.instance' has been deprecated in favor of 'resource.loader.includes.instance'
+2026-03-23 19:26:40,568 [35003860]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-23 23:05:16.781 - Execution context closed (pruebas, 3)
+2026-03-23 23:05:16.795 - Execution context closed (pruebas, 4)
+2026-03-23 23:05:16.806 - Execution context closed (pruebas, 5)
+2026-03-23 23:05:16.807 - Disconnected (postgres-jdbc-19cd848b46c-9b65f75fd8945d5)
+2026-03-23 23:10:43,597 [48446889]   WARN - #c.i.o.v.i.LineStatusTrackerManager - Tracker is being held on dispose by EditorImpl[LightVirtualFile: /terminal_output]; file: /terminal_output
+2026-03-23 23:10:49.124 - Dispose navigator model
+2026-03-23 23:10:49.427 - DBeaver is stopping
+2026-03-23 23:10:49.435 - Stop instance server
+2026-03-23 23:10:50.446 - DBeaver shutdown completed
+2026-03-23 23:10:50.453 - Instance server has been stopped
+2026-03-23 23:10:50.629 - Shutdown desktop platform...
+2026-03-23 23:10:50.632 - Send collected statistics
+2026-03-23 23:10:50.653 - Open [https://stats.dbeaver.com/send-statistics?session=c131eb13-19b7-42a9-a3ec-1ecda39d0e68&time=1774277730]
+2026-03-23 23:10:53.249 - Statistics sent (OK)
+2026-03-23 23:10:53.409 - Platform shutdown completed (2769ms)
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 09:36:24.894: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 09:36:34.450: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+[0.200s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-24 09:44:22,892 [  24846]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-24 09:44:22,895 [  24849]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-24 09:44:23,078 [  25032]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 26.0.1.202603221810]
+> Start DBeaver Command Line Model [org.jkiss.dbeaver.model.cli 1.0.20.202603221810]
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.700.v20250725-1147]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.6.0.v20251217-1052]
+> Start Expression Language [org.eclipse.core.expressions 3.9.500.v20250608-0434]
+> Start DBeaver Model Registry [org.jkiss.dbeaver.registry 1.0.169.202603221810]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.23.0.v20260103-1639]
+> Start jna [com.sun.jna 5.18.1.v20251001-0800]
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.175.202603221810]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.190.202603221810]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.71.202603221810]
+> Start DBeaver UI Editors - Connections [org.jkiss.dbeaver.ui.editors.connection 1.0.166.202603221810]
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 26.0.1.202603221810]
+2026-03-24 09:44:36.792 - DBeaver 26.0.1.202603221810 is starting
+2026-03-24 09:44:36.802 - OS: Linux 6.17.0-19-generic (amd64)
+2026-03-24 09:44:36.803 - Java version: 21.0.8 by Eclipse Adoptium (64bit)
+2026-03-24 09:44:36.807 - Install path: '/usr/share/dbeaver-ce'
+2026-03-24 09:44:36.811 - Instance path: 'file:/home/julieth/.local/share/DBeaverData/workspace6/'
+2026-03-24 09:44:36.827 - Memory available 64Mb/1024Mb
+2026-03-24 09:44:36.871 - Initialize desktop platform...
+2026-03-24 09:44:39.093 - BounceCastle bundle found. Use JCE provider BC
+> Start Core File Systems [org.eclipse.core.filesystem 1.11.400.v20251107-0507]
+> Start Core Resource Management [org.eclipse.core.resources 3.23.200.v20251217-0810]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.175.202603221810]
+> Start Team Support Core [org.eclipse.team.core 3.10.1000.v20260112-1030]
+2026-03-24 09:44:40.595 - Initialize base platform...
+2026-03-24 09:44:40.807 - Schedule collected statistics send
+2026-03-24 09:44:40.811 - Platform initialized (3940ms)
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.700.v20250622-1644]
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.6.0.v20251219-1227]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.800.v20250613-1119]
+2026-03-24 09:44:41.033 - Proxy service 'org.eclipse.core.net.proxy.IProxyService' loaded
+2026-03-24 09:44:41.084 - Create display
+2026-03-24 09:44:43.097 - Starting instance server at http://localhost:36365
+2026-03-24 09:44:43.207 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.18.0.v20260119-0835]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.5.300.v20251112-1253]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.600.v20251023-1358]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.5.0.v20251217-1052]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.15.0.v20251216-1230]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.700.v20250916-0927]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.40.0.v20251210-1145]
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.15.0.v20251216-1230]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.6.0.v20251216-1230]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.17.0.v20260131-0926]
+2026-03-24 09:44:46,152 [  48106]   WARN - #c.i.o.a.i.ActionUpdater - 13784 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-24 09:44:47,295 [  49249]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-24 09:44:47,445 [  49399]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-24 09:44:48,240 [  50194]   WARN - #c.i.o.a.i.ActionUpdater - 6008 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.300.v20240413-1529]
+> Start DBeaver AI Model [org.jkiss.dbeaver.model.ai 2.0.18.202603221810]
+> Start DBeaver AI UI [org.jkiss.dbeaver.ui.ai 1.0.77.202603221810]
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.16.0.v20251216-1230]
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.22.0.202602231721]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.25.0.202602162234]
+> Start JFace Text [org.eclipse.jface.text 3.30.0.v20260203-0841]
+2026-03-24 09:44:57.852 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.165.202603221810]
+2026-03-24 09:45:00.223 - Total database drivers: 127 (127)
+> Start Help System Core [org.eclipse.help 3.11.0.v20251227-1159]
+2026-03-24 09:45:00,445 [  62399]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-24 09:45:01.114 - Create actions
+2026-03-24 09:45:04.920 - Initialize workbench window
+2026-03-24 09:45:05.110 - Finish initialization
+2026-03-24 09:45:05,604 [  67558]   WARN - #c.i.o.a.i.ActionUpdater - 2387 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-24 09:45:05,606 [  67560]   WARN - #c.i.o.a.i.ActionUpdater - 2381 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+> Start Default Text Editor [org.eclipse.ui.editors 3.21.0.v20260218-1452]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.20.0.v20260127-1637]
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.175.202603221810]
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.175.202603221810]
+> Start DBeaver SQL Terminal [org.jkiss.dbeaver.ui.editors.sql.terminal 1.0.151.202603221810]
+
+(DBeaver:7296): Gtk-WARNING **: 09:45:10.917: Negative content height -7 (allocation 6, extents 6x7) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:7296): Gtk-WARNING **: 09:45:11.033: Negative content height -7 (allocation 6, extents 6x7) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start Core Compare Support [org.eclipse.compare.core 3.8.800.v20250718-1505]
+
+(DBeaver:7296): Gtk-WARNING **: 09:45:13.468: Negative content width -12 (allocation 1, extents 6x7) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ui.config.sample 1.0.212.202603221810]
+2026-03-24 09:45:20.699 - Open [https://dbeaver.io/product/version.xml]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.ui.editors.erd 3.1.16.202603221810]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.model.erd 1.1.16.202603221810]
+> Start DBeaver Dashboard UI [org.jkiss.dbeaver.ui.dashboard 1.0.172.202603221810]
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.68.202603221810]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.248.202603221810]
+> Start Console [org.eclipse.ui.console 3.16.0.v20260123-1616]
+> Start Debug Core [org.eclipse.debug.core 3.23.200.v20251107-0507]
+> Start DBeaver SQL Language Semantic Model [org.jkiss.dbeaver.model.lsm 1.0.70.202603221810]
+2026-03-24 09:45:26.743 - Connect with 'pruebas' (postgres-jdbc-19cd848b46c-9b65f75fd8945d5)
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.199.202603221810]
+2026-03-24 09:45:27.214 - Execution context opened (pruebas; Main <pruebas>; 0)
+2026-03-24 09:45:27.277 - Initiate connection to PostgreSQL database [pruebas@localhost] for Main <pruebas>
+2026-03-24 09:45:28.126 - Execution context closed (pruebas, 0)
+2026-03-24 09:45:33,921 [  95875]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+> Start DBeaver Tasks - Native Tools UI [org.jkiss.dbeaver.tasks.native.ui 1.0.153.202603221810]
+> Start DBeaver PostgreSQL UI [org.jkiss.dbeaver.ext.postgresql.ui 1.0.151.202603221810]
+> Start DBeaver Tasks - General UI [org.jkiss.dbeaver.tasks.ui 1.0.153.202603221810]
+2026-03-24 09:50:24,578 [ 386532]   WARN - #c.i.o.a.i.ActionUpdater - 4556 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-24 09:50:36,363 [ 398317]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 10:08:23,929 [1465883]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 10:14:12,789 [1814743]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 10:15:05,541 [1867495]   WARN - #c.i.o.v.i.h.RemoteFileInfoImpl - Virtual local file not found for /home/julieth/.cache/JetBrains/IdeaIC2025.2/httpFileSystem/catalog.json
+2026-03-24 10:24:15,118 [2417072]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 10:25:09,582 [2471536] SEVERE - #c.i.o.a.i.CoroutineExceptionHandlerImpl - Unhandled exception in [CoroutineName(DocumentationBrowser requests), Dispatchers.Default]
+java.lang.StringIndexOutOfBoundsException: Range [31, 14) out of bounds for length 14
+	at java.base/jdk.internal.util.Preconditions$1.apply(Preconditions.java:55)
+	at java.base/jdk.internal.util.Preconditions$1.apply(Preconditions.java:52)
+	at java.base/jdk.internal.util.Preconditions$4.apply(Preconditions.java:213)
+	at java.base/jdk.internal.util.Preconditions$4.apply(Preconditions.java:210)
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:98)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckFromToIndex(Preconditions.java:112)
+	at java.base/jdk.internal.util.Preconditions.checkFromToIndex(Preconditions.java:349)
+	at java.base/java.lang.String.checkBoundsBeginEnd(String.java:4865)
+	at java.base/java.lang.String.substring(String.java:2834)
+	at java.base/java.lang.String.substring(String.java:2807)
+	at com.intellij.lang.java.JavaDocumentationProvider.findUrlForClass(JavaDocumentationProvider.java:1015)
+	at com.intellij.lang.java.JavaDocumentationProvider.getExternalJavaDocUrl(JavaDocumentationProvider.java:928)
+	at com.intellij.lang.java.JavaDocumentationProvider.generateExternalJavadoc(JavaDocumentationProvider.java:857)
+	at com.intellij.lang.java.JavaDocumentationProvider.generateDoc(JavaDocumentationProvider.java:784)
+	at com.intellij.lang.documentation.DocumentationProvider.getDocumentationParts(DocumentationProvider.java:200)
+	at com.intellij.lang.documentation.CompositeDocumentationProvider.getDocumentationParts(CompositeDocumentationProvider.java:295)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.localDocParts(PsiElementDocumentationTarget.kt:116)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.localDoc(PsiElementDocumentationTarget.kt:99)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.doComputeDocumentation(PsiElementDocumentationTarget.kt:86)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.computeDocumentation$lambda$0(PsiElementDocumentationTarget.kt:80)
+	at com.intellij.openapi.progress.CoroutinesKt.jobToIndicator$lambda$10(coroutines.kt:543)
+	at com.intellij.openapi.progress.ProgressManager.lambda$runProcess$0(ProgressManager.java:98)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.lambda$runProcess$1(CoreProgressManager.java:229)
+	at com.intellij.platform.diagnostic.telemetry.helpers.TraceKt.use(trace.kt:44)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.lambda$runProcess$2(CoreProgressManager.java:228)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.lambda$executeProcessUnderProgress$14(CoreProgressManager.java:681)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.registerIndicatorAndRun(CoreProgressManager.java:756)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computeUnderProgress(CoreProgressManager.java:712)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.executeProcessUnderProgress(CoreProgressManager.java:680)
+	at com.intellij.openapi.progress.impl.ProgressManagerImpl.executeProcessUnderProgress(ProgressManagerImpl.java:78)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.runProcess(CoreProgressManager.java:209)
+	at com.intellij.openapi.progress.ProgressManager.runProcess(ProgressManager.java:98)
+	at com.intellij.openapi.progress.CoroutinesKt.jobToIndicator(coroutines.kt:531)
+	at com.intellij.openapi.progress.CoroutinesKt.contextToIndicator(coroutines.kt:523)
+	at com.intellij.openapi.progress.CoroutinesKt.blockingContextToIndicator(coroutines.kt:499)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.computeDocumentation(PsiElementDocumentationTarget.kt:79)
+	at com.intellij.platform.backend.documentation.impl.ImplKt$computeDocumentation$2.invokeSuspend$lambda$0(impl.kt:35)
+	at com.intellij.openapi.application.rw.InternalReadAction.insideReadAction(InternalReadAction.kt:111)
+	at com.intellij.openapi.application.rw.InternalReadAction.tryReadCancellable$lambda$4(InternalReadAction.kt:101)
+	at com.intellij.openapi.application.rw.CancellableReadActionKt.cancellableReadActionInternal$lambda$3$lambda$2$lambda$1(cancellableReadAction.kt:32)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.tryRunReadAction(NestedLocksThreadingSupport.kt:826)
+	at com.intellij.openapi.application.impl.ApplicationImpl.tryRunReadAction(ApplicationImpl.java:1221)
+	at com.intellij.openapi.application.rw.CancellableReadActionKt.cancellableReadActionInternal$lambda$3$lambda$2(cancellableReadAction.kt:30)
+	at com.intellij.openapi.progress.util.ProgressIndicatorUtilService.runActionAndCancelBeforeWrite(ProgressIndicatorUtilService.java:73)
+	at com.intellij.openapi.progress.util.ProgressIndicatorUtils.runActionAndCancelBeforeWrite(ProgressIndicatorUtils.java:152)
+	at com.intellij.openapi.application.rw.CancellableReadActionKt.cancellableReadActionInternal(cancellableReadAction.kt:28)
+	at com.intellij.openapi.application.rw.InternalReadAction.tryReadCancellable(InternalReadAction.kt:100)
+	at com.intellij.openapi.application.rw.InternalReadAction.tryReadAction(InternalReadAction.kt:86)
+	at com.intellij.openapi.application.rw.InternalReadAction.readLoop(InternalReadAction.kt:73)
+	at com.intellij.openapi.application.rw.InternalReadAction.access$readLoop(InternalReadAction.kt:15)
+	at com.intellij.openapi.application.rw.InternalReadAction$runReadAction$6.invokeSuspend(InternalReadAction.kt:52)
+	at com.intellij.openapi.application.rw.InternalReadAction$runReadAction$6.invoke(InternalReadAction.kt)
+	at com.intellij.openapi.application.rw.InternalReadAction$runReadAction$6.invoke(InternalReadAction.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.openapi.application.rw.InternalReadAction.runReadAction(InternalReadAction.kt:50)
+	at com.intellij.openapi.application.rw.PlatformReadWriteActionSupport.executeReadAction(PlatformReadWriteActionSupport.kt:42)
+	at com.intellij.openapi.application.ReadWriteActionSupport.executeReadAction$default(ReadWriteActionSupport.kt:15)
+	at com.intellij.openapi.application.CoroutinesKt.constrainedReadAction(coroutines.kt:66)
+	at com.intellij.openapi.application.CoroutinesKt.readAction(coroutines.kt:33)
+	at com.intellij.platform.backend.documentation.impl.ImplKt$computeDocumentation$2.invokeSuspend(impl.kt:32)
+	at com.intellij.platform.backend.documentation.impl.ImplKt$computeDocumentation$2.invoke(impl.kt)
+	at com.intellij.platform.backend.documentation.impl.ImplKt$computeDocumentation$2.invoke(impl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.platform.backend.documentation.impl.ImplKt.computeDocumentation(impl.kt:30)
+	at com.intellij.lang.documentation.ide.impl.DocumentationPage.loadPage(DocumentationPage.kt:41)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser.handleBrowserRequest(DocumentationBrowser.kt:102)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser.access$handleBrowserRequest(DocumentationBrowser.kt:29)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser$1$1.invokeSuspend(DocumentationBrowser.kt:54)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser$1$1.invoke(DocumentationBrowser.kt)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser$1$1.invoke(DocumentationBrowser.kt)
+	at kotlinx.coroutines.flow.FlowKt__MergeKt$mapLatest$1.invokeSuspend(Merge.kt:213)
+	at kotlinx.coroutines.flow.FlowKt__MergeKt$mapLatest$1.invoke(Merge.kt)
+	at kotlinx.coroutines.flow.FlowKt__MergeKt$mapLatest$1.invoke(Merge.kt)
+	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$2.invokeSuspend(Merge.kt:30)Exception in thread "DefaultDispatcher-worker-2" 
+	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$2.invoke(Merge.kt)
+	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$2.invoke(Merge.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startCoroutineUndispatched(Undispatched.kt:20)
+	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:360)
+	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:134)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:52)
+	at kotlinx.coroutines.BuildersKt.launch(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:43)
+	at kotlinx.coroutines.BuildersKt.launch$default(Unknown Source)
+	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1.emit(Merge.kt:29)
+	at kotlinx.coroutines.flow.internal.FlowValueWrapperInternalKt.emitInternal(FlowValueWrapperInternal.kt:39)
+	at kotlinx.coroutines.flow.SharedFlowImpl.collect$suspendImpl(SharedFlow.kt:397)
+	at kotlinx.coroutines.flow.SharedFlowImpl$collect$1.invokeSuspend(SharedFlow.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+2026-03-24 10:25:09,595 [2471549] SEVERE - #c.i.o.a.i.CoroutineExceptionHandlerImpl - IntelliJ IDEA 2025.2.6.1  Build #IC-252.28539.33
+java.lang.StringIndexOutOfBoundsException: Range [31, 14) out of bounds for length 14
+	at java.base/jdk.internal.util.Preconditions$1.apply(Preconditions.java:55)
+2026-03-24 10:25:09,596 [2471550] SEVERE - #c.i.o.a.i.CoroutineExceptionHandlerImpl - JDK: 21.0.9; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+	at java.base/jdk.internal.util.Preconditions$1.apply(Preconditions.java:52)
+	at java.base/jdk.internal.util.Preconditions$4.apply(Preconditions.java:213)
+2026-03-24 10:25:09,597 [2471551] SEVERE - #c.i.o.a.i.CoroutineExceptionHandlerImpl - OS: Linux
+	at java.base/jdk.internal.util.Preconditions$4.apply(Preconditions.java:210)
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:98)
+2026-03-24 10:25:09,598 [2471552] SEVERE - #c.i.o.a.i.CoroutineExceptionHandlerImpl - Plugin to blame: Java version: 252.28539.33
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckFromToIndex(Preconditions.java:112)
+	at java.base/jdk.internal.util.Preconditions.checkFromToIndex(Preconditions.java:349)
+	at java.base/java.lang.String.checkBoundsBeginEnd(String.java:4865)
+	at java.base/java.lang.String.substring(String.java:2834)
+	at java.base/java.lang.String.substring(String.java:2807)
+	at com.intellij.lang.java.JavaDocumentationProvider.findUrlForClass(JavaDocumentationProvider.java:1015)
+	at com.intellij.lang.java.JavaDocumentationProvider.getExternalJavaDocUrl(JavaDocumentationProvider.java:928)
+	at com.intellij.lang.java.JavaDocumentationProvider.generateExternalJavadoc(JavaDocumentationProvider.java:857)
+	at com.intellij.lang.java.JavaDocumentationProvider.generateDoc(JavaDocumentationProvider.java:784)
+	at com.intellij.lang.documentation.DocumentationProvider.getDocumentationParts(DocumentationProvider.java:200)
+	at com.intellij.lang.documentation.CompositeDocumentationProvider.getDocumentationParts(CompositeDocumentationProvider.java:295)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.localDocParts(PsiElementDocumentationTarget.kt:116)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.localDoc(PsiElementDocumentationTarget.kt:99)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.doComputeDocumentation(PsiElementDocumentationTarget.kt:86)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.computeDocumentation$lambda$0(PsiElementDocumentationTarget.kt:80)
+	at com.intellij.openapi.progress.CoroutinesKt.jobToIndicator$lambda$10(coroutines.kt:543)
+	at com.intellij.openapi.progress.ProgressManager.lambda$runProcess$0(ProgressManager.java:98)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.lambda$runProcess$1(CoreProgressManager.java:229)
+	at com.intellij.platform.diagnostic.telemetry.helpers.TraceKt.use(trace.kt:44)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.lambda$runProcess$2(CoreProgressManager.java:228)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.lambda$executeProcessUnderProgress$14(CoreProgressManager.java:681)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.registerIndicatorAndRun(CoreProgressManager.java:756)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computeUnderProgress(CoreProgressManager.java:712)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.executeProcessUnderProgress(CoreProgressManager.java:680)
+	at com.intellij.openapi.progress.impl.ProgressManagerImpl.executeProcessUnderProgress(ProgressManagerImpl.java:78)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.runProcess(CoreProgressManager.java:209)
+	at com.intellij.openapi.progress.ProgressManager.runProcess(ProgressManager.java:98)
+	at com.intellij.openapi.progress.CoroutinesKt.jobToIndicator(coroutines.kt:531)
+	at com.intellij.openapi.progress.CoroutinesKt.contextToIndicator(coroutines.kt:523)
+	at com.intellij.openapi.progress.CoroutinesKt.blockingContextToIndicator(coroutines.kt:499)
+	at com.intellij.lang.documentation.psi.PsiElementDocumentationTarget.computeDocumentation(PsiElementDocumentationTarget.kt:79)
+	at com.intellij.platform.backend.documentation.impl.ImplKt$computeDocumentation$2.invokeSuspend$lambda$0(impl.kt:35)
+	at com.intellij.openapi.application.rw.InternalReadAction.insideReadAction(InternalReadAction.kt:111)
+	at com.intellij.openapi.application.rw.InternalReadAction.tryReadCancellable$lambda$4(InternalReadAction.kt:101)
+	at com.intellij.openapi.application.rw.CancellableReadActionKt.cancellableReadActionInternal$lambda$3$lambda$2$lambda$1(cancellableReadAction.kt:32)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.tryRunReadAction(NestedLocksThreadingSupport.kt:826)
+	at com.intellij.openapi.application.impl.ApplicationImpl.tryRunReadAction(ApplicationImpl.java:1221)
+	at com.intellij.openapi.application.rw.CancellableReadActionKt.cancellableReadActionInternal$lambda$3$lambda$2(cancellableReadAction.kt:30)
+	at com.intellij.openapi.progress.util.ProgressIndicatorUtilService.runActionAndCancelBeforeWrite(ProgressIndicatorUtilService.java:73)
+	at com.intellij.openapi.progress.util.ProgressIndicatorUtils.runActionAndCancelBeforeWrite(ProgressIndicatorUtils.java:152)
+	at com.intellij.openapi.application.rw.CancellableReadActionKt.cancellableReadActionInternal(cancellableReadAction.kt:28)
+	at com.intellij.openapi.application.rw.InternalReadAction.tryReadCancellable(InternalReadAction.kt:100)
+	at com.intellij.openapi.application.rw.InternalReadAction.tryReadAction(InternalReadAction.kt:86)
+	at com.intellij.openapi.application.rw.InternalReadAction.readLoop(InternalReadAction.kt:73)
+	at com.intellij.openapi.application.rw.InternalReadAction.access$readLoop(InternalReadAction.kt:15)
+	at com.intellij.openapi.application.rw.InternalReadAction$runReadAction$6.invokeSuspend(InternalReadAction.kt:52)
+	at com.intellij.openapi.application.rw.InternalReadAction$runReadAction$6.invoke(InternalReadAction.kt)
+	at com.intellij.openapi.application.rw.InternalReadAction$runReadAction$6.invoke(InternalReadAction.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.openapi.application.rw.InternalReadAction.runReadAction(InternalReadAction.kt:50)
+	at com.intellij.openapi.application.rw.PlatformReadWriteActionSupport.executeReadAction(PlatformReadWriteActionSupport.kt:42)
+	at com.intellij.openapi.application.ReadWriteActionSupport.executeReadAction$default(ReadWriteActionSupport.kt:15)
+	at com.intellij.openapi.application.CoroutinesKt.constrainedReadAction(coroutines.kt:66)
+	at com.intellij.openapi.application.CoroutinesKt.readAction(coroutines.kt:33)
+	at com.intellij.platform.backend.documentation.impl.ImplKt$computeDocumentation$2.invokeSuspend(impl.kt:32)
+	at com.intellij.platform.backend.documentation.impl.ImplKt$computeDocumentation$2.invoke(impl.kt)
+	at com.intellij.platform.backend.documentation.impl.ImplKt$computeDocumentation$2.invoke(impl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.platform.backend.documentation.impl.ImplKt.computeDocumentation(impl.kt:30)
+	at com.intellij.lang.documentation.ide.impl.DocumentationPage.loadPage(DocumentationPage.kt:41)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser.handleBrowserRequest(DocumentationBrowser.kt:102)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser.access$handleBrowserRequest(DocumentationBrowser.kt:29)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser$1$1.invokeSuspend(DocumentationBrowser.kt:54)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser$1$1.invoke(DocumentationBrowser.kt)
+	at com.intellij.lang.documentation.ide.impl.DocumentationBrowser$1$1.invoke(DocumentationBrowser.kt)
+	at kotlinx.coroutines.flow.FlowKt__MergeKt$mapLatest$1.invokeSuspend(Merge.kt:213)
+	at kotlinx.coroutines.flow.FlowKt__MergeKt$mapLatest$1.invoke(Merge.kt)
+	at kotlinx.coroutines.flow.FlowKt__MergeKt$mapLatest$1.invoke(Merge.kt)
+	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$2.invokeSuspend(Merge.kt:30)
+	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$2.invoke(Merge.kt)
+	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1$2.invoke(Merge.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startCoroutineUndispatched(Undispatched.kt:20)
+	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:360)
+	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:134)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:52)
+	at kotlinx.coroutines.BuildersKt.launch(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:43)
+	at kotlinx.coroutines.BuildersKt.launch$default(Unknown Source)
+	at kotlinx.coroutines.flow.internal.ChannelFlowTransformLatest$flowCollect$3$1.emit(Merge.kt:29)
+	at kotlinx.coroutines.flow.internal.FlowValueWrapperInternalKt.emitInternal(FlowValueWrapperInternal.kt:39)
+	at kotlinx.coroutines.flow.SharedFlowImpl.collect$suspendImpl(SharedFlow.kt:397)
+	at kotlinx.coroutines.flow.SharedFlowImpl$collect$1.invokeSuspend(SharedFlow.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+	Suppressed: kotlinx.coroutines.internal.DiagnosticCoroutineContextException: [CoroutineName(DocumentationBrowser requests), StandaloneCoroutine{Cancelling}@7a33c66b, Dispatchers.Default]
+2026-03-24 10:26:20,309 [2542263]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 10:35:26,672 [3088626]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 10:37:21,618 [3203572]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 11:20:06,445 [5768399]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 11:21:17,336 [5839290]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 12:16:06,827 [9128781]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 12:21:09,771 [9431725]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 14:23:23,434 [16765388]   WARN - #c.i.o.v.i.LineStatusTrackerManager - Tracker is being held on dispose by EditorImpl[LightVirtualFile: /terminal_output]; file: /terminal_output
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+Emitted 'error' event on ReadStream instance at:
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at errorOrDestroy (node:internal/streams/destroy:239:7)
+    at node:internal/fs/streams:275:9
+    at FSReqCallback.wrapper [as oncomplete] (node:fs:671:5) {
+  errno: -9,
+  code: 'EBADF',
+  syscall: 'read'
+}
+
+Node.js v22.22.0
+libva info: VA-API version 1.20.0
+libva info: Trying to open /snap/firefox/7967/gnome-platform/usr/lib/x86_64-linux-gnu/dri/radeonsi_drv_video.so
+libva info: Found init function __vaDriverInit_1_14
+libva info: va_openDriver() returns 0
+[GFX1-]: Managed to allocate after flush.
+[Child 26129, MediaDecoderStateMachine #3] WARNING: Decoder=7e7a53497800 Decode error: NS_ERROR_ABORT (0x80004004) - Result<already_AddRefed<MediaRawData>, MediaResult> mozilla::SampleIterator::GetNext(): Sample data read failed: file /build/firefox/parts/firefox/build/dom/media/MediaDecoderStateMachineBase.cpp:168
+[GFX1-]: Managed to allocate after flush.
+[GFX1-]: Managed to allocate after flush.
+[GFX1-]: Managed to allocate after flush.
+[Child 26129, MediaDecoderStateMachine #7] WARNING: Decoder=7e7a5683d600 Decode error: NS_ERROR_ABORT (0x80004004) - Result<already_AddRefed<MediaRawData>, MediaResult> mozilla::SampleIterator::GetNext(): Sample data read failed: file /build/firefox/parts/firefox/build/dom/media/MediaDecoderStateMachineBase.cpp:168
+[GFX1-]: Managed to allocate after flush.
+[GFX1-]: Managed to allocate after flush.
+2026-03-24 16:57:53.486 - Dispose navigator model
+2026-03-24 16:57:53.895 - DBeaver is stopping
+2026-03-24 16:57:53.907 - Stop instance server
+2026-03-24 16:57:54.913 - Instance server has been stopped
+2026-03-24 16:57:54.918 - DBeaver shutdown completed
+2026-03-24 16:57:55.154 - Shutdown desktop platform...
+2026-03-24 16:57:55.157 - Send collected statistics
+2026-03-24 16:57:55.188 - Open [https://stats.dbeaver.com/send-statistics?session=8574c74c-57b3-4a48-9ef2-30873f49263f&time=1774363495]
+2026-03-24 16:57:55.909 - Statistics sent (OK)
+2026-03-24 16:57:56.046 - Platform shutdown completed (888ms)
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 18:31:21.261: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 18:31:28.053: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+[0.224s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-24 18:36:20,331 [  20642]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-24 18:36:21,154 [  21465]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-24 18:36:21,157 [  21468]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-24 18:36:22,804 [  23115]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-24 18:36:22,919 [  23230]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-24 18:36:23,640 [  23951]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-24 18:37:06,185 [  66496]   WARN - com.github.benmanes.caffeine.cache.LocalAsyncCache - Exception thrown during asynchronous load
+java.util.concurrent.CompletionException: javax.net.ssl.SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at com.github.benmanes.caffeine.cache.CacheLoader.lambda$asyncLoad$0(CacheLoader.java:113)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1760)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:507)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1491)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:2073)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2035)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187)
+Caused by: javax.net.ssl.SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:960)
+	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
+	at com.intellij.util.net.PlatformHttpClient$DelegatingHttpClient.send(PlatformHttpClient.java:337)
+	at com.intellij.ide.RegionUrlMapper.doLoadMappingOrThrow(RegionUrlMapper.java:152)
+	at com.github.benmanes.caffeine.cache.CacheLoader.lambda$asyncLoad$0(CacheLoader.java:109)
+	... 7 more
+Caused by: javax.net.ssl.SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.ssl.Alert.createSSLException(Alert.java:130)
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:383)
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:326)
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:321)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1287)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.onConsumeCertificate(CertificateMessage.java:1164)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.consume(CertificateMessage.java:1107)
+	at java.base/sun.security.ssl.SSLHandshake.consume(SSLHandshake.java:393)
+	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:477)
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1273)
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1260)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:714)
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask.run(SSLEngineImpl.java:1205)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.lambda$executeTasks$3(SSLFlowDelegate.java:1148)
+	at java.net.http/jdk.internal.net.http.HttpClientImpl$DelegatingExecutor.execute(HttpClientImpl.java:177)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.executeTasks(SSLFlowDelegate.java:1143)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.doHandshake(SSLFlowDelegate.java:1109)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader.processData(SSLFlowDelegate.java:508)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader$ReaderDownstreamPusher.run(SSLFlowDelegate.java:283)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$LockingRestartableTask.run(SequentialScheduler.java:182)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:149)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$TryEndDeferredCompleter.complete(SequentialScheduler.java:324)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:151)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$SchedulableTask.run(SequentialScheduler.java:207)
+	at kotlinx.coroutines.internal.SoftLimitedDispatcher$Worker.run(SoftLimitedDispatcher.kt:130)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1183)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:388)
+	at java.base/sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:271)
+	at java.base/sun.security.validator.Validator.validate(Validator.java:256)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:241)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:113)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.checkServerTrusted(ConfirmingTrustManager.java:251)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.lambda$checkServerTrusted$2(ConfirmingTrustManager.java:217)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.withCalculatedCertificateStrategy(ConfirmingTrustManager.java:228)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.checkServerTrusted(ConfirmingTrustManager.java:214)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.checkServerTrusted(ConfirmingTrustManager.java:210)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1265)
+	... 26 more
+Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.provider.certpath.SunCertPathBuilder.build(SunCertPathBuilder.java:148)
+	at java.base/sun.security.provider.certpath.SunCertPathBuilder.engineBuild(SunCertPathBuilder.java:129)
+	at java.base/java.security.cert.CertPathBuilder.build(CertPathBuilder.java:297)
+	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:383)
+	... 36 more
+2026-03-24 18:37:30,687 [  90998]   WARN - #c.i.l.u.p.RemoteFeatureDisabler - Failed to get contents
+javax.net.ssl.SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.ssl.Alert.createSSLException(Alert.java:130)
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:383)
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:326)
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:321)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1287)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.onConsumeCertificate(CertificateMessage.java:1164)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.consume(CertificateMessage.java:1107)
+	at java.base/sun.security.ssl.SSLHandshake.consume(SSLHandshake.java:393)
+	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:477)
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1273)
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1260)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:714)
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask.run(SSLEngineImpl.java:1205)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.lambda$executeTasks$3(SSLFlowDelegate.java:1148)
+	at java.net.http/jdk.internal.net.http.HttpClientImpl$DelegatingExecutor.execute(HttpClientImpl.java:177)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.executeTasks(SSLFlowDelegate.java:1143)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.doHandshake(SSLFlowDelegate.java:1109)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader.processData(SSLFlowDelegate.java:508)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader$ReaderDownstreamPusher.run(SSLFlowDelegate.java:283)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$LockingRestartableTask.run(SequentialScheduler.java:182)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:149)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$SchedulableTask.run(SequentialScheduler.java:207)
+	at kotlinx.coroutines.internal.SoftLimitedDispatcher$Worker.run(SoftLimitedDispatcher.kt:130)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1183)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:388)
+	at java.base/sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:271)
+	at java.base/sun.security.validator.Validator.validate(Validator.java:256)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:241)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:113)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.checkServerTrusted(ConfirmingTrustManager.java:251)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.lambda$checkServerTrusted$2(ConfirmingTrustManager.java:217)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.withCalculatedCertificateStrategy(ConfirmingTrustManager.java:228)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.checkServerTrusted(ConfirmingTrustManager.java:214)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.checkServerTrusted(ConfirmingTrustManager.java:210)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1265)
+	... 24 more
+Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.provider.certpath.SunCertPathBuilder.build(SunCertPathBuilder.java:148)
+	at java.base/sun.security.provider.certpath.SunCertPathBuilder.engineBuild(SunCertPathBuilder.java:129)
+	at java.base/java.security.cert.CertPathBuilder.build(CertPathBuilder.java:297)
+	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:383)
+	... 34 more
+2026-03-24 18:37:32,906 [  93217]   WARN - #c.i.o.a.i.ActionUpdater - 1373 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-24 18:37:32,910 [  93221]   WARN - #c.i.o.a.i.ActionUpdater - 1371 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-24 18:37:45,209 [ 105520]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 18:38:36,585 [ 156896]   WARN - com.github.benmanes.caffeine.cache.LocalAsyncCache - Exception thrown during asynchronous load
+java.util.concurrent.CompletionException: javax.net.ssl.SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at com.github.benmanes.caffeine.cache.CacheLoader.lambda$asyncLoad$0(CacheLoader.java:113)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1760)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:507)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1491)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:2073)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2035)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187)
+Caused by: javax.net.ssl.SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:960)
+	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
+	at com.intellij.util.net.PlatformHttpClient$DelegatingHttpClient.send(PlatformHttpClient.java:337)
+	at com.intellij.ide.RegionUrlMapper.doLoadMappingOrThrow(RegionUrlMapper.java:152)
+	at com.github.benmanes.caffeine.cache.CacheLoader.lambda$asyncLoad$0(CacheLoader.java:109)
+	... 7 more
+Caused by: javax.net.ssl.SSLHandshakeException: (certificate_unknown) PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.ssl.Alert.createSSLException(Alert.java:130)
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:383)
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:326)
+	at java.base/sun.security.ssl.TransportContext.fatal(TransportContext.java:321)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1287)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.onConsumeCertificate(CertificateMessage.java:1164)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.consume(CertificateMessage.java:1107)
+	at java.base/sun.security.ssl.SSLHandshake.consume(SSLHandshake.java:393)
+	at java.base/sun.security.ssl.HandshakeContext.dispatch(HandshakeContext.java:477)
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1273)
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask$DelegatedAction.run(SSLEngineImpl.java:1260)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:714)
+	at java.base/sun.security.ssl.SSLEngineImpl$DelegatedTask.run(SSLEngineImpl.java:1205)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.lambda$executeTasks$3(SSLFlowDelegate.java:1148)
+	at java.net.http/jdk.internal.net.http.HttpClientImpl$DelegatingExecutor.execute(HttpClientImpl.java:177)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.executeTasks(SSLFlowDelegate.java:1143)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate.doHandshake(SSLFlowDelegate.java:1109)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader.processData(SSLFlowDelegate.java:508)
+	at java.net.http/jdk.internal.net.http.common.SSLFlowDelegate$Reader$ReaderDownstreamPusher.run(SSLFlowDelegate.java:283)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$LockingRestartableTask.run(SequentialScheduler.java:182)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:149)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$TryEndDeferredCompleter.complete(SequentialScheduler.java:324)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$CompleteRestartableTask.run(SequentialScheduler.java:151)
+	at java.net.http/jdk.internal.net.http.common.SequentialScheduler$SchedulableTask.run(SequentialScheduler.java:207)
+	at kotlinx.coroutines.internal.SoftLimitedDispatcher$Worker.run(SoftLimitedDispatcher.kt:130)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1183)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:388)
+	at java.base/sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:271)
+	at java.base/sun.security.validator.Validator.validate(Validator.java:256)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:241)
+	at java.base/sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:113)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.checkServerTrusted(ConfirmingTrustManager.java:251)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.lambda$checkServerTrusted$2(ConfirmingTrustManager.java:217)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.withCalculatedCertificateStrategy(ConfirmingTrustManager.java:228)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.checkServerTrusted(ConfirmingTrustManager.java:214)
+	at com.intellij.util.net.ssl.ConfirmingTrustManager.checkServerTrusted(ConfirmingTrustManager.java:210)
+	at java.base/sun.security.ssl.CertificateMessage$T13CertificateConsumer.checkServerCerts(CertificateMessage.java:1265)
+	... 26 more
+Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at java.base/sun.security.provider.certpath.SunCertPathBuilder.build(SunCertPathBuilder.java:148)
+	at java.base/sun.security.provider.certpath.SunCertPathBuilder.engineBuild(SunCertPathBuilder.java:129)
+	at java.base/java.security.cert.CertPathBuilder.build(CertPathBuilder.java:297)
+	at java.base/sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:383)
+	... 36 more
+2026-03-24 18:41:47,112 [ 347423]   WARN - #c.i.o.a.i.ActionUpdater - 1632 ms to call on BGT CreateFromTemplateGroup#children@ProjectViewPopup (com.intellij.ide.fileTemplates.actions.CreateFromTemplateGroup)
+2026-03-24 18:41:47,114 [ 347425]   WARN - #c.i.o.a.i.Utils - 1650 ms to fillMenu@ProjectViewPopup
+2026-03-24 18:41:55,510 [ 355821]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2026-03-24 18:41:55,513 [ 355824]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.instance' has been deprecated in favor of 'resource.loader.includes.instance'
+2026-03-24 18:54:48,963 [1129274]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2026-03-24 18:54:48,965 [1129276]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.class' has been deprecated in favor of 'resource.loader.includes.class'
+2026-03-24 19:11:41,889 [2142200]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-24 19:11:50,237 [2150548]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+Error calling CreateSession method: GDBus.Error:org.freedesktop.portal.Error.NotAllowed: Location services disabled
+[Parent 4475, Main Thread] WARNING: g_variant_is_object_path: assertion 'string != NULL' failed: 'glib warning', file /build/firefox/parts/firefox/build/toolkit/xre/nsSigHandlers.cpp:201
+
+(firefox_firefox:4475): GLib-CRITICAL **: 19:20:45.204: g_variant_is_object_path: assertion 'string != NULL' failed
+[Parent 4475, Main Thread] WARNING: g_dbus_message_new_method_call: assertion 'g_variant_is_object_path (path)' failed: 'glib warning', file /build/firefox/parts/firefox/build/toolkit/xre/nsSigHandlers.cpp:201
+
+(firefox_firefox:4475): GLib-GIO-CRITICAL **: 19:20:45.204: g_dbus_message_new_method_call: assertion 'g_variant_is_object_path (path)' failed
+2026-03-24 21:33:18,966 [10639277]   WARN - #c.i.o.v.i.LineStatusTrackerManager - Tracker is being held on dispose by EditorImpl[LightVirtualFile: /terminal_output]; file: /terminal_output
+2026-03-24 21:33:29,180 [10649491]   WARN - #c.i.i.shutdown - Application Application (RA allowed) (exit in progress): scope was not completed in 10s.
+
+- "ApplicationImpl@1520583789 container":supervisor:ChildScope{Cancelling} [Kernel@eeat940fvqh31sgr78k3, Rete(abortOnError=false, commands=capacity=2147483647,data=[onReceive], reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8, dbSource=ReteDbSource(reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8)), DbSourceContextElement(kernel Kernel@eeat940fvqh31sgr78k3), ComponentManager(ApplicationImpl@1520583789), com.intellij.codeWithMe.ClientIdContextElementPrecursor]
+	- "ApplicationImpl@1520583789 container":StandaloneCoroutine{Cancelling} [Kernel@eeat940fvqh31sgr78k3, Rete(abortOnError=false, commands=capacity=2147483647,data=[onReceive], reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8, dbSource=ReteDbSource(reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8)), DbSourceContextElement(kernel Kernel@eeat940fvqh31sgr78k3), ComponentManager(ApplicationImpl@1520583789), com.intellij.codeWithMe.ClientIdContextElementPrecursor, Dispatchers.Default]
+		- "com.intellij.internal.statistic.updater.StatisticsJobsScheduler":StandaloneCoroutine{Cancelling}, state: RUNNING [Kernel@eeat940fvqh31sgr78k3, Rete(abortOnError=false, commands=capacity=2147483647,data=[onReceive], reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8, dbSource=ReteDbSource(reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8)), DbSourceContextElement(kernel Kernel@eeat940fvqh31sgr78k3), ComponentManager(ApplicationImpl@1520583789), com.intellij.codeWithMe.ClientIdContextElementPrecursor, Dispatchers.Default]
+			at com.intellij.internal.statistic.updater.StatisticsJobsScheduler$execute$2.invokeSuspend(StatisticsJobsScheduler.kt:73)
+			at com.intellij.internal.statistic.updater.StatisticsJobsScheduler.execute(StatisticsJobsScheduler.kt:38)
+			at com.intellij.platform.ide.bootstrap.ApplicationLoader$executeAsyncAppInitListeners$1.invokeSuspend(ApplicationLoader.kt:302)
+			- "com.intellij.internal.statistic.updater.StatisticsJobsScheduler":StandaloneCoroutine{Cancelling}, state: SUSPENDED [Kernel@eeat940fvqh31sgr78k3, Rete(abortOnError=false, commands=capacity=2147483647,data=[onReceive], reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8, dbSource=ReteDbSource(reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8)), DbSourceContextElement(kernel Kernel@eeat940fvqh31sgr78k3), ComponentManager(ApplicationImpl@1520583789), com.intellij.codeWithMe.ClientIdContextElementPrecursor, Dispatchers.Default]
+				at com.intellij.internal.statistic.updater.StatisticsJobsScheduler.runEventLogStatisticsService(StatisticsJobsScheduler.kt:81)
+				at com.intellij.internal.statistic.updater.StatisticsJobsScheduler$execute$2$4.invokeSuspend(StatisticsJobsScheduler.kt:66)
+				- "com.intellij.internal.statistic.updater.StatisticsJobsScheduler":StandaloneCoroutine{Cancelling}, state: RUNNING [Kernel@eeat940fvqh31sgr78k3, Rete(abortOnError=false, commands=capacity=2147483647,data=[onReceive], reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8, dbSource=ReteDbSource(reteState=kotlinx.coroutines.flow.StateFlowImpl@4cf777e8)), DbSourceContextElement(kernel Kernel@eeat940fvqh31sgr78k3), ComponentManager(ApplicationImpl@1520583789), com.intellij.codeWithMe.ClientIdContextElementPrecursor, Dispatchers.Default]
+					at java.base/jdk.internal.misc.Unsafe.park(Native Method)
+					at java.base/java.util.concurrent.locks.LockSupport.park(LockSupport.java:221)
+					at java.base/java.util.concurrent.CompletableFuture$Signaller.block(CompletableFuture.java:1864)
+					at java.base/java.util.concurrent.ForkJoinPool.unmanagedBlock(ForkJoinPool.java:4013)
+					at java.base/java.util.concurrent.ForkJoinPool.managedBlock(ForkJoinPool.java:3961)
+					at java.base/java.util.concurrent.CompletableFuture.waitingGet(CompletableFuture.java:1898)
+					at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2072)
+					at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:934)
+					at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133)
+					at com.intellij.internal.statistic.eventLog.connection.request.StatsRequestBuilder.trySend(StatsRequestBuilder.java:113)
+					at com.intellij.internal.statistic.eventLog.connection.request.StatsRequestBuilder.trySend(StatsRequestBuilder.java:108)
+					at com.intellij.internal.statistic.eventLog.connection.request.StatsRequestBuilder.send(StatsRequestBuilder.java:93)
+					at com.intellij.internal.statistic.eventLog.connection.metadata.EventLogMetadataUtils.loadMetadataFromServer(EventLogMetadataUtils.java:75)
+					at com.intellij.internal.statistic.eventLog.connection.metadata.EventLogMetadataUtils.loadAndParseGroupsFilterRules(EventLogMetadataUtils.java:37)
+					at com.intellij.internal.statistic.eventLog.connection.EventLogSettingsClient.loadApprovedGroupsRules(EventLogSettingsClient.kt:204)
+					at com.intellij.internal.statistic.eventLog.connection.EventLogSettingsClient.provideBaseEventFilter(EventLogSettingsClient.kt:172)
+					at com.intellij.internal.statistic.eventLog.connection.EventLogStatisticsService.send(EventLogStatisticsService.java:97)
+					at com.intellij.internal.statistic.eventLog.connection.EventLogStatisticsService.send(EventLogStatisticsService.java:57)
+					at com.intellij.internal.statistic.updater.StatisticsJobsScheduler$launchStatisticsSendJob$job$1.invokeSuspend(StatisticsJobsScheduler.kt:97)
+
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 17:45:38.362: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 17:50:38.314: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 11:18:57.878: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 11:19:15.724: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+[0.206s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-26 11:19:53,785 [  19547]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-26 11:19:54,089 [  19851]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-26 11:19:54,095 [  19857]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-26 11:20:13,758 [  39520]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-26 11:20:13,825 [  39587]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-26 11:20:14,147 [  39909]   WARN - #c.i.o.a.i.ActionUpdater - 5655 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-26 11:20:20,197 [  45959]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-26 11:20:23,766 [  49528]   WARN - #c.i.o.a.i.ActionUpdater - 2044 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-26 11:20:23,767 [  49529]   WARN - #c.i.o.a.i.ActionUpdater - 2028 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-26 11:20:42,200 [  67962]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-26 11:23:23,649 [ 229411]   WARN - #c.i.o.a.i.ActionUpdater - 4601 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-26 11:37:52,032 [1097794]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2026-03-26 11:39:05,784 [1171546]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:39:08,526 [1174288]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:39:10,767 [1176529]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:39:10,767 [1176529]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported path-effect
+2026-03-26 11:39:10,767 [1176529]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported path-effect
+2026-03-26 11:39:10,767 [1176529]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:39:10,809 [1176571]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:39:10,809 [1176571]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported path-effect
+2026-03-26 11:39:10,809 [1176571]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported path-effect
+2026-03-26 11:39:10,809 [1176571]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:39:11,072 [1176834]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:39:11,087 [1176849]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:39:11,126 [1176888]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:39:12,121 [1177883]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:39:12,928 [1178690]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:39:12,945 [1178707]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:39:45,923 [1211685]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:39:45,927 [1211689]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:40:01,002 [1226764] SEVERE - #c.i.i.p.PluginManager - null
+java.lang.AssertionError
+	at com.intellij.ide.plugins.newui.MyPluginModel.getInstalledDescriptors(MyPluginModel.java:728)
+	at com.intellij.ide.plugins.PluginManagerConfigurable$13$6.handleQuery(PluginManagerConfigurable.java:1305)
+	at com.intellij.ide.plugins.newui.SearchResultPanel.handleQuery(SearchResultPanel.java:165)
+	at com.intellij.ide.plugins.newui.SearchResultPanel.setQuery(SearchResultPanel.java:122)
+	at com.intellij.ide.plugins.newui.PluginsTab.showSearchPanel(PluginsTab.java:254)
+	at com.intellij.ide.plugins.newui.PluginsTab.setSearchQuery(PluginsTab.java:245)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.lambda$createComponent$1(PluginManagerConfigurable.java:208)
+	at com.intellij.ide.plugins.newui.TabbedPaneHeaderComponent.lambda$setListener$0(TabbedPaneHeaderComponent.java:167)
+	at java.desktop/javax.swing.JTabbedPane.fireStateChanged(JTabbedPane.java:447)
+	at java.desktop/javax.swing.JTabbedPane$ModelListener.stateChanged(JTabbedPane.java:298)
+	at java.desktop/javax.swing.DefaultSingleSelectionModel.fireStateChanged(DefaultSingleSelectionModel.java:148)
+	at java.desktop/javax.swing.DefaultSingleSelectionModel.setSelectedIndex(DefaultSingleSelectionModel.java:79)
+	at java.desktop/javax.swing.JTabbedPane.setSelectedIndexImpl(JTabbedPane.java:651)
+	at java.desktop/javax.swing.JTabbedPane.setSelectedIndex(JTabbedPane.java:626)
+	at com.intellij.ui.components.JBTabbedPane.setSelectedIndex(JBTabbedPane.java:96)
+	at java.desktop/javax.swing.plaf.basic.BasicTabbedPaneUI$Handler.mousePressed(BasicTabbedPaneUI.java:4146)
+	at java.desktop/java.awt.AWTEventMulticaster.mousePressed(AWTEventMulticaster.java:290)
+	at java.desktop/java.awt.AWTEventMulticaster.mousePressed(AWTEventMulticaster.java:289)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6670)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3394)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6438)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2266)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5043)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2324)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4871)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4963)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4574)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4518)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2310)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2810)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4871)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:783)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:98)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:755)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:753)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:752)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+	at com.intellij.ide.IdeEventQueue.dispatchMouseEvent(IdeEventQueue.kt:540)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent$lambda$16(IdeEventQueue.kt:479)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:479)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+	at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+	at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+	at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:207)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:128)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:121)
+	at java.desktop/java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:191)
+	at java.desktop/java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:236)
+	at java.desktop/java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:234)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at java.desktop/java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:234)
+	at java.desktop/java.awt.Dialog.show(Dialog.java:1079)
+	at com.intellij.openapi.ui.impl.DialogWrapperPeerImpl$MyDialog.show(DialogWrapperPeerImpl.java:904)
+	at com.intellij.openapi.ui.impl.DialogWrapperPeerImpl.lambda$show$6(DialogWrapperPeerImpl.java:485)
+	at com.intellij.openapi.application.WriteIntentReadAction.lambda$run$0(WriteIntentReadAction.java:24)
+	at com.intellij.openapi.application.impl.AppImplKt$rethrowCheckedExceptions$2.invoke(appImpl.kt:106)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runWriteIntentReadAction(ApplicationImpl.java:1166)
+	at com.intellij.openapi.application.WriteIntentReadAction.compute(WriteIntentReadAction.java:55)
+	at com.intellij.openapi.application.WriteIntentReadAction.run(WriteIntentReadAction.java:23)
+	at com.intellij.openapi.ui.impl.DialogWrapperPeerImpl.show(DialogWrapperPeerImpl.java:484)
+	at com.intellij.openapi.ui.DialogWrapper.lambda$doShow$16(DialogWrapper.java:1824)
+	at com.intellij.openapi.application.WriteIntentReadAction.lambda$run$0(WriteIntentReadAction.java:24)
+	at com.intellij.openapi.application.impl.AppImplKt$rethrowCheckedExceptions$2.invoke(appImpl.kt:106)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runWriteIntentReadAction(ApplicationImpl.java:1166)
+	at com.intellij.openapi.application.WriteIntentReadAction.compute(WriteIntentReadAction.java:55)
+	at com.intellij.openapi.application.WriteIntentReadAction.run(WriteIntentReadAction.java:23)
+	at com.intellij.openapi.ui.DialogWrapper.doShow(DialogWrapper.java:1823)
+	at com.intellij.openapi.ui.DialogWrapper.show(DialogWrapper.java:1771)
+	at com.intellij.ide.actions.ShowSettingsUtilImpl$showSettingsDialog$4.invokeSuspend(ShowSettingsUtilImpl.kt:193)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at com.intellij.openapi.application.impl.EdtCoroutineDispatcher.wrapWithLocking$lambda$3$lambda$2(EdtCoroutineDispatcher.kt:71)
+	at com.intellij.openapi.application.WriteIntentReadAction.lambda$run$0(WriteIntentReadAction.java:24)
+	at com.intellij.openapi.application.impl.AppImplKt$rethrowCheckedExceptions$2.invoke(appImpl.kt:106)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runWriteIntentReadAction(ApplicationImpl.java:1166)
+	at com.intellij.openapi.application.WriteIntentReadAction.compute(WriteIntentReadAction.java:55)
+	at com.intellij.openapi.application.WriteIntentReadAction.run(WriteIntentReadAction.java:23)
+	at com.intellij.openapi.application.impl.EdtCoroutineDispatcher.wrapWithLocking$lambda$3(EdtCoroutineDispatcher.kt:70)
+	at com.intellij.openapi.application.impl.DispatchedRunnable.run(DispatchedRunnable.kt:42)
+	at com.intellij.openapi.application.TransactionGuardImpl.runWithWritingAllowed(TransactionGuardImpl.java:240)
+	at com.intellij.openapi.application.TransactionGuardImpl.access$100(TransactionGuardImpl.java:26)
+	at com.intellij.openapi.application.TransactionGuardImpl$2.run(TransactionGuardImpl.java:222)
+	at com.intellij.openapi.application.impl.FlushQueue.runNextEvent(FlushQueue.java:122)
+	at com.intellij.openapi.application.impl.FlushQueue.flushNow(FlushQueue.java:43)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:781)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:750)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:488)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+	at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+	at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+	at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:207)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:128)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:117)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:105)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:92)
+2026-03-26 11:40:01,020 [1226782] SEVERE - #c.i.i.p.PluginManager - IntelliJ IDEA 2025.2.6.1  Build #IC-252.28539.33
+2026-03-26 11:40:01,020 [1226782] SEVERE - #c.i.i.p.PluginManager - JDK: 21.0.9; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+2026-03-26 11:40:01,020 [1226782] SEVERE - #c.i.i.p.PluginManager - OS: Linux
+2026-03-26 11:40:01,020 [1226782] SEVERE - #c.i.i.p.PluginManager - Last Action: EditorBackSpace
+2026-03-26 11:40:16,595 [1242357]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:40:17,312 [1243074]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:40:17,313 [1243075]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:40:17,338 [1243100]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:40:17,349 [1243111]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported setting
+2026-03-26 11:40:17,349 [1243111]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported setting
+2026-03-26 11:40:17,349 [1243111]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported setting
+2026-03-26 11:40:17,349 [1243111]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported setting
+2026-03-26 11:40:17,349 [1243111]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported setting
+2026-03-26 11:40:17,349 [1243111]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported setting
+2026-03-26 11:40:17,440 [1243202]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '@'
+2026-03-26 11:40:17,442 [1243204]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:40:17,635 [1243397]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:40:17,804 [1243566]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:40:19,859 [1245621]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported documentProperties
+2026-03-26 11:40:19,859 [1245621]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported pageProperties
+2026-03-26 11:40:19,859 [1245621]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:40:19,859 [1245621]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:40:48,185 [1273947]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:40:51,533 [1277295]   WARN - #c.i.i.p.n.PluginLogo - Cannot load plugin icon (file=/home/julieth/.cache/JetBrains/IdeaIC2025.2/plugins/imageCache/com.cobular.transprideprogressbar.svg)
+2026-03-26 11:40:52,149 [1277911]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:40:52,406 [1278168]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:41:23,169 [1308931]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:41:23,176 [1308938]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:41:24,373 [1310135]   WARN - #c.i.i.p.n.PluginLogo - Cannot load plugin icon (file=/home/julieth/.cache/JetBrains/IdeaIC2025.2/plugins/imageCache/org.micoli.php.companion.svg)
+2026-03-26 11:41:46,388 [1332150]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:41:46,683 [1332445]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:42:16,575 [1362337]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:42:16,662 [1362424]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:16,662 [1362424]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:42:17,146 [1362908]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:19,662 [1365424]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:42:19,662 [1365424]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:20,196 [1365958]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:20,196 [1365958]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:20,349 [1366111]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '@'
+2026-03-26 11:42:20,349 [1366111]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '0'
+2026-03-26 11:42:20,350 [1366112]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '0'
+2026-03-26 11:42:20,350 [1366112]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '%'
+2026-03-26 11:42:20,350 [1366112]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '5'
+2026-03-26 11:42:20,350 [1366112]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '0'
+2026-03-26 11:42:20,350 [1366112]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '%'
+2026-03-26 11:42:20,350 [1366112]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '1'
+2026-03-26 11:42:20,350 [1366112]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '0'
+2026-03-26 11:42:20,351 [1366113]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '%'
+2026-03-26 11:42:20,351 [1366113]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'identifier' but got 'Token{type=CURLY_CLOSE, data='null'}'
+2026-03-26 11:42:20,351 [1366113]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:42:20,414 [1366176]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:42:20,414 [1366176]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:20,418 [1366180]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:42:20,420 [1366182]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:20,786 [1366548]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:22,775 [1368537]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:22,779 [1368541]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:37,609 [1383371]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:37,754 [1383516]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:42:37,881 [1383643]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:43:23,727 [1429489]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:43:23,756 [1429518]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:43:23,757 [1429519]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:43:23,833 [1429595]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported RDF
+2026-03-26 11:43:23,833 [1429595]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:43:24,111 [1429873]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:43:45,467 [1451229]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:43:47,131 [1452893]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:44:06,335 [1472097]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:44:06,624 [1472386]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:44:40,924 [1506686]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '@'
+2026-03-26 11:44:40,928 [1506690]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:44:40,931 [1506693]   WARN - com.github.weisj.jsvg.cF - Identifier starting with unexpected char '@'
+2026-03-26 11:44:40,931 [1506693]   WARN - com.github.weisj.jsvg.parser.css.impl.SimpleCssParser - Expected 'CURLY_OPEN' but got 'Token{type=EOF, data='null'}'
+2026-03-26 11:44:41,595 [1507357]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported path-effect
+2026-03-26 11:44:41,595 [1507357]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported path-effect
+2026-03-26 11:44:41,595 [1507357]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported namedview
+2026-03-26 11:44:41,595 [1507357]   WARN - #com.github.weisj.jsvg.parser.NodeMap - unsupported rdf
+2026-03-26 11:45:49,554 [1575316]   WARN - #c.i.o.o.e.ConfigurableCardPanel - auto-dispose 'Plugins' id=preferences.pluginManager
+2026-03-26 11:45:53,302 [1579064] SEVERE - #c.i.o.progress - This method is forbidden on EDT because it does not pump the event queue. Switch to a BGT, or use com.intellij.openapi.progress.TasksKt.runWithModalProgressBlocking. 
+java.lang.IllegalStateException: This method is forbidden on EDT because it does not pump the event queue. Switch to a BGT, or use com.intellij.openapi.progress.TasksKt.runWithModalProgressBlocking. 
+	at com.intellij.openapi.progress.CoroutinesKt.assertBackgroundThreadAndNoWriteAction(coroutines.kt:577)
+	at com.intellij.openapi.progress.CoroutinesKt.runBlockingCancellable(coroutines.kt:130)
+	at com.intellij.openapi.progress.CoroutinesKt.runBlockingCancellable(coroutines.kt:114)
+	at org.jetbrains.plugins.gradle.service.GradleInstallationManager.getGradleJvmPath(GradleInstallationManager.kt:144)
+	at org.jetbrains.plugins.gradle.GradleManager.lambda$getExecutionSettingsProvider$2(GradleManager.java:146)
+	at com.intellij.openapi.externalSystem.util.ExternalSystemApiUtil.getExecutionSettings(ExternalSystemApiUtil.java:604)
+	at com.intellij.openapi.externalSystem.service.ExternalSystemFacadeManager.prepare(ExternalSystemFacadeManager.java:210)
+	at com.intellij.openapi.externalSystem.service.ExternalSystemFacadeManager.doGetFacade(ExternalSystemFacadeManager.java:157)
+	at com.intellij.openapi.externalSystem.service.ExternalSystemFacadeManager.doInvoke(ExternalSystemFacadeManager.java:127)
+	at com.intellij.openapi.externalSystem.service.ExternalSystemFacadeManager$MyHandler.invoke(ExternalSystemFacadeManager.java:259)
+	at jdk.proxy2/jdk.proxy2.$Proxy222.getTaskManager(Unknown Source)
+	at com.intellij.openapi.externalSystem.service.internal.ExternalSystemExecuteTaskTask.doCancel(ExternalSystemExecuteTaskTask.java:125)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.lambda$cancel$3(AbstractExternalSystemTask.java:169)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.withCancellationState(AbstractExternalSystemTask.java:282)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.lambda$cancel$4(AbstractExternalSystemTask.java:168)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.withCancellationProgressManager(AbstractExternalSystemTask.java:256)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.cancel(AbstractExternalSystemTask.java:167)
+	at com.intellij.openapi.externalSystem.service.execution.ExternalSystemProcessHandler.destroyProcessImpl(ExternalSystemProcessHandler.java:95)
+	at com.intellij.execution.process.ProcessHandler.lambda$destroyProcess$0(ProcessHandler.java:127)
+	at com.intellij.execution.process.ProcessHandler$TasksRunner.execute(ProcessHandler.java:325)
+	at com.intellij.execution.process.ProcessHandler.destroyProcess(ProcessHandler.java:124)
+	at com.intellij.execution.ui.BaseContentCloseListener.doAskUserAndWait(BaseContentCloseListener.java:164)
+	at com.intellij.execution.ui.BaseContentCloseListener.lambda$askUserAndWait$0(BaseContentCloseListener.java:152)
+	at com.intellij.openapi.application.InstantShutdown.computeWithDisabledInstantShutdown(InstantShutdown.kt:20)
+	at com.intellij.execution.ui.BaseContentCloseListener.askUserAndWait(BaseContentCloseListener.java:151)
+	at com.intellij.execution.ui.RunContentManagerImpl$CloseListener.closeQuery(RunContentManagerImpl.kt:622)
+	at com.intellij.execution.ui.BaseContentCloseListener.canClose(BaseContentCloseListener.java:130)
+	at com.intellij.openapi.project.impl.ProjectManagerImpl.canClose(ProjectManagerImpl.kt:508)
+	at com.intellij.openapi.application.impl.ApplicationImpl.canExit(ApplicationImpl.java:1007)
+	at com.intellij.openapi.application.impl.ApplicationImpl.destructApplication(ApplicationImpl.java:743)
+	at com.intellij.openapi.application.impl.ApplicationImpl.doExit(ApplicationImpl.java:719)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:704)
+	at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:683)
+	at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:653)
+	at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:641)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartAppAfterInstall(PluginManagerConfigurable.java:1705)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartApp(PluginManagerConfigurable.java:1690)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartApp(PluginManagerConfigurable.java:1686)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.lambda$apply$13(PluginManagerConfigurable.java:2061)
+	at com.intellij.openapi.application.TransactionGuardImpl.runWithWritingAllowed(TransactionGuardImpl.java:240)
+	at com.intellij.openapi.application.TransactionGuardImpl.access$100(TransactionGuardImpl.java:26)
+	at com.intellij.openapi.application.TransactionGuardImpl$1.run(TransactionGuardImpl.java:202)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runIntendedWriteActionOnCurrentThread(ApplicationImpl.java:1022)
+	at com.intellij.openapi.application.impl.ApplicationImpl$6.run(ApplicationImpl.java:574)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+	at com.intellij.util.concurrency.ContextRunnable.run(ContextRunnable.java:27)
+	at com.intellij.openapi.application.impl.FlushQueue.runNextEvent(FlushQueue.java:122)
+	at com.intellij.openapi.application.impl.FlushQueue.flushNow(FlushQueue.java:43)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:781)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:750)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:488)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+	at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+	at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+	at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+	at com.intellij.ide.IdeEventQueue.flushQueue(IdeEventQueue.kt:613)
+	at com.intellij.ide.plugins.newui.PluginDetailsPageComponent.showPlugin$lambda$41(PluginDetailsPageComponent.kt:1039)
+	at com.intellij.openapi.application.TransactionGuardImpl$1.run(TransactionGuardImpl.java:205)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runIntendedWriteActionOnCurrentThread(ApplicationImpl.java:1022)
+	at com.intellij.openapi.application.impl.ApplicationImpl$6.run(ApplicationImpl.java:574)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+	at com.intellij.util.concurrency.ContextRunnable.run(ContextRunnable.java:27)
+	at com.intellij.openapi.application.impl.FlushQueue.runNextEvent(FlushQueue.java:122)
+	at com.intellij.openapi.application.impl.FlushQueue.flushNow(FlushQueue.java:43)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:781)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:750)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:488)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+	at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+	at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+	at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:207)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:128)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:117)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:105)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:92)
+2026-03-26 11:45:53,323 [1579085] SEVERE - #c.i.o.progress - IntelliJ IDEA 2025.2.6.1  Build #IC-252.28539.33
+2026-03-26 11:45:53,323 [1579085] SEVERE - #c.i.o.progress - JDK: 21.0.9; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+2026-03-26 11:45:53,323 [1579085] SEVERE - #c.i.o.progress - OS: Linux
+2026-03-26 11:45:53,323 [1579085] SEVERE - #c.i.o.progress - Last Action: EditorBackSpace
+2026-03-26 11:45:53,323 [1579085] SEVERE - #c.i.o.progress - There is no ProgressIndicator or Job in this thread, the current job is not cancellable.
+java.lang.IllegalStateException: There is no ProgressIndicator or Job in this thread, the current job is not cancellable.
+	at com.intellij.openapi.progress.CoroutinesKt.runBlockingCancellable$lambda$0(coroutines.kt:133)
+	at com.intellij.openapi.progress.ContextKt.prepareThreadContext(context.kt:82)
+	at com.intellij.openapi.progress.CoroutinesKt.runBlockingCancellable(coroutines.kt:131)
+	at com.intellij.openapi.progress.CoroutinesKt.runBlockingCancellable(coroutines.kt:114)
+	at org.jetbrains.plugins.gradle.service.GradleInstallationManager.getGradleJvmPath(GradleInstallationManager.kt:144)
+	at org.jetbrains.plugins.gradle.GradleManager.lambda$getExecutionSettingsProvider$2(GradleManager.java:146)
+	at com.intellij.openapi.externalSystem.util.ExternalSystemApiUtil.getExecutionSettings(ExternalSystemApiUtil.java:604)
+	at com.intellij.openapi.externalSystem.service.ExternalSystemFacadeManager.prepare(ExternalSystemFacadeManager.java:210)
+	at com.intellij.openapi.externalSystem.service.ExternalSystemFacadeManager.doGetFacade(ExternalSystemFacadeManager.java:157)
+	at com.intellij.openapi.externalSystem.service.ExternalSystemFacadeManager.doInvoke(ExternalSystemFacadeManager.java:127)
+	at com.intellij.openapi.externalSystem.service.ExternalSystemFacadeManager$MyHandler.invoke(ExternalSystemFacadeManager.java:259)
+	at jdk.proxy2/jdk.proxy2.$Proxy222.getTaskManager(Unknown Source)
+	at com.intellij.openapi.externalSystem.service.internal.ExternalSystemExecuteTaskTask.doCancel(ExternalSystemExecuteTaskTask.java:125)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.lambda$cancel$3(AbstractExternalSystemTask.java:169)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.withCancellationState(AbstractExternalSystemTask.java:282)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.lambda$cancel$4(AbstractExternalSystemTask.java:168)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.withCancellationProgressManager(AbstractExternalSystemTask.java:256)
+	at com.intellij.openapi.externalSystem.service.internal.AbstractExternalSystemTask.cancel(AbstractExternalSystemTask.java:167)
+	at com.intellij.openapi.externalSystem.service.execution.ExternalSystemProcessHandler.destroyProcessImpl(ExternalSystemProcessHandler.java:95)
+	at com.intellij.execution.process.ProcessHandler.lambda$destroyProcess$0(ProcessHandler.java:127)
+	at com.intellij.execution.process.ProcessHandler$TasksRunner.execute(ProcessHandler.java:325)
+	at com.intellij.execution.process.ProcessHandler.destroyProcess(ProcessHandler.java:124)
+	at com.intellij.execution.ui.BaseContentCloseListener.doAskUserAndWait(BaseContentCloseListener.java:164)
+	at com.intellij.execution.ui.BaseContentCloseListener.lambda$askUserAndWait$0(BaseContentCloseListener.java:152)
+	at com.intellij.openapi.application.InstantShutdown.computeWithDisabledInstantShutdown(InstantShutdown.kt:20)
+	at com.intellij.execution.ui.BaseContentCloseListener.askUserAndWait(BaseContentCloseListener.java:151)
+	at com.intellij.execution.ui.RunContentManagerImpl$CloseListener.closeQuery(RunContentManagerImpl.kt:622)
+	at com.intellij.execution.ui.BaseContentCloseListener.canClose(BaseContentCloseListener.java:130)
+	at com.intellij.openapi.project.impl.ProjectManagerImpl.canClose(ProjectManagerImpl.kt:508)
+	at com.intellij.openapi.application.impl.ApplicationImpl.canExit(ApplicationImpl.java:1007)
+	at com.intellij.openapi.application.impl.ApplicationImpl.destructApplication(ApplicationImpl.java:743)
+	at com.intellij.openapi.application.impl.ApplicationImpl.doExit(ApplicationImpl.java:719)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:704)
+	at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:683)
+	at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:653)
+	at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:641)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartAppAfterInstall(PluginManagerConfigurable.java:1705)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartApp(PluginManagerConfigurable.java:1690)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartApp(PluginManagerConfigurable.java:1686)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.lambda$apply$13(PluginManagerConfigurable.java:2061)
+	at com.intellij.openapi.application.TransactionGuardImpl.runWithWritingAllowed(TransactionGuardImpl.java:240)
+	at com.intellij.openapi.application.TransactionGuardImpl.access$100(TransactionGuardImpl.java:26)
+	at com.intellij.openapi.application.TransactionGuardImpl$1.run(TransactionGuardImpl.java:202)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runIntendedWriteActionOnCurrentThread(ApplicationImpl.java:1022)
+	at com.intellij.openapi.application.impl.ApplicationImpl$6.run(ApplicationImpl.java:574)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+	at com.intellij.util.concurrency.ContextRunnable.run(ContextRunnable.java:27)
+	at com.intellij.openapi.application.impl.FlushQueue.runNextEvent(FlushQueue.java:122)
+	at com.intellij.openapi.application.impl.FlushQueue.flushNow(FlushQueue.java:43)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:781)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:750)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:488)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+	at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+	at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+	at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+	at com.intellij.ide.IdeEventQueue.flushQueue(IdeEventQueue.kt:613)
+	at com.intellij.ide.plugins.newui.PluginDetailsPageComponent.showPlugin$lambda$41(PluginDetailsPageComponent.kt:1039)
+	at com.intellij.openapi.application.TransactionGuardImpl$1.run(TransactionGuardImpl.java:205)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runIntendedWriteActionOnCurrentThread(ApplicationImpl.java:1022)
+	at com.intellij.openapi.application.impl.ApplicationImpl$6.run(ApplicationImpl.java:574)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+	at com.intellij.util.concurrency.ContextRunnable.run(ContextRunnable.java:27)
+	at com.intellij.openapi.application.impl.FlushQueue.runNextEvent(FlushQueue.java:122)
+	at com.intellij.openapi.application.impl.FlushQueue.flushNow(FlushQueue.java:43)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:781)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:750)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:488)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+	at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+	at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+	at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:207)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:128)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:117)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:105)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:92)
+2026-03-26 11:45:53,331 [1579093] SEVERE - #c.i.o.progress - IntelliJ IDEA 2025.2.6.1  Build #IC-252.28539.33
+2026-03-26 11:45:53,331 [1579093] SEVERE - #c.i.o.progress - JDK: 21.0.9; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+2026-03-26 11:45:53,331 [1579093] SEVERE - #c.i.o.progress - OS: Linux
+2026-03-26 11:45:53,331 [1579093] SEVERE - #c.i.o.progress - Last Action: EditorBackSpace
+2026-03-26 11:45:53,568 [1579330] SEVERE - #c.i.u.Alarm - Already disposed
+java.lang.Throwable: Already disposed
+	at com.intellij.openapi.diagnostic.Logger.error(Logger.java:375)
+	at com.intellij.util.Alarm.doAddRequest(Alarm.kt:235)
+	at com.intellij.util.Alarm.addRequest(Alarm.kt:183)
+	at com.intellij.execution.impl.ProcessStreamsSynchronizer.scheduleProcessPendingChunks(ProcessStreamsSynchronizer.java:112)
+	at com.intellij.execution.impl.ProcessStreamsSynchronizer.doWhenStreamsSynchronized(ProcessStreamsSynchronizer.java:94)
+	at com.intellij.execution.impl.ConsoleViewRunningState$1.onTextAvailable(ConsoleViewRunningState.java:34)
+	at com.intellij.execution.process.ProcessHandler$2.onTextAvailable(ProcessHandler.java:292)
+	at com.intellij.execution.process.ProcessHandler.notifyTextAvailable(ProcessHandler.java:223)
+	at com.intellij.openapi.externalSystem.service.execution.ExternalSystemProcessHandler.lambda$notifyTextAvailable$0(ExternalSystemProcessHandler.java:82)
+	at com.intellij.execution.process.AnsiEscapeDecoder.processTextChunk(AnsiEscapeDecoder.java:106)
+	at com.intellij.execution.process.AnsiEscapeDecoder.escapeText(AnsiEscapeDecoder.java:69)
+	at com.intellij.openapi.externalSystem.service.execution.ExternalSystemProcessHandler.notifyTextAvailable(ExternalSystemProcessHandler.java:81)
+	at com.intellij.openapi.externalSystem.service.execution.DefaultExternalSystemExecutionConsoleManager.onOutput(DefaultExternalSystemExecutionConsoleManager.java:44)
+	at com.intellij.openapi.externalSystem.service.execution.ExternalSystemRunnableState$2.onTaskOutput(ExternalSystemRunnableState.java:326)
+	at com.intellij.openapi.externalSystem.service.remote.ExternalSystemProgressNotificationManagerImpl$TaskListenerWrapper.onTaskOutput(ExternalSystemProgressNotificationManagerImpl.kt:119)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at com.intellij.util.EventDispatcher.dispatchVoidMethod(EventDispatcher.java:120)
+	at com.intellij.util.EventDispatcher.lambda$doCreateMulticaster$1(EventDispatcher.java:85)
+	at jdk.proxy2/jdk.proxy2.$Proxy220.onTaskOutput(Unknown Source)
+	at com.intellij.openapi.externalSystem.service.remote.ExternalSystemProgressNotificationManagerImpl.onTaskOutput$lambda$4(ExternalSystemProgressNotificationManagerImpl.kt:52)
+	at com.intellij.openapi.externalSystem.service.remote.ExternalSystemProgressNotificationManagerImpl.forEachListener$lambda$13(ExternalSystemProgressNotificationManagerImpl.kt:96)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.lambda$executeNonCancelableSection$3(CoreProgressManager.java:290)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.registerIndicatorAndRun(CoreProgressManager.java:756)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computeUnderProgress(CoreProgressManager.java:712)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.lambda$computeInNonCancelableSection$4(CoreProgressManager.java:298)
+	at com.intellij.openapi.progress.Cancellation.computeInNonCancelableSection(Cancellation.java:139)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computeInNonCancelableSection(CoreProgressManager.java:298)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.executeNonCancelableSection(CoreProgressManager.java:289)
+	at com.intellij.openapi.externalSystem.service.remote.ExternalSystemProgressNotificationManagerImpl.forEachListener(ExternalSystemProgressNotificationManagerImpl.kt:94)
+	at com.intellij.openapi.externalSystem.service.remote.ExternalSystemProgressNotificationManagerImpl.onTaskOutput(ExternalSystemProgressNotificationManagerImpl.kt:52)
+	at com.intellij.openapi.externalSystem.service.AbstractExternalSystemFacadeImpl$SwallowingNotificationListener.onTaskOutput(AbstractExternalSystemFacadeImpl.java:241)
+	at com.intellij.openapi.externalSystem.util.OutputWrapper.doFlush(OutputWrapper.java:50)
+	at com.intellij.openapi.externalSystem.util.OutputWrapper.flush(OutputWrapper.java:43)
+	at java.base/sun.nio.cs.StreamEncoder.implFlush(StreamEncoder.java:412)
+	at java.base/sun.nio.cs.StreamEncoder.lockedFlush(StreamEncoder.java:214)
+	at java.base/sun.nio.cs.StreamEncoder.flush(StreamEncoder.java:201)
+	at java.base/java.io.OutputStreamWriter.flush(OutputStreamWriter.java:262)
+	at org.gradle.internal.logging.text.StreamBackedStandardOutputListener.onOutput(StreamBackedStandardOutputListener.java:53)
+	at org.gradle.internal.logging.text.StreamingStyledTextOutput.doAppend(StreamingStyledTextOutput.java:55)
+	at org.gradle.internal.logging.text.AbstractStyledTextOutput.text(AbstractStyledTextOutput.java:87)
+	at org.gradle.internal.logging.console.StyledTextOutputBackedRenderer$OutputEventTextOutputImpl.doLineText(StyledTextOutputBackedRenderer.java:90)
+	at org.gradle.internal.logging.text.AbstractLineChoppingStyledTextOutput$StateContext.flushLineText(AbstractLineChoppingStyledTextOutput.java:135)
+	at org.gradle.internal.logging.text.AbstractLineChoppingStyledTextOutput$1.execute(AbstractLineChoppingStyledTextOutput.java:156)
+	at org.gradle.internal.logging.text.AbstractLineChoppingStyledTextOutput$1.execute(AbstractLineChoppingStyledTextOutput.java:149)
+	at org.gradle.internal.logging.text.AbstractLineChoppingStyledTextOutput.doAppend(AbstractLineChoppingStyledTextOutput.java:48)
+	at org.gradle.internal.logging.text.AbstractStyledTextOutput.text(AbstractStyledTextOutput.java:87)
+	at org.gradle.internal.logging.events.StyledTextOutputEvent.render(StyledTextOutputEvent.java:80)
+	at org.gradle.internal.logging.console.StyledTextOutputBackedRenderer.onOutput(StyledTextOutputBackedRenderer.java:69)
+	at org.gradle.internal.logging.sink.ErrorOutputDispatchingListener.onOutput(ErrorOutputDispatchingListener.java:38)
+	at org.gradle.internal.logging.sink.GroupingProgressLogEventGenerator.onUngroupedOutput(GroupingProgressLogEventGenerator.java:152)
+	at org.gradle.internal.logging.sink.GroupingProgressLogEventGenerator.handleOutput(GroupingProgressLogEventGenerator.java:115)
+	at org.gradle.internal.logging.sink.GroupingProgressLogEventGenerator.onOutput(GroupingProgressLogEventGenerator.java:81)
+	at org.gradle.internal.logging.console.BuildLogLevelFilterRenderer.onOutput(BuildLogLevelFilterRenderer.java:41)
+	at org.gradle.internal.logging.console.AbstractUserInputRenderer.onOutput(AbstractUserInputRenderer.java:67)
+	at org.gradle.internal.logging.console.ThrottlingOutputEventListener.renderNow(ThrottlingOutputEventListener.java:103)
+	at org.gradle.internal.logging.console.ThrottlingOutputEventListener.onOutput(ThrottlingOutputEventListener.java:85)
+	at org.gradle.internal.logging.console.ThrottlingOutputEventListener.lambda$scheduleUpdateNow$0(ThrottlingOutputEventListener.java:65)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:358)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-26 11:45:53,579 [1579341] SEVERE - #c.i.u.Alarm - IntelliJ IDEA 2025.2.6.1  Build #IC-252.28539.33
+2026-03-26 11:45:53,579 [1579341] SEVERE - #c.i.u.Alarm - JDK: 21.0.9; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+2026-03-26 11:45:53,579 [1579341] SEVERE - #c.i.u.Alarm - OS: Linux
+2026-03-26 11:45:53,586 [1579348] SEVERE - #c.i.u.Alarm - Last Action: EditorBackSpace
+2026-03-26 11:45:56,359 [1582121]   WARN - #c.i.o.v.i.LineStatusTrackerManager - Tracker is being held on dispose by EditorImpl[LightVirtualFile: /terminal_output]; file: /terminal_output
+2026-03-26 11:45:58,422 [1584184] SEVERE - #c.i.o.v.n.RefreshQueue - null
+java.lang.Throwable: Control-flow exceptions (e.g. this class org.jetbrains.concurrency.AsyncPromise$Companion$CANCELED$1) should never be logged. Instead, these should have been rethrown if caught.
+	at com.intellij.openapi.diagnostic.Logger.ensureNotControlFlow(Logger.java:504)
+	at com.intellij.idea.IdeaLogger.error(IdeaLogger.java:176)
+	at com.intellij.openapi.diagnostic.Logger.error(Logger.java:439)
+	at com.intellij.openapi.vfs.newvfs.RefreshQueueImpl.lambda$processEvents$5(RefreshQueueImpl.java:138)
+	at org.jetbrains.concurrency.AsyncPromise.onError$lambda$5(AsyncPromise.kt:106)
+	at com.intellij.util.concurrency.ContextBiConsumer.lambda$accept$0(ContextBiConsumer.java:27)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+	at com.intellij.util.concurrency.ContextBiConsumer.accept(ContextBiConsumer.java:26)
+	at org.jetbrains.concurrency.AsyncPromise.whenComplete$lambda$7(AsyncPromise.kt:124)
+	at org.jetbrains.concurrency.AsyncPromise.whenComplete$lambda$8(AsyncPromise.kt:122)
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934)
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:510)
+	at java.base/java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:2194)
+	at org.jetbrains.concurrency.AsyncPromise.whenComplete$lambda$7(AsyncPromise.kt:125)
+	at org.jetbrains.concurrency.AsyncPromise.whenComplete$lambda$8(AsyncPromise.kt:122)
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934)
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:510)
+	at java.base/java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:2194)
+	at org.jetbrains.concurrency.AsyncPromise.cancel(AsyncPromise.kt:80)
+	at com.intellij.openapi.application.impl.NonBlockingReadActionImpl$Submission.cancel(NonBlockingReadActionImpl.java:334)
+	at org.jetbrains.concurrency.AsyncPromise.cancel(AsyncPromise.kt:83)
+	at com.intellij.openapi.application.impl.NonBlockingReadActionImpl$Submission.access$001(NonBlockingReadActionImpl.java:248)
+	at com.intellij.openapi.application.impl.NonBlockingReadActionImpl$Submission$1.dispose(NonBlockingReadActionImpl.java:310)
+	at com.intellij.openapi.util.ObjectTree.runWithTrace(ObjectTree.java:131)
+	at com.intellij.openapi.util.ObjectTree.executeAll(ObjectTree.java:163)
+	at com.intellij.openapi.util.Disposer.dispose(Disposer.java:211)
+	at com.intellij.openapi.util.Disposer.dispose(Disposer.java:199)
+	at com.intellij.serviceContainer.ComponentManagerImpl.dispose(ComponentManagerImpl.kt:1154)
+	at com.intellij.openapi.application.impl.ApplicationImpl.dispose(ApplicationImpl.java:441)
+	at com.intellij.openapi.util.ObjectTree.runWithTrace(ObjectTree.java:131)
+	at com.intellij.openapi.util.ObjectTree.executeAll(ObjectTree.java:163)
+	at com.intellij.openapi.util.Disposer.dispose(Disposer.java:211)
+	at com.intellij.openapi.util.Disposer.dispose(Disposer.java:199)
+	at com.intellij.openapi.application.impl.ApplicationImpl.lambda$disposeContainer$5(ApplicationImpl.java:275)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteAction(NestedLocksThreadingSupport.kt:923)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runWriteAction(ApplicationImpl.java:1106)
+	at com.intellij.openapi.application.impl.ApplicationImpl.disposeContainer(ApplicationImpl.java:273)
+	at com.intellij.openapi.application.impl.ApplicationImpl.destructApplication(ApplicationImpl.java:815)
+	at com.intellij.openapi.application.impl.ApplicationImpl.doExit(ApplicationImpl.java:719)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:704)
+	at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:683)
+	at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:653)
+	at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:641)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartAppAfterInstall(PluginManagerConfigurable.java:1705)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartApp(PluginManagerConfigurable.java:1690)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartApp(PluginManagerConfigurable.java:1686)
+	at com.intellij.ide.plugins.PluginManagerConfigurable.lambda$apply$13(PluginManagerConfigurable.java:2061)
+	at com.intellij.openapi.application.TransactionGuardImpl.runWithWritingAllowed(TransactionGuardImpl.java:240)
+	at com.intellij.openapi.application.TransactionGuardImpl.access$100(TransactionGuardImpl.java:26)
+	at com.intellij.openapi.application.TransactionGuardImpl$1.run(TransactionGuardImpl.java:202)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runIntendedWriteActionOnCurrentThread(ApplicationImpl.java:1022)
+	at com.intellij.openapi.application.impl.ApplicationImpl$6.run(ApplicationImpl.java:574)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+	at com.intellij.util.concurrency.ContextRunnable.run(ContextRunnable.java:27)
+	at com.intellij.openapi.application.impl.FlushQueue.runNextEvent(FlushQueue.java:122)
+	at com.intellij.openapi.application.impl.FlushQueue.flushNow(FlushQueue.java:43)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:781)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:750)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:488)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+	at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+	at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+	at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+	at com.intellij.ide.IdeEventQueue.flushQueue(IdeEventQueue.kt:613)
+	at com.intellij.ide.plugins.newui.PluginDetailsPageComponent.showPlugin$lambda$41(PluginDetailsPageComponent.kt:1039)
+	at com.intellij.openapi.application.TransactionGuardImpl$1.run(TransactionGuardImpl.java:205)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+	at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runIntendedWriteActionOnCurrentThread(ApplicationImpl.java:1022)
+	at com.intellij.openapi.application.impl.ApplicationImpl$6.run(ApplicationImpl.java:574)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+	at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+	at com.intellij.util.concurrency.ContextRunnable.run(ContextRunnable.java:27)
+	at com.intellij.openapi.application.impl.FlushQueue.runNextEvent(FlushQueue.java:122)
+	at com.intellij.openapi.application.impl.FlushQueue.flushNow(FlushQueue.java:43)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:781)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:750)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:488)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+	at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+	at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+	at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:207)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:128)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:117)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:105)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:92)
+Caused by: org.jetbrains.concurrency.AsyncPromise$Companion$CANCELED$1
+	Suppressed: com.intellij.util.ExceptionUtilRt$RethrownStack: Rethrown at
+		at com.intellij.util.ExceptionUtilRt.addRethrownStackAsSuppressed(ExceptionUtilRt.java:43)
+		at com.intellij.util.ExceptionUtilRt.rethrowUnchecked(ExceptionUtilRt.java:17)
+		at com.intellij.util.ExceptionUtil.rethrowUnchecked(ExceptionUtil.java:131)
+		at com.intellij.util.ExceptionUtil.rethrow(ExceptionUtil.java:146)
+		at com.intellij.idea.IdeaLogger.error(IdeaLogger.java:180)
+		at com.intellij.openapi.diagnostic.Logger.error(Logger.java:439)
+		at com.intellij.openapi.vfs.newvfs.RefreshQueueImpl.lambda$processEvents$5(RefreshQueueImpl.java:138)
+		at org.jetbrains.concurrency.AsyncPromise.onError$lambda$5(AsyncPromise.kt:106)
+		at com.intellij.util.concurrency.ContextBiConsumer.lambda$accept$0(ContextBiConsumer.java:27)
+		at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+		at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+		at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+		at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+		at com.intellij.util.concurrency.ContextBiConsumer.accept(ContextBiConsumer.java:26)
+		at org.jetbrains.concurrency.AsyncPromise.whenComplete$lambda$7(AsyncPromise.kt:124)
+		at org.jetbrains.concurrency.AsyncPromise.whenComplete$lambda$8(AsyncPromise.kt:122)
+		at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934)
+		at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911)
+		at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:510)
+		at java.base/java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:2194)
+		at org.jetbrains.concurrency.AsyncPromise.whenComplete$lambda$7(AsyncPromise.kt:125)
+		at org.jetbrains.concurrency.AsyncPromise.whenComplete$lambda$8(AsyncPromise.kt:122)
+		at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934)
+		at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911)
+		at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:510)
+		at java.base/java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:2194)
+		at org.jetbrains.concurrency.AsyncPromise.cancel(AsyncPromise.kt:80)
+		at com.intellij.openapi.application.impl.NonBlockingReadActionImpl$Submission.cancel(NonBlockingReadActionImpl.java:334)
+		at org.jetbrains.concurrency.AsyncPromise.cancel(AsyncPromise.kt:83)
+		at com.intellij.openapi.application.impl.NonBlockingReadActionImpl$Submission.access$001(NonBlockingReadActionImpl.java:248)
+		at com.intellij.openapi.application.impl.NonBlockingReadActionImpl$Submission$1.dispose(NonBlockingReadActionImpl.java:310)
+		at com.intellij.openapi.util.ObjectTree.runWithTrace(ObjectTree.java:131)
+		at com.intellij.openapi.util.ObjectTree.executeAll(ObjectTree.java:163)
+		at com.intellij.openapi.util.Disposer.dispose(Disposer.java:211)
+		at com.intellij.openapi.util.Disposer.dispose(Disposer.java:199)
+		at com.intellij.serviceContainer.ComponentManagerImpl.dispose(ComponentManagerImpl.kt:1154)
+		at com.intellij.openapi.application.impl.ApplicationImpl.dispose(ApplicationImpl.java:441)
+		at com.intellij.openapi.util.ObjectTree.runWithTrace(ObjectTree.java:131)
+		at com.intellij.openapi.util.ObjectTree.executeAll(ObjectTree.java:163)
+		at com.intellij.openapi.util.Disposer.dispose(Disposer.java:211)
+		at com.intellij.openapi.util.Disposer.dispose(Disposer.java:199)
+		at com.intellij.openapi.application.impl.ApplicationImpl.lambda$disposeContainer$5(ApplicationImpl.java:275)
+		at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+		at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+		at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteAction(NestedLocksThreadingSupport.kt:923)
+		at com.intellij.openapi.application.impl.ApplicationImpl.runWriteAction(ApplicationImpl.java:1106)
+		at com.intellij.openapi.application.impl.ApplicationImpl.disposeContainer(ApplicationImpl.java:273)
+		at com.intellij.openapi.application.impl.ApplicationImpl.destructApplication(ApplicationImpl.java:815)
+		at com.intellij.openapi.application.impl.ApplicationImpl.doExit(ApplicationImpl.java:719)
+		at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:704)
+		at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:683)
+		at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:653)
+		at com.intellij.openapi.application.impl.ApplicationImpl.restart(ApplicationImpl.java:641)
+		at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartAppAfterInstall(PluginManagerConfigurable.java:1705)
+		at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartApp(PluginManagerConfigurable.java:1690)
+		at com.intellij.ide.plugins.PluginManagerConfigurable.shutdownOrRestartApp(PluginManagerConfigurable.java:1686)
+		at com.intellij.ide.plugins.PluginManagerConfigurable.lambda$apply$13(PluginManagerConfigurable.java:2061)
+		at com.intellij.openapi.application.TransactionGuardImpl.runWithWritingAllowed(TransactionGuardImpl.java:240)
+		at com.intellij.openapi.application.TransactionGuardImpl.access$100(TransactionGuardImpl.java:26)
+		at com.intellij.openapi.application.TransactionGuardImpl$1.run(TransactionGuardImpl.java:202)
+		at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+		at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+		at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+		at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+		at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+		at com.intellij.openapi.application.impl.ApplicationImpl.runIntendedWriteActionOnCurrentThread(ApplicationImpl.java:1022)
+		at com.intellij.openapi.application.impl.ApplicationImpl$6.run(ApplicationImpl.java:574)
+		at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+		at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+		at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+		at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+		at com.intellij.util.concurrency.ContextRunnable.run(ContextRunnable.java:27)
+		at com.intellij.openapi.application.impl.FlushQueue.runNextEvent(FlushQueue.java:122)
+		at com.intellij.openapi.application.impl.FlushQueue.flushNow(FlushQueue.java:43)
+		at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+		at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:781)
+		at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+		at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+		at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+		at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+		at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:750)
+		at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+		at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:488)
+		at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+		at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+		at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+		at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+		at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+		at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+		at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+		at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+		at com.intellij.ide.IdeEventQueue.flushQueue(IdeEventQueue.kt:613)
+		at com.intellij.ide.plugins.newui.PluginDetailsPageComponent.showPlugin$lambda$41(PluginDetailsPageComponent.kt:1039)
+		at com.intellij.openapi.application.TransactionGuardImpl$1.run(TransactionGuardImpl.java:205)
+		at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+		at com.intellij.openapi.application.impl.AppImplKt$runnableUnitFunction$1.invoke(appImpl.kt:104)
+		at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.doRunWriteIntentReadAction(NestedLocksThreadingSupport.kt:666)
+		at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runPreventiveWriteIntentReadAction(NestedLocksThreadingSupport.kt:640)
+		at com.intellij.platform.locking.impl.NestedLocksThreadingSupport.runWriteIntentReadAction(NestedLocksThreadingSupport.kt:633)
+		at com.intellij.openapi.application.impl.ApplicationImpl.runIntendedWriteActionOnCurrentThread(ApplicationImpl.java:1022)
+		at com.intellij.openapi.application.impl.ApplicationImpl$6.run(ApplicationImpl.java:574)
+		at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+		at com.intellij.util.concurrency.ChildContext$runInChildContext$1.invoke(propagation.kt:167)
+		at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:173)
+		at com.intellij.util.concurrency.ChildContext.runInChildContext(propagation.kt:167)
+		at com.intellij.util.concurrency.ContextRunnable.run(ContextRunnable.java:27)
+		at com.intellij.openapi.application.impl.FlushQueue.runNextEvent(FlushQueue.java:122)
+		at com.intellij.openapi.application.impl.FlushQueue.flushNow(FlushQueue.java:43)
+		at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318)
+		at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:781)
+		at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:728)
+		at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:722)
+		at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+		at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+		at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:750)
+		at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.kt:595)
+		at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.kt:488)
+		at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10$lambda$9(IdeEventQueue.kt:313)
+		at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:865)
+		at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12$lambda$11$lambda$10(IdeEventQueue.kt:312)
+		at com.intellij.ide.IdeEventQueueKt.performActivity$lambda$3(IdeEventQueue.kt:974)
+		at com.intellij.openapi.application.TransactionGuardImpl.performActivity(TransactionGuardImpl.java:110)
+		at com.intellij.ide.IdeEventQueueKt.performActivity(IdeEventQueue.kt:974)
+		at com.intellij.ide.IdeEventQueue.dispatchEvent$lambda$12(IdeEventQueue.kt:307)
+		at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.kt:347)
+		at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:207)
+		at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:128)
+		at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:117)
+		at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:113)
+		at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:105)
+		at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:92)
+2026-03-26 11:45:58,440 [1584202] SEVERE - #c.i.o.v.n.RefreshQueue - IntelliJ IDEA 2025.2.6.1  Build #IC-252.28539.33
+2026-03-26 11:45:58,440 [1584202] SEVERE - #c.i.o.v.n.RefreshQueue - JDK: 21.0.9; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+2026-03-26 11:45:58,440 [1584202] SEVERE - #c.i.o.v.n.RefreshQueue - OS: Linux
+libva info: VA-API version 1.20.0
+libva info: Trying to open /snap/firefox/7967/gnome-platform/usr/lib/x86_64-linux-gnu/dri/radeonsi_drv_video.so
+libva info: Found init function __vaDriverInit_1_14
+libva info: va_openDriver() returns 0
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 12:54:43.004: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 12:55:05.085: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+[0.231s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-27 12:56:29,261 [  21908]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: VibrantInk from plugins: DBN
+2026-03-27 12:56:29,262 [  21909]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monocai from plugins: DBN
+2026-03-27 12:56:29,262 [  21909]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Twilight from plugins: DBN
+2026-03-27 12:56:29,263 [  21910]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Islands Light from plugins: DBN
+2026-03-27 12:56:29,263 [  21910]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: WarmNeon from plugins: DBN
+2026-03-27 12:56:29,266 [  21913]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Cobalt from plugins: DBN
+2026-03-27 12:56:29,272 [  21919]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: AllHallowsEve from plugins: DBN
+2026-03-27 12:56:29,276 [  21923]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Classic Light from plugins: DBN
+2026-03-27 12:56:29,276 [  21923]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monokai from plugins: DBN
+2026-03-27 12:56:29,280 [  21927]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Railscasts from plugins: DBN
+2026-03-27 12:56:29,280 [  21927]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Blackboard from plugins: DBN
+2026-03-27 12:56:32,254 [  24901]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-27 12:56:32,384 [  25031]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-27 12:56:32,384 [  25031]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-27 12:56:40,404 [  33051]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-27 12:56:40,406 [  33053]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-27 12:56:51,234 [  43881]   WARN - #c.i.o.a.i.ActionUpdater - 9668 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-27 12:56:52,342 [  44989]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-27 12:56:52,345 [  44992]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-27 12:56:57,339 [  49986]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+com.intellij.diagnostic.PluginException: Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.doRunPostStartupActivities(StartupManagerImpl.kt:317)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$doRunPostStartupActivities(StartupManagerImpl.kt:72)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:210)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:209)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:277)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+2026-03-27 12:56:59,460 [  52107]   WARN - #c.i.u.j.JBCefAppArmorUtils - Unprivileged user namespaces check failed: unshare: error de escritura /proc/self/uid_map: Operación no permitida
+
+2026-03-27 12:57:09,552 [  62199]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-27 12:57:28,323 [  80970]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+libva info: VA-API version 1.20.0
+libva info: Trying to open /snap/firefox/7967/gnome-platform/usr/lib/x86_64-linux-gnu/dri/radeonsi_drv_video.so
+libva info: Found init function __vaDriverInit_1_14
+libva info: va_openDriver() returns 0
+[0.498s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-27 20:42:29,719 [  20899]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: VibrantInk from plugins: DBN
+2026-03-27 20:42:29,720 [  20900]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monocai from plugins: DBN
+2026-03-27 20:42:29,721 [  20901]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Twilight from plugins: DBN
+2026-03-27 20:42:29,721 [  20901]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Islands Light from plugins: DBN
+2026-03-27 20:42:29,721 [  20901]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: WarmNeon from plugins: DBN
+2026-03-27 20:42:29,722 [  20902]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Cobalt from plugins: DBN
+2026-03-27 20:42:29,724 [  20904]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: AllHallowsEve from plugins: DBN
+2026-03-27 20:42:29,725 [  20905]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Classic Light from plugins: DBN
+2026-03-27 20:42:29,725 [  20905]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monokai from plugins: DBN
+2026-03-27 20:42:29,726 [  20906]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Railscasts from plugins: DBN
+2026-03-27 20:42:29,726 [  20906]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Blackboard from plugins: DBN
+2026-03-27 20:42:33,689 [  24869]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-27 20:42:33,689 [  24869]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-27 20:42:33,756 [  24936]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-27 20:42:41,139 [  32319]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-27 20:42:41,143 [  32323]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-27 20:42:42,640 [  33820]   WARN - #c.i.o.f.i.EditorsSplitters - No file exists: mock:///What's New in OpenAPI (Swagger) Editor
+2026-03-27 20:42:57,524 [  48704]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-27 20:42:58,389 [  49569]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-27 20:42:58,507 [  49687]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-27 20:43:00,359 [  51539]   WARN - #c.i.o.a.i.ActionUpdater - 2048 ms to call on BGT FileTemplateSeparator#children@MainMenu (com.intellij.ide.fileTemplates.actions.FileTemplateSeparator)
+2026-03-27 20:43:00,360 [  51540]   WARN - #c.i.o.a.i.ActionUpdater - 1873 ms to call on BGT CreateFromTemplateGroup#children@MainMenu (com.intellij.ide.fileTemplates.actions.CreateFromTemplateGroup)
+2026-03-27 20:43:00,363 [  51543]   WARN - #c.i.o.a.i.Utils - 2159 ms to fillMenu@MainMenu
+2026-03-27 20:43:03,617 [  54797]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+com.intellij.diagnostic.PluginException: Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.doRunPostStartupActivities(StartupManagerImpl.kt:317)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$doRunPostStartupActivities(StartupManagerImpl.kt:72)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:210)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:209)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:277)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+2026-03-27 20:43:23,505 [  74685]   WARN - #c.i.o.a.i.ActionUpdater - 4032 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-27 20:43:25,524 [  76704]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+com.intellij.diagnostic.PluginException: Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.doRunPostStartupActivities(StartupManagerImpl.kt:317)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$doRunPostStartupActivities(StartupManagerImpl.kt:72)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:210)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:209)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+2026-03-27 20:43:29,239 [  80419]   WARN - #c.i.o.a.i.ActionUpdater - 1344 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-27 20:43:29,248 [  80428]   WARN - #c.i.o.a.i.ActionUpdater - 1028 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-27 20:43:35,919 [  87099]   WARN - #c.i.o.a.i.ActionUpdater - 4356 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-27 20:43:36,032 [  87212]   WARN - #c.i.o.a.i.ActionUpdater - 4268 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-27 20:43:38,352 [  89532]   WARN - #c.i.o.a.i.ActionUpdater - 4598 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-27 20:43:39,765 [  90945]   WARN - #c.i.o.a.i.ActionUpdater - 1357 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-27 20:43:39,776 [  90956]   WARN - #c.i.o.a.i.ActionUpdater - 1368 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-27 20:46:34,025 [ 265205]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-27 20:47:29,164 [ 320344]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-27 20:48:56,418 [ 407598]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
