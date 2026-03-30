@@ -1,6 +1,8 @@
 package com.back.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,12 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import com.back.model.Archivos;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import java.net.MalformedURLException;
 
 import com.back.repository.FilesRepository;
 
 import org.springframework.ui.Model;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.List;
 import java.util.Optional;
@@ -122,4 +130,26 @@ public class DriveController {
         
         return "redirect:/";
     }
+
+    @GetMapping("/descargar")
+public ResponseEntity<Resource> descargarArchivo(@RequestParam Long archivoId) {
+    Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
+
+    if (archivoOpt.isPresent()) {
+        Archivos archivo = archivoOpt.get();
+        try {
+            Path ruta = Paths.get(archivo.getUbicacion());
+            Resource recurso = new UrlResource(ruta.toUri());
+
+            if (recurso.exists() || recurso.isReadable()) {
+                return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + archivo.getNombre() + "\"")
+                    .body(recurso);
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+    return ResponseEntity.notFound().build();
+}
 }

@@ -15,14 +15,13 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable()) 
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**").permitAll() 
-            .requestMatchers("/", "/subir-archivo", "/crear-carpeta", "/compartir", "/eliminar", "/detalle").authenticated()
+            .requestMatchers("/", "/subir-archivo", "/crear-carpeta", "/compartir", "/eliminar", "/descargar").authenticated()
             .requestMatchers("/guardar", "/Formulario", "/editar").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
