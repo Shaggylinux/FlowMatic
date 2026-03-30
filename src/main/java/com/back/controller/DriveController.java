@@ -28,16 +28,12 @@ public class DriveController {
 
 @GetMapping
 public String mostrarPagina(java.security.Principal principal, Model model) {
-    if (principal == null) return "redirect:/login";
+    String nombreUsuario = (principal != null) ? principal.getName() : "";
     
-    String nombreUsuario = principal.getName();
-    System.out.println("DEBUG: El usuario logueado es: " + nombreUsuario);
-
     List<Archivos> archivosVisibles = filesRepository.buscarArchivosVisiblesPara(nombreUsuario);
     
-    System.out.println("DEBUG: Archivos encontrados: " + archivosVisibles.size());
-    
     model.addAttribute("objetos", archivosVisibles);
+    model.addAttribute("usuarioActual", nombreUsuario); // <-- AGREGA ESTA LÍNEA
     return "drive";
 }
 
@@ -100,5 +96,30 @@ public String compartirArchivo(@RequestParam Long archivoId, @RequestParam Strin
     }
     
     return "redirect:/"; 
+}
+
+@PostMapping("/eliminar")
+public String eliminarArchivo(@RequestParam Long archivoId, java.security.Principal principal) {
+    Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
+    
+    if (archivoOpt.isPresent()) {
+        Archivos archivo = archivoOpt.get();
+        
+        if (archivo.getPropietario().equals(principal.getName())) {
+            try {
+                Path ruta = Paths.get(archivo.getUbicacion());
+                Files.deleteIfExists(ruta);
+                System.out.println("Archivo físico eliminado: " + archivo.getNombre());
+                
+                filesRepository.delete(archivo);
+                System.out.println("Registro en DB eliminado para ID: " + archivoId);
+                
+            } catch (IOException e) {
+                System.err.println("Error al borrar el archivo físico: " + e.getMessage());
+            }
+        }
+    }
+    
+    return "redirect:/";
 }
 }

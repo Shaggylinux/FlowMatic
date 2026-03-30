@@ -19,13 +19,19 @@ public class SecurityConfig {
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+        // 1. DESACTIVAR CSRF para que los POST (eliminar, compartir, subir) funcionen directo
+        .csrf(csrf -> csrf.disable()) 
+        
         .authorizeHttpRequests(auth -> auth
-            // 1. Agregamos /** para cubrir /registro y /registro?exito
-            // 2. IMPORTANTE: Permitir /error para ver qué falla realmente
+            // Rutas públicas
             .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**").permitAll() 
             
-            .requestMatchers("/guardar", "/eliminar", "/Formulario", "/editar").hasRole("ADMIN")
-            .requestMatchers("/", "/detalle").authenticated()
+            // Rutas que requieren estar logueado (sin importar si es ADMIN o USER)
+            .requestMatchers("/", "/subir-archivo", "/crear-carpeta", "/compartir", "/eliminar", "/detalle").authenticated()
+            
+            // Rutas exclusivas de ADMIN (si las sigues usando para otra cosa)
+            .requestMatchers("/guardar", "/Formulario", "/editar").hasRole("ADMIN")
+            
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
@@ -42,4 +48,3 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http.build();
 }
 }
-
