@@ -1,79 +1,53 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Iniciar sesión</title>
+    <title>Login</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-
 <body>
 
-<<<<<<< HEAD
 <div class="container">
 
-    <h2>Iniciar Sesión</h2>
-=======
-<div class="login-container">
+    <div class="form-section">
+        <div class="form-box">
 
-    <div class="login-box">
-        <h2>Iniciar Sesión</h2>
+            <h2>Iniciar Sesión</h2>
 
-        <!-- Mostrar errores de autenticación -->
-        <div th:if="${param.error}" style="color: red; margin-bottom: 15px; padding: 10px; border: 1px solid red; border-radius: 4px;">
-            <p><strong>Error de autenticación</strong></p>
-            <p>Usuario o contraseña incorrectos, o cuenta no activada.</p>
-        </div>
-
-        <!-- Mostrar mensaje de logout -->
-        <div th:if="${param.logout}" style="color: green; margin-bottom: 15px; padding: 10px; border: 1px solid green; border-radius: 4px;">
-            <p>Sesión cerrada correctamente.</p>
-        </div>
-
-        <form th:action="@{/login}" method="post">
-
-            <div class="input-group">
-                <label>Usuario</label>
-                <input type="text" name="username" placeholder="Ingresa tu usuario" required>
+            <div th:if="${param.error}" class="error">
+                Usuario o contraseña incorrectos, o cuenta no activada
             </div>
 
-            <div class="input-group">
-                <label>Contraseña</label>
-                <input type="password" name="password" placeholder="Ingresa tu contraseña" required>
+            <div th:if="${param.logout}" class="success">
+                Sesión cerrada correctamente
             </div>
 
-            <button type="submit">Ingresar</button>
+            <form th:action="@{/login}" method="post">
 
-        </form>
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" name="username" placeholder="Ingresa tu usuario" required>
+                </div>
 
-    <div th:if="${param.error}" class="error">
-        Usuario o contraseña incorrectos
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" name="password" placeholder="Ingresa tu contraseña" required>
+                </div>
+
+                <button type="submit">Ingresar</button>
+
+            </form>
+
+            <a th:href="@{/registro}">¿No tienes cuenta? Regístrate</a>
+
+        </div>
     </div>
 
-    <div th:if="${param.logout}" class="success">
-        Sesión cerrada correctamente
+    <div class="image-section">
+        <div>
+            <h2>Bienvenido a Flowmatic</h2>
+            <p>Gestiona tus documentos de forma segura y eficiente</p>
+        </div>
     </div>
-
-    <form th:action="@{/login}" method="post">
-
-        <label>Usuario</label>
-        <input type="text" name="username" placeholder="Ingresa tu usuario" required>
-
-        <label>Contraseña</label>
-        <input type="password" name="password" placeholder="Ingresa tu contraseña" required>
-
-        <button type="submit">Ingresar</button>
-
-    </form>
-
-    <div class="link">
-        <a th:href="@{/registro}">¿No tienes una cuenta? Regístrate</a>
-    </div>
-<<<<<<< HEAD
-=======
-
-    <a th:href="@{/registro}">¿No tienes una cuenta? Registrate</a>
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
 
 </div>
 

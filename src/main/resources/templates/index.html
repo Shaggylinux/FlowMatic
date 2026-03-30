@@ -3,34 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Inicio</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/drive.css}">
 </head>
 
 <body>
 
-<div class="container">
+<div class="main-content">
 
-    <h2>Gestor de Archivos</h2>
+    <h2>Crear Carpeta</h2>
 
-<<<<<<< HEAD
-    <p style="text-align:center; margin-bottom:15px;">
-        Crea una nueva carpeta para comenzar
-    </p>
-
-    <form th:action="@{/drive/crear-carpeta}" method="post">
+    <form th:action="@{/crear-carpeta}" method="post">
 
         <input type="text" name="nombre" placeholder="Nombre de la carpeta" required>
+
+        <input type="hidden" name="folderDestino" value="">
 
         <button type="submit">Crear Carpeta</button>
 
     </form>
-=======
-        <form th=:action="@{/drive/crear-carpeta}" method="post">
-            <input type="text" name="nombre" placeholder="Nombre de la carpeta" required>
-            <button type="submit">Crear Carpeta</button>
-        </form>
-    </div>
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
 
 </div>
 

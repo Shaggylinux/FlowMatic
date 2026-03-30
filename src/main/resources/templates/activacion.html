@@ -2,72 +2,54 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activación de cuenta - FlowMatic</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            margin: 0;
-        }
-        
-        .container {
-            text-align: center;
-            max-width: 500px;
-        }
-        
-        h1 {
-            margin: 20px 0;
-            font-size: 24px;
-        }
-        
-        p {
-            margin: 15px 0;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        
-        .button-group {
-            margin: 30px 0;
-        }
-        
-        a {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 0 10px;
-            text-decoration: none;
-            border: 1px solid #333;
-            font-size: 14px;
-        }
-        
-        a:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
+    <title>Activación de cuenta</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
-    <div class="container">
-        <div th:if="${activacionExitosa}">
-            <h1>✅ ¡Cuenta Activada!</h1>
-            <p>Tu cuenta ha sido activada exitosamente. Ya puedes iniciar sesión con tus credenciales.</p>
-            <div class="button-group">
-                <a th:href="@{/login}">Iniciar Sesión</a>
-                <a th:href="@{/}">Volver al Inicio</a>
-            </div>
-        </div>
 
-        <div th:if="${tokenInvalido}">
-            <h1>Enlace Inválido</h1>
-            <p>El enlace de activación es inválido o ya ha sido utilizado. Por favor, intenta registrarte nuevamente.</p>
-            <div class="button-group">
-                <a th:href="@{/registro}">Volver al Registro</a>
-                <a th:href="@{/}">Ir al Inicio</a>
+<body>
+
+<div class="container">
+
+    <div class="form-section">
+        <div class="form-box" style="text-align: center;">
+
+            <div th:if="${activacionExitosa}">
+                <h2>✅ ¡Cuenta Activada!</h2>
+                <p>
+                    Tu cuenta ha sido activada exitosamente.  
+                    Ya puedes iniciar sesión con tus credenciales.
+                </p>
+
+                <div style="margin-top: 20px;">
+                    <a th:href="@{/login}" class="btn-primary">Iniciar Sesión</a>
+                    <a th:href="@{/}" class="btn-outline">Volver al Inicio</a>
+                </div>
             </div>
+
+            <div th:if="${tokenInvalido}">
+                <h2>⚠️ Enlace Inválido</h2>
+                <p>
+                    El enlace de activación es inválido o ya fue utilizado.  
+                    Por favor, intenta registrarte nuevamente.
+                </p>
+
+                <div style="margin-top: 20px;">
+                    <a th:href="@{/registro}" class="btn-primary">Registrarse</a>
+                    <a th:href="@{/}" class="btn-outline">Ir al Inicio</a>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <div class="image-section">
+        <div>
+            <h2>Flowmatic</h2>
+            <p>Gestión segura de tus documentos</p>
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>

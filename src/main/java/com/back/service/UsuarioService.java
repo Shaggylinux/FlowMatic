@@ -24,10 +24,10 @@ public class UsuarioService {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public String registrarUsuario(Usuario usuario) {
-        logger.info("Iniciando registro de usuario: {}", usuario.getCorreo());
+        logger.info("Iniciando registro de usuario: {}", usuario.getEmail());
         
-        if (usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()) {
-            logger.warn("⚠Correo duplicado: {}", usuario.getCorreo());
+        if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
+            logger.warn("Correo duplicado: {}", usuario.getEmail());
             return "DUPLICADO";
         }
 
@@ -42,11 +42,11 @@ public class UsuarioService {
         usuario.setActivo(false);
 
         usuarioRepository.save(usuario);
-        logger.info("✅ Usuario guardado en BD: {}", usuario.getCorreo());
+        logger.info("Usuario guardado en BD: {}", usuario.getEmail());
 
-        logger.info("📨 Intentando enviar email de verificación a: {}", usuario.getCorreo());
+        logger.info("Intentando enviar email de verificación a: {}", usuario.getEmail());
         
-        boolean emailSent = emailService.enviarEmailVerificacion(usuario.getCorreo(), usuario.getUsername(), token);
+        boolean emailSent = emailService.enviarEmailVerificacion(usuario.getEmail(), usuario.getUsername(), token);
         
         if (emailSent) {
             logger.info("Email enviado correctamente");
@@ -72,7 +72,7 @@ public class UsuarioService {
         usuario.setTokenActivacion(null);
         usuarioRepository.save(usuario);
         
-        logger.info("Cuenta activada para: {}", usuario.getCorreo());
+        logger.info("Cuenta activada para: {}", usuario.getEmail());
 
         return true;
     }

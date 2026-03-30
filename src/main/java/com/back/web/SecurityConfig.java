@@ -20,14 +20,9 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable()) 
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**").permitAll() 
-<<<<<<< HEAD
+            .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**", "/home").permitAll() 
             .requestMatchers("/", "/subir-archivo", "/crear-carpeta", "/compartir", "/eliminar", "/descargar").authenticated()
             .requestMatchers("/guardar", "/Formulario", "/editar").hasRole("ADMIN")
-=======
-            .requestMatchers("/guardar", "/eliminar", "/Formulario", "/editar").hasRole("ADMIN")
-            .requestMatchers("/", "/detalle").authenticated()
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
@@ -39,13 +34,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .logoutUrl("/logout")
             .logoutSuccessUrl("/login?logout")
             .permitAll()
-<<<<<<< HEAD
         );
-=======
-        )
-        .csrf(csrf -> csrf.disable());
-    
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
     return http.build();
     }
 }

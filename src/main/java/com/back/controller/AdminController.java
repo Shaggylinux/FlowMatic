@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,15 +25,15 @@ public class AdminController {
      */
     @PostMapping("/eliminar-usuario")
     @ResponseBody
-    public String eliminarUsuario(@RequestParam String correo) {
+    public String eliminarUsuario(@RequestParam String email) {
         try {
-            usuarioRepository.findByCorreo(correo).ifPresentOrElse(
+            usuarioRepository.findByEmail(email).ifPresentOrElse(
                 usuario -> {
                     usuarioRepository.delete(usuario);
-                    logger.info("Usuario eliminado: {}", correo);
+                    logger.info("Usuario eliminado: {}", email);
                 },
                 () -> {
-                    logger.warn("Usuario no encontrado: {}", correo);
+                    logger.warn("Usuario no encontrado: {}", email);
                 }
             );
             return "Usuario eliminado exitosamente";
@@ -55,7 +54,7 @@ public class AdminController {
         try {
             long totalUsuarios = usuarioRepository.count();
             usuarioRepository.deleteAll();
-            logger.info("✅ Base de datos limpiada. {} usuarios eliminados", totalUsuarios);
+            logger.info("Base de datos limpiada. {} usuarios eliminados", totalUsuarios);
             return "Base de datos limpiada. " + totalUsuarios + " usuarios eliminados";
         } catch (Exception e) {
             logger.error(" Error al limpiar base de datos: {}", e.getMessage());

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/registro")
 public class RegistroController {
+
     @Autowired
     private UsuarioService usuarioService;
 
@@ -41,12 +42,9 @@ public class RegistroController {
             model.addAttribute("errorDuplicado", true);
             return "registro";
         }
-<<<<<<< HEAD
-        return "redirect:/registro?exito";
-=======
 
+        // He dejado la redirección a 'pendiente' porque parece ser el flujo nuevo
         return "redirect:/registro?pendiente";
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
     }
 
     @GetMapping(params = "pendiente")
@@ -55,9 +53,6 @@ public class RegistroController {
         model.addAttribute("mensajePendiente", true);
         return "registro";
     }
-<<<<<<< HEAD
-}
-=======
 
     @GetMapping("/activar")
     public String activarCuenta(
@@ -67,8 +62,8 @@ public class RegistroController {
         boolean activado = usuarioService.activarCuenta(token);
 
         if (activado){
-            model.addAttribute("activacionExitosa",true);
-        } else{
+            model.addAttribute("activacionExitosa", true);
+        } else {
             model.addAttribute("tokenInvalido", true);
         }
         return "activacion";
@@ -84,13 +79,11 @@ public class RegistroController {
         if (activado){
             model.addAttribute("activacionExitosa", true);
             return "activacion";
-        } else{
+        } else {
             model.addAttribute("mensajePendiente", true);
             model.addAttribute("errorVerificacion", true);
             model.addAttribute("usuario", new Usuario());
             return "registro";
         }
     }
-
 }
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2

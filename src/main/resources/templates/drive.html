@@ -3,123 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>Drive</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/drive.css}">
 </head>
 
 <body>
 
-<div class="container" style="width: 800px;"> <h2>📁 Mi Drive</h2>
+<div class="drive-wrapper">
 
-    <div style="margin-bottom: 20px;">
+    <div class="sidebar">
+        <h2>📁 Flowmatic</h2>
 
-        <form th:action="@{/crear-carpeta}" method="post" style="margin-bottom:10px;">
-            <input type="hidden" name="folderDestino" th:value="${folderActual}">
-            <input type="text" name="nombre" placeholder="Nueva carpeta..." required>
-            <button type="submit">Crear</button>
-        </form>
+        <a th:href="@{/}">Mi Drive</a>
 
-        <form th:action="@{/subir-archivo}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="folderDestino" th:value="${folderActual}">
-            <input type="file" name="archivo" required>
-            <button type="submit">Subir</button>
-        </form>
-
+        <div class="logout">
+            <a th:href="@{/login?logout}">Cerrar sesión</a>
+        </div>
     </div>
 
-    <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse: collapse;">
+    <div class="main-content">
 
-            <thead>
-                <tr style="background:#f0f0f0;">
-                    <th style="padding:10px; text-align:left;">Nombre</th>
-                    <th style="padding:10px;">Tipo</th>
-                    <th style="padding:10px;">Acciones</th>
-                </tr>
-            </thead>
+        <div class="header">
+            <h2>Mi Drive</h2>
+        </div>
 
-            <tbody>
-                <tr th:each="item : ${objetos}" style="border-bottom:1px solid #ddd;">
+        <div class="actions">
 
-                    <td style="padding:10px;">
-                        <span th:if="${item.esCarpeta}">
-                            📁 
-<<<<<<< HEAD
-                            <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}" 
-                               th:text="${item.nombre}"
-                               style="text-decoration:none; color:#4facfe;">
-=======
-                            <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}"
-                               th:text="${item.nombre}">
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
-                            </a>
-                        </span>
+            <form th:action="@{/crear-carpeta}" method="post">
+                <input type="hidden" name="folderDestino" th:value="${folderActual}">
+                <input type="text" name="nombre" placeholder="Nueva carpeta..." required>
+                <button type="submit">Crear</button>
+            </form>
 
-                        <span th:if="${!item.esCarpeta}">
-                            📄 [[${item.nombre}]]
-                        </span>
-                    </td>
+            <form th:action="@{/subir-archivo}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="folderDestino" th:value="${folderActual}">
+                <input type="file" name="archivo" required>
+                <button type="submit">Subir</button>
+            </form>
 
-<<<<<<< HEAD
-                    <td style="text-align:center;" 
-                        th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}">
-                    </td>
+        </div>
 
-                    <td style="padding:10px;">
-                        <div th:if="${!item.esCarpeta}">
-                            <form th:action="@{/compartir}" method="post" style="display:flex; gap:5px; margin-bottom: 5px;">
-                                <input type="hidden" name="archivoId" th:value="${item.id}">
-                                <input type="email" name="correoDestino" 
-                                       placeholder="Correo destino..." 
-                                       required 
-                                       style="padding:4px; font-size:12px; border:1px solid #ccc; border-radius:3px; width:140px;">
-                                <button type="submit" 
-                                        style="padding:4px 8px; font-size:12px; background:#4facfe; color:white; border:none; border-radius:3px; cursor:pointer;">
-                                    Compartir
-                                </button>
-                            </form>
+        <div class="table-container">
+            <table>
 
-                            <div style="margin-bottom: 5px;">
-                                <a th:href="@{/descargar(archivoId=${item.id})}" 
-                                   style="display: block; text-align: center; padding: 4px 8px; font-size: 12px; background: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer; text-decoration: none;">
-                                    ⬇️ Descargar
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="item : ${objetos}">
+
+                        <td>
+                            <span th:if="${item.esCarpeta}">
+                                📁
+                                <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}"
+                                   th:text="${item.nombre}">
                                 </a>
+                            </span>
+
+                            <span th:if="${!item.esCarpeta}">
+                                📄 [[${item.nombre}]]
+                            </span>
+                        </td>
+
+                        <td th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}"></td>
+
+                        <td>
+                            <div th:if="${!item.esCarpeta}">
+
+                                <a th:href="@{/descargar(archivoId=${item.id})}">
+                                    Descargar
+                                </a>
+
+                                <form th:action="@{/eliminar}" method="post"
+                                      onsubmit="return confirm('¿Eliminar archivo?');">
+                                    <input type="hidden" name="archivoId" th:value="${item.id}">
+                                    <button type="submit">Eliminar</button>
+                                </form>
+
                             </div>
 
-                            <form th:if="${item.propietario == usuarioActual}" 
-                                th:action="@{/eliminar}" 
-                                method="post" 
-                                onsubmit="return confirm('¿Estás seguro de eliminar este archivo?');">
-                                
-                                <input type="hidden" name="archivoId" th:value="${item.id}">
-                                
-                                <button type="submit" 
-                                        style="padding:4px 8px; font-size:12px; background:#ff4d4d; color:white; border:none; border-radius:3px; cursor:pointer; width: 100%;">
-                                    🗑️ Eliminar
-                                </button>
-                            </form>
-                        </div>
-                        <div th:if="${item.esCarpeta}" style="text-align:center; color:#999; font-size:12px;">
-                            —
-                        </div>
-                    </td>
-=======
-                    <td th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}"></td>
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
+                            <div th:if="${item.esCarpeta}">
+                                —
+                            </div>
+                        </td>
 
-                </tr>
-            </tbody>
+                    </tr>
+                </tbody>
 
-        </table>
-    </div>
-<<<<<<< HEAD
+            </table>
+        </div>
 
-    <div class="link" style="margin-top: 20px;">
-        <a th:href="@{/login?logout}">Cerrar sesión</a>
     </div>
 
-=======
-<a th:href="@{/logout}">Cerrar sesion</a>
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
 </div>
 
 </body>

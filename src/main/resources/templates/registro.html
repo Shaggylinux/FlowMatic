@@ -4,93 +4,69 @@
     <title>Registro</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<<<<<<< HEAD
-
 <body>
 
 <div class="container">
-=======
-<body>
 
-<div th:if="${mensajePendiente}">
-    <p>✅ ¡Cuenta creada exitosamente!</p>
-    <p>📧 Te enviamos un email de verificación a tu correo.</p>
-    <p>Por favor, revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.</p>
-    <p>Si no ves el email en los próximos 5 minutos, revisa tu carpeta de SPAM.</p>
-    
-    <hr>
-    <p><strong>¿Ya activaste tu cuenta?</strong></p>
-    <a th:href="@{/login}">Inicia sesión aquí</a>
+    <div class="form-section">
+        <div class="form-box">
+
+            <h2>Crear Cuenta</h2>
+
+            <div th:if="${mensajePendiente}" class="success">
+                ✅ Cuenta creada exitosamente <br>
+                📧 Revisa tu correo para activarla
+            </div>
+
+            <div th:if="${errorDuplicado}" class="error">
+                Correo ya registrado
+            </div>
+
+            <form th:action="@{/registro}" th:object="${usuario}" method="post">
+
+                <div class="input-group">
+                    <label>Nombre</label>
+                    <input type="text" th:field="*{username}" placeholder="Nombre completo">
+                    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                </div>
+
+                <div class="input-group">
+                    <label>Correo</label>
+                    <input type="email" th:field="*{correo}" placeholder="tu@correo.com">
+                    <p th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></p>
+                </div>
+
+                <div class="input-group">
+                    <label>Teléfono</label>
+                    <input type="tel" th:field="*{telefono}" placeholder="+573001234567">
+                    <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></p>
+                </div>
+
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" th:field="*{clave}" placeholder="Mínimo 8 caracteres">
+                    <p th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></p>
+                </div>
+
+                <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
+
+                <button type="submit">Registrarse</button>
+
+            </form>
+
+            <a th:href="@{/login}">¿Ya tienes cuenta? Inicia sesión</a>
+
+        </div>
+    </div>
+
+    <div class="image-section">
+        <div>
+            <h2>Únete a Flowmatic</h2>
+            <p>Empieza a gestionar tus archivos en la nube</p>
+        </div>
+    </div>
+
 </div>
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
 
-    <h2>Registro</h2>
-
-    <div th:if="${mensajeExito}" class="success">
-        Cuenta creada exitosamente.
-    </div>
-
-    <div th:if="${errorDuplicado}" class="error">
-        Correo ya registrado.
-        <a th:href="@{/olvide-contrasena}">Olvidé mi contraseña</a>
-    </div>
-
-    <form th:action="@{/registro}" th:object="${usuario}" method="post">
-
-        <label>Nombre</label>
-        <input type="text" th:field="*{username}" placeholder="Nombre completo"/>
-        <p class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-
-        <label>Correo</label>
-        <input type="email" th:field="*{correo}" placeholder="tu@correo.com"/>
-        <p class="error" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></p>
-
-        <label>Contraseña</label>
-        <input type="password" th:field="*{clave}" placeholder="Mínimo 8 caracteres"/>
-        <p class="error" th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></p>
-
-        <label>Rol</label>
-        <input type="text" th:field="*{rol}" placeholder="Ej: admin o user"/>
-        <p class="error" th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}"></p>
-
-        <button type="submit">Registrarse</button>
-    </form>
-
-    <div class="link">
-        <a th:href="@{/login}">¿Ya tienes cuenta? Inicia sesión</a>
-    </div>
-
-</div>
-
-<<<<<<< HEAD
-=======
-<form th:action="@{/registro}" th:object="${usuario}" method="post">
-
-    <label>Nombre</label>
-    <input type="text" th:field="*{username}" placeholder="Nombre completo"/>
-    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-
-    <label>Correo</label>
-    <input type="email" th:field="*{correo}" placeholder="tu@correo.com"/>
-    <p th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></p>
-
-    <label>Teléfono</label>
-    <input type="tel" th:field="*{telefono}" placeholder="+573001234567"/>
-    <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></p>
-
-    <label>Contraseña</label>
-    <input type="password" th:field="*{clave}" placeholder="Mínimo 8 caracteres"/>
-    <p th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></p>
-
-    <!-- Campo rol oculto -->
-    <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
-
-    <button type="submit">Registrarse</button>
-
-</form>
-
-<a th:href="@{/login}">¿Ya tienes cuenta? Inicia sesión</a>
-
->>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
 </body>
 </html>

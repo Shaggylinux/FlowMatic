@@ -13,7 +13,7 @@ public interface FilesRepository extends JpaRepository<Archivos, Long> {
 
     @Query(value = "SELECT * FROM archivos WHERE propietario = :usuario " +
                    "OR destinario = :usuario " +
-                   "OR destinario = (SELECT correo FROM usuarios WHERE username = :usuario)", 
+                   "OR destinario = (SELECT email FROM usuarios WHERE username = :usuario)", 
                     nativeQuery = true)
     List<Archivos> buscarArchivosVisiblesPara(@Param("usuario") String usuario);
 }

@@ -1,0 +1,95 @@
+body {
+background: #f1f5f9;
+font-family: 'Segoe UI', sans-serif;
+}
+
+.drive-wrapper {
+display: flex;
+min-height: 100vh;
+}
+
+.sidebar {
+width: 220px;
+background: #0f172a;
+color: white;
+padding: 20px;
+}
+
+.sidebar h2 {
+margin-bottom: 30px;
+}
+
+.sidebar a {
+display: block;
+color: #cbd5f5;
+text-decoration: none;
+margin-bottom: 10px;
+}
+
+.sidebar a:hover {
+color: #10b981;
+}
+
+.main-content {
+flex: 1;
+padding: 30px;
+}
+
+.header {
+display: flex;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+
+.actions {
+display: flex;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.actions form {
+display: flex;
+gap: 10px;
+}
+
+.table-container {
+background: white;
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+}
+
+thead {
+background: #e2e8f0;
+}
+
+th, td {
+padding: 12px;
+text-align: left;
+}
+
+tr:hover {
+background: #f9fafb;
+}
+
+button {
+background: #10b981;
+color: white;
+border: none;
+padding: 6px 10px;
+border-radius: 6px;
+cursor: pointer;
+}
+
+button:hover {
+background: #059669;
+}
+
+.logout {
+margin-top: 20px;
+}
