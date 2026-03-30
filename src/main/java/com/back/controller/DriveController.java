@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import com.back.model.Archivos;
 import org.springframework.http.HttpHeaders;
-import java.nio.file.Path;
 import org.springframework.core.io.Resource;
 import com.back.repository.FilesRepository;
 import org.springframework.ui.Model;
@@ -26,6 +25,20 @@ import java.util.Optional;
 public class DriveController {
     
     private final String ROOT_DIR = "superfolder/";
+    @jakarta.annotation.PostConstruct
+    
+    public void init() {
+        try {
+            Path rutaRaiz = Paths.get(ROOT_DIR);
+            if (!Files.exists(rutaRaiz)) {
+                Files.createDirectories(rutaRaiz);
+                System.out.println("Carpeta raiz creada exitosamente :D");
+            }
+        } catch (IOException e) {
+            System.err.println("Error: No se pudo crear la carpeta raíz: " + e.getMessage());
+        }
+    }
+    
     @Autowired
     private FilesRepository filesRepository;
 

@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/registro")
 public class RegistroController {
-
     @Autowired
     private UsuarioService usuarioService;
-
 
     @GetMapping
     public String mostrarFormulario(Model model) {
@@ -43,7 +41,6 @@ public class RegistroController {
             model.addAttribute("errorDuplicado", true);
             return "registro";
         }
-
         return "redirect:/registro?exito";
     }
 
