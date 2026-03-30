@@ -6,3 +6,12 @@ create table if not exists usuarios (
 	cedula text,
 	role text
 );
+
+create table if not exists archivos (
+        id serial primary key,
+        nombre text,
+        ubicacion text,
+        propietario text,
+        destinario text,
+        es_carpeta boolean
+);
