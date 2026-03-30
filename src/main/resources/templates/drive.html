@@ -71,21 +71,19 @@
                                     Compartir
                                 </button>
                             </form>
-
-<form th:if="${item.propietario == usuarioActual}" 
-      th:action="@{/eliminar}" 
-      method="post" 
-      onsubmit="return confirm('¿Estás seguro de eliminar este archivo?');">
-    
-    <input type="hidden" name="archivoId" th:value="${item.id}">
-    
-    <button type="submit" 
-            style="padding:4px 8px; font-size:12px; background:#ff4d4d; color:white; border:none; border-radius:3px; cursor:pointer; width: 100%;">
-        🗑️ Eliminar
-    </button>
-</form>
+                            <form th:if="${item.propietario == usuarioActual}" 
+                                th:action="@{/eliminar}" 
+                                method="post" 
+                                onsubmit="return confirm('¿Estás seguro de eliminar este archivo?');">
+                                
+                                <input type="hidden" name="archivoId" th:value="${item.id}">
+                                
+                                <button type="submit" 
+                                        style="padding:4px 8px; font-size:12px; background:#ff4d4d; color:white; border:none; border-radius:3px; cursor:pointer; width: 100%;">
+                                    🗑️ Eliminar
+                                </button>
+                            </form>
                         </div>
-                        
                         <div th:if="${item.esCarpeta}" style="text-align:center; color:#999; font-size:12px;">
                             —
                         </div>
