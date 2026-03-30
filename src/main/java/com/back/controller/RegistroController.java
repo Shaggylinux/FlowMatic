@@ -16,6 +16,7 @@ public class RegistroController {
     @Autowired
     private UsuarioService usuarioService;
 
+
     @GetMapping
     public String mostrarFormulario(Model model) {
         model.addAttribute("usuario", new Usuario());

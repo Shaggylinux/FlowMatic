@@ -10,16 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import com.back.model.Archivos;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import java.net.MalformedURLException;
-
+import java.nio.file.Path;
+import org.springframework.core.io.Resource;
 import com.back.repository.FilesRepository;
-
 import org.springframework.ui.Model;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
@@ -30,7 +25,7 @@ import java.util.Optional;
 @RequestMapping("/")
 public class DriveController {
     
-    private final String ROOT_DIR = "mis_archivos/";
+    private final String ROOT_DIR = "superfolder/";
     @Autowired
     private FilesRepository filesRepository;
 
@@ -41,7 +36,7 @@ public class DriveController {
         List<Archivos> archivosVisibles = filesRepository.buscarArchivosVisiblesPara(nombreUsuario);
 
         model.addAttribute("objetos", archivosVisibles);
-        model.addAttribute("usuarioActual", nombreUsuario); // <-- AGREGA ESTA LÍNEA
+        model.addAttribute("usuarioActual", nombreUsuario);
         return "drive";
     }
 
@@ -89,7 +84,6 @@ public class DriveController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
         return "redirect:/?folder=" + folderDestino;
     }
 
@@ -102,7 +96,6 @@ public class DriveController {
             archivo.setDestinario(correoDestino);
             filesRepository.save(archivo);
         }
-        
         return "redirect:/"; 
     }
 
@@ -127,29 +120,28 @@ public class DriveController {
                 }
             }
         }
-        
         return "redirect:/";
     }
-
+    
     @GetMapping("/descargar")
-public ResponseEntity<Resource> descargarArchivo(@RequestParam Long archivoId) {
-    Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
+    public ResponseEntity<Resource> descargarArchivo(@RequestParam Long archivoId) {
+        Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
 
-    if (archivoOpt.isPresent()) {
-        Archivos archivo = archivoOpt.get();
-        try {
-            Path ruta = Paths.get(archivo.getUbicacion());
-            Resource recurso = new UrlResource(ruta.toUri());
+        if (archivoOpt.isPresent()) {
+            Archivos archivo = archivoOpt.get();
+            try {
+                Path ruta = Paths.get(archivo.getUbicacion());
+                Resource recurso = new UrlResource(ruta.toUri());
 
-            if (recurso.exists() || recurso.isReadable()) {
-                return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + archivo.getNombre() + "\"")
-                    .body(recurso);
+                if (recurso.exists() || recurso.isReadable()) {
+                    return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + archivo.getNombre() + "\"")
+                        .body(recurso);
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         }
+        return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.notFound().build();
-}
 }
