@@ -13,6 +13,7 @@ import java.util.Collections;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -20,6 +21,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+
+        if (!usuario.isActivo()) {
+            throw new UsernameNotFoundException("Cuenta no activada. Revisa tu email para activar la cuenta.");
+        }
+
         return new User(
                 usuario.getUsername(),
                 usuario.getClave(),

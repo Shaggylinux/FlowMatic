@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Drive</title>
@@ -42,7 +42,7 @@
                     <td>
                         <span th:if="${item.esCarpeta}">
                             📁 
-                            <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}" 
+                            <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}"
                                th:text="${item.nombre}">
                             </a>
                         </span>
@@ -52,11 +52,12 @@
                     </td>
 
                     <td th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}"></td>
+
                 </tr>
             </tbody>
         </table>
     </div>
-<a th:href="@{/login?logout}">Cerrar sesion</a>
+<a th:href="@{/logout}">Cerrar sesion</a>
 </div>
 
 </body>

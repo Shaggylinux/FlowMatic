@@ -20,10 +20,7 @@ public class SecurityConfig {
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(auth -> auth
-            // 1. Agregamos /** para cubrir /registro y /registro?exito
-            // 2. IMPORTANTE: Permitir /error para ver qué falla realmente
             .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**").permitAll() 
-            
             .requestMatchers("/guardar", "/eliminar", "/Formulario", "/editar").hasRole("ADMIN")
             .requestMatchers("/", "/detalle").authenticated()
             .anyRequest().authenticated()
@@ -37,7 +34,8 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .logoutUrl("/logout")
             .logoutSuccessUrl("/login?logout")
             .permitAll()
-        );
+        )
+        .csrf(csrf -> csrf.disable());
     
     return http.build();
 }

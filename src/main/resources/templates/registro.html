@@ -3,8 +3,15 @@
 <head><title>Registro</title></head>
 <body>
 
-<div th:if="${mensajeExito}">
-    <p>Cuenta creada exitosamente.</p>
+<div th:if="${mensajePendiente}">
+    <p>✅ ¡Cuenta creada exitosamente!</p>
+    <p>📧 Te enviamos un email de verificación a tu correo.</p>
+    <p>Por favor, revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.</p>
+    <p>Si no ves el email en los próximos 5 minutos, revisa tu carpeta de SPAM.</p>
+    
+    <hr>
+    <p><strong>¿Ya activaste tu cuenta?</strong></p>
+    <a th:href="@{/login}">Inicia sesión aquí</a>
 </div>
 
 <div th:if="${errorDuplicado}">
@@ -23,15 +30,19 @@
     <input type="email" th:field="*{correo}" placeholder="tu@correo.com"/>
     <p th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></p>
 
+    <label>Teléfono</label>
+    <input type="tel" th:field="*{telefono}" placeholder="+573001234567"/>
+    <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></p>
+
     <label>Contraseña</label>
     <input type="password" th:field="*{clave}" placeholder="Mínimo 8 caracteres"/>
     <p th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></p>
 
-    <label>Rol</label>
-    <input type="text" th:field="*{rol}" placeholder="Ponte un rol"/>
-    <p th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}"></p>
+    <!-- Campo rol oculto -->
+    <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
 
     <button type="submit">Registrarse</button>
+
 </form>
 
 <a th:href="@{/login}">¿Ya tienes cuenta? Inicia sesión</a>

@@ -13,7 +13,7 @@
         <h1>Gestor de Archivos</h1>
         <p>Crea una nueva carpeta para comenzar</p>
 
-        <form th:action="@{/drive/crear-carpeta}" method="post">
+        <form th=:action="@{/drive/crear-carpeta}" method="post">
             <input type="text" name="nombre" placeholder="Nombre de la carpeta" required>
             <button type="submit">Crear Carpeta</button>
         </form>

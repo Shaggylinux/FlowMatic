@@ -43,13 +43,47 @@ public class RegistroController {
             return "registro";
         }
 
-        return "redirect:/registro?exito";
+        return "redirect:/registro?pendiente";
     }
 
-    @GetMapping(params = "exito")
-    public String registroExitoso(Model model) {
+    @GetMapping(params = "pendiente")
+    public String registropendiente(Model model){
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("mensajeExito", true);
+        model.addAttribute("mensajePendiente", true);
         return "registro";
     }
+
+    @GetMapping("/activar")
+    public String activarCuenta(
+            @RequestParam("token") String token,
+            Model model
+    ){
+        boolean activado = usuarioService.activarCuenta(token);
+
+        if (activado){
+            model.addAttribute("activacionExitosa",true);
+        } else{
+            model.addAttribute("tokenInvalido", true);
+        }
+        return "activacion";
+    }
+
+    @PostMapping("/verificar")
+    public String verificarSms(
+            @RequestParam("token") String token,
+            Model model
+    ){
+        boolean activado = usuarioService.activarCuenta(token);
+
+        if (activado){
+            model.addAttribute("activacionExitosa", true);
+            return "activacion";
+        } else{
+            model.addAttribute("mensajePendiente", true);
+            model.addAttribute("errorVerificacion", true);
+            model.addAttribute("usuario", new Usuario());
+            return "registro";
+        }
+    }
+
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Iniciar sesión</title>
@@ -8,12 +8,23 @@
 <body>
 
 <div class="login-container">
-    
+
     <div class="login-box">
         <h2>Iniciar Sesión</h2>
 
+        <!-- Mostrar errores de autenticación -->
+        <div th:if="${param.error}" style="color: red; margin-bottom: 15px; padding: 10px; border: 1px solid red; border-radius: 4px;">
+            <p><strong>Error de autenticación</strong></p>
+            <p>Usuario o contraseña incorrectos, o cuenta no activada.</p>
+        </div>
+
+        <!-- Mostrar mensaje de logout -->
+        <div th:if="${param.logout}" style="color: green; margin-bottom: 15px; padding: 10px; border: 1px solid green; border-radius: 4px;">
+            <p>Sesión cerrada correctamente.</p>
+        </div>
+
         <form th:action="@{/login}" method="post">
-            
+
             <div class="input-group">
                 <label>Usuario</label>
                 <input type="text" name="username" placeholder="Ingresa tu usuario" required>
@@ -29,7 +40,8 @@
         </form>
 
     </div>
-<a th:href="@{/registro}">¿No tienes una cuenta? Registrate</a>
+
+    <a th:href="@{/registro}">¿No tienes una cuenta? Registrate</a>
 
 </div>
 

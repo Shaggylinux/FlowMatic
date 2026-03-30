@@ -39,7 +39,14 @@ public class Usuario {
     @Column(nullable = false)
     private String clave;
 
-    @NotBlank(message = "El rol es obligatorio")
     @Column(nullable = false)
     private String rol;
+
+    @Column(nullable = false)
+    private String telefono;
+    @Column(nullable = false)
+    private boolean activo = false;
+
+    @Column(unique = true)
+    private String tokenActivacion;
 }
