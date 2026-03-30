@@ -43,9 +43,14 @@
                     <td style="padding:10px;">
                         <span th:if="${item.esCarpeta}">
                             📁 
+<<<<<<< HEAD
                             <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}" 
                                th:text="${item.nombre}"
                                style="text-decoration:none; color:#4facfe;">
+=======
+                            <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}"
+                               th:text="${item.nombre}">
+>>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
                             </a>
                         </span>
 
@@ -54,6 +59,7 @@
                         </span>
                     </td>
 
+<<<<<<< HEAD
                     <td style="text-align:center;" 
                         th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}">
                     </td>
@@ -96,17 +102,24 @@
                             —
                         </div>
                     </td>
+=======
+                    <td th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}"></td>
+>>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
 
                 </tr>
             </tbody>
 
         </table>
     </div>
+<<<<<<< HEAD
 
     <div class="link" style="margin-top: 20px;">
         <a th:href="@{/login?logout}">Cerrar sesión</a>
     </div>
 
+=======
+<a th:href="@{/logout}">Cerrar sesion</a>
+>>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
 </div>
 
 </body>

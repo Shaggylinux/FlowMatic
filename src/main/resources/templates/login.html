@@ -8,9 +8,43 @@
 
 <body>
 
+<<<<<<< HEAD
 <div class="container">
 
     <h2>Iniciar Sesión</h2>
+=======
+<div class="login-container">
+
+    <div class="login-box">
+        <h2>Iniciar Sesión</h2>
+
+        <!-- Mostrar errores de autenticación -->
+        <div th:if="${param.error}" style="color: red; margin-bottom: 15px; padding: 10px; border: 1px solid red; border-radius: 4px;">
+            <p><strong>Error de autenticación</strong></p>
+            <p>Usuario o contraseña incorrectos, o cuenta no activada.</p>
+        </div>
+
+        <!-- Mostrar mensaje de logout -->
+        <div th:if="${param.logout}" style="color: green; margin-bottom: 15px; padding: 10px; border: 1px solid green; border-radius: 4px;">
+            <p>Sesión cerrada correctamente.</p>
+        </div>
+
+        <form th:action="@{/login}" method="post">
+
+            <div class="input-group">
+                <label>Usuario</label>
+                <input type="text" name="username" placeholder="Ingresa tu usuario" required>
+            </div>
+
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" name="password" placeholder="Ingresa tu contraseña" required>
+            </div>
+
+            <button type="submit">Ingresar</button>
+
+        </form>
+>>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
 
     <div th:if="${param.error}" class="error">
         Usuario o contraseña incorrectos
@@ -35,6 +69,11 @@
     <div class="link">
         <a th:href="@{/registro}">¿No tienes una cuenta? Regístrate</a>
     </div>
+<<<<<<< HEAD
+=======
+
+    <a th:href="@{/registro}">¿No tienes una cuenta? Registrate</a>
+>>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
 
 </div>
 

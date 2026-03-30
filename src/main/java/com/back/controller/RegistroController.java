@@ -41,13 +41,56 @@ public class RegistroController {
             model.addAttribute("errorDuplicado", true);
             return "registro";
         }
+<<<<<<< HEAD
         return "redirect:/registro?exito";
+=======
+
+        return "redirect:/registro?pendiente";
+>>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2
     }
 
-    @GetMapping(params = "exito")
-    public String registroExitoso(Model model) {
+    @GetMapping(params = "pendiente")
+    public String registropendiente(Model model){
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("mensajeExito", true);
+        model.addAttribute("mensajePendiente", true);
         return "registro";
     }
+<<<<<<< HEAD
 }
+=======
+
+    @GetMapping("/activar")
+    public String activarCuenta(
+            @RequestParam("token") String token,
+            Model model
+    ){
+        boolean activado = usuarioService.activarCuenta(token);
+
+        if (activado){
+            model.addAttribute("activacionExitosa",true);
+        } else{
+            model.addAttribute("tokenInvalido", true);
+        }
+        return "activacion";
+    }
+
+    @PostMapping("/verificar")
+    public String verificarSms(
+            @RequestParam("token") String token,
+            Model model
+    ){
+        boolean activado = usuarioService.activarCuenta(token);
+
+        if (activado){
+            model.addAttribute("activacionExitosa", true);
+            return "activacion";
+        } else{
+            model.addAttribute("mensajePendiente", true);
+            model.addAttribute("errorVerificacion", true);
+            model.addAttribute("usuario", new Usuario());
+            return "registro";
+        }
+    }
+
+}
+>>>>>>> c58474b2d4e77f8e63c05950c2f64bca7b9a88d2

@@ -1752,3 +1752,454 @@ com.intellij.diagnostic.PluginException: Migrate com.dbn.project.ProjectStartupA
 2026-03-27 20:46:34,025 [ 265205]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
 2026-03-27 20:47:29,164 [ 320344]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
 2026-03-27 20:48:56,418 [ 407598]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 00:23:09.742: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 00:23:19.915: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+libva info: VA-API version 1.20.0
+libva info: Trying to open /snap/firefox/7967/gnome-platform/usr/lib/x86_64-linux-gnu/dri/radeonsi_drv_video.so
+libva info: Found init function __vaDriverInit_1_14
+libva info: va_openDriver() returns 0
+[0.309s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-28 00:26:32,221 [  22916]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: VibrantInk from plugins: DBN
+2026-03-28 00:26:32,221 [  22916]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monocai from plugins: DBN
+2026-03-28 00:26:32,222 [  22917]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Twilight from plugins: DBN
+2026-03-28 00:26:32,229 [  22924]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Islands Light from plugins: DBN
+2026-03-28 00:26:32,229 [  22924]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: WarmNeon from plugins: DBN
+2026-03-28 00:26:32,230 [  22925]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Cobalt from plugins: DBN
+2026-03-28 00:26:32,230 [  22925]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: AllHallowsEve from plugins: DBN
+2026-03-28 00:26:32,245 [  22940]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Classic Light from plugins: DBN
+2026-03-28 00:26:32,245 [  22940]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monokai from plugins: DBN
+2026-03-28 00:26:32,246 [  22941]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Railscasts from plugins: DBN
+2026-03-28 00:26:32,246 [  22941]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Blackboard from plugins: DBN
+2026-03-28 00:26:35,007 [  25702]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-28 00:26:35,008 [  25703]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-28 00:26:35,014 [  25709]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-28 00:26:43,862 [  34557]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-28 00:26:43,864 [  34559]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-28 00:27:00,383 [  51078]   WARN - #c.i.o.a.i.ActionUpdater - 4343 ms total to grab EDT 1 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-28 00:27:03,329 [  54024]   WARN - #c.i.o.a.i.ActionUpdater - 4205 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-28 00:27:03,370 [  54065]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-28 00:27:03,931 [  54626]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-28 00:27:05,636 [  56331]   WARN - #c.i.o.a.i.ActionUpdater - 3288 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-28 00:27:05,851 [  56546]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+com.intellij.diagnostic.PluginException: Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.doRunPostStartupActivities(StartupManagerImpl.kt:317)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$doRunPostStartupActivities(StartupManagerImpl.kt:72)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:210)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:209)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:277)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+2026-03-28 00:27:08,739 [  59434]   WARN - #c.i.o.a.i.ActionUpdater - 3696 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-28 00:27:15,176 [  65871]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-28 00:27:20,158 [  70853]   WARN - #c.i.o.a.i.ActionUpdater - 3316 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-28 00:27:24,707 [  75402]   WARN - #c.i.o.a.i.ActionUpdater - 1593 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-28 00:27:24,715 [  75410]   WARN - #c.i.o.a.i.ActionUpdater - 1624 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-28 00:27:27,233 [  77928]   WARN - #c.i.o.a.i.ActionUpdater - 3403 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+> Start DBeaver Application Standalone [org.jkiss.dbeaver.ui.app.standalone 26.0.1.202603221810]
+> Start DBeaver Command Line Model [org.jkiss.dbeaver.model.cli 1.0.20.202603221810]
+> Start Eclipse IDE UI Application [org.eclipse.ui.ide.application 1.6.0.v20251217-1052]
+> Start Eclipse Jobs Mechanism [org.eclipse.core.jobs 3.15.700.v20250725-1147]
+> Start Expression Language [org.eclipse.core.expressions 3.9.500.v20250608-0434]
+> Start DBeaver Model Registry [org.jkiss.dbeaver.registry 1.0.169.202603221810]
+> Start Eclipse IDE UI [org.eclipse.ui.ide 3.23.0.v20260103-1639]
+> Start jna [com.sun.jna 5.18.1.v20251001-0800]
+> Start DBeaver UI Editors - Base [org.jkiss.dbeaver.ui.editors.base 1.0.175.202603221810]
+> Start DBeaver UI [org.jkiss.dbeaver.ui 5.1.190.202603221810]
+> Start DBeaver Usage Statistics [org.jkiss.dbeaver.ui.statistics 1.0.71.202603221810]
+> Start DBeaver UI Editors - Connections [org.jkiss.dbeaver.ui.editors.connection 1.0.166.202603221810]
+> Start DBeaver Desktop Application Core [org.jkiss.dbeaver.core 26.0.1.202603221810]
+2026-03-28 00:35:02.363 - DBeaver 26.0.1.202603221810 is starting
+2026-03-28 00:35:02.365 - OS: Linux 6.17.0-19-generic (amd64)
+2026-03-28 00:35:02.366 - Java version: 21.0.8 by Eclipse Adoptium (64bit)
+2026-03-28 00:35:02.367 - Install path: '/usr/share/dbeaver-ce'
+2026-03-28 00:35:02.368 - Instance path: 'file:/home/julieth/.local/share/DBeaverData/workspace6/'
+2026-03-28 00:35:02.376 - Memory available 64Mb/1024Mb
+2026-03-28 00:35:02.390 - Initialize desktop platform...
+2026-03-28 00:35:03.330 - BounceCastle bundle found. Use JCE provider BC
+> Start Core File Systems [org.eclipse.core.filesystem 1.11.400.v20251107-0507]
+> Start Core Resource Management [org.eclipse.core.resources 3.23.200.v20251217-0810]
+> Start DBeaver UI Navigator [org.jkiss.dbeaver.ui.navigator 1.0.175.202603221810]
+> Start Team Support Core [org.eclipse.team.core 3.10.1000.v20260112-1030]
+2026-03-28 00:35:04.076 - Initialize base platform...
+2026-03-28 00:35:04.127 - Schedule collected statistics send
+2026-03-28 00:35:04.129 - Platform initialized (1738ms)
+> Start Equinox Java Authentication and Authorization Service (JAAS) [org.eclipse.equinox.security 1.4.700.v20250622-1644]
+> Start Internet Connection Management UI [org.eclipse.ui.net 1.6.0.v20251219-1227]
+> Start Internet Connection Management [org.eclipse.core.net 1.5.800.v20250613-1119]
+2026-03-28 00:35:04.306 - Proxy service 'org.eclipse.core.net.proxy.IProxyService' loaded
+2026-03-28 00:35:04.325 - Create display
+2026-03-28 00:35:05.486 - Starting instance server at http://localhost:35225
+2026-03-28 00:35:05.590 - Run workbench
+> Start Eclipse e4 Workbench SWT [org.eclipse.e4.ui.workbench.swt 0.18.0.v20260119-0835]
+> Start Eclipse Application Services [org.eclipse.e4.core.services 2.5.300.v20251112-1253]
+> Start Eclipse UI Application Services [org.eclipse.e4.ui.services 1.6.600.v20251023-1358]
+> Start Eclipse e4 Progress View [org.eclipse.e4.ui.progress 0.5.0.v20251217-1052]
+> Start Eclipse Bindings Support [org.eclipse.e4.ui.bindings 0.15.0.v20251216-1230]
+> Start Eclipse e4 core commands [org.eclipse.e4.core.commands 1.1.700.v20250916-0927]
+> Start EMF XML/XMI Persistence [org.eclipse.emf.ecore.xmi 2.40.0.v20251210-1145]
+> Start Eclipse CSS SWT Theme Support [org.eclipse.e4.ui.css.swt.theme 0.15.0.v20251216-1230]
+> Start Eclipse e4 Workbench Add-ons [org.eclipse.e4.ui.workbench.addons.swt 1.6.0.v20251216-1230]
+> Start Eclipse e4 Workbench SWT Renderer [org.eclipse.e4.ui.workbench.renderers.swt 0.17.0.v20260131-0926]
+2026-03-28 00:35:07.160 - Open [https://stats.dbeaver.com/send-statistics?session=8f059354-f8c4-41a7-b317-0de2e783b774&time=1774662273]
+> Start Eclipse Dependency Injection Extensions [org.eclipse.e4.core.di.extensions 0.18.300.v20240413-1529]
+2026-03-28 00:35:08.928 - Statistics sent (OK)
+> Start DBeaver AI Model [org.jkiss.dbeaver.model.ai 2.0.18.202603221810]
+> Start DBeaver AI UI [org.jkiss.dbeaver.ui.ai 1.0.77.202603221810]
+> Start Eclipse CSS SWT Support [org.eclipse.e4.ui.css.swt 0.16.0.v20251216-1230]
+> Start GEF Classic Draw2d [org.eclipse.draw2d 3.22.0.202602231721]
+> Start GEF Classic GEF (MVC) [org.eclipse.gef 3.25.0.202602162234]
+> Start JFace Text [org.eclipse.jface.text 3.30.0.v20260203-0841]
+> Start Default Text Editor [org.eclipse.ui.editors 3.21.0.v20260218-1452]
+> Start Text Editor Framework [org.eclipse.ui.workbench.texteditor 3.20.0.v20260127-1637]
+2026-03-28 00:35:11.893 - Configure workbench window
+> Start DBeaver SQL Model [org.jkiss.dbeaver.model.sql 1.0.165.202603221810]
+2026-03-28 00:35:12.542 - Total database drivers: 127 (127)
+> Start Help System Core [org.eclipse.help 3.11.0.v20251227-1159]
+2026-03-28 00:35:12.862 - Create actions
+2026-03-28 00:35:14.817 - Initialize workbench window
+2026-03-28 00:35:15.005 - Finish initialization
+> Start DBeaver UI Editors - Data [org.jkiss.dbeaver.ui.editors.data 1.0.175.202603221810]
+> Start DBeaver UI Editors - SQL [org.jkiss.dbeaver.ui.editors.sql 1.0.175.202603221810]
+> Start DBeaver SQL Terminal [org.jkiss.dbeaver.ui.editors.sql.terminal 1.0.151.202603221810]
+
+(DBeaver:7957): Gtk-WARNING **: 00:35:18.129: Negative content height -7 (allocation 6, extents 6x7) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+
+(DBeaver:7957): Gtk-WARNING **: 00:35:18.223: Negative content height -7 (allocation 6, extents 6x7) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start Core Compare Support [org.eclipse.compare.core 3.8.800.v20250718-1505]
+
+(DBeaver:7957): Gtk-WARNING **: 00:35:19.552: Negative content width -12 (allocation 1, extents 6x7) while allocating gadget (node separator, owner GtkSeparatorToolItem)
+> Start DBeaver Sample Database [org.jkiss.dbeaver.ui.config.sample 1.0.212.202603221810]
+2026-03-28 00:35:23.856 - Open [https://dbeaver.io/product/version.xml]
+> Start DBeaver ERD UI [org.jkiss.dbeaver.ui.editors.erd 3.1.16.202603221810]
+> Start DBeaver ERD Model [org.jkiss.dbeaver.model.erd 1.1.16.202603221810]
+> Start DBeaver Dashboard UI [org.jkiss.dbeaver.ui.dashboard 1.0.172.202603221810]
+> Start DBeaver JDBC Model [org.jkiss.dbeaver.model.jdbc 1.0.68.202603221810]
+> Start DBeaver PostgreSQL Model [org.jkiss.dbeaver.ext.postgresql 2.1.248.202603221810]
+> Start Console [org.eclipse.ui.console 3.16.0.v20260123-1616]
+> Start Debug Core [org.eclipse.debug.core 3.23.200.v20251107-0507]
+2026-03-28 00:35:25.898 - Connect with 'postgres 6' (postgres-jdbc-19d17b8d10f-1e9a5d258ae24834)
+> Start DBeaver GIS Support [org.jkiss.dbeaver.data.gis 1.0.199.202603221810]
+2026-03-28 00:35:26.059 - Execution context opened (postgres 6; Main <gestion>; 0)
+2026-03-28 00:35:26.078 - Initiate connection to PostgreSQL database [gestion@localhost] for Main <gestion>
+> Start DBeaver Tasks - Native Tools UI [org.jkiss.dbeaver.tasks.native.ui 1.0.153.202603221810]
+> Start DBeaver PostgreSQL UI [org.jkiss.dbeaver.ext.postgresql.ui 1.0.151.202603221810]
+> Start DBeaver Tasks - General UI [org.jkiss.dbeaver.tasks.ui 1.0.153.202603221810]
+2026-03-28 00:35:26.505 - Execution context closed (postgres 6, 0)
+2026-03-28 00:35:33.232 - Connect with 'postgres 6' (postgres-jdbc-19d17b8d10f-1e9a5d258ae24834)
+2026-03-28 00:35:33.237 - Execution context opened (postgres 6; Main <gestion>; 1)
+2026-03-28 00:35:33.240 - Initiate connection to PostgreSQL database [gestion@localhost] for Main <gestion>
+2026-03-28 00:35:33.257 - Execution context closed (postgres 6, 1)
+2026-03-28 00:36:15.142 - Connect with 'postgres 6' (postgres-jdbc-19d17b8d10f-1e9a5d258ae24834)
+2026-03-28 00:36:15.146 - Execution context opened (postgres 6; Main <gestion>; 2)
+2026-03-28 00:36:15.147 - Initiate connection to PostgreSQL database [gestion@localhost] for Main <gestion>
+2026-03-28 00:36:16.322 - Execution context opened (postgres 6; Metadata <gestion>; 3)
+2026-03-28 00:36:16.324 - Initiate connection to PostgreSQL database [gestion@localhost] for Metadata <gestion>
+2026-03-28 00:36:16.523 - Connected (postgres-jdbc-19d17b8d10f-1e9a5d258ae24834, PostgreSQL JDBC Driver [42.7.2])
+2026-03-28 00:36:16.672 - Execution context opened (postgres 6; SQLEditor <Script-4.sql>; 4)
+2026-03-28 00:36:16.676 - Initiate connection to PostgreSQL database [gestion@localhost] for SQLEditor <Script-4.sql>
+2026-03-28 01:08:59,927 [2570622]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 Gestion
+2026-03-28 01:09:14,093 [2584788]   WARN - #c.i.o.a.i.ActionUpdater - 1521 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-28 01:09:14,114 [2584809]   WARN - #c.i.o.a.i.ActionUpdater - 1539 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-28 01:09:37,260 [2607955]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 Gestion
+2026-03-28 01:09:39,303 [2609998]   WARN - #c.i.o.a.i.ActionUpdater - 1049 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-28 01:09:39,512 [2610207]   WARN - #c.i.o.a.i.ActionUpdater - 1258 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-28 01:11:57,292 [2747987]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 Gestion
+2026-03-28 01:12:00,867 [2751562]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 Gestion
+2026-03-28 01:25:01,716 [3532411]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 Gestion
+2026-03-28 01:25:18,546 [3549241]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 Gestion
+2026-03-28 01:25:25,255 [3555950]   WARN - #o.j.i.maven - updateAllMavenProjects started: incremental=true, IncrementalSyncAction Gestion
+2026-03-28 01:25:25,805 [3556500]   WARN - #o.j.i.maven - updateAllMavenProjects finished: incremental=true, IncrementalSyncAction Gestion
+2026-03-28 01:25:30,759 [3561454]   WARN - #o.j.i.maven - updateAllMavenProjects started: incremental=true, IncrementalSyncAction Gestion
+2026-03-28 01:25:31,067 [3561762]   WARN - #o.j.i.maven - updateAllMavenProjects finished: incremental=true, IncrementalSyncAction Gestion
+2026-03-28 01:29:15,194 [3785889]   WARN - #c.i.o.a.i.ActionUpdater - 1642 ms to call on BGT CreateFromTemplateGroup#children@ProjectViewPopup (com.intellij.ide.fileTemplates.actions.CreateFromTemplateGroup)
+2026-03-28 01:29:15,241 [3785936]   WARN - #c.i.o.a.i.Utils - 1713 ms to fillMenu@ProjectViewPopup
+2026-03-28 01:29:24,610 [3795305]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2026-03-28 01:29:24,613 [3795308]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.instance' has been deprecated in favor of 'resource.loader.includes.instance'
+SWT SessionManagerDBus: Failed to UnregisterClient: GDBus.Error:org.freedesktop.DBus.Error.NoReply: Message recipient disconnected from message bus without replying
+
+(DBeaver:7957): Gdk-CRITICAL **: 01:31:00.133: gdk_threads_set_lock_functions: assertion 'gdk_threads_lock == NULL && gdk_threads_unlock == NULL' failed
+2026-03-28 01:31:02.188 - DBeaver is stopping
+2026-03-28 01:31:02.418 - Stop instance server
+2026-03-28 01:31:03.422 - Instance server has been stopped
+[Parent 5137, Main Thread] WARNING: g_dbus_connection_unregister_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed: 'glib warning', file /build/firefox/parts/firefox/build/toolkit/xre/nsSigHandlers.cpp:201
+
+(firefox_firefox:5137): GLib-GIO-CRITICAL **: 01:31:10.958: g_dbus_connection_unregister_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed
+[Parent 5137, Main Thread] WARNING: nsDBusRemoteServer: Unable to unregister root object from within onNameLost!: 'glib warning', file /build/firefox/parts/firefox/build/toolkit/xre/nsSigHandlers.cpp:201
+
+** (firefox_firefox:5137): WARNING **: 01:31:10.958: nsDBusRemoteServer: Unable to unregister root object from within onNameLost!
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 06:29:53.613: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 06:30:00.182: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Gtk-Message: 16:04:21.099: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 16:04:28.307: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+libva info: VA-API version 1.20.0
+libva info: Trying to open /snap/firefox/7967/gnome-platform/usr/lib/x86_64-linux-gnu/dri/radeonsi_drv_video.so
+libva info: Found init function __vaDriverInit_1_14
+libva info: va_openDriver() returns 0
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 22:16:37.247: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 22:16:55.740: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+[0.251s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-29 22:21:06,084 [  14184]   WARN - #c.i.o.v.n.p.FSRecords - Records storage [/home/julieth/.cache/JetBrains/IdeaIC2025.2/caches/records.dat] was in use by process [OwnershipInfo{owner pid: 7027, acquired at: 1774675585062}] which is not exist now (wasn't closed properly/crashed?) -> re-acquiring forcibly
+2026-03-29 22:21:06,781 [  14881]   WARN - #c.i.o.v.n.p.PersistentFSLoader - [VFS load problem]: VFS wasn't safely shut down: records.wasClosedProperly is false
+2026-03-29 22:21:10,321 [  18421]   WARN - #c.i.o.v.n.p.PersistentFSLoader - [VFS load problem]: NOT_CLOSED_PROPERLY recovered, no problems remain
+2026-03-29 22:21:12,347 [  20447]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: VibrantInk from plugins: DBN
+2026-03-29 22:21:12,348 [  20448]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monocai from plugins: DBN
+2026-03-29 22:21:12,350 [  20450]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Twilight from plugins: DBN
+2026-03-29 22:21:12,351 [  20451]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Islands Light from plugins: DBN
+2026-03-29 22:21:12,351 [  20451]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: WarmNeon from plugins: DBN
+2026-03-29 22:21:12,351 [  20451]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Cobalt from plugins: DBN
+2026-03-29 22:21:12,352 [  20452]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: AllHallowsEve from plugins: DBN
+2026-03-29 22:21:12,355 [  20455]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Classic Light from plugins: DBN
+2026-03-29 22:21:12,356 [  20456]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monokai from plugins: DBN
+2026-03-29 22:21:12,356 [  20456]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Railscasts from plugins: DBN
+2026-03-29 22:21:12,357 [  20457]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Blackboard from plugins: DBN
+2026-03-29 22:21:16,575 [  24675]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-29 22:21:17,212 [  25312]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-29 22:21:17,213 [  25313]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-29 22:21:24,973 [  33073]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-29 22:21:24,981 [  33081]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-29 22:21:35,303 [  43403]   WARN - #c.i.o.a.i.ActionUpdater - 15555 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-29 22:21:40,156 [  48256]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-29 22:21:40,157 [  48257]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-29 22:21:44,553 [  52653]   WARN - #c.i.o.a.i.ActionUpdater - 4055 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-29 22:21:45,230 [  53330]   WARN - #c.i.o.a.i.ActionUpdater - 3846 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-29 22:21:45,541 [  53641]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+com.intellij.diagnostic.PluginException: Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.doRunPostStartupActivities(StartupManagerImpl.kt:317)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$doRunPostStartupActivities(StartupManagerImpl.kt:72)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:210)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:209)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:277)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+2026-03-29 22:21:47,286 [  55386]   WARN - #c.i.o.a.i.ActionUpdater - 1238 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-29 22:21:49,263 [  57363]   WARN - #c.i.o.a.i.ActionUpdater - 1865 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-29 22:21:52,759 [  60859]   WARN - #c.i.o.a.i.ActionUpdater - 1864 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-29 22:21:52,764 [  60864]   WARN - #c.i.o.a.i.ActionUpdater - 3029 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-29 22:21:59,696 [  67796]   WARN - #c.i.o.a.i.ActionUpdater - 8389 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-29 22:22:00,646 [  68746]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-29 22:30:14,425 [ 562525]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-29 22:30:21,082 [ 569182]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+libva info: VA-API version 1.20.0
+libva info: Trying to open /snap/firefox/7967/gnome-platform/usr/lib/x86_64-linux-gnu/dri/radeonsi_drv_video.so
+libva info: Found init function __vaDriverInit_1_14
+libva info: va_openDriver() returns 0
+2026-03-29 22:38:22,272 [1050372]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2026-03-29 22:38:22,274 [1050374]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.class' has been deprecated in favor of 'resource.loader.includes.class'
+2026-03-29 23:17:49,546 [3417646]   WARN - org.apache.velocity.deprecation - configuration key 'resource.loader' has been deprecated in favor of 'resource.loaders'
+2026-03-29 23:17:49,548 [3417648]   WARN - org.apache.velocity.deprecation - configuration key 'includes.resource.loader.instance' has been deprecated in favor of 'resource.loader.includes.instance'
+2026-03-29 23:27:28,166 [3996266]   WARN - #c.i.o.a.i.Utils - 1343 ms to fillMenu@EditorPopup
+2026-03-29 23:48:22,570 [5250670]   WARN - #o.j.i.maven - updateAllMavenProjects started: incremental=false, MavenProjectsManager.forceUpdateAllProjectsOrFindAllAvailablePomFiles Gestion
+2026-03-29 23:48:34,744 [5262844]   WARN - #o.j.i.maven - updateAllMavenProjects finished: incremental=false, MavenProjectsManager.forceUpdateAllProjectsOrFindAllAvailablePomFiles Gestion
+2026-03-29 23:48:34,747 [5262847]   WARN - #o.j.i.maven - updateAllMavenProjects started: incremental=true, IncrementalSyncAction Gestion
+2026-03-29 23:48:34,961 [5263061]   WARN - #o.j.i.maven - updateAllMavenProjects finished: incremental=true, IncrementalSyncAction Gestion
+2026-03-30 00:07:44,126 [6412226]   WARN - #o.j.i.maven - updateAllMavenProjects started: incremental=true, IncrementalSyncAction Gestion
+2026-03-30 00:07:44,309 [6412409]   WARN - #o.j.i.maven - updateAllMavenProjects finished: incremental=true, IncrementalSyncAction Gestion
+2026-03-30 00:09:50,299 [6538399]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:11:32,666 [6640766]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:16:21,182 [6929282]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:18:37,852 [7065952]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:19:18,368 [7106468]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:23:44,071 [7372171]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:26:02,770 [7510870]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:28:31,905 [7660005]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:30:57,904 [7806004]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:39:29,168 [8317268]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 00:50:30,348 [8978448]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/local/share/doc /usr/local/share/doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/local/share/doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gimp/2.0/help /usr/share/gimp/2.0/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gimp/2.0/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/gtk-doc /usr/share/gtk-doc none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/gtk-doc" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/libreoffice/help /usr/share/libreoffice/help none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/libreoffice/help" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme /usr/share/sphinx_rtd_theme none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/sphinx_rtd_theme" because it would affect the host in "/var/lib/snapd"
+update.go:85: cannot change mount namespace according to change mount (/var/lib/snapd/hostfs/usr/share/xubuntu-docs /usr/share/xubuntu-docs none bind,ro 0 0): cannot write to "/var/lib/snapd/hostfs/usr/share/xubuntu-docs" because it would affect the host in "/var/lib/snapd"
+Gtk-Message: 06:22:22.487: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 06:22:28.961: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+libva info: VA-API version 1.20.0
+libva info: Trying to open /snap/firefox/7967/gnome-platform/usr/lib/x86_64-linux-gnu/dri/radeonsi_drv_video.so
+libva info: Found init function __vaDriverInit_1_14
+libva info: va_openDriver() returns 0
+[Child 5643, MediaDecoderStateMachine #17] WARNING: Decoder=7f2184bbfd00 Decode error: NS_ERROR_DOM_MEDIA_RANGE_ERR (0x806e0069) - Result<already_AddRefed<MediaRawData>, MediaResult> mozilla::SampleIterator::GetNext(): Sample data byte range beyond end of resource: file /build/firefox/parts/firefox/build/dom/media/MediaDecoderStateMachineBase.cpp:168
+[0.216s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-30 13:25:12,635 [  25295]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: VibrantInk from plugins: DBN
+2026-03-30 13:25:12,645 [  25305]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monocai from plugins: DBN
+2026-03-30 13:25:12,649 [  25309]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Twilight from plugins: DBN
+2026-03-30 13:25:12,649 [  25309]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Islands Light from plugins: DBN
+2026-03-30 13:25:12,650 [  25310]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: WarmNeon from plugins: DBN
+2026-03-30 13:25:12,650 [  25310]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Cobalt from plugins: DBN
+2026-03-30 13:25:12,650 [  25310]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: AllHallowsEve from plugins: DBN
+2026-03-30 13:25:12,663 [  25323]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Classic Light from plugins: DBN
+2026-03-30 13:25:12,663 [  25323]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monokai from plugins: DBN
+2026-03-30 13:25:12,667 [  25327]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Railscasts from plugins: DBN
+2026-03-30 13:25:12,667 [  25327]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Blackboard from plugins: DBN
+2026-03-30 13:25:16,928 [  29588]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-30 13:25:17,608 [  30268]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-30 13:25:17,609 [  30269]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-30 13:25:27,540 [  40200]   WARN - #c.i.w.i.i.WorkspaceModelMessageDeliveryListener - Long WSM event processing. Topic=WorkspaceModelChangeListener, offender=class com.intellij.jarRepository.RepositoryLibraryChangeListener, message=changed, time=275ms
+2026-03-30 13:25:36,707 [  49367]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-30 13:25:36,715 [  49375]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-30 13:25:53,727 [  66387]   WARN - #c.i.o.a.i.ActionUpdater - 7760 ms total to grab EDT 1 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-30 13:26:00,550 [  73210]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-30 13:26:00,599 [  73259]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-30 13:26:01,225 [  73885]   WARN - #c.i.o.a.i.ActionUpdater - 6486 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-30 13:26:01,450 [  74110]   WARN - #c.i.o.a.i.ActionUpdater - 14613 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-30 13:26:04,845 [  77505]   WARN - #c.i.o.a.i.ActionUpdater - 3837 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-30 13:26:07,372 [  80032]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+com.intellij.diagnostic.PluginException: Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.doRunPostStartupActivities(StartupManagerImpl.kt:317)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$doRunPostStartupActivities(StartupManagerImpl.kt:72)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:210)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:209)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:277)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+2026-03-30 13:26:14,139 [  86799]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-30 13:26:24,465 [  97125]   WARN - #c.i.o.a.i.ActionUpdater - 2601 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-30 13:26:24,465 [  97125]   WARN - #c.i.o.a.i.ActionUpdater - 2591 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-30 13:26:29,827 [ 102487]   WARN - #c.i.o.a.i.ActionUpdater - 4140 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-30 13:28:10,931 [ 203591]   WARN - #c.i.o.a.i.ActionUpdater - 2579 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-30 13:32:31,175 [ 463835]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 14:01:26,845 [2199505]   WARN - #c.i.o.v.i.VirtualFilePointerManagerImpl - VirtualFilePointerManagerImpl.prepareChange(1 events): 7915ms.; total pointers: 24; afterElapsedMs: 309ms.; eventList.size(): 2; toFirePointers.size(): 1; toUpdateNodes.size(): 1; eventList: [com.intellij.openapi.vcs.impl.projectlevelman.NewMappings$1@3a495c8 -> [file:///home/julieth/Documentos/Gestion/backend-api-collection], Multicaster -> [file:///home/julieth/Documentos/Gestion/backend-api-collection]]
+2026-03-30 14:01:32,666 [2205326]   WARN - #c.i.d.PerformanceWatcherImpl - UI was frozen for 28077ms, details saved to /home/julieth/.cache/JetBrains/IdeaIC2025.2/log/threadDumps-freeze-20260330-140058-IC-252.28539.33-CoroutineContext$DefaultImpls.plus$lambda$0-28sec
+2026-03-30 14:01:42,844 [2215504]   WARN - #c.i.o.v.n.RefreshSession - Long VFS change processing (62100ms, 1 events): [Compound VfsEvent[deleted: file:///home/julieth/Documentos/Gestion/backend-api-collection]; induced: []]
+2026-03-30 14:01:54,730 [2227390]   WARN - #c.i.d.PerformanceWatcherImpl - UI was frozen for 35785ms, details saved to /home/julieth/.cache/JetBrains/IdeaIC2025.2/log/threadDumps-freeze-20260330-140135-IC-252.28539.33-35sec
+2026-03-30 14:02:02,656 [2235316]   WARN - #c.i.d.PerformanceWatcherImpl - UI was frozen for 9245ms, details saved to /home/julieth/.cache/JetBrains/IdeaIC2025.2/log/threadDumps-freeze-20260330-140159-IC-252.28539.33-Unsafe.allocateInstance-9sec
+2026-03-30 14:02:18,041 [2250701]   WARN - #kotlinx.coroutines.CoroutineScope - Index diagnostic shutdown for [file:///home/julieth/Documentos/Gestion/backend-api-collection (invalid), file:///home/julieth/Documentos/Gestion/Kino-back, file:///home/julieth/Documentos/Gestion] is cancelled by timeout
+2026-03-30 14:02:19,719 [2252379]   WARN - #c.i.o.a.i.ActionUpdater - 9741 ms to call on BGT DefaultActionGroup#children@RunnerToolbar (RunContentBuilder$EmptyWhenDuplicate/DefaultActionGroupWithDelegate/DefaultActionGroup)
+2026-03-30 14:02:19,720 [2252380]   WARN - #c.i.o.a.i.ActionUpdater - 9407 ms to call on BGT PreviousOccurenceToolbarAction#presentation@RunnerToolbar (PreviousOccurenceToolbarAction)
+2026-03-30 14:02:22,845 [2255505]   WARN - #c.i.o.a.i.ActionUpdater - 9534 ms total to grab EDT 1 times to expand DefaultActionGroup#expandGroup@RunnerToolbar (DefaultActionGroupWithDelegate/DefaultActionGroup). Use `ActionUpdateThread.BGT`.
+2026-03-30 14:02:22,847 [2255507]   WARN - #c.i.o.a.i.ActionUpdater - 18393 ms total to grab EDT 2 times to expand DefaultActionGroup#expandGroup@RunnerToolbar (DefaultActionGroup). Use `ActionUpdateThread.BGT`.
+2026-03-30 14:02:22,848 [2255508]   WARN - #c.i.o.a.i.ActionUpdater - 18421 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-30 14:02:25,721 [2258381]   WARN - #c.i.o.a.i.ActionUpdater - 2582 ms to call on BGT DefaultActionGroup#children@RunnerToolbar (RunContentBuilder$EmptyWhenDuplicate/DefaultActionGroupWithDelegate/DefaultActionGroup)
+2026-03-30 14:02:25,721 [2258381]   WARN - #c.i.o.a.i.ActionUpdater - 2406 ms to call on BGT PreviousOccurenceToolbarAction#presentation@RunnerToolbar (PreviousOccurenceToolbarAction)
+2026-03-30 14:02:27,292 [2259952]   WARN - #c.i.o.a.i.ActionUpdater - 1238 ms to call on BGT PreviousOccurenceToolbarAction#presentation@RunnerToolbar (PreviousOccurenceToolbarAction)
+2026-03-30 14:02:30,375 [2263035]   WARN - #c.i.o.a.i.ActionUpdater - 2863 ms to call on BGT DefaultActionGroup#children@RunnerToolbar (RunContentBuilder$EmptyWhenDuplicate/DefaultActionGroupWithDelegate/DefaultActionGroup)
+2026-03-30 14:02:30,380 [2263040]   WARN - #c.i.o.a.i.ActionUpdater - 4188 ms total to grab EDT 3 times to expand DefaultActionGroup#expandGroup@RunnerToolbar (DefaultActionGroup). Use `ActionUpdateThread.BGT`.
+2026-03-30 14:02:30,383 [2263043]   WARN - #c.i.o.a.i.ActionUpdater - 3843 ms total to grab EDT 3 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-30 14:09:08,068 [2660728]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 14:11:05,412 [2778072]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 14:23:50,365 [3543025]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 14:34:45,099 [4197759]   WARN - #o.j.i.maven - updateMavenProjects started: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 Gestion
+2026-03-30 14:35:11,183 [4223843]   WARN - #c.i.w.i.i.WorkspaceModelMessageDeliveryListener - Long WSM event processing. Topic=WorkspaceModelChangeListener, offender=class org.jetbrains.kotlin.idea.base.fir.projectStructure.FirOrderedWorkspaceModelChangeListener, message=beforeChanged, time=256ms
+2026-03-30 14:35:13,250 [4225910]   WARN - #o.j.i.maven - updateMavenProjects finished: incremental=true, MavenProjectAware.reloadProject, sync selected 1 0 Gestion
+2026-03-30 14:42:20,855 [4653515]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+[0.127s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-03-30 15:05:36,009 [   7527]   WARN - #c.i.o.v.n.p.FSRecords - Records storage [/home/julieth/.cache/JetBrains/IdeaIC2025.2/caches/records.dat] was in use by process [OwnershipInfo{owner pid: 24556, acquired at: 1774895106900}] which is not exist now (wasn't closed properly/crashed?) -> re-acquiring forcibly
+2026-03-30 15:05:36,581 [   8099]   WARN - #c.i.o.v.n.p.PersistentFSLoader - [VFS load problem]: VFS wasn't safely shut down: records.wasClosedProperly is false
+2026-03-30 15:05:40,337 [  11855]   WARN - #c.i.o.v.n.p.PersistentFSLoader - [VFS load problem]: NOT_CLOSED_PROPERLY recovered, no problems remain
+2026-03-30 15:05:41,805 [  13323]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-03-30 15:05:44,141 [  15659]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-03-30 15:05:44,149 [  15667]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-03-30 15:05:44,356 [  15874]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: VibrantInk from plugins: DBN
+2026-03-30 15:05:44,357 [  15875]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monocai from plugins: DBN
+2026-03-30 15:05:44,362 [  15880]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Twilight from plugins: DBN
+2026-03-30 15:05:44,364 [  15882]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Islands Light from plugins: DBN
+2026-03-30 15:05:44,367 [  15885]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: WarmNeon from plugins: DBN
+2026-03-30 15:05:44,370 [  15888]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Cobalt from plugins: DBN
+2026-03-30 15:05:44,371 [  15889]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: AllHallowsEve from plugins: DBN
+2026-03-30 15:05:44,371 [  15889]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Classic Light from plugins: DBN
+2026-03-30 15:05:44,372 [  15890]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monokai from plugins: DBN
+2026-03-30 15:05:44,372 [  15890]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Railscasts from plugins: DBN
+2026-03-30 15:05:44,373 [  15891]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Blackboard from plugins: DBN
+2026-03-30 15:05:50,952 [  22470]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-30 15:05:50,956 [  22474]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-03-30 15:06:01,926 [  33444]   WARN - #c.i.o.a.i.ActionUpdater - 10537 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-03-30 15:06:02,792 [  34310]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-03-30 15:06:02,792 [  34310]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-30 15:06:04,261 [  35779]   WARN - #c.i.o.a.i.ActionUpdater - 4111 ms total to grab EDT 2 times to expand EditorMarkupModelImpl$StatusToolbarGroup#expandGroup@EditorInspectionsToolbar (com.intellij.openapi.editor.impl.EditorMarkupModelImpl$StatusToolbarGroup). Use `ActionUpdateThread.BGT`.
+2026-03-30 15:06:07,801 [  39319]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+com.intellij.diagnostic.PluginException: Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.doRunPostStartupActivities(StartupManagerImpl.kt:317)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$doRunPostStartupActivities(StartupManagerImpl.kt:72)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:210)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:209)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:277)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+2026-03-30 15:06:11,871 [  43389]   WARN - #c.i.o.a.i.ActionUpdater - 2051 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Debug))
+2026-03-30 15:06:11,876 [  43394]   WARN - #c.i.o.a.i.ActionUpdater - 2259 ms to call on BGT ExecutorRegistryImpl$ExecutorAction#presentation@NewUiRunToolbar (com.intellij.execution.ExecutorRegistryImpl$ExecutorAction(id=Run))
+2026-03-30 15:06:13,820 [  45338]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-03-30 15:07:27,603 [ 119121]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 15:08:04,645 [ 156163]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
+2026-03-30 15:08:12,832 [ 164350]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2026-03-30 15:08:18,927 [ 170445]   WARN - #c.i.d.PerformanceWatcherImpl - UI was frozen for 6437ms, details saved to /home/julieth/.cache/JetBrains/IdeaIC2025.2/log/threadDumps-freeze-20260330-150817-IC-252.28539.33-Hashtable.put-6sec
+2026-03-30 15:13:07,024 [ 458542]   WARN - #c.i.o.v.i.h.RemoteFileInfoImpl - Virtual local file not found for /home/julieth/.cache/JetBrains/IdeaIC2025.2/httpFileSystem/catalog1.json
+2026-03-30 15:30:34,401 [1505919]   WARN - #o.j.k.i.s.r.KotlinCompilerReferenceIndexStorage - kotlin-data-container is not found
