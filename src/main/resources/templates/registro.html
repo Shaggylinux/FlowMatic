@@ -32,8 +32,8 @@
 
                 <div class="input-group">
                     <label>Correo</label>
-                    <input type="correo" th:field="*{correo}" placeholder="tu@correo.com">
-                    <p th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></p>
+                    <input type="email" th:field="*{email}" placeholder="tu@correo.com">
+                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                 </div>
 
                 <div class="input-group">

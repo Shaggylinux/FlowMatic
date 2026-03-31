@@ -25,15 +25,15 @@ public class AdminController {
      */
     @PostMapping("/eliminar-usuario")
     @ResponseBody
-    public String eliminarUsuario(@RequestParam String correo) {
+    public String eliminarUsuario(@RequestParam String email) {
         try {
-            usuarioRepository.findByCorreo(correo).ifPresentOrElse(
+            usuarioRepository.findByEmail(email).ifPresentOrElse(
                 usuario -> {
                     usuarioRepository.delete(usuario);
-                    logger.info("Usuario eliminado: {}", correo);
+                    logger.info("Usuario eliminado: {}", email);
                 },
                 () -> {
-                    logger.warn("Usuario no encontrado: {}", correo);
+                    logger.warn("Usuario no encontrado: {}", email);
                 }
             );
             return "Usuario eliminado exitosamente";

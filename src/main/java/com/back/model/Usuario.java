@@ -22,7 +22,7 @@ public class Usuario {
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "Ingresa un correo válido")
     @Column(nullable = false, unique = true)
-    private String correo;
+    private String email;
 
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 8, message = "La contraseña debe tener mínimo 8 caracteres")
