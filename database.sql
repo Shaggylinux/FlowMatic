@@ -1,7 +1,7 @@
 create table if not exists usuarios (
     id serial primary key,
     username text not null,
-    correo text not null unique,
+    email text not null unique,
     clave text not null,
     telefono text,             
     rol text not null,          
