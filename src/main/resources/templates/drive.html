@@ -13,93 +13,90 @@
     <div class="sidebar">
         <h2>📁 Flowmatic</h2>
 
-        <a th:href="@{/}">Mi Drive</a>
+        <div class="new-folder-container">
+            <button class="btn-new" onclick="solicitarNombreCarpeta()">
+                <span class="plus-icon">+</span> Nueva Carpeta
+            </button>
+        </div>
+
+        <a th:href="@{/}" style="font-weight: bold; color: #10b981;">🏠 Principal</a>
+
+        <div class="sidebar-folders" style="margin-top: 20px;">
+            <p style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Mis Carpetas</p>
+<div th:each="folder : ${carpetas}" style="margin-bottom: 5px;">
+    <a th:href="@{/(folder=${folder.ubicacion.replace('superfolder/', '')})}"
+       style="font-size: 14px; display: flex; align-items: center; gap: 8px;">
+        📁 <span th:text="${folder.nombre}"></span>
+    </a>
+</div>
+        </div>
 
         <div class="logout">
             <a th:href="@{/login?logout}">Cerrar sesión</a>
         </div>
+
+        <form id="formCrearCarpeta" th:action="@{/crear-carpeta}" method="post" style="display: none;">
+            <input type="hidden" name="nombre" id="inputNombreCarpeta">
+            <input type="hidden" name="folderDestino" th:value="${folderActual}">
+        </form>
     </div>
 
     <div class="main-content">
-
         <div class="header">
-            <h2>Mi Drive</h2>
+            <h2>Archivos en: <span th:text="${folderActual.isEmpty() ? 'Raíz' : folderActual}" style="color: #10b981;"></span></h2>
         </div>
 
         <div class="actions">
-
-            <form th:action="@{/crear-carpeta}" method="post">
-                <input type="hidden" name="folderDestino" th:value="${folderActual}">
-                <input type="text" name="nombre" placeholder="Nueva carpeta..." required>
-                <button type="submit">Crear</button>
-            </form>
-
             <form th:action="@{/subir-archivo}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="folderDestino" th:value="${folderActual}">
                 <input type="file" name="archivo" required>
                 <button type="submit">Subir</button>
             </form>
-
         </div>
 
         <div class="table-container">
             <table>
-
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Tipo</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
-
                 <tbody>
-                    <tr th:each="item : ${objetos}">
-
+                    <tr th:each="archivo : ${archivos}">
+                        <td>📄 [[${archivo.nombre}]]</td>
                         <td>
-                            <span th:if="${item.esCarpeta}">
-                                📁
-                                <a th:href="@{/(folder=${folderActual + (folderActual.isEmpty() ? '' : '/') + item.nombre})}"
-                                   th:text="${item.nombre}">
-                                </a>
-                            </span>
-
-                            <span th:if="${!item.esCarpeta}">
-                                📄 [[${item.nombre}]]
-                            </span>
-                        </td>
-
-                        <td th:text="${item.esCarpeta ? 'Carpeta' : 'Archivo'}"></td>
-
-                        <td>
-                            <div th:if="${!item.esCarpeta}">
-
-                                <a th:href="@{/descargar(archivoId=${item.id})}">
-                                    Descargar
-                                </a>
-
-                                <form th:action="@{/eliminar}" method="post"
-                                      onsubmit="return confirm('¿Eliminar archivo?');">
-                                    <input type="hidden" name="archivoId" th:value="${item.id}">
-                                    <button type="submit">Eliminar</button>
+                            <div style="display: flex; gap: 15px; align-items: center;">
+                                <a th:href="@{/descargar(archivoId=${archivo.id})}" 
+                                   style="color: #10b981; text-decoration: none; font-weight: 500;">Descargar</a>
+                                
+                                <form th:if="${archivo.propietario == usuarioActual}" 
+                                      th:action="@{/eliminar}" method="post" 
+                                      onsubmit="return confirm('¿Eliminar archivo?');" style="margin:0;">
+                                    <input type="hidden" name="archivoId" th:value="${archivo.id}">
+                                    <button type="submit" style="background: none; color: #ef4444; padding:0; border:none;">Eliminar</button>
                                 </form>
-
-                            </div>
-
-                            <div th:if="${item.esCarpeta}">
-                                —
                             </div>
                         </td>
-
+                    </tr>
+                    <tr th:if="${archivos.isEmpty()}">
+                        <td colspan="2" style="text-align: center; color: #94a3b8; padding: 40px;">Esta carpeta está vacía.</td>
                     </tr>
                 </tbody>
-
             </table>
         </div>
-
     </div>
-
 </div>
+
+<script>
+    function solicitarNombreCarpeta() {
+        let nombre = prompt("Ingresa el nombre de la nueva carpeta:");
+        if (nombre != null && nombre.trim() !== "") {
+            document.getElementById('inputNombreCarpeta').value = nombre;
+            document.getElementById('formCrearCarpeta').submit();
+        }
+    }
+</script>
 
 </body>
 </html>

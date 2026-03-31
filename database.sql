@@ -6,7 +6,7 @@ create table if not exists usuarios (
     telefono text,             
     rol text not null,          
     activo boolean not null default false,
-    tokenactivacion text unique
+    tokenActivacion text unique
 );
 
 create table if not exists archivos (

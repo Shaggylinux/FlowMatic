@@ -93,3 +93,62 @@ background: #059669;
 .logout {
 margin-top: 20px;
 }
+
+/* Estilo para el botón de Nueva Carpeta */
+.new-folder-container {
+    margin-bottom: 25px;
+}
+
+.btn-new {
+    width: 100%;
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.btn-new:hover {
+    background: #059669;
+    transform: scale(1.02);
+}
+
+.btn-new .plus-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.sidebar-folders {
+    max-height: 400px; /* Ajusta según necesites */
+    overflow-y: auto;
+    margin-top: 20px;
+    border-top: 1px solid #1e293b;
+    padding-top: 15px;
+}
+
+.sidebar-folders a {
+    padding: 8px 5px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.sidebar-folders a:hover {
+    background: #1e293b;
+    color: #10b981 !important;
+}
+
+/* Scrollbar personalizada para que no se vea fea en el sidebar oscuro */
+.sidebar-folders::-webkit-scrollbar {
+    width: 5px;
+}
+.sidebar-folders::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
+}

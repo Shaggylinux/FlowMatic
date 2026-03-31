@@ -11,14 +11,14 @@
 <header class="navbar">
     <div class="logo">Flowmatic</div>
     <nav>
-        <a href="#">Inicio</a>
+        <a th:href="@{/home}">Inicio</a>
         <a href="#">Características</a>
         <a href="#">Servicios</a>
         <a href="#">Contacto</a>
     </nav>
     <div class="nav-buttons">
-        <button class="btn-outline">Iniciar Sesión</button>
-        <button class="btn-primary">Comenzar</button>
+        <a th:href="@{/login}" class="btn-outline">Iniciar Sesión</a>
+        <a th:href="@{/registro}" class="btn-primary">Comenzar</a>
     </div>
 </header>
 
@@ -38,8 +38,7 @@
         </p>
 
         <div class="hero-buttons">
-            <button class="btn-primary">Comenzar Ahora</button>
-            <button class="btn-outline">Ver Demo</button>
+            <a th:href="@{/registro}" class="btn-primary">Comenzar Ahora</a>
         </div>
 
         <div class="stats">
