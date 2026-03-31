@@ -1,17 +1,19 @@
 create table if not exists usuarios (
-	id serial primary key,
-	username text,
-	correo text,
-	clave text,
-	cedula text,
-	role text
+    id serial primary key,
+    username text not null,
+    correo text not null unique,
+    clave text not null,
+    telefono text,             
+    rol text not null,          
+    activo boolean not null default false,
+    tokenactivacion text unique
 );
 
 create table if not exists archivos (
-        id serial primary key,
-        nombre text,
-        ubicacion text,
-        propietario text,
-        destinario text,
-        es_carpeta boolean
+    id serial primary key,
+    nombre text,
+    ubicacion text,
+    propietario text,
+    destinario text,
+    es_carpeta boolean
 );

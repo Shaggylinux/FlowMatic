@@ -24,42 +24,53 @@ public class UsuarioService {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public String registrarUsuario(Usuario usuario) {
-        logger.info("Iniciando registro de usuario: {}", usuario.getEmail());
-        
-        if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
-            logger.warn("Correo duplicado: {}", usuario.getEmail());
+
+        logger.info("Iniciando registro de usuario: {}", usuario.getCorreo());
+
+        // 🔍 Validar duplicado
+        if (usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()) {
+            logger.warn("Correo duplicado: {}", usuario.getCorreo());
             return "DUPLICADO";
         }
 
+        // 🔐 Encriptar contraseña
         usuario.setClave(encoder.encode(usuario.getClave()));
 
+        // 👤 Rol por defecto
         if (usuario.getRol() == null || usuario.getRol().isEmpty()) {
             usuario.setRol("ROLE_USER");
         }
 
+        // 🔑 Token activación
         String token = UUID.randomUUID().toString();
         usuario.setTokenActivacion(token);
         usuario.setActivo(false);
 
         usuarioRepository.save(usuario);
-        logger.info("Usuario guardado en BD: {}", usuario.getEmail());
+        logger.info("Usuario guardado en BD: {}", usuario.getCorreo());
 
-        logger.info("Intentando enviar email de verificación a: {}", usuario.getEmail());
-        
-        boolean emailSent = emailService.enviarEmailVerificacion(usuario.getEmail(), usuario.getUsername(), token);
-        
+        // 📧 Enviar correo
+        logger.info("Intentando enviar email de verificación a: {}", usuario.getCorreo());
+
+        boolean emailSent = emailService.enviarEmailVerificacion(
+                usuario.getCorreo(),
+                usuario.getUsername(),
+                token
+        );
+
         if (emailSent) {
             logger.info("Email enviado correctamente");
-            return "EXITOSO";
         } else {
             logger.warn("Email no pudo ser enviado, pero el usuario se registró");
-            return "EXITOSO";
         }
+
+        return "EXITOSO";
     }
 
     public boolean activarCuenta(String token) {
+
         logger.info("Buscando token de activación: {}", token);
-        
+
         var optional = usuarioRepository.findByTokenActivacion(token);
 
         if (optional.isEmpty()) {
@@ -71,10 +82,9 @@ public class UsuarioService {
         usuario.setActivo(true);
         usuario.setTokenActivacion(null);
         usuarioRepository.save(usuario);
-        
-        logger.info("Cuenta activada para: {}", usuario.getEmail());
+
+        logger.info("Cuenta activada para: {}", usuario.getCorreo());
 
         return true;
     }
 }
-

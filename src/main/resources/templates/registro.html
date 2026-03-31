@@ -32,7 +32,7 @@
 
                 <div class="input-group">
                     <label>Correo</label>
-                    <input type="email" th:field="*{correo}" placeholder="tu@correo.com">
+                    <input type="correo" th:field="*{correo}" placeholder="tu@correo.com">
                     <p th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></p>
                 </div>
 

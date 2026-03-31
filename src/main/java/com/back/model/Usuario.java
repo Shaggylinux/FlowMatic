@@ -10,6 +10,7 @@ import lombok.Data;
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +22,7 @@ public class Usuario {
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "Ingresa un correo válido")
     @Column(nullable = false, unique = true)
-    private String email;
+    private String correo;
 
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 8, message = "La contraseña debe tener mínimo 8 caracteres")
@@ -36,4 +37,7 @@ public class Usuario {
 
     @Column(unique = true)
     private String tokenActivacion;
+
+    @Column(nullable = true)
+    private String telefono;
 }

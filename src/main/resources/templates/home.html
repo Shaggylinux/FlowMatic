@@ -1,122 +1,86 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
-    <title>Flowmatic</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
-
 <body>
 
-<nav class="navbar">
-    <div class="container nav-content">
-        <h2 class="logo">Flowmatic</h2>
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">Flowmatic</div>
+    <nav>
+        <a href="#">Inicio</a>
+        <a href="#">Características</a>
+        <a href="#">Servicios</a>
+        <a href="#">Contacto</a>
+    </nav>
+    <div class="nav-buttons">
+        <button class="btn-outline">Iniciar Sesión</button>
+        <button class="btn-primary">Comenzar</button>
+    </div>
+</header>
 
-        <div class="nav-links">
-            <a href="#home">Inicio</a>
-            <a href="#features">Características</a>
-            <a href="#services">Servicios</a>
-            <a href="#contact">Contacto</a>
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-text">
+        <span class="badge">Gestión Documental Empresarial</span>
+
+        <h1>
+            Gestión de Documentos 
+            <span class="highlight">Segura y Eficiente</span> 
+            para tu Empresa
+        </h1>
+
+        <p>
+            Potencia tu negocio con soluciones inteligentes, seguras y escalables.
+        </p>
+
+        <div class="hero-buttons">
+            <button class="btn-primary">Comenzar Ahora</button>
+            <button class="btn-outline">Ver Demo</button>
         </div>
 
-        <div class="nav-buttons">
-            <a th:href="@{/login}" class="btn-outline">Login</a>
-            <a th:href="@{/registro}" class="btn-primary">Comenzar</a>
+        <div class="stats">
+            <div><strong>500+</strong><span>Empresas</span></div>
+            <div><strong>99.9%</strong><span>Tiempo Activo</span></div>
+            <div><strong>24/7</strong><span>Soporte</span></div>
         </div>
     </div>
-</nav>
 
-<section id="home" class="hero">
-    <div class="container hero-content">
-        <div class="hero-text">
-            <span class="badge">Gestión Documental Empresarial</span>
-
-            <h1>
-                Gestión de Documentos 
-                <span class="highlight">Segura y Eficiente</span>
-            </h1>
-
-            <p>
-                Organiza, protege y accede a tus archivos desde cualquier lugar
-                con una plataforma moderna y confiable.
-            </p>
-
-            <div class="hero-buttons">
-                <button class="btn-primary">Comenzar Ahora</button>
-                <button class="btn-secondary">Ver Demo</button>
-            </div>
-        </div>
-
-        <div class="hero-image">
-            <div class="circle"></div>
-            <img src="https://via.placeholder.com/350" alt="Flowmatic">
-        </div>
-    </div>
-</section>
-
-<section id="features" class="features">
-    <div class="container">
-        <h2>Características</h2>
-
-        <div class="grid">
-            <div class="card">
-                <h3>🔒 Seguridad</h3>
-                <p>Cifrado avanzado y protección de datos.</p>
-            </div>
-
-            <div class="card">
-                <h3>☁️ Nube</h3>
-                <p>Accede a tus archivos desde cualquier lugar.</p>
-            </div>
-
-            <div class="card">
-                <h3>⚡ Velocidad</h3>
-                <p>Plataforma rápida y optimizada.</p>
-            </div>
-        </div>
+    <div class="hero-image">
+        <img src="img/logo.png" alt="Logo">
     </div>
 </section>
 
-<section id="services" class="services">
-    <div class="container">
-        <h2>Servicios</h2>
+<!-- FEATURES -->
+<section class="features">
+    <span class="badge">POR QUÉ ELEGIRNOS</span>
+    <h2>Características Confiables de <span class="highlight">Clase Mundial</span></h2>
 
-        <div class="grid">
-            <div class="card">
-                <h3>Gestión de Archivos</h3>
-                <p>Administra documentos fácilmente.</p>
-            </div>
+    <div class="cards">
+        <div class="card">
+            <h3>Seguridad Empresarial</h3>
+            <p>Protección de datos con cifrado avanzado.</p>
+        </div>
 
-            <div class="card">
-                <h3>Backup</h3>
-                <p>Respaldo automático seguro.</p>
-            </div>
+        <div class="card">
+            <h3>Almacenamiento en la Nube</h3>
+            <p>Acceso seguro desde cualquier lugar.</p>
+        </div>
+
+        <div class="card">
+            <h3>Velocidad Optimizada</h3>
+            <p>Rendimiento rápido y eficiente.</p>
+        </div>
+
+        <div class="card">
+            <h3>Control de Acceso</h3>
+            <p>Gestión de permisos por usuario.</p>
         </div>
     </div>
 </section>
-
-<section id="contact" class="contact">
-    <div class="container contact-grid">
-
-        <div>
-            <h2>Contáctanos</h2>
-            <p>Estamos listos para ayudarte.</p>
-        </div>
-
-        <form class="contact-form">
-            <input type="text" placeholder="Nombre">
-            <input type="email" placeholder="Correo">
-            <textarea placeholder="Mensaje"></textarea>
-            <button class="btn-primary">Enviar</button>
-        </form>
-
-    </div>
-</section>
-
-<footer class="footer">
-    <p>© 2026 Flowmatic - Todos los derechos reservados</p>
-</footer>
 
 </body>
 </html>
