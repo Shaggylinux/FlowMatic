@@ -3,8 +3,8 @@ create table if not exists usuarios (
     username text not null,
     email text not null unique,
     clave text not null,
-    telefono text,             
-    rol text not null,          
+    telefono text,
+    rol text not null,
     activo boolean not null default false,
     tokenActivacion text unique
 );
