@@ -17,3 +17,5 @@ create table if not exists archivos (
     destinario text,
     es_carpeta boolean
 );
+
+
