@@ -21,14 +21,17 @@
 
         <a th:href="@{/}" style="font-weight: bold; color: #10b981;">🏠 Principal</a>
 
-        <div class="sidebar-folders" style="margin-top: 20px;">
-            <p style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Mis Carpetas</p>
-<div th:each="folder : ${carpetas}" style="margin-bottom: 5px;">
-    <a th:href="@{/(folder=${folder.ubicacion.replace('superfolder/', '')})}"
-       style="font-size: 14px; display: flex; align-items: center; gap: 8px;">
-        📁 <span th:text="${folder.nombre}"></span>
-    </a>
-</div>
+        <div class="sidebar-folders">
+            <p style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                Mis Carpetas
+            </p>
+
+            <div th:each="folder : ${carpetas}" style="margin-bottom: 5px;">
+                <a th:href="@{/(folder=${folder.ubicacion.replace('superfolder/', '')})}"
+                   style="font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                    📁 <span th:text="${folder.nombre}"></span>
+                </a>
+            </div>
         </div>
 
         <div class="logout">
@@ -43,14 +46,27 @@
 
     <div class="main-content">
         <div class="header">
-            <h2>Archivos en: <span th:text="${folderActual.isEmpty() ? 'Raíz' : folderActual}" style="color: #10b981;"></span></h2>
+            <h2>
+                Archivos en:
+                <span th:text="${folderActual.isEmpty() ? 'Raíz' : folderActual}" style="color: #10b981;"></span>
+            </h2>
         </div>
 
+        <!-- 🔥 NUEVA SECCIÓN MEJORADA -->
         <div class="actions">
             <form th:action="@{/subir-archivo}" method="post" enctype="multipart/form-data">
+                
                 <input type="hidden" name="folderDestino" th:value="${folderActual}">
-                <input type="file" name="archivo" required>
-                <button type="submit">Subir</button>
+
+                <!-- BOTÓN BONITO -->
+                <label class="file-upload">
+                    <input type="file" name="archivo" required>
+                    <span>📂 Elegir archivo</span>
+                </label>
+
+                <!-- BOTÓN SUBIR -->
+                <button type="submit" class="btn-upload">Subir</button>
+
             </form>
         </div>
 
@@ -63,29 +79,38 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     <tr th:each="archivo : ${archivos}">
                         <td>📄 [[${archivo.nombre}]]</td>
                         <td>
-                            <div style="display: flex; gap: 15px; align-items: center;">
-                                <a th:href="@{/descargar(archivoId=${archivo.id})}" 
-                                   style="color: #10b981; text-decoration: none; font-weight: 500;">Descargar</a>
+                            <div class="acciones-botones">
+                                <a th:href="@{/descargar(archivoId=${archivo.id})}" class="btn-descargar">
+                                    Descargar
+                                </a>
                                 
                                 <form th:if="${archivo.propietario == usuarioActual}" 
-                                      th:action="@{/eliminar}" method="post" 
-                                      onsubmit="return confirm('¿Eliminar archivo?');" style="margin:0;">
-                                    <input type="hidden" name="archivoId" th:value="${archivo.id}">
-                                    <button type="submit" style="background: none; color: #ef4444; padding:0; border:none;">Eliminar</button>
-                                </form>
-                            </div>
+                                th:action="@{/eliminar}" method="post" 
+                                onsubmit="return confirm('¿Eliminar archivo?');">
+                                <input type="hidden" name="archivoId" th:value="${archivo.id}">
+                                <button type="submit" class="btn-eliminar">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+
+                    <tr th:if="${archivos.isEmpty()}">
+                        <td colspan="2" style="text-align: center; color: #94a3b8; padding: 40px;">
+                            Esta carpeta está vacía.
                         </td>
                     </tr>
-                    <tr th:if="${archivos.isEmpty()}">
-                        <td colspan="2" style="text-align: center; color: #94a3b8; padding: 40px;">Esta carpeta está vacía.</td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>
     </div>
+
 </div>
 
 <script>
