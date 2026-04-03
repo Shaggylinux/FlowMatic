@@ -26,7 +26,7 @@ public class EmailService {
         try {
             logger.info("📧 Preparando email de verificación para: {}", destinatario);
 
-            String enlaceActivacion = "http://localhost:" + serverPort + "/registro/activar?token=" + token;
+            String enlaceActivacion = "http://localhost:" + serverPort + "/registro/candidato/activar?token=" + token;
             
             String asunto = "Verificación de cuenta - FlowMatic";
             String mensaje = "Hola " + nombre + ",\n\n" +

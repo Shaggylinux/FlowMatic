@@ -19,6 +19,10 @@ public class Usuario {
     @Column(nullable = false)
     private String username;
 
+    @NotBlank(message = "El apellido es obligatorio")
+    @Column(nullable = false)
+    private String apellido;
+
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "Ingresa un correo válido")
     @Column(nullable = false, unique = true)
@@ -36,7 +40,7 @@ public class Usuario {
     private boolean activo = false;
 
     @Column(unique = true)
-    private String tokenActivacion;
+    private String tokenactivacion;
 
     @Column(nullable = true)
     private String telefono;
