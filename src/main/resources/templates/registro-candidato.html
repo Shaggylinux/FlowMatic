@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Registro de candidato</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Registrar candidato</title>
+    <link rel="stylesheet" th:href="@{/css/registro.css}">
 </head>
 <body>
 
@@ -22,23 +22,23 @@
                 Correo ya registrado
             </div>
 
-            <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post">
+            <form th:action="@{/registro}" th:object="${usuario}" method="post">
 
                 <div class="input-group">
                     <label>Nombre</label>
-                    <input type="text" th:field="*{username}" placeholder="Nombre del candidato">
+                    <input type="text" th:field="*{username}" placeholder="Nombre">
                     <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
                 </div>
 
                 <div class="input-group">
                     <label>Apellido</label>
-                    <input type="text" th:field="*{apellido}" placeholder="Apellido del candidato">
+                    <input type="text" th:field="*{apellido}" placeholder="Apellido">
                     <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
                 </div>
 
                 <div class="input-group">
                     <label>Correo</label>
-                    <input type="email" th:field="*{email}" placeholder="tu@correo.com">
+                    <input type="email" th:field="*{email}" placeholder="correo@dominio.com">
                     <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                 </div>
 
@@ -65,10 +65,10 @@
         </div>
     </div>
 
-    <div class="image-section">
-        <div>
-            <h2>Une a un futuro candidato a Flowmatic</h2>
-        </div>
+      <div class="image-section">
+        <video autoplay muted loop class="bg-video">
+            <source src="/videos/flowmatic-registro.mp4" type="video/mp4">
+        </video>
     </div>
 
 </div>
