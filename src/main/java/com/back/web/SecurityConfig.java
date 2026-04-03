@@ -15,28 +15,30 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .csrf(csrf -> csrf.disable()) 
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**", "/home", "/videos/**").permitAll() 
-            .requestMatchers("/", "/subir-archivo", "/crear-carpeta", "/compartir", "/eliminar", "/descargar").authenticated()
-            .requestMatchers("/guardar", "/Formulario", "/editar").hasRole("ADMIN")
-            .anyRequest().authenticated()
-        )
-        .formLogin(form -> form
-            .loginPage("/login")
-            .usernameParameter("email")
-            .passwordParameter("clave")
-            .defaultSuccessUrl("/", true)
-            .permitAll()
-        )
-        .logout(logout -> logout
-            .logoutUrl("/logout")
-            .logoutSuccessUrl("/login?logout")
-            .permitAll()
-        );
-    return http.build();
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable()) 
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**", "/home", "/videos/**").permitAll() 
+                .requestMatchers("/candidato/**").hasRole("CANDIDATO")
+                .requestMatchers("/", "/subir-archivo", "/crear-carpeta", "/eliminar", "/descargar").authenticated()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .usernameParameter("email")
+                .passwordParameter("clave")
+                .defaultSuccessUrl("/post-login", true)
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+            );
+        return http.build();
     }
 }
