@@ -18,16 +18,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UsuarioRepository usuarioRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Correo no encontrado: " + email));
 
         if (!usuario.isActivo()) {
             throw new UsernameNotFoundException("Cuenta no activada. Revisa tu email para activar la cuenta.");
         }
 
         return new User(
-                usuario.getUsername(),
+                usuario.getEmail(),
                 usuario.getClave(),
                 Collections.singletonList(new SimpleGrantedAuthority(usuario.getRol()))
         );

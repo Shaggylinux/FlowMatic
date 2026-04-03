@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registro</title>
+    <link rel="stylesheet" th:href="@{/css/registro.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="form-section">
+        <div class="form-box">
+
+            <h2>Crear Cuenta</h2>
+
+            <div th:if="${mensajePendiente}" class="success">
+                ✅ Cuenta creada exitosamente <br>
+                📧 Revisa tu correo para activarla
+            </div>
+
+            <div th:if="${errorDuplicado}" class="error">
+                Correo ya registrado
+            </div>
+
+            <form th:action="@{/registro}" th:object="${usuario}" method="post">
+
+                <div class="input-group">
+                    <label>Nombre</label>
+                    <input type="text" th:field="*{username}" placeholder="Nombre del candidato">
+                    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                </div>
+
+                <div class="input-group">
+                    <label>Apellido</label>
+                    <input type="text" th:field="*{apellido}" placeholder="Apellido del candidato">
+                    <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
+                </div>
+
+                <div class="input-group">
+                    <label>Correo</label>
+                    <input type="email" th:field="*{email}" placeholder="tu@correo.com">
+                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                </div>
+
+                <div class="input-group">
+                    <label>Teléfono</label>
+                    <input type="tel" th:field="*{telefono}" placeholder="+573001234567">
+                    <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></p>
+                </div>
+
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" th:field="*{clave}" placeholder="Mínimo 8 caracteres">
+                    <p th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></p>
+                </div>
+
+                <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
+
+                <button type="submit">Registrarse</button>
+
+            </form>
+
+            <a th:href="@{/login}">¿Ya tienes cuenta? Inicia sesión</a>
+
+        </div>
+    </div>
+
+      <div class="image-section">
+        <video autoplay muted loop class="bg-video">
+            <source src="/videos/flowmatic-registro.mp4" type="video/mp4">
+        </video>
+    </div>
+
+</div>
+
+</body>
+</html>

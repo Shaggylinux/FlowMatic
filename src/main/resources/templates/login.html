@@ -14,7 +14,7 @@
             <h2>Iniciar Sesión</h2>
 
             <div th:if="${param.error}" class="error">
-                Usuario o contraseña incorrectos, o cuenta no activada
+                Correo o contraseña incorrectos, o cuenta no activada
             </div>
 
             <div th:if="${param.logout}" class="success">
@@ -24,13 +24,13 @@
             <form th:action="@{/login}" method="post">
 
                 <div class="input-group">
-                    <label>Usuario</label>
-                    <input type="text" name="username" placeholder="Ingresa tu usuario" required>
+                    <label>Correo</label>
+                    <input type="text" name="email" placeholder="Ingresa tu correo" required>
                 </div>
 
                 <div class="input-group">
                     <label>Contraseña</label>
-                    <input type="password" name="password" placeholder="Ingresa tu contraseña" required>
+                    <input type="password" name="clave" placeholder="Ingresa tu contraseña" required>
                 </div>
 
                 <button type="submit">Ingresar</button>

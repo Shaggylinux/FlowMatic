@@ -43,7 +43,7 @@ public class UsuarioService {
 
         // 🔑 Token activación
         String token = UUID.randomUUID().toString();
-        usuario.setTokenActivacion(token);
+        usuario.setTokenactivacion(token);
         usuario.setActivo(false);
 
         usuarioRepository.save(usuario);
@@ -71,7 +71,7 @@ public class UsuarioService {
 
         logger.info("Buscando token de activación: {}", token);
 
-        var optional = usuarioRepository.findByTokenActivacion(token);
+        var optional = usuarioRepository.findByTokenactivacion(token);
 
         if (optional.isEmpty()) {
             logger.warn("Token no encontrado o inválido");
@@ -80,7 +80,7 @@ public class UsuarioService {
 
         Usuario usuario = optional.get();
         usuario.setActivo(true);
-        usuario.setTokenActivacion(null);
+        usuario.setTokenactivacion(null);
         usuarioRepository.save(usuario);
 
         logger.info("Cuenta activada para: {}", usuario.getEmail());

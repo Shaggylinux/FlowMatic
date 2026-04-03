@@ -1,12 +1,15 @@
+create database gestion;
+
 create table if not exists usuarios (
     id serial primary key,
     username text not null,
+    apellido text not null,
     email text not null unique,
     clave text not null,
     telefono text,
     rol text not null,
     activo boolean not null default false,
-    tokenActivacion text unique
+    tokenactivacion text unique
 );
 
 create table if not exists archivos (

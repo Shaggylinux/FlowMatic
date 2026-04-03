@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Registro</title>
-    <link rel="stylesheet" th:href="@{/css/registro.css}">
+    <title>Registro de candidato</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 
@@ -11,7 +11,7 @@
     <div class="form-section">
         <div class="form-box">
 
-            <h2>Crear Cuenta</h2>
+            <h2>Registrar candidato</h2>
 
             <div th:if="${mensajePendiente}" class="success">
                 ✅ Cuenta creada exitosamente <br>
@@ -22,12 +22,18 @@
                 Correo ya registrado
             </div>
 
-            <form th:action="@{/registro}" th:object="${usuario}" method="post">
+            <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post">
 
                 <div class="input-group">
                     <label>Nombre</label>
-                    <input type="text" th:field="*{username}" placeholder="Nombre completo">
+                    <input type="text" th:field="*{username}" placeholder="Nombre del candidato">
                     <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                </div>
+
+                <div class="input-group">
+                    <label>Apellido</label>
+                    <input type="text" th:field="*{apellido}" placeholder="Apellido del candidato">
+                    <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
                 </div>
 
                 <div class="input-group">
@@ -50,7 +56,7 @@
 
                 <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
 
-                <button type="submit">Registrarse</button>
+                <button type="submit">Registrar</button>
 
             </form>
 
@@ -59,10 +65,10 @@
         </div>
     </div>
 
-      <div class="image-section">
-        <video autoplay muted loop class="bg-video">
-            <source src="/videos/flowmatic-registro.mp4" type="video/mp4">
-        </video>
+    <div class="image-section">
+        <div>
+            <h2>Une a un futuro candidato a Flowmatic</h2>
+        </div>
     </div>
 
 </div>

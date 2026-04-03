@@ -10,7 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/registro")
+@RequestMapping("/registro/candidato")
 public class RegistroController {
 
     @Autowired
@@ -19,7 +19,7 @@ public class RegistroController {
     @GetMapping
     public String mostrarFormulario(Model model) {
         model.addAttribute("usuario", new Usuario());
-        return "registro";
+        return "registro-candidato";
     }
 
     @PostMapping
@@ -33,25 +33,25 @@ public class RegistroController {
         }
 
         if (resultado.hasErrors()) {
-            return "registro";
+            return "registro-candidato";
         }
 
         String respuesta = usuarioService.registrarUsuario(usuario);
 
         if ("DUPLICADO".equals(respuesta)) {
             model.addAttribute("errorDuplicado", true);
-            return "registro";
+            return "registro-candidato";
         }
 
         // He dejado la redirección a 'pendiente' porque parece ser el flujo nuevo
-        return "redirect:/registro?pendiente";
+        return "redirect:/registro/candidato?pendiente";
     }
 
     @GetMapping(params = "pendiente")
     public String registropendiente(Model model){
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("mensajePendiente", true);
-        return "registro";
+        return "registro-candidato";
     }
 
     @GetMapping("/activar")
@@ -83,7 +83,7 @@ public class RegistroController {
             model.addAttribute("mensajePendiente", true);
             model.addAttribute("errorVerificacion", true);
             model.addAttribute("usuario", new Usuario());
-            return "registro";
+            return "registro-candidato";
         }
     }
 }

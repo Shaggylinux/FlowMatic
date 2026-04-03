@@ -27,6 +27,8 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         )
         .formLogin(form -> form
             .loginPage("/login")
+            .usernameParameter("email")
+            .passwordParameter("clave")
             .defaultSuccessUrl("/", true)
             .permitAll()
         )
