@@ -1,24 +1,25 @@
-create database gestion;
+DROP TABLE IF EXISTS archivos;
+DROP TABLE IF EXISTS usuarios;
 
-create table if not exists usuarios (
-    id serial primary key,
-    username text not null,
-    apellido text not null,
-    email text not null unique,
-    clave text not null,
-    telefono text,
-    rol text not null,
-    activo boolean not null default false,
-    tokenactivacion text unique
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    username TEXT NOT NULL,
+    apellido TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    clave TEXT NOT NULL,
+    telefono TEXT,
+    rol TEXT NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT FALSE,
+    tokenactivacion TEXT UNIQUE
 );
 
-create table if not exists archivos (
-    id serial primary key,
-    nombre text,
-    ubicacion text,
-    propietario text,
-    destinario text,
-    es_carpeta boolean
+-- 📁 Tabla de archivos
+CREATE TABLE archivos (
+    id SERIAL PRIMARY KEY,
+    nombre TEXT,
+    ubicacion TEXT,
+    propietario TEXT,
+    destinario TEXT,
+    es_carpeta BOOLEAN
 );
-
 

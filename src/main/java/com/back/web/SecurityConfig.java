@@ -20,7 +20,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable()) 
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**", "/home").permitAll() 
+            .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**", "/videos/**", "/home").permitAll() 
             .requestMatchers("/", "/subir-archivo", "/crear-carpeta", "/compartir", "/eliminar", "/descargar").authenticated()
             .requestMatchers("/guardar", "/Formulario", "/editar").hasRole("ADMIN")
             .anyRequest().authenticated()
