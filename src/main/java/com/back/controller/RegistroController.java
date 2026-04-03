@@ -4,6 +4,7 @@ import com.back.model.Usuario;
 import com.back.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,30 +23,34 @@ public class RegistroController {
         return "registro-candidato";
     }
 
-    @PostMapping
-    public String procesarRegistro(
-            @Valid @ModelAttribute("usuario") Usuario usuario,
-            BindingResult resultado,
-            Model model) {
+@PostMapping
+public String procesarRegistro(
+        @Valid @ModelAttribute("usuario") Usuario usuario,
+        BindingResult resultado,
+        Model model,
+        @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
 
-        if (usuario.getRol() == null || usuario.getRol().isEmpty()){
-            usuario.setRol("ROLE_USER");
-        }
-
-        if (resultado.hasErrors()) {
-            return "registro-candidato";
-        }
-
-        String respuesta = usuarioService.registrarUsuario(usuario);
-
-        if ("DUPLICADO".equals(respuesta)) {
-            model.addAttribute("errorDuplicado", true);
-            return "registro-candidato";
-        }
-
-        // He dejado la redirección a 'pendiente' porque parece ser el flujo nuevo
-        return "redirect:/registro/candidato?pendiente";
+    if (usuario.getRol() == null || usuario.getRol().isEmpty()){
+        usuario.setRol("ROLE_USER");
     }
+
+    if (resultado.hasErrors()) {
+        return "registro-candidato";
+    }
+
+    String respuesta = usuarioService.registrarUsuario(usuario);
+
+    if ("DUPLICADO".equals(respuesta)) {
+        model.addAttribute("errorDuplicado", true);
+        return "registro-candidato";
+    }
+
+    if ("XMLHttpRequest".equals(requestedWith)) {
+        return "fragments/success-message :: success";
+    }
+
+    return "redirect:/registro/candidato?pendiente";
+}
 
     @GetMapping(params = "pendiente")
     public String registropendiente(Model model){
@@ -85,5 +90,27 @@ public class RegistroController {
             model.addAttribute("usuario", new Usuario());
             return "registro-candidato";
         }
+    }
+
+    @PostMapping("/api")
+    @ResponseBody
+    public ResponseEntity<?> registrarDesdeModal(@Valid @RequestBody Usuario usuario, BindingResult resultado) {
+        usuario.setRol("ROLE_CANDIDATO");
+
+        if (resultado.hasErrors()) {
+            return ResponseEntity.badRequest().body("Datos inválidos");
+        }
+
+        if (usuario.getRol() == null || usuario.getRol().isEmpty()){
+            usuario.setRol("ROLE_USER");
+        }
+
+        String respuesta = usuarioService.registrarUsuario(usuario);
+
+        if ("DUPLICADO".equals(respuesta)) {
+            return ResponseEntity.status(409).body("El usuario ya existe");
+        }
+
+    return ResponseEntity.ok().build();
     }
 }
