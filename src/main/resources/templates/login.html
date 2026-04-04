@@ -14,7 +14,7 @@
             <h2>Iniciar Sesión</h2>
 
             <div th:if="${param.error}" class="error">
-                Correo o contraseña incorrectos, o cuenta no activada
+                Correo o contraseña incorrectos
             </div>
 
             <div th:if="${param.logout}" class="success">
@@ -25,16 +25,15 @@
 
                 <div class="input-group">
                     <label>Correo</label>
-                    <input type="text" name="email" placeholder="Ingresa tu correo" required>
+                    <input type="text" name="email" required>
                 </div>
 
                 <div class="input-group">
                     <label>Contraseña</label>
-                    <input type="password" name="clave" placeholder="Ingresa tu contraseña" required>
+                    <input type="password" name="clave" required>
                 </div>
 
                 <button type="submit">Ingresar</button>
-
             </form>
 
             <a th:href="@{/registro/candidato}">Registrarse como candidato</a>
@@ -43,7 +42,7 @@
         </div>
     </div>
 
-  <div class="image-section">
+    <div class="image-section">
         <video autoplay muted loop class="bg-video">
             <source src="/videos/flowmatic-login.mp4" type="video/mp4">
         </video>

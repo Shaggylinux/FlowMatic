@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import java.util.Collections;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -26,10 +25,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Cuenta no activada. Revisa tu email para activar la cuenta.");
         }
 
-        return new User(
-                usuario.getEmail(),
-                usuario.getClave(),
-                Collections.singletonList(new SimpleGrantedAuthority(usuario.getRol()))
-        );
+    return User.builder()
+            .username(usuario.getEmail())
+            .password(usuario.getClave())
+            .authorities(new SimpleGrantedAuthority(usuario.getRol()))
+            .build();
     }
 }

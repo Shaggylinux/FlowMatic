@@ -11,15 +11,14 @@
     <div class="form-section">
         <div class="form-box">
 
-            <h2>Crear Cuenta</h2>
+            <h2>Registrar candidato</h2>
 
-            <div th:if="${mensajePendiente}" class="success">
-                ✅ Cuenta creada exitosamente <br>
-                📧 Revisa tu correo para activarla
+            <div th:if="${mensajePendiente}" class="alert alert-success">
+                ✅ Cuenta creada, revisa tu correo
             </div>
 
-            <div th:if="${errorDuplicado}" class="error">
-                Correo ya registrado
+            <div th:if="${errorDuplicado}" class="alert alert-error">
+                ❗ Correo ya registrado
             </div>
 
             <form th:action="@{/registro/rrhh}" th:object="${usuario}" method="post">

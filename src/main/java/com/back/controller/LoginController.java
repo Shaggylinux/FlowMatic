@@ -9,4 +9,27 @@ public class LoginController {
     public String Login(){
         return "login";
     }
+
+    @GetMapping("/post-login")
+    public String redirigirTrasLogin(org.springframework.security.core.Authentication auth) {
+        
+        var roles = auth.getAuthorities().stream()
+                        .map(r -> r.getAuthority())
+                        .toList();
+
+        if (roles.contains("ROLE_CANDIDATO")) {
+            return "redirect:/candidato/home";
+        } 
+        
+        if (roles.contains("ROLE_RRHH")) {
+            return "redirect:/drive";
+        }
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/candidato/home")
+    public String vistaCandidato() {
+        return "candidato";
+    }
 }

@@ -13,61 +13,59 @@
 
             <h2>Registrar candidato</h2>
 
-            <div th:if="${mensajePendiente}" class="success">
-                ✅ Cuenta creada exitosamente <br>
-                📧 Revisa tu correo para activarla
+            <div th:if="${mensajePendiente}" class="alert alert-success">
+                ✅ Cuenta creada, revisa tu correo
             </div>
 
-            <div th:if="${errorDuplicado}" class="error">
-                Correo ya registrado
+            <div th:if="${errorDuplicado}" class="alert alert-error">
+                ❗ Correo ya registrado
             </div>
 
             <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post">
 
                 <div class="input-group">
                     <label>Nombre</label>
-                    <input type="text" th:field="*{username}" placeholder="Nombre del candidato">
+                    <input type="text" th:field="*{username}" placeholder="Nombre">
                     <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
                 </div>
 
                 <div class="input-group">
                     <label>Apellido</label>
-                    <input type="text" th:field="*{apellido}" placeholder="Apellido del candidato">
+                    <input type="text" th:field="*{apellido}" placeholder="Apellido">
                     <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
                 </div>
 
                 <div class="input-group">
                     <label>Correo</label>
-                    <input type="email" th:field="*{email}" placeholder="tu@correo.com">
+                    <input type="email" th:field="*{email}" placeholder="Correo">
                     <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                 </div>
 
                 <div class="input-group">
                     <label>Teléfono</label>
-                    <input type="tel" th:field="*{telefono}" placeholder="+573001234567">
+                    <input type="tel" th:field="*{telefono}" placeholder="Teléfono">
                     <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></p>
                 </div>
 
                 <div class="input-group">
                     <label>Contraseña</label>
-                    <input type="password" th:field="*{clave}" placeholder="Mínimo 8 caracteres">
+                    <input type="password" th:field="*{clave}" placeholder="Contraseña">
                     <p th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></p>
                 </div>
 
                 <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
 
                 <button type="submit">Registrar</button>
-
             </form>
 
-            <a th:href="@{/login}">¿Ya tienes cuenta? Inicia sesión</a>
+            <a th:href="@{/login}">¿Ya tienes cuenta?</a>
 
         </div>
     </div>
 
     <div class="image-section">
         <video autoplay muted loop class="bg-video">
-            <source src="/videos/flowmatic-registro-candidato.mp4" type="video/mp4">
+            <source th:src="@{/videos/flowmatic-registro-candidato.mp4}" type="video/mp4">
         </video>
     </div>
 

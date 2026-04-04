@@ -41,102 +41,93 @@ public class DriveController {
     @Autowired
     private FilesRepository filesRepository;
 
-@GetMapping
-public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder, 
-                            java.security.Principal principal, Model model) {
-    String nombreUsuario = (principal != null) ? principal.getName() : "";
-    List<Archivos> todos = filesRepository.buscarArchivosVisiblesPara(nombreUsuario);
+    @GetMapping
+    public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder, 
+                                java.security.Principal principal, Model model) {
+        String nombreUsuario = (principal != null) ? principal.getName() : "";
+        List<Archivos> todos = filesRepository.buscarArchivosVisiblesPara(nombreUsuario);
 
-    // Normalizamos el folder que viene por URL de una vez
-    String folderActualURL = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+        String folderActualURL = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
 
-    List<Archivos> archivosEnEstaCarpeta = todos.stream()
-            .filter(a -> !a.isEsCarpeta()) 
-            .filter(a -> {
-                // 1. Normalizamos la ruta de la DB (Windows \ -> Web /)
-                String ubicacionDB = a.getUbicacion().replace("\\", "/");
+        List<Archivos> archivosEnEstaCarpeta = todos.stream()
+                .filter(a -> !a.isEsCarpeta()) 
+                .filter(a -> {
+                    String ubicacionDB = a.getUbicacion().replace("\\", "/");
+                    
+                    String folderEnDB = ubicacionDB
+                            .replace(ROOT_DIR.replace("\\", "/"), "")
+                            .replace(a.getNombre(), "")
+                            .replaceAll("^/+|/+$", "")
+                            .trim();
+                    return folderEnDB.equalsIgnoreCase(folderActualURL);
+                })
+                .toList();
+
+        model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
+        model.addAttribute("archivos", archivosEnEstaCarpeta);
+        model.addAttribute("usuarioActual", nombreUsuario);
+        model.addAttribute("folderActual", folderActualURL);
+        model.addAttribute("usuario", new com.back.model.Usuario());
+        return "drive";
+    }
+
+    @PostMapping("/crear-carpeta")
+    public String crearCarpeta(@RequestParam("nombre") String nombre, 
+                            @RequestParam("folderDestino") String folderDestino,
+                            java.security.Principal principal) {
+        Path rutaFisica = Paths.get(ROOT_DIR, nombre);
+
+        try {
+            if (!Files.exists(rutaFisica)) {
+                Files.createDirectories(rutaFisica);
                 
-                // 2. Quitamos el superfolder/ y el nombre del archivo
-                String folderEnDB = ubicacionDB
-                        .replace(ROOT_DIR.replace("\\", "/"), "")
-                        .replace(a.getNombre(), "")
-                        .replaceAll("^/+|/+$", "") // Quitamos barras al inicio/final
-                        .trim();
-
-                // DEBUG para que veas el cambio en consola:
-                // System.out.println("Comparando DB: [" + folderEnDB + "] con URL: [" + folderActualURL + "]");
-
-                return folderEnDB.equalsIgnoreCase(folderActualURL);
-            })
-            .toList();
-
-    model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
-    model.addAttribute("archivos", archivosEnEstaCarpeta);
-    model.addAttribute("usuarioActual", nombreUsuario);
-    model.addAttribute("folderActual", folderActualURL); // Mandamos la versión limpia a la vista
-    
-    return "drive";
-}
-
-@PostMapping("/crear-carpeta")
-public String crearCarpeta(@RequestParam("nombre") String nombre, 
-                           @RequestParam("folderDestino") String folderDestino,
-                           java.security.Principal principal) {
-    Path rutaFisica = Paths.get(ROOT_DIR, nombre);
-
-    try {
-        if (!Files.exists(rutaFisica)) {
-            Files.createDirectories(rutaFisica);
-            
-            Archivos carpeta = new Archivos(); // Tu variable se llama carpeta
-            carpeta.setNombre(nombre);
-            
-            // AGREGA ESTO: Forzamos la barra normal para la DB
-            carpeta.setUbicacion(rutaFisica.toString().replace("\\", "/")); 
-            
-            carpeta.setEsCarpeta(true);
-            carpeta.setPropietario(principal.getName());
-            
-            filesRepository.save(carpeta);
+                Archivos carpeta = new Archivos();
+                carpeta.setNombre(nombre);
+                
+                carpeta.setUbicacion(rutaFisica.toString().replace("\\", "/")); 
+                
+                carpeta.setEsCarpeta(true);
+                carpeta.setPropietario(principal.getName());
+                
+                filesRepository.save(carpeta);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    } catch (IOException e) {
-        e.printStackTrace();
+        return "redirect:/?folder=" + folderDestino.replace("\\", "/");
     }
-    return "redirect:/?folder=" + folderDestino.replace("\\", "/");
-}
 
-@PostMapping("/subir-archivo")
-public String subirArchivo(@RequestParam("archivo") MultipartFile file, 
-                           @RequestParam("folderDestino") String folderDestino,
-                           java.security.Principal principal) {
-    if (file.isEmpty()) return "redirect:/?folder=" + folderDestino;
+    @PostMapping("/subir-archivo")
+    public String subirArchivo(@RequestParam("archivo") MultipartFile file, 
+                            @RequestParam("folderDestino") String folderDestino,
+                            java.security.Principal principal) {
+        if (file.isEmpty()) return "redirect:/?folder=" + folderDestino;
 
-    String folderLimpio = folderDestino.replace(ROOT_DIR, "").replace("\\", "/").trim();
-    Path directorioFisico = Paths.get(ROOT_DIR, folderLimpio);
+        String folderLimpio = folderDestino.replace(ROOT_DIR, "").replace("\\", "/").trim();
+        Path directorioFisico = Paths.get(ROOT_DIR, folderLimpio);
 
-    try {
-        if (!Files.exists(directorioFisico)) {
-            Files.createDirectories(directorioFisico);
+        try {
+            if (!Files.exists(directorioFisico)) {
+                Files.createDirectories(directorioFisico);
+            }
+            
+            Path rutaArchivoFinal = directorioFisico.resolve(file.getOriginalFilename());
+            Files.copy(file.getInputStream(), rutaArchivoFinal, StandardCopyOption.REPLACE_EXISTING);
+
+            Archivos nuevoArchivo = new Archivos();
+            nuevoArchivo.setNombre(file.getOriginalFilename());
+            
+            nuevoArchivo.setUbicacion(rutaArchivoFinal.toString().replace("\\", "/")); 
+            
+            nuevoArchivo.setPropietario(principal.getName());
+            nuevoArchivo.setEsCarpeta(false);
+            
+            filesRepository.save(nuevoArchivo);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        
-        Path rutaArchivoFinal = directorioFisico.resolve(file.getOriginalFilename());
-        Files.copy(file.getInputStream(), rutaArchivoFinal, StandardCopyOption.REPLACE_EXISTING);
-
-        Archivos nuevoArchivo = new Archivos(); // Tu variable aquí es nuevoArchivo
-        nuevoArchivo.setNombre(file.getOriginalFilename());
-        
-        // AGREGA ESTO: Limpiamos la ruta antes de guardar en la DB
-        nuevoArchivo.setUbicacion(rutaArchivoFinal.toString().replace("\\", "/")); 
-        
-        nuevoArchivo.setPropietario(principal.getName());
-        nuevoArchivo.setEsCarpeta(false);
-        
-        filesRepository.save(nuevoArchivo);
-    } catch (IOException e) {
-        e.printStackTrace();
+        return "redirect:/?folder=" + folderLimpio;
     }
-    return "redirect:/?folder=" + folderLimpio;
-}
 
     @PostMapping("/eliminar")
     public String eliminarArchivo(@RequestParam Long archivoId, java.security.Principal principal) {
