@@ -7,21 +7,23 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
 <header class="navbar">
     <div class="logo">Flowmatic</div>
     <nav>
         <a th:href="@{/home}">Inicio</a>
-        <a href="#">Características</a>
-        <a href="#">Servicios</a>
-        <a href="#">Contacto</a>
+        <a href="#features">Características</a>
+        <a href="#how">Cómo funciona</a>
+        <a href="#contacto">Contacto</a>
     </nav>
     <div class="nav-buttons">
         <a th:href="@{/login}" class="btn-outline">Iniciar Sesión</a>
+<<<<<<< HEAD
+=======
+        <a th:href="@{/registro/candidato}" class="btn-primary">Comenzar</a>
+>>>>>>> origin/esteban-dev
     </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
     <div class="hero-text">
         <span class="badge">Gestión Documental Empresarial</span>
@@ -33,9 +35,17 @@
         </h1>
 
         <p>
-            Potencia tu negocio con soluciones inteligentes, seguras y escalables.
+            Optimiza la gestión de tus documentos con una plataforma moderna, segura y fácil de usar. 
+            Centraliza tu información, mejora la productividad de tu equipo y accede a tus archivos 
+            en cualquier momento y desde cualquier lugar.
         </p>
 
+<<<<<<< HEAD
+=======
+        <div class="hero-buttons">
+            <a th:href="@{/registro/candidato}" class="btn-primary">Comenzar Ahora</a>
+        </div>
+>>>>>>> origin/esteban-dev
 
         <div class="stats">
             <div><strong>500+</strong><span>Empresas</span></div>
@@ -44,36 +54,134 @@
         </div>
     </div>
 
-    <div class="hero-image">
-        <img src="img/logo.png" alt="Logo">
+    <div class="image-section">
+        <video autoplay muted loop class="hero-video">
+            <source src="/videos/flowmatic-home.mp4" type="video/mp4">
+        </video>
     </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features">
+<section class="features" id="features">
     <span class="badge">POR QUÉ ELEGIRNOS</span>
     <h2>Características Confiables de <span class="highlight">Clase Mundial</span></h2>
 
     <div class="cards">
-        <div class="card">
-            <h3>Seguridad Empresarial</h3>
-            <p>Protección de datos con cifrado avanzado.</p>
+
+    <div class="flip-card">
+        <div class="flip-card-inner">
+            <div class="flip-card-front">
+                Seguridad Empresarial
+            </div>
+            <div class="flip-card-back">
+                Protección de datos con cifrado avanzado para tu empresa.
+            </div>
+        </div>
+    </div>
+
+    <div class="flip-card">
+        <div class="flip-card-inner">
+            <div class="flip-card-front">
+                Almacenamiento en la Nube
+            </div>
+            <div class="flip-card-back">
+                Accede a tus archivos desde cualquier lugar de forma segura.
+            </div>
+        </div>
+    </div>
+
+    <div class="flip-card">
+        <div class="flip-card-inner">
+            <div class="flip-card-front">
+                Velocidad Optimizada
+            </div>
+            <div class="flip-card-back">
+                Plataforma rápida y eficiente para mejorar tu productividad.
+            </div>
+        </div>
+    </div>
+
+    <div class="flip-card">
+        <div class="flip-card-inner">
+            <div class="flip-card-front">
+                Control de Acceso
+            </div>
+            <div class="flip-card-back">
+                Gestiona permisos y usuarios de manera sencilla.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NUEVA SECCIÓN -->
+<section class="how" id="how">
+    <h2>¿Cómo funciona?</h2>
+
+    <div class="steps">
+        <div class="step">
+            <h3>1. Regístrate</h3>
+            <p>Crea tu cuenta en pocos segundos.</p>
         </div>
 
-        <div class="card">
-            <h3>Almacenamiento en la Nube</h3>
-            <p>Acceso seguro desde cualquier lugar.</p>
+        <div class="step">
+            <h3>2. Sube tus archivos</h3>
+            <p>Organiza tus documentos en la nube.</p>
         </div>
 
-        <div class="card">
-            <h3>Velocidad Optimizada</h3>
-            <p>Rendimiento rápido y eficiente.</p>
+        <div class="step">
+            <h3>3. Accede y gestiona</h3>
+            <p>Administra tu información fácilmente.</p>
+        </div>
+    </div>
+</section>
+
+<!-- MISIÓN Y VISIÓN -->
+<section class="about">
+    <h2>Nuestra visión y misión</h2>
+
+    <div class="cards-uiverse">
+
+        <div class="card-uiverse">
+            <div class="card-info">
+                <p class="title">🚀 Misión</p>
+                <p>
+                    Brindar una plataforma tecnológica eficiente y fácil de usar que optimice 
+                    procesos internos, mejore la gestión de la información y facilite la toma de decisiones.
+                </p>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>Control de Acceso</h3>
-            <p>Gestión de permisos por usuario.</p>
+        <div class="card-uiverse">
+            <div class="card-info">
+                <p class="title">🌎 Visión</p>
+                <p>
+                    Ser una plataforma líder en gestión y automatización de procesos empresariales, 
+                    ayudando a las organizaciones a trabajar de forma más organizada y eficiente.
+                </p>
+            </div>
         </div>
+
+    </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+    <div class="contacto-container">
+
+        <div class="contacto-info">
+            <h2>Contáctanos</h2>
+            <p>
+                ¿Tienes dudas o necesitas ayuda? Nuestro equipo está listo para apoyarte 
+                en todo momento. Escríbenos y te responderemos lo antes posible.
+            </p>
+        </div>
+
+        <form class="contacto-form">
+            <input type="text" placeholder="Nombre" required>
+            <input type="email" placeholder="Correo" required>
+            <textarea placeholder="Mensaje" required></textarea>
+            <button type="submit" class="btn-primary">Enviar</button>
+        </form>
+
     </div>
 </section>
 
