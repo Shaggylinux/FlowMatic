@@ -33,11 +33,6 @@ public class SecurityConfig {
                 .passwordParameter("clave")
                 .defaultSuccessUrl("/post-login", true)
                 .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .permitAll()
             );
         return http.build();
     }
