@@ -13,7 +13,6 @@ CREATE TABLE usuarios (
     tokenactivacion TEXT UNIQUE
 );
 
--- 📁 Tabla de archivos
 CREATE TABLE archivos (
     id SERIAL PRIMARY KEY,
     nombre TEXT,
@@ -22,4 +21,3 @@ CREATE TABLE archivos (
     destinario TEXT,
     es_carpeta BOOLEAN
 );
-

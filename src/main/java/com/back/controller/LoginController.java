@@ -17,13 +17,10 @@ public class LoginController {
                         .map(r -> r.getAuthority())
                         .toList();
 
-        if (roles.contains("ROLE_CANDIDATO")) {
-            return "redirect:/candidato/home";
+        if (roles.contains("ROLE_CANDIDATO") || roles.contains("ROLE_RRHH")) {
+            return "redirect:/drive";
         } 
         
-        if (roles.contains("ROLE_RRHH")) {
-            return "redirect:/drive";
-        }
 
         return "redirect:/";
     }

@@ -44,4 +44,6 @@ public class Usuario {
 
     @Column(nullable = true)
     private String telefono;
+
+    private String estado;
 }

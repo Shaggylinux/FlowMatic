@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FilesRepository extends JpaRepository<Archivos, Long> {
+public interface ArchivosRepository extends JpaRepository<Archivos, Long> {
 
     @Query(value = "SELECT * FROM archivos WHERE propietario = :usuario " +
                    "OR destinario = :usuario " +

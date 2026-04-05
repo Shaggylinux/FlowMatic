@@ -28,7 +28,6 @@ public class RegistroRRHHController {
             BindingResult resultado,
             Model model) {
 
-        // Rol para RRHH (puedes cambiarlo si usas otro)
         usuario.setRol("ROLE_ADMIN");
 
         if (resultado.hasErrors()) {

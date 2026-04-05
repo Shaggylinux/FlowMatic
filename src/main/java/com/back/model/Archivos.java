@@ -16,4 +16,7 @@ public class Archivos {
     private String destinario;
 
     private boolean esCarpeta;
+
+    private String etapa;
+    private String tipoDocumento;
 }
