@@ -8,16 +8,30 @@
 <body>
 
 <header class="navbar">
+
     <div class="logo">Flowmatic</div>
-    <nav>
-        <a th:href="@{/home}">Inicio</a>
-        <a href="#features">Características</a>
-        <a href="#how">Cómo funciona</a>
-        <a href="#contacto">Contacto</a>
-    </nav>
+
+    <div class="menu">
+        <a th:href="@{/}" class="link">
+            <span class="link-icon">🏠</span>
+            <span class="link-title">Inicio</span>
+        </a>
+
+        <a href="#features" class="link">
+            <span class="link-icon">🔎</span>
+            <span class="link-title">Características</span>
+        </a>
+
+        <a href="#contacto" class="link">
+            <span class="link-icon">📞</span>
+            <span class="link-title">Contacto</span>
+        </a>
+    </div>
+
     <div class="nav-buttons">
         <a th:href="@{/login}" class="btn-outline">Iniciar Sesión</a>
     </div>
+
 </header>
 
 <section class="hero">
@@ -36,6 +50,9 @@
             en cualquier momento y desde cualquier lugar.
         </p>
 
+        <div class="hero-buttons">
+            <a th:href="@{/registro/candidato}" class="btn-primary">Comenzar Ahora</a>
+        </div>
 
         <div class="stats">
             <div><strong>500+</strong><span>Empresas</span></div>
@@ -57,95 +74,96 @@
 
     <div class="cards">
 
-    <div class="flip-card">
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-                Seguridad Empresarial
-            </div>
-            <div class="flip-card-back">
-                Protección de datos con cifrado avanzado para tu empresa.
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">Seguridad Empresarial</div>
+                <div class="flip-card-back">Protección de datos con cifrado avanzado.</div>
             </div>
         </div>
-    </div>
 
-    <div class="flip-card">
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-                Almacenamiento en la Nube
-            </div>
-            <div class="flip-card-back">
-                Accede a tus archivos desde cualquier lugar de forma segura.
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">Almacenamiento en la Nube</div>
+                <div class="flip-card-back">Acceso seguro desde cualquier lugar.</div>
             </div>
         </div>
-    </div>
 
-    <div class="flip-card">
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-                Velocidad Optimizada
-            </div>
-            <div class="flip-card-back">
-                Plataforma rápida y eficiente para mejorar tu productividad.
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">Velocidad Optimizada</div>
+                <div class="flip-card-back">Plataforma rápida y eficiente.</div>
             </div>
         </div>
-    </div>
 
-    <div class="flip-card">
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-                Control de Acceso
-            </div>
-            <div class="flip-card-back">
-                Gestiona permisos y usuarios de manera sencilla.
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">Control de Acceso</div>
+                <div class="flip-card-back">Gestión de permisos por usuario.</div>
             </div>
         </div>
+
     </div>
 </section>
 
-<!-- NUEVA SECCIÓN -->
-<section class="how" id="how">
-    <h2>¿Cómo funciona?</h2>
+<section class="security">
 
-    <div class="steps">
-        <div class="step">
-            <h3>1. Regístrate</h3>
-            <p>Crea tu cuenta en pocos segundos.</p>
+    <span class="badge">SEGURIDAD</span>
+    <h2>Protegemos tu Información con <span class="highlight">Tecnología Avanzada</span></h2>
+
+    <p class="security-text">
+        Tu información es nuestra prioridad. Implementamos múltiples capas de seguridad
+        para garantizar la protección, confidencialidad y disponibilidad de tus datos.
+    </p>
+
+    <div class="security-items">
+
+        <div class="security-item">
+            <h4>🔐 Encriptación de Datos</h4>
+            <p>Protegemos tu información con cifrado avanzado.</p>
         </div>
 
-        <div class="step">
-            <h3>2. Sube tus archivos</h3>
-            <p>Organiza tus documentos en la nube.</p>
+        <div class="security-item">
+            <h4>👤 Control de Accesos</h4>
+            <p>Gestión de permisos por usuario y roles.</p>
         </div>
 
-        <div class="step">
-            <h3>3. Accede y gestiona</h3>
-            <p>Administra tu información fácilmente.</p>
+        <div class="security-item">
+            <h4>☁️ Copias de Seguridad</h4>
+            <p>Backups automáticos para evitar pérdida de información.</p>
         </div>
+
+        <div class="security-item">
+            <h4>🛡️ Protección Activa</h4>
+            <p>Defensa contra accesos no autorizados.</p>
+        </div>
+
     </div>
+
 </section>
 
-<!-- MISIÓN Y VISIÓN -->
 <section class="about">
-    <h2>Nuestra visión y misión</h2>
+    <span class="badge">NUESTRA IDENTIDAD</span>
+    <h2>Nuestra Identidad</h2>
 
-    <div class="cards-uiverse">
+    <div class="mv-container">
 
-        <div class="card-uiverse">
-            <div class="card-info">
-                <p class="title">🚀 Misión</p>
+        <div class="mv-card">
+            <div class="mv-card-info">
+                <h3 class="mv-card-title">Misión</h3>
                 <p>
-                    Brindar una plataforma tecnológica eficiente y fácil de usar que optimice 
-                    procesos internos, mejore la gestión de la información y facilite la toma de decisiones.
+                    Brindar una plataforma eficiente y segura para la gestión documental,
+                    optimizando procesos empresariales y mejorando la productividad.
                 </p>
             </div>
         </div>
 
-        <div class="card-uiverse">
-            <div class="card-info">
-                <p class="title">🌎 Visión</p>
+        <div class="mv-card">
+            <div class="mv-card-info">
+                <h3 class="mv-card-title">Visión</h3>
                 <p>
-                    Ser una plataforma líder en gestión y automatización de procesos empresariales, 
-                    ayudando a las organizaciones a trabajar de forma más organizada y eficiente.
+                    Ser líderes en soluciones digitales de gestión documental,
+                    innovando constantemente para transformar la forma en que las
+                    empresas administran su información.
                 </p>
             </div>
         </div>
@@ -153,16 +171,11 @@
     </div>
 </section>
 
-<!-- CONTACTO -->
 <section class="contacto" id="contacto">
     <div class="contacto-container">
-
         <div class="contacto-info">
             <h2>Contáctanos</h2>
-            <p>
-                ¿Tienes dudas o necesitas ayuda? Nuestro equipo está listo para apoyarte 
-                en todo momento. Escríbenos y te responderemos lo antes posible.
-            </p>
+            <p>Estamos para ayudarte en todo momento.</p>
         </div>
 
         <form class="contacto-form">
@@ -171,7 +184,6 @@
             <textarea placeholder="Mensaje" required></textarea>
             <button type="submit" class="btn-primary">Enviar</button>
         </form>
-
     </div>
 </section>
 

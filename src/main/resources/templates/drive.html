@@ -71,9 +71,9 @@
                 Archivos en: 
                 <span th:text="${folderActual.isEmpty() ? 'Raíz' : folderActual}" style="color: #10b981;"></span>
             </h2>
-            <h2 sec:authorize="hasRole('CANDIDATO')">
-                Mis Documentos Recibidos
-            </h2>
+<h2 sec:authorize="hasRole('CANDIDATO')">
+    Mis Documentos (Propios y Recibidos)
+</h2>
         </div>
 
         <div class="actions" sec:authorize="hasRole('RRHH')">

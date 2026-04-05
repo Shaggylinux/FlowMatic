@@ -11,9 +11,7 @@ import java.util.List;
 @Repository
 public interface ArchivosRepository extends JpaRepository<Archivos, Long> {
 
-    @Query(value = "SELECT * FROM archivos WHERE propietario = :usuario " +
-                   "OR destinario = :usuario " +
-                   "OR destinario = (SELECT email FROM usuarios WHERE username = :usuario)", 
-                    nativeQuery = true)
-    List<Archivos> buscarArchivosVisiblesPara(@Param("usuario") String usuario);
+@Query("SELECT a FROM Archivos a WHERE " +
+       "LOWER(a.propietario) = LOWER(:id) OR LOWER(a.destinario) = LOWER(:id)")
+List<Archivos> buscarArchivosVisiblesPara(@Param("id") String id);
 }

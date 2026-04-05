@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -34,6 +35,7 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/post-login", true)
                 .permitAll()
             );
+
         return http.build();
     }
 }

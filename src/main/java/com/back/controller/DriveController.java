@@ -16,8 +16,11 @@ import org.springframework.ui.Model;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/drive")
@@ -47,8 +50,9 @@ public class DriveController {
 public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder, 
                             java.security.Principal principal, Model model) {
     
-    String loginId = (principal != null) ? principal.getName() : "ANÓNIMO";
-    
+    String loginId = (principal != null) ? principal.getName() : null;
+    if (loginId == null) return "redirect:/login"; // Si no hay sesión, al login directo
+
     Usuario userSession = usuarioRepository.findByUsername(loginId);
     if (userSession == null) {
         userSession = usuarioRepository.findByEmail(loginId).orElse(null);
@@ -57,29 +61,54 @@ public String mostrarPagina(@RequestParam(name = "folder", required = false, def
     String usernameReal = (userSession != null) ? userSession.getUsername() : loginId;
     String emailReal = (userSession != null) ? userSession.getEmail() : loginId;
 
-    List<Archivos> todos = filesRepository.buscarArchivosVisiblesPara(usernameReal);
+    List<Archivos> listaPorUser = filesRepository.buscarArchivosVisiblesPara(usernameReal);
+    List<Archivos> listaPorEmail = filesRepository.buscarArchivosVisiblesPara(emailReal);
     
-    if (todos.isEmpty()) {
-        todos = filesRepository.buscarArchivosVisiblesPara(emailReal);
-    }
+    Set<Archivos> conjuntoTodo = new HashSet<>();
+    if (listaPorUser != null) conjuntoTodo.addAll(listaPorUser);
+    if (listaPorEmail != null) conjuntoTodo.addAll(listaPorEmail);
+    List<Archivos> todos = new ArrayList<>(conjuntoTodo);
 
     String folderActualURL = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+
+
+    Usuario tempUser = usuarioRepository.findByUsername(loginId);
+    if (tempUser == null) {
+        tempUser = usuarioRepository.findByEmail(loginId).orElse(null);
+    }
+    
+    final Usuario usuarioParaFiltro = tempUser;
+    if (listaPorUser != null) conjuntoTodo.addAll(listaPorUser);
+    if (listaPorEmail != null) conjuntoTodo.addAll(listaPorEmail);
 
     List<Archivos> archivosEnEstaCarpeta = todos.stream()
             .filter(a -> !a.isEsCarpeta()) 
             .filter(a -> {
-                String ubicacionDB = a.getUbicacion().replace("\\", "/");
-                String folderEnDB = ubicacionDB
-                        .replace(ROOT_DIR.replace("\\", "/"), "")
-                        .replace(a.getNombre(), "")
-                        .replaceAll("^/+|/+$", "")
-                        .trim();
-                return folderEnDB.equalsIgnoreCase(folderActualURL);
+                if (usuarioParaFiltro == null) return false; 
+
+                if ("ROLE_RRHH".equals(usuarioParaFiltro.getRol())) {
+                    String ubicacionDB = a.getUbicacion().replace("\\", "/");
+                    String folderEnDB = ubicacionDB
+                            .replace(ROOT_DIR.replace("\\", "/"), "")
+                            .replace(a.getNombre(), "")
+                            .replaceAll("^/+|/+$", "")
+                            .trim();
+                    return folderEnDB.equalsIgnoreCase(folderActualURL);
+                }
+                
+                return true;
             })
             .toList();
 
+    model.addAttribute("usuarioActualObjeto", usuarioParaFiltro != null ? usuarioParaFiltro : new Usuario());
+    model.addAttribute("usuarioActual", loginId);
+    model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
+    model.addAttribute("archivos", archivosEnEstaCarpeta);
+    model.addAttribute("folderActual", folderActualURL);
+    model.addAttribute("listaCandidatos", usuarioRepository.findByRol("ROLE_CANDIDATO"));
+
     model.addAttribute("usuarioActualObjeto", userSession != null ? userSession : new Usuario());
-    model.addAttribute("usuarioActual", usernameReal);
+    model.addAttribute("usuarioActual", loginId);
     model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
     model.addAttribute("archivos", archivosEnEstaCarpeta);
     model.addAttribute("folderActual", folderActualURL);
