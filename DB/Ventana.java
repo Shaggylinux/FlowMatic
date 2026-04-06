@@ -75,18 +75,17 @@ public class Ventana {
                     JOptionPane.showMessageDialog(frame, "Todos los campos son requeridos.");
                     return;
                 }
-
-                if (cla.getText().length() >= 8 && claV.getText().length() >= 8){
-                    if (cla.getText().equals(claV.getText())){
+                if (GetCla().length() >= 8 && new String(claV.getPassword()).length() >= 8){
+                    if (GetCla().equals(new String(claV.getPassword()))){
                         query.EnviarQuery(GetUse(), GetApe(), GetEma(), GetTel(), GetCla());
-                        JOptionPane.showMessageDialog(frame, "Administrador registrado exitosamente.");
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Las claves ingresadas *NO* son iguales.");
-                        return;
-                    }
+                    JOptionPane.showMessageDialog(frame, "Administrador registrado exitosamente.");
                 } else {
-                    JOptionPane.showMessageDialog(frame, "La clave ingresada debe ser mayor de 8 digitos.");
+                    JOptionPane.showMessageDialog(frame, "Las claves ingresadas *NO* son iguales.");
+                    return;
                 }
+            } else {
+                JOptionPane.showMessageDialog(frame, "La clave ingresada debe ser mayor de 8 digitos.");
+            }
             }
         });
 
