@@ -16,8 +16,8 @@ public class Ventana {
     private JTextField ape  = new JTextField();
     private JTextField ema  = new JTextField();
     private JTextField tel  = new JTextField();
-    private JTextField cla  = new JTextField();
-    private JTextField claV = new JTextField();
+    private JPasswordField cla  = new JPasswordField();
+    private JPasswordField claV = new JPasswordField();
     
     private JButton Aceptar = new JButton("Registrar");
     private Conectar query = new Conectar();
@@ -65,7 +65,7 @@ public class Ventana {
     public String GetApe(){return ape.getText();}
     public String GetEma(){return ema.getText();}
     public String GetTel(){return tel.getText();}
-    public String GetCla(){return cla.getText();}
+    public String GetCla(){return new String(cla.getPassword());}
 
     public void ventana() {
         Aceptar.addActionListener(new ActionListener() {
