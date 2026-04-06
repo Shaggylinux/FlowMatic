@@ -1,0 +1,5 @@
+# Si van hacer alguna modificacion, por favor ejecutar esto despues de modificar el codigo para que les pueda ejecutar.
+javac -cp ".:postgresql/postgresql-42.7.10.jar:jBCrypt/src" Main.java Conectar.java Ventana.java
+
+# Esto es necesario para poder ejecutar la herramienta sin problemas chicos
+java -cp ".:postgresql/postgresql-42.7.10.jar:jBCrypt/src" Main

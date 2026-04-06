@@ -3,13 +3,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Ventana {
-    private JFrame frame = new JFrame("Registro de Administrador - SENA");
+    private JFrame frame = new JFrame("Registro de Administrador");
     
-    private JLabel lblUser = new JLabel("Usuario:");
-    private JLabel lblApe  = new JLabel("Apellido:");
-    private JLabel lblEma  = new JLabel("Email:");
-    private JLabel lblTel  = new JLabel("Teléfono:");
-    private JLabel lblCla  = new JLabel("Clave:");
+    private JLabel lblUser = new JLabel("Usuario :");
+    private JLabel lblApe  = new JLabel("Apellido :");
+    private JLabel lblEma  = new JLabel("Email :");
+    private JLabel lblTel  = new JLabel("Teléfono :");
+    private JLabel lblCla  = new JLabel("Clave :");
 
     private JTextField use = new JTextField();
     private JTextField ape = new JTextField();
@@ -17,7 +17,7 @@ public class Ventana {
     private JTextField tel = new JTextField();
     private JPasswordField cla = new JPasswordField();
     
-    private JButton Aceptar = new JButton("Registrar Administrador");
+    private JButton Aceptar = new JButton("Registrar");
     private Conectar query = new Conectar();
     
     Ventana(int x, int y) {
@@ -55,22 +55,22 @@ public class Ventana {
         Aceptar.setFocusPainted(false);
     }
 
-    public String GetUse() { return use.getText().trim(); }
-    public String GetApe() { return ape.getText().trim(); }
-    public String GetEma() { return ema.getText().trim(); }
-    public String GetTel() { return tel.getText().trim(); }
+    public String GetUse() { return use.getText();}
+    public String GetApe() { return ape.getText();}
+    public String GetEma() { return ema.getText();}
+    public String GetTel() { return tel.getText();}
     public String GetCla() { return new String(cla.getPassword()); }
 
     public void ventana() {
         Aceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(GetUse().isEmpty() || GetCla().isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "Usuario y Clave son obligatorios");
+                if(GetUse().isEmpty() || GetCla().isEmpty() || GetTel().isEmpty() || GetEma().isEmpty() || GetUse().isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Todos los campos son obligatorios.");
                     return;
                 }
                 query.EnviarQuery(GetUse(), GetApe(), GetEma(), GetTel(), GetCla());
-                JOptionPane.showMessageDialog(frame, "¡Admin registrado con éxito!");
+                JOptionPane.showMessageDialog(frame, "Administrador registrado.");
             }
         });
 
