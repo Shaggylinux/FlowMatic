@@ -19,9 +19,11 @@ public class LoginController {
 
         if (roles.contains("ROLE_CANDIDATO") || roles.contains("ROLE_RRHH")) {
             return "redirect:/drive";
-        } 
-        
+        }
 
+        if (roles.contains("ROLE_ADMINISTRADOR")) {
+            return "redirect:/admin";
+        }
         return "redirect:/";
     }
 

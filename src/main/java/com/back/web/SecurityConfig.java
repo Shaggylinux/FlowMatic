@@ -6,14 +6,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -25,6 +23,7 @@ public class SecurityConfig {
                 .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/js/**", "/home", "/videos/**", "/").permitAll() 
                 .requestMatchers("/candidato/**").hasRole("CANDIDATO")
                 .requestMatchers("/rrhh/**", "/subir-archivo", "/crear-carpeta", "/eliminar", "/descargar").hasRole("RRHH")
+                .requestMatchers("/admin/**)").hasRole("ADMINISTRADOR")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
