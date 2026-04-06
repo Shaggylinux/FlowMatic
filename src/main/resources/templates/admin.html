@@ -12,20 +12,23 @@
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">Registrar Personal de RRHH</div>
             <div class="card-body">
-                <form th:action="@{/admin/crear-rrhh}" method="post" class="row g-3">
-                    <div class="col-md-3">
-                        <input type="text" name="username" class="form-control" placeholder="Username" required>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="email" name="email" class="form-control" placeholder="Email" required>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="password" name="password" class="form-control" placeholder="Password" required>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-success w-100">Crear RRHH</button>
-                    </div>
-                </form>
+<form th:action="@{/admin/crear-rrhh}" method="post" class="row g-3">
+    <div class="col-md-2">
+        <input type="text" name="username" class="form-control" placeholder="Username" required>
+    </div>
+    <div class="col-md-2">
+        <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
+    </div>
+    <div class="col-md-3">
+        <input type="email" name="email" class="form-control" placeholder="Email" required>
+    </div>
+    <div class="col-md-3">
+        <input type="password" name="clave" class="form-control" placeholder="Password" required>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-success w-100">Crear RRHH</button>
+    </div>
+</form>
             </div>
         </div>
 

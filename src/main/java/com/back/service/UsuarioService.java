@@ -27,21 +27,17 @@ public class UsuarioService {
 
         logger.info("Iniciando registro de usuario: {}", usuario.getEmail());
 
-        // 🔍 Validar duplicado
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             logger.warn("Correo duplicado: {}", usuario.getEmail());
             return "DUPLICADO";
         }
 
-        // 🔐 Encriptar contraseña
         usuario.setClave(encoder.encode(usuario.getClave()));
 
-        // 👤 Rol por defecto
         if (usuario.getRol() == null || usuario.getRol().isEmpty()) {
             usuario.setRol("ROLE_USER");
         }
 
-        // 🔑 Token activación
         String token = UUID.randomUUID().toString();
         usuario.setTokenactivacion(token);
         usuario.setActivo(false);
@@ -49,7 +45,6 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
         logger.info("Usuario guardado en BD: {}", usuario.getEmail());
 
-        // 📧 Enviar correo
         logger.info("Intentando enviar email de verificación a: {}", usuario.getEmail());
 
         boolean emailSent = emailService.enviarEmailVerificacion(
