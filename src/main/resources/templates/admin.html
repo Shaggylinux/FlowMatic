@@ -54,11 +54,75 @@
                         <form th:action="@{/admin/eliminar/{id}(id=${u.id})}" method="post" style="display:inline;">
                             <button class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro?')">Eliminar</button>
                         </form>
-                        <button class="btn btn-warning btn-sm">Editar</button>
+                        <button class="btn btn-warning btn-sm" 
+        data-bs-toggle="modal" 
+        data-bs-target="#modalEditar"
+        th:data-id="${u.id}"
+        th:data-username="${u.username}"
+        th:data-apellido="${u.apellido}"
+        th:data-email="${u.email}"
+        th:data-telefono="${u.telefono}"
+        onclick="llenarModal(this)">
+    Editar
+</button>
                     </td>
+
+                    
                 </tr>
             </tbody>
         </table>
     </div>
+
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title">Editar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form th:action="@{/admin/editar}" method="post">
+        <div class="modal-body">
+            <input type="hidden" id="edit-id" name="id">
+            
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" id="edit-username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="edit-apellido" name="apellido" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" id="edit-email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="edit-telefono" name="telefono">
+            </div>
+            <div class="mb-3">
+    <label class="form-label">Nueva Contraseña (dejar en blanco para no cambiar)</label>
+    <input type="password" class="form-control" name="nuevaClave" placeholder="Mínimo 8 caracteres">
+</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function llenarModal(btn) {
+    document.getElementById('edit-id').value = btn.getAttribute('data-id');
+    document.getElementById('edit-username').value = btn.getAttribute('data-username');
+    document.getElementById('edit-apellido').value = btn.getAttribute('data-apellido');
+    document.getElementById('edit-email').value = btn.getAttribute('data-email');
+    document.getElementById('edit-telefono').value = btn.getAttribute('data-telefono');
+}
+</script>
+
 </body>
 </html>

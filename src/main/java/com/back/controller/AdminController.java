@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import com.back.model.Usuario;
@@ -50,4 +51,34 @@ public String crearRRHH(@ModelAttribute Usuario nuevoRRHH) {
         usuarioRepository.deleteById(id);
         return "redirect:/admin";
     }
+
+@PostMapping("/editar")
+public String editarUsuario(@ModelAttribute Usuario datosEditados, 
+                            @RequestParam(value = "nuevaClave", required = false) String nuevaClave) {
+    
+    Usuario usuarioBD = usuarioRepository.findById(datosEditados.getId()).orElse(null);
+    
+    if (usuarioBD != null) {
+        usuarioBD.setUsername(datosEditados.getUsername());
+        usuarioBD.setApellido(datosEditados.getApellido());
+        usuarioBD.setEmail(datosEditados.getEmail());
+        usuarioBD.setTelefono(datosEditados.getTelefono());
+        
+        if (nuevaClave != null && !nuevaClave.trim().isEmpty()) {
+            System.out.println("Detectada nueva clave para: " + usuarioBD.getUsername());
+            
+            String claveEncriptada = passwordEncoder.encode(nuevaClave);
+            usuarioBD.setClave(claveEncriptada);
+            
+            System.out.println("Clave encriptada y seteada correctamente.");
+        } else {
+            System.out.println("No se envió nueva clave, se mantiene la anterior.");
+        }
+        
+        usuarioRepository.save(usuarioBD);
+        
+    }
+    
+    return "redirect:/admin?editado";
+}
 }
