@@ -20,7 +20,7 @@ public class PasswordController {
     @PostMapping("/forgot-password")
     public String procesarFormulario(@RequestParam String email) {
         usuarioService.generarTokenRecuperacion(email);
-        return "redirect:/login?resetEnviado";
+        return "redirect:/forgot-password?success";
     }
 
     @GetMapping("/reset-password")
@@ -31,14 +31,14 @@ public class PasswordController {
 
     @PostMapping("/reset-password")
     public String cambiarPassword(@RequestParam String token,
-            @RequestParam String password) {
+                                @RequestParam String password) {
 
         boolean ok = usuarioService.cambiarPassword(token, password);
 
         if (!ok) {
-            return "redirect:/login?errorToken";
+            return "redirect:/forgot-password?errorToken";
         }
 
-        return "redirect:/login?passwordCambiada";
+        return "redirect:/reset-password?token=" + token + "&success";
     }
 }
