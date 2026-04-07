@@ -50,8 +50,7 @@ public class UsuarioService {
         boolean emailSent = emailService.enviarEmailVerificacion(
                 usuario.getEmail(),
                 usuario.getUsername(),
-                token
-        );
+                token);
 
         if (emailSent) {
             logger.info("Email enviado correctamente");
@@ -83,4 +82,50 @@ public class UsuarioService {
         return true;
     }
 
+<<<<<<< Updated upstream
+=======
+    public void generarTokenRecuperacion(String email) {
+
+        var optional = usuarioRepository.findByEmail(email);
+
+        if (optional.isEmpty()) {
+            return;
+        }
+
+        Usuario usuario = optional.get();
+
+        String token = UUID.randomUUID().toString();
+        usuario.setTokenactivacion(token);
+
+        if (usuario.getApellido() == null || usuario.getApellido().isBlank()) {
+            usuario.setApellido("N/A");
+        }
+
+        usuarioRepository.save(usuario);
+
+        emailService.enviarEmailRecuperacion(
+                email,
+                usuario.getUsername(),
+                token);
+    }
+
+    public boolean cambiarPassword(String token, String nuevaPassword) {
+
+        var optional = usuarioRepository.findByTokenactivacion(token);
+
+        if (optional.isEmpty()) {
+            return false;
+        }
+
+        Usuario usuario = optional.get();
+
+        usuario.setClave(encoder.encode(nuevaPassword));
+        usuario.setTokenactivacion(null);
+
+        usuarioRepository.save(usuario);
+
+        return true;
+    }
+
+>>>>>>> Stashed changes
 }
