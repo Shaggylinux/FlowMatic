@@ -66,10 +66,16 @@
     Editar
 </button>
                     </td>
+                    
 
                     
                 </tr>
             </tbody>
+                    <div>
+            <a type="submit" th:href="@{/admin/exportar}">
+                    Excel
+            </a>
+        </div>
         </table>
     </div>
 
@@ -109,6 +115,9 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           <button type="submit" class="btn btn-primary">Guardar Cambios</button>
         </div>
+
+
+
       </form>
     </div>
   </div>
