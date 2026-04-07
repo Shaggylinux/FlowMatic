@@ -22,44 +22,53 @@ public class Ventana {
     private JButton Aceptar = new JButton("Registrar");
     private Conectar query = new Conectar();
     
-    Ventana(int x, int y) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {}
+Ventana(int x, int y) {
+    try {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (Exception e) {}
 
-        frame.setSize(x, y);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
+    frame.setSize(x, y);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setLocationRelativeTo(null);
+    frame.setLayout(null);
 
-        int labelX = 50;
-        int fieldX = 150;
-        int width  = 200;
-        int height = 30;
+    frame.getContentPane().setBackground(new Color(244, 246, 248));
 
-        lblUser.setBounds(labelX, 40, 100, height);
-        use.setBounds(fieldX, 40, width, height);
+    Font labelFont = new Font("Segoe UI", Font.BOLD, 13);
+    Font fieldFont = new Font("Segoe UI", Font.PLAIN, 13);
 
-        lblApe.setBounds(labelX, 80, 100, height);
-        ape.setBounds(fieldX, 80, width, height);
+    int labelX = 60;
+    int fieldX = 180;
+    int width  = 220;
+    int height = 30;
 
-        lblEma.setBounds(labelX, 120, 100, height);
-        ema.setBounds(fieldX, 120, width, height);
+    JLabel[] labels = {lblUser, lblApe, lblEma, lblTel, lblCla, lblClaV};
+    int yPos = 40;
 
-        lblTel.setBounds(labelX, 160, 100, height);
-        tel.setBounds(fieldX, 160, width, height);
-
-        lblCla.setBounds(labelX, 200, 100, height);
-        cla.setBounds(fieldX, 200, width, height);
-
-        lblClaV.setBounds(labelX, 240, 100, height);
-        claV.setBounds(fieldX, 240, width, height);
-
-
-        Aceptar.setBounds(fieldX, 300, width, 40);
-        Aceptar.setBackground(new Color(34, 139, 34));
-        Aceptar.setForeground(Color.WHITE);
-        Aceptar.setFocusPainted(false);
+    for (JLabel lbl : labels) {
+        lbl.setFont(labelFont);
+        lbl.setForeground(new Color(51, 51, 51));
+        lbl.setBounds(labelX, yPos, 120, height);
+        yPos += 40;
     }
+
+    JTextField[] fields = {use, ape, ema, tel, cla, claV};
+    yPos = 40;
+
+    for (JTextField txt : fields) {
+        txt.setFont(fieldFont);
+        txt.setBounds(fieldX, yPos, width, height);
+        txt.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+        yPos += 40;
+    }
+
+    Aceptar.setBounds(fieldX, 300, width, 40);
+    Aceptar.setBackground(new Color(15, 118, 110));
+    Aceptar.setForeground(Color.WHITE);
+    Aceptar.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    Aceptar.setFocusPainted(false);
+    Aceptar.setBorder(BorderFactory.createEmptyBorder());
+}
 
     public String GetUse(){return use.getText();}
     public String GetApe(){return ape.getText();}
