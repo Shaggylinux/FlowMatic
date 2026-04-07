@@ -82,8 +82,6 @@ public class UsuarioService {
         return true;
     }
 
-<<<<<<< Updated upstream
-=======
     public void generarTokenRecuperacion(String email) {
 
         var optional = usuarioRepository.findByEmail(email);
@@ -127,5 +125,4 @@ public class UsuarioService {
         return true;
     }
 
->>>>>>> Stashed changes
 }
