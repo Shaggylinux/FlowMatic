@@ -199,7 +199,7 @@ public String mostrarPagina(@RequestParam(name = "folder", required = false, def
         return "redirect:/drive";
     }
 
-@PostMapping("/actualizar-estado")
+    @PostMapping("/actualizar-estado")
     public String actualizarEstado(@RequestParam("usuarioId") Long usuarioId, 
                                    @RequestParam("nuevoEstado") String nuevoEstado) {
         
