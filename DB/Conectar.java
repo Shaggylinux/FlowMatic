@@ -24,7 +24,7 @@ public class Conectar {
 
     public void EnviarQuery(String use, String ape, String ema, String tel, String cla){
         Generar g = new Generar();
-        String sql = "INSERT INTO usuarios(username, apellido, email, telefono, clave, rol) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios(username, apellido, email, telefono, clave, rol, activo) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try ( PreparedStatement algo = this.conn.prepareStatement(sql)){
             algo.setString(1, use);
             algo.setString(2, ape);
@@ -32,6 +32,7 @@ public class Conectar {
             algo.setString(4, tel);
             algo.setString(5, g.GenerarClave(cla));
             algo.setString(6, "ROLE_ADMINISTRADOR");
+            algo.setBoolean(7, true);
             algo.executeUpdate();
         } catch (SQLException e){
             System.out.println(e);
