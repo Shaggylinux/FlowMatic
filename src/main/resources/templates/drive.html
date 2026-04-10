@@ -105,6 +105,10 @@
                         <td>
                             <div class="acciones-botones">
                                 <a th:href="@{/drive/descargar(archivoId=${archivo.id})}" class="btn-descargar">Descargar</a>
+                                    <button class="btn btn-sm btn-info" th:onclick="'abrirPreview(' + ${archivo.id} + ')'">
+                                        <i class="bi bi-eye"></i> Ver
+                                    </button>
+                                
                                 <div sec:authorize="hasRole('RRHH')" style="display: flex; gap: 5px;">
                                     <button type="button" class="btn-compartir" 
                                             th:onclick="'prepararCompartir(' + ${archivo.id} + ')'"
@@ -116,11 +120,7 @@
                                           onsubmit="return confirm('¿Eliminar archivo?');">
                                         <input type="hidden" name="archivoId" th:value="${archivo.id}">
                                         <button type="submit" class="btn-eliminar">Eliminar</button>
-                                    </form>
-                                                                            <button class="btn btn-sm btn-info" 
-        th:onclick="'abrirPreview(' + ${archivo.id} + ')'">
-    <i class="bi bi-eye"></i> Ver
-</button>
+                                    </form>                                                                
                                 </div>
                             </div>
                         </td>
@@ -129,7 +129,7 @@
                         <td colspan="2" style="text-align: center; color: #94a3b8; padding: 40px;">
                             <span sec:authorize="hasRole('RRHH')">Esta carpeta está vacía.</span>
                             <span sec:authorize="hasRole('CANDIDATO')">Aún no has recibido archivos compartidos.</span>
-                        </td>
+                        </td>                        
                     </tr>
                 </tbody>
             </table>
@@ -159,6 +159,7 @@
                         <span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; background: #e0e7ff; color: #4338ca;"
                               th:text="${cand.estado != null ? cand.estado : 'Registrado'}">
                         </span>
+                        
                     </td>
 <td>
     <form th:action="@{/drive/actualizar-estado}" method="post" style="display: flex; gap: 8px;">
