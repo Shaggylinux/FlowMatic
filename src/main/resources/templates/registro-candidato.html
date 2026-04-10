@@ -6,6 +6,10 @@
 </head>
 <body>
 
+<div class="loader-overlay" id="loader">
+    <div class="loader"></div>
+</div>
+
 <div class="container">
 
     <div class="form-section">
@@ -21,36 +25,31 @@
                 ❗ Correo ya registrado
             </div>
 
-            <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post">
+            <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post" id="formRegistro">
 
                 <div class="input-group">
                     <label>Nombre</label>
-                    <input type="text" th:field="*{username}" placeholder="Nombre">
-                    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                    <input type="text" th:field="*{username}">
                 </div>
 
                 <div class="input-group">
                     <label>Apellido</label>
-                    <input type="text" th:field="*{apellido}" placeholder="Apellido">
-                    <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
+                    <input type="text" th:field="*{apellido}">
                 </div>
 
                 <div class="input-group">
                     <label>Correo</label>
-                    <input type="email" th:field="*{email}" placeholder="Correo">
-                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                    <input type="email" th:field="*{email}">
                 </div>
 
                 <div class="input-group">
                     <label>Teléfono</label>
-                    <input type="tel" th:field="*{telefono}" placeholder="Teléfono">
-                    <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></p>
+                    <input type="tel" th:field="*{telefono}">
                 </div>
 
                 <div class="input-group">
                     <label>Contraseña</label>
-                    <input type="password" th:field="*{clave}" placeholder="Contraseña">
-                    <p th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></p>
+                    <input type="password" th:field="*{clave}">
                 </div>
 
                 <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
@@ -70,6 +69,12 @@
     </div>
 
 </div>
+
+<script>
+document.getElementById("formRegistro").addEventListener("submit", () => {
+    document.getElementById("loader").style.display = "flex";
+});
+</script>
 
 </body>
 </html>

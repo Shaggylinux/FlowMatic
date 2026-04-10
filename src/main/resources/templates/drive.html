@@ -76,12 +76,13 @@
 </h2>
         </div>
 
-        <div class="actions" sec:authorize="hasRole('RRHH')">
+        <div class="actions" sec:authorize="hasAnyRole('RRHH', 'CANDIDATO')">
             <form th:action="@{/drive/subir-archivo}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="folderDestino" th:value="${folderActual}">
                 <label class="file-upload">
                     <input type="file" name="archivo" required>
-                    <span>📂 Elegir archivo</span>
+                    <span sec:authorize="hasRole('RRHH')"> 📂 Elegir archivo</span>
+                    <span sec:authorize="hasRole('CANDIDATO')">📂 Subir Archivos</span>
                 </label>
                 <button type="submit" class="btn-upload">Subir</button>
             </form>

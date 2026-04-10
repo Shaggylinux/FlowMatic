@@ -1,48 +1,60 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="form-section">
-        <div class="form-box">
-          <h2>Iniciar Sesión</h2>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" th:href="@{/css/login.css}" />
+</head>
+<body>
 
-          <div th:if="${param.error}" class="error">
-            Correo o contraseña incorrectos
-          </div>
+<div class="loader-overlay" id="loader">
+  <div class="loader"></div>
+</div>
 
-          <div th:if="${param.logout}" class="success">
-            Sesión cerrada correctamente
-          </div>
+<div class="container">
+  <div class="form-section">
+    <div class="form-box">
+      <h2>Iniciar Sesión</h2>
 
-          <form th:action="@{/login}" method="post">
-            <div class="input-group">
-              <label>Correo</label>
-              <input type="text" name="email" required />
-            </div>
+      <div th:if="${param.error}" class="error">
+        Correo o contraseña incorrectos
+      </div>
 
-            <div class="input-group">
-              <label>Contraseña</label>
-              <input type="password" name="clave" required />
-            </div>
+      <div th:if="${param.logout}" class="success">
+        Sesión cerrada correctamente
+      </div>
 
-            <button type="submit">Ingresar</button>
-
-            <div style="text-align: right; margin-bottom: 10px">
-              <a th:href="@{/forgot-password}">¿Olvidaste tu contraseña?</a>
-            </div>
-          </form>
+      <form th:action="@{/login}" method="post" id="formLogin">
+        <div class="input-group">
+          <label>Correo</label>
+          <input type="text" name="email" required />
         </div>
-      </div>
 
-      <div class="image-section">
-        <video autoplay muted loop class="bg-video">
-          <source src="/videos/flowmatic-login.mp4" type="video/mp4" />
-        </video>
-      </div>
+        <div class="input-group">
+          <label>Contraseña</label>
+          <input type="password" name="clave" required />
+        </div>
+
+        <button type="submit">Ingresar</button>
+
+        <div style="text-align: right; margin-bottom: 10px">
+          <a th:href="@{/forgot-password}">¿Olvidaste tu contraseña?</a>
+        </div>
+      </form>
     </div>
-  </body>
+  </div>
+
+  <div class="image-section">
+    <video autoplay muted loop class="bg-video">
+      <source src="/videos/flowmatic-login.mp4" type="video/mp4" />
+    </video>
+  </div>
+</div>
+
+<script>
+document.getElementById("formLogin").addEventListener("submit", () => {
+  document.getElementById("loader").style.display = "flex";
+});
+</script>
+
+</body>
 </html>
