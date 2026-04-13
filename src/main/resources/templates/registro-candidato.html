@@ -29,27 +29,34 @@
 
                 <div class="input-group">
                     <label>Nombre</label>
-                    <input type="text" th:field="*{username}">
+                    <input type="text" th:field="*{username}" required minlength="2" maxlength="50"
+                           pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
+                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-msg"></span>
                 </div>
 
                 <div class="input-group">
                     <label>Apellido</label>
-                    <input type="text" th:field="*{apellido}">
+                    <input type="text" th:field="*{apellido}" required minlength="2" maxlength="50"
+                           pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
+                    <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="error-msg"></span>
                 </div>
 
                 <div class="input-group">
                     <label>Correo</label>
-                    <input type="email" th:field="*{email}">
+                    <input type="email" th:field="*{email}" required maxlength="100">
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-msg"></span>
                 </div>
 
                 <div class="input-group">
                     <label>Teléfono</label>
-                    <input type="tel" th:field="*{telefono}">
+                    <input type="tel" th:field="*{telefono}"
+                           pattern="[0-9]{7,15}" title="Solo números, entre 7 y 15 dígitos">
                 </div>
 
                 <div class="input-group">
                     <label>Contraseña</label>
-                    <input type="password" th:field="*{clave}">
+                    <input type="password" th:field="*{clave}" required minlength="8" maxlength="100">
+                    <span th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}" class="error-msg"></span>
                 </div>
 
                 <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
