@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 * {
     margin: 0;
     padding: 0;
@@ -115,3 +116,60 @@ a {
     margin-bottom: 15px;
     font-weight: 600;
 }
+=======
+/* ================================================
+   LOGIN — estilos específicos de la página
+   El layout split, botones, inputs y loader
+   vienen de base.css. Solo override aquí si
+   esta página necesita algo diferente.
+   ================================================ */
+
+/* Mensaje de error de credenciales */
+.error {
+  background: var(--fm-danger-bg);
+  color: var(--fm-danger-text);
+  border-left: 4px solid var(--fm-danger);
+  padding: 12px 16px;
+  border-radius: var(--fm-radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+/* Mensaje de sesión cerrada */
+.success {
+  background: var(--fm-success-bg);
+  color: var(--fm-success-text);
+  border-left: 4px solid var(--fm-success);
+  padding: 12px 16px;
+  border-radius: var(--fm-radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* Link "¿Olvidaste tu contraseña?" alineado a la derecha */
+.forgot-link-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+
+/* Divisor "o" entre login y registro */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+}
+.auth-divider span {
+  flex: 1;
+  height: 1px;
+  background: var(--fm-border);
+  display: block;
+}
+.auth-divider small {
+  font-size: 12px;
+  color: var(--fm-text-muted);
+}
+>>>>>>> Stashed changes

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 * {
     margin: 0;
     padding: 0;
@@ -126,3 +127,18 @@ a {
     color: #7f1d1d;
     border-color: #e74c3c;
 }
+=======
+/* ================================================
+   REGISTRO — estilos específicos de la página
+   El layout split, botones, inputs, alertas y
+   loader vienen de base.css.
+   ================================================ */
+
+/* Mensajes de validación de Bean Validation (Thymeleaf) */
+.error-msg {
+  font-size: var(--fm-size-caption);
+  color: var(--fm-danger);
+  margin-top: 2px;
+  display: block;
+}
+>>>>>>> Stashed changes

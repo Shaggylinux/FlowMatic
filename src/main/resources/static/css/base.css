@@ -1,0 +1,751 @@
+/* ================================================
+   FLOWMATIC — BASE STYLES
+   Clases reutilizables disponibles en toda la app.
+   Depende de tokens.css — cargarlo primero.
+
+   Secciones:
+   1. Reset y tipografía base
+   2. Botones
+   3. Formularios
+   4. Alertas y mensajes
+   5. Badges de estado y rol
+   6. Cards
+   7. Tabla de datos
+   8. Loader
+   9. Layout split (páginas de autenticación)
+   10. Sidebar del dashboard
+   11. Topbar del dashboard
+   ================================================ */
+
+/* ── 1. RESET Y TIPOGRAFÍA BASE ─────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--fm-font);
+  font-size: var(--fm-size-body);
+  color: var(--fm-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Página de autenticación: centra el split-container */
+.page-auth {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, var(--fm-brand-dark), #134E4A);
+}
+
+/* ── 2. BOTONES ─────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--fm-radius-md);
+  font-family: var(--fm-font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background var(--fm-transition),
+    color var(--fm-transition),
+    border-color var(--fm-transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Primario — acción principal de cada pantalla */
+.btn-primary {
+  background: var(--fm-brand);
+  color: #ffffff;
+  border-color: var(--fm-brand);
+}
+.btn-primary:hover {
+  background: var(--fm-brand-hover);
+  border-color: var(--fm-brand-hover);
+}
+
+/* Secundario — acción alternativa */
+.btn-secondary {
+  background: var(--fm-surface);
+  color: var(--fm-text);
+  border-color: var(--fm-border);
+}
+.btn-secondary:hover {
+  background: var(--fm-bg);
+}
+
+/* Ghost teal — acciones de tabla no destructivas */
+.btn-ghost {
+  background: transparent;
+  color: var(--fm-brand);
+  border-color: var(--fm-brand);
+}
+.btn-ghost:hover {
+  background: var(--fm-brand-light);
+}
+
+/* Peligro — eliminar, acciones irreversibles */
+.btn-danger {
+  background: var(--fm-danger);
+  color: #ffffff;
+  border-color: var(--fm-danger);
+}
+.btn-danger:hover {
+  background: #B91C1C;
+  border-color: #B91C1C;
+}
+
+/* Ghost peligro — eliminar en tablas (menos peso visual) */
+.btn-ghost-danger {
+  background: transparent;
+  color: var(--fm-danger);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+.btn-ghost-danger:hover {
+  background: var(--fm-danger-bg);
+}
+
+/* Ghost advertencia — editar en tablas */
+.btn-ghost-warning {
+  background: transparent;
+  color: var(--fm-warning);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+.btn-ghost-warning:hover {
+  background: var(--fm-warning-bg);
+}
+
+/* Ghost logout — borde rojo, rellena en hover */
+.btn-logout {
+  background: transparent;
+  color: var(--fm-danger);
+  border-color: var(--fm-danger);
+  width: 100%;
+}
+.btn-logout:hover {
+  background: var(--fm-danger);
+  color: #ffffff;
+}
+
+/* Modificadores de tamaño */
+.btn-sm {
+  padding: 5px 12px;
+  font-size: var(--fm-size-small);
+  font-weight: 500;
+}
+
+.btn-full {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ── 3. FORMULARIOS ─────────────────────────── */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.form-label {
+  font-size: var(--fm-size-small);
+  font-weight: 500;
+  color: var(--fm-text-label);
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--fm-border);
+  border-radius: var(--fm-radius-md);
+  font-family: var(--fm-font);
+  font-size: 14px;
+  color: var(--fm-text);
+  background: var(--fm-surface);
+  outline: none;
+  transition:
+    border-color var(--fm-transition),
+    box-shadow var(--fm-transition);
+}
+
+.form-input::placeholder {
+  color: var(--fm-sidebar-link);
+}
+
+.form-input:focus {
+  border-color: var(--fm-brand);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+.error-msg {
+  font-size: var(--fm-size-caption);
+  color: var(--fm-danger);
+  margin-top: 2px;
+}
+
+/* ── 4. ALERTAS Y MENSAJES ──────────────────── */
+
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--fm-radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.alert-success {
+  background: var(--fm-success-bg);
+  color: var(--fm-success-text);
+  border-left: 4px solid var(--fm-success);
+}
+
+.alert-error {
+  background: var(--fm-danger-bg);
+  color: var(--fm-danger-text);
+  border-left: 4px solid var(--fm-danger);
+}
+
+.alert-warning {
+  background: var(--fm-warning-bg);
+  color: var(--fm-warning-text);
+  border-left: 4px solid var(--fm-warning);
+}
+
+/* ── 5. BADGES DE ESTADO Y ROL ──────────────── */
+
+/* Base — aplica siempre junto a una variante */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--fm-radius-full);
+  font-size: var(--fm-size-caption);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Etapas del candidato */
+.badge-registered {
+  background: var(--fm-badge-registered-bg);
+  color: var(--fm-badge-registered-text);
+}
+.badge-review {
+  background: var(--fm-badge-review-bg);
+  color: var(--fm-badge-review-text);
+}
+.badge-interview {
+  background: var(--fm-badge-interview-bg);
+  color: var(--fm-badge-interview-text);
+}
+.badge-selected {
+  background: var(--fm-badge-selected-bg);
+  color: var(--fm-badge-selected-text);
+}
+.badge-rejected {
+  background: var(--fm-badge-rejected-bg);
+  color: var(--fm-badge-rejected-text);
+}
+
+/* Activo / Pendiente */
+.badge-active {
+  background: var(--fm-success-bg);
+  color: var(--fm-success-text);
+}
+.badge-pending {
+  background: var(--fm-warning-bg);
+  color: var(--fm-warning-text);
+}
+
+/* Roles de usuario */
+.role-admin {
+  background: var(--fm-brand-dark);
+  color: #ffffff;
+}
+.role-rrhh {
+  background: var(--fm-brand);
+  color: #ffffff;
+}
+.role-candidato {
+  background: var(--fm-info);
+  color: #ffffff;
+}
+
+/* ── 6. CARDS ───────────────────────────────── */
+
+.card {
+  background: var(--fm-surface);
+  border-radius: var(--fm-radius-lg);
+  box-shadow: var(--fm-shadow-md);
+  overflow: hidden;
+}
+
+/* Cabecera navy de una card */
+.card-header-dark {
+  background: var(--fm-brand-dark);
+  color: #ffffff;
+  padding: 12px 20px;
+  font-size: var(--fm-size-small);
+  font-weight: 600;
+}
+
+/* Cards de estadísticas con borde izquierdo de color */
+.stat-card {
+  background: var(--fm-surface);
+  border-radius: var(--fm-radius-lg);
+  border-left: 4px solid var(--fm-border);
+  padding: 20px 24px;
+  box-shadow: var(--fm-shadow-sm);
+}
+.stat-card-brand   { border-left-color: var(--fm-brand); }
+.stat-card-info    { border-left-color: var(--fm-info); }
+.stat-card-warning { border-left-color: var(--fm-warning); }
+.stat-card-success { border-left-color: var(--fm-success); }
+
+.stat-card-number {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--fm-text);
+  line-height: 1;
+}
+.stat-card-label {
+  font-size: var(--fm-size-small);
+  color: var(--fm-text-muted);
+  margin-top: 6px;
+}
+
+/* ── 7. TABLA DE DATOS ──────────────────────── */
+
+.table-container {
+  background: var(--fm-surface);
+  border-radius: var(--fm-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--fm-shadow-md);
+  border: 1px solid var(--fm-border);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.data-table thead tr {
+  background: var(--fm-brand-dark);
+}
+
+.data-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: var(--fm-size-caption);
+  font-weight: 500;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid var(--fm-border);
+  transition: background var(--fm-transition);
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: var(--fm-bg);
+}
+
+.data-table tbody tr:hover {
+  background: #F0FDFA;
+}
+
+.data-table td {
+  padding: 12px 16px;
+  color: var(--fm-text);
+  vertical-align: middle;
+}
+
+.data-table td.td-muted {
+  color: var(--fm-text-muted);
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── 8. LOADER ──────────────────────────────── */
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 27, 42, 0.65);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader {
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  border-top: 5px solid var(--fm-brand);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  animation: fm-spin 0.8s linear infinite;
+}
+
+@keyframes fm-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── 9. LAYOUT SPLIT (auth pages) ───────────── */
+/*
+  Uso (diseño prototyping sin video):
+  <body class="page-auth">
+    <div class="split-container">
+      <div class="split-form">...</div>
+      <div class="split-visual">
+        <div class="split-visual-gradient"></div>
+        <div class="split-visual-decor">...</div>
+        <div class="split-visual-content">...</div>
+      </div>
+    </div>
+  </body>
+*/
+
+.split-container {
+  display: flex;
+  width: 900px;
+  max-width: 95vw;
+  min-height: 600px;
+  height: auto;
+  max-height: 90vh;
+  background: var(--fm-surface);
+  border-radius: var(--fm-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--fm-shadow-xl);
+}
+
+.split-form {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+  padding: 40px;
+}
+
+.split-form-box {
+  width: 100%;
+  max-width: 360px;
+  padding: 8px 0;
+}
+
+.split-form-box h2 {
+  font-size: var(--fm-size-h2);
+  font-weight: 700;
+  color: var(--fm-text);
+  margin-bottom: 24px;
+}
+
+/* Gradiente de fondo idéntico al prototipo */
+.split-visual {
+  width: 50%;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0D1B2A, #134E4A);
+}
+
+.split-visual-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0D1B2A, #134E4A);
+}
+
+/* Decoraciones geométricas del prototipo */
+.split-visual-decor {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(13, 148, 136, 0.1);
+  pointer-events: none;
+}
+
+/* El video llena el panel visual sin barras negras */
+.bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* era "contain" — corregido */
+  transform: translate(-50%, -50%);
+}
+
+/* Velo semitransparente sobre el video */
+.split-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 27, 42, 0.45);
+}
+
+/* Contenido sobre el panel visual: logo + bullets */
+.split-visual-content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+/* Círculos decorativos del panel visual */
+.split-visual-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(13, 148, 136, 0.15);
+  pointer-events: none;
+}
+
+/* Responsive: pantallas medianas y laptops */
+@media (max-width: 1024px) {
+  .split-container {
+    width: 95vw;
+    max-height: 95vh;
+  }
+  
+  .split-form-box {
+    max-width: 340px;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  .form-input {
+    padding: 8px 12px;
+  }
+}
+
+/* Responsive: mostrar solo formulario en móviles */
+@media (max-width: 768px) {
+  .split-container {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    flex-direction: column;
+  }
+  
+  .split-form {
+    width: 100%;
+    padding: 24px 20px;
+  }
+  
+  .split-form-box {
+    max-width: 100%;
+  }
+  
+  .split-visual {
+    display: none;
+  }
+}
+
+.split-visual-tagline {
+  color: rgba(255,255,255,0.55);
+  font-size: 13px;
+  margin-top: 8px;
+  margin-bottom: 28px;
+}
+
+.split-visual-bullets {
+  list-style: none;
+  width: 100%;
+  max-width: 240px;
+  text-align: left;
+}
+
+.split-visual-bullets li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.split-visual-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(13, 148, 136, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--fm-brand);
+}
+
+.split-visual-list-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.split-visual-bullets li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+}
+
+.split-visual-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(13,148,136,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── 10. SIDEBAR DEL DASHBOARD ──────────────── */
+
+.fm-sidebar {
+  width: var(--fm-sidebar-width);
+  min-height: 100vh;
+  background: var(--fm-brand-dark);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+}
+
+.fm-sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--fm-sidebar-hover);
+}
+
+.fm-sidebar-logo {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--fm-brand);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+
+.fm-sidebar-section-label {
+  padding: 16px 20px 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+}
+
+.fm-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  font-size: 14px;
+  color: var(--fm-sidebar-link);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition:
+    background var(--fm-transition),
+    color var(--fm-transition);
+}
+
+.fm-nav-link:hover {
+  background: var(--fm-sidebar-hover);
+  color: #ffffff;
+}
+
+.fm-nav-link.active {
+  background: rgba(13, 148, 136, 0.15);
+  border-left-color: var(--fm-brand);
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.fm-sidebar-footer {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid var(--fm-sidebar-hover);
+}
+
+/* Scrollbar de la lista de carpetas en el sidebar */
+.fm-sidebar-scroll {
+  overflow-y: auto;
+  max-height: 280px;
+}
+
+.fm-sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.fm-sidebar-scroll::-webkit-scrollbar-thumb {
+  background: var(--fm-sidebar-hover);
+  border-radius: var(--fm-radius-full);
+}
+
+/* ── 11. TOPBAR DEL DASHBOARD ───────────────── */
+
+.fm-topbar {
+  height: var(--fm-topbar-height);
+  min-height: var(--fm-topbar-height);
+  background: var(--fm-surface);
+  border-bottom: 1px solid var(--fm-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.fm-topbar-title {
+  font-size: var(--fm-size-h3);
+  font-weight: 600;
+  color: var(--fm-text);
+}
+
+.fm-topbar-sub {
+  font-size: var(--fm-size-caption);
+  color: var(--fm-text-muted);
+  margin-top: 1px;
+}
+
+/* ── LINK SIMPLE ────────────────────────────── */
+.fm-link {
+  color: var(--fm-brand);
+  text-decoration: none;
+  font-size: var(--fm-size-small);
+  font-weight: 500;
+}
+.fm-link:hover {
+  color: var(--fm-brand-hover);
+  text-decoration: underline;
+}

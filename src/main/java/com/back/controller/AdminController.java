@@ -33,7 +33,19 @@ public class AdminController {
 
     @GetMapping
     public String panelAdmin(Model model) {
-        model.addAttribute("usuarios", usuarioRepository.findAll());
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        
+        long totalUsuarios = usuarios.size();
+        long rrhhActivos = usuarios.stream().filter(u -> "ROLE_RRHH".equals(u.getRol()) && u.isActivo()).count();
+        long candidatos = usuarios.stream().filter(u -> "ROLE_CANDIDATO".equals(u.getRol())).count();
+        long pendientes = usuarios.stream().filter(u -> "ROLE_CANDIDATO".equals(u.getRol()) && !u.isActivo()).count();
+        
+        model.addAttribute("usuarios", usuarios);
+        model.addAttribute("totalUsuarios", totalUsuarios);
+        model.addAttribute("rrhhActivos", rrhhActivos);
+        model.addAttribute("candidatos", candidatos);
+        model.addAttribute("pendientes", pendientes);
+        
         return "admin";
     }
 

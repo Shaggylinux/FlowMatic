@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 body {
     background: #f1f5f9;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -113,3 +114,217 @@ body {
     padding: 6px 12px;
     border-radius: 6px;
 }
+=======
+/* ================================================
+   ADMIN — estilos específicos del panel admin
+   Sidebar, tabla, loader, badges y stat cards
+   vienen de base.css. Solo layout aquí.
+   ================================================ */
+
+.admin-body { 
+  background: var(--fm-bg); 
+  overflow-y: auto;
+}
+
+/* Layout principal */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  height: 100vh;
+}
+
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--fm-bg);
+  overflow-y: auto;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 24px 28px;
+  overflow-y: auto;
+}
+
+/* Fila de formulario multcolumna */
+.admin-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 1.5fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+@media (max-width: 900px) {
+  .admin-form-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* Header de la pantalla admin */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.admin-header h2 {
+  font-size: var(--fm-size-h2);
+  font-weight: 700;
+  color: var(--fm-text);
+}
+
+/* Badge de rol "Admin" en el topbar */
+.badge-admin-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--fm-radius-full);
+  font-size: var(--fm-size-caption);
+  font-weight: 500;
+  background: var(--fm-brand-dark);
+  color: #ffffff;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+/* Grid de stat cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Sección de tabla con su propio header */
+.table-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.table-section-header h3 {
+  font-size: var(--fm-size-h3);
+  font-weight: 600;
+  color: var(--fm-text);
+}
+
+/* Sobreescritura de Bootstrap: card-header usa nuestro navy */
+.card-header.bg-primary,
+.card-header.bg-warning,
+.modal-header.bg-warning {
+  background: var(--fm-brand-dark) !important;
+  color: #ffffff !important;
+  border: none;
+}
+
+/* Sobreescritura del btn-primary de Bootstrap */
+.btn.btn-primary,
+.btn-primary:not(.btn-ghost) {
+  background: var(--fm-brand) !important;
+  border-color: var(--fm-brand) !important;
+  color: #ffffff !important;
+}
+.btn.btn-primary:hover {
+  background: var(--fm-brand-hover) !important;
+  border-color: var(--fm-brand-hover) !important;
+}
+
+/* Sobreescritura del btn-success de Bootstrap */
+.btn.btn-success {
+  background: var(--fm-success) !important;
+  border-color: var(--fm-success) !important;
+}
+
+/* Sobreescritura del btn-warning de Bootstrap */
+.btn.btn-warning {
+  background: var(--fm-warning) !important;
+  border-color: var(--fm-warning) !important;
+  color: #ffffff !important;
+}
+
+/* Sobreescritura del btn-danger de Bootstrap */
+.btn.btn-danger {
+  background: var(--fm-danger) !important;
+  border-color: var(--fm-danger) !important;
+}
+
+/* Cabecera de tabla Bootstrap → nuestro navy */
+.table-dark th,
+thead.table-dark th {
+  background: var(--fm-brand-dark) !important;
+  color: #ffffff !important;
+  font-size: var(--fm-size-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Hover de filas de tabla Bootstrap */
+.table-hover tbody tr:hover {
+  background: #F0FDFA !important;
+}
+
+/* ── Stats Cards (diseño prototipo) ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--fm-surface);
+  border-radius: var(--fm-radius-lg);
+  border-left: 4px solid var(--fm-brand);
+  padding: 20px;
+  box-shadow: var(--fm-shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-card-icon {
+  font-size: 32px;
+  opacity: 0.4;
+}
+
+.stat-card-value {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--fm-text);
+  line-height: 1;
+}
+
+.stat-card-label {
+  font-size: 14px;
+  color: var(--fm-text-muted);
+  margin-top: 4px;
+}
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Table header row ── */
+.table-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.table-header-row h3 {
+  font-size: var(--fm-size-h3);
+  font-weight: 600;
+  color: var(--fm-text);
+}
+>>>>>>> Stashed changes

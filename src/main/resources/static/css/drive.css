@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 body {
 background: #f1f5f9;
 font-family: 'Segoe UI', sans-serif;
@@ -235,3 +236,90 @@ border-top: 1px solid #1e293b;
 .btn-eliminar:hover {
     background: #dc2626;
 }
+=======
+/* ================================================
+   DRIVE — estilos específicos del dashboard
+   Layout, componentes exclusivos de esta pantalla.
+   Sidebar, tablas y botones vienen de base.css.
+   ================================================ */
+
+/* Layout principal */
+.drive-body { background: var(--fm-bg); }
+
+.drive-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.drive-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--fm-bg);
+}
+
+.drive-content {
+  flex: 1;
+  padding: 28px 32px;
+}
+
+/* Header de sección */
+.drive-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.drive-section-title {
+  font-size: var(--fm-size-h3);
+  font-weight: 600;
+  color: var(--fm-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Label del input de archivo */
+.file-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--fm-surface);
+  color: var(--fm-text);
+  border: 1px solid var(--fm-border);
+  border-radius: var(--fm-radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--fm-transition), border-color var(--fm-transition);
+}
+
+.file-upload-label:hover {
+  background: var(--fm-brand-light);
+  border-color: var(--fm-brand);
+}
+
+/* Card de estado del candidato */
+.candidate-status-card {
+  margin-bottom: 28px;
+}
+
+.candidate-status-card-inner {
+  background: var(--fm-surface);
+  border-radius: var(--fm-radius-lg);
+  padding: 20px 24px;
+  box-shadow: var(--fm-shadow-sm);
+  border-left: 6px solid var(--fm-brand);
+}
+
+.candidate-status-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fm-text-muted);
+}
+>>>>>>> Stashed changes

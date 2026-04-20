@@ -27,7 +27,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/candidato/**").hasRole("CANDIDATO")
                         .requestMatchers("/rrhh/**", "/subir-archivo", "/crear-carpeta", "/eliminar", "/descargar")
-                        .hasRole("RRHH")
+                        .hasAnyRole("RRHH", "CANDIDATO")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
