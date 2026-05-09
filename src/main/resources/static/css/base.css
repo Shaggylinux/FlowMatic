@@ -329,9 +329,11 @@ body {
 .table-container {
   background: var(--fm-surface);
   border-radius: var(--fm-radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   box-shadow: var(--fm-shadow-md);
   border: 1px solid var(--fm-border);
+  max-width: 100%;
 }
 
 .data-table {
@@ -431,9 +433,8 @@ body {
   display: flex;
   width: 900px;
   max-width: 95vw;
-  min-height: 600px;
-  height: auto;
-  max-height: 90vh;
+  min-height: 520px;
+  max-height: 95vh;
   background: var(--fm-surface);
   border-radius: var(--fm-radius-lg);
   overflow: hidden;
@@ -446,14 +447,31 @@ body {
   justify-content: center;
   align-items: center;
   overflow-y: auto;
-}
-  padding: 40px;
+  padding: 40px 32px;
 }
 
 .split-form-box {
   width: 100%;
   max-width: 360px;
   padding: 8px 0;
+}
+
+/* Responsive: en pantallas pequeñas, oculta panel visual y centra form */
+@media (max-width: 768px) {
+  .page-auth { padding: 20px 12px; align-items: flex-start; }
+  .split-container {
+    width: 100%;
+    max-width: 480px;
+    min-height: auto;
+    max-height: none;
+  }
+  .split-form {
+    width: 100%;
+    padding: 28px 24px;
+  }
+  .split-visual {
+    display: none;
+  }
 }
 
 .split-form-box h2 {
@@ -650,6 +668,21 @@ body {
   color: var(--fm-brand);
   letter-spacing: 0.05em;
   text-decoration: none;
+  cursor: pointer;
+  transition: opacity var(--fm-transition);
+}
+.fm-sidebar-logo:hover { opacity: 0.85; }
+
+/* Logo clickable en páginas de auth — indica que lleva al home */
+.logo-link {
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--fm-transition), opacity var(--fm-transition);
+}
+.logo-link:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
 }
 
 .fm-sidebar-section-label {

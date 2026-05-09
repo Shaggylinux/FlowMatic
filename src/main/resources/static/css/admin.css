@@ -22,6 +22,8 @@
 .admin-content {
   flex: 1;
   padding: 28px 32px;
+  min-width: 0;       /* permite que la tabla haga overflow-x sin romper layout */
+  overflow-x: hidden; /* evita que el contenido empuje el viewport */
 }
 
 /* Fila de formulario multcolumna */
@@ -108,4 +110,61 @@ thead.table-dark th {
 .modal-body .form-control:focus {
   border-color: var(--fm-brand);
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+/* ── RESPONSIVE ────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .admin-content { padding: 20px; }
+  .admin-form-row { grid-template-columns: 1fr 1fr; }
+  .admin-form-row > div:last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 768px) {
+  .admin-layout { flex-direction: column; }
+  .fm-sidebar {
+    width: 100%;
+    min-height: auto;
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 16px;
+  }
+  .fm-sidebar-header {
+    border-bottom: none;
+    padding: 12px 0;
+    flex: 1;
+  }
+  .fm-sidebar nav {
+    display: flex;
+    padding: 0 !important;
+    gap: 4px;
+  }
+  .fm-sidebar nav .fm-nav-link {
+    padding: 8px 12px;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    font-size: 13px;
+  }
+  .fm-sidebar nav .fm-nav-link.active {
+    border-left: none;
+    border-bottom-color: var(--fm-brand);
+  }
+  .fm-sidebar-footer {
+    margin: 0;
+    padding: 12px 0;
+    border-top: none;
+  }
+  .fm-sidebar-footer .btn {
+    width: auto !important;
+    padding: 6px 12px;
+  }
+  .admin-content { padding: 16px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-form-row { grid-template-columns: 1fr; }
+  .fm-topbar { padding: 12px 16px; height: auto; flex-wrap: wrap; gap: 8px; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
 }
