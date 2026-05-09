@@ -31,7 +31,14 @@ public class PasswordController {
 
     @PostMapping("/reset-password")
     public String cambiarPassword(@RequestParam String token,
-                                @RequestParam String password) {
+                                @RequestParam String password,
+                                Model model) {
+
+        if (password == null || password.trim().length() < 8) {
+            model.addAttribute("token", token);
+            model.addAttribute("errorPassword", true);
+            return "reset-password";
+        }
 
         boolean ok = usuarioService.cambiarPassword(token, password);
 

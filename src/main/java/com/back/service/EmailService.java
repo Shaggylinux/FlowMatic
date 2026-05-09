@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,29 +30,42 @@ public class EmailService {
 
             String enlaceActivacion = "http://localhost:" + serverPort + "/registro/candidato/activar?token=" + token;
 
-            String asunto = "Verificación de cuenta - FlowMatic";
-            String mensaje = "Hola " + nombre + ",\n\n" +
-                    "¡Bienvenido a FlowMatic!\n\n" +
-                    "Tu código de activación es: " + token + "\n\n" +
-                    "O haz clic en el siguiente enlace para activar tu cuenta:\n" +
-                    enlaceActivacion + "\n\n" +
-                    "Este enlace expira en 24 horas.\n\n" +
-                    "Si no registraste esta cuenta, ignora este correo.\n\n" +
-                    "Saludos,\nEquipo de FlowMatic";
+            String asunto = "✅ Activa tu cuenta en FLOWMATIC";
+            String mensaje = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f8f9fa; border-radius: 10px;'>" +
+                    "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;'>" +
+                    "<h1 style='color: white; margin: 0; font-size: 28px;'>FLOWMATIC</h1>" +
+                    "<p style='color: #e0e0e0; margin: 10px 0 0 0;'>Sistema de Gestión de Candidatos</p>" +
+                    "</div>" +
+                    "<div style='background: white; padding: 30px; border-radius: 0 0 10px 10px;'>" +
+                    "<h2 style='color: #333;'>¡Bienvenido, " + nombre + "!</h2>" +
+                    "<p style='color: #666; line-height: 1.6;'>Gracias por registrarte en <strong>FLOWMATIC</strong>. Estamos encantado de tenerte con nosotros.</p>" +
+                    "<p style='color: #666; line-height: 1.6;'>Para completar tu registro, necesitas activar tu cuenta. Haz clic en el siguiente botón:</p>" +
+                    "<div style='text-align: center; margin: 30px 0;'>" +
+                    "<a href='" + enlaceActivacion + "' style='background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;'>Activar mi cuenta</a>" +
+                    "</div>" +
+                    "<p style='color: #999; font-size: 12px; text-align: center;'>O copia y pega este enlace en tu navegador:</p>" +
+                    "<p style='color: #667eea; font-size: 12px; text-align: center; word-break: break-all;'>" + enlaceActivacion + "</p>" +
+                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>Este enlace expires en 24 horas.</p>" +
+                    "<hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>" +
+                    "<p style='color: #666; font-size: 12px;'>Si no creaste esta cuenta, puedes ignorar este correo sin preocupaciones.</p>" +
+                    "<p style='color: #666; font-size: 12px; margin-top: 20px;'>Saludos cordiales,<br><strong>Equipo de FLOWMATIC</strong></p>" +
+                    "</div>" +
+                    "</div>";
 
-            SimpleMailMessage email = new SimpleMailMessage();
-            email.setTo(destinatario);
-            email.setSubject(asunto);
-            email.setText(mensaje);
-            email.setFrom("noreply@flowmatic.com");
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(destinatario);
+            helper.setSubject(asunto);
+            helper.setText(mensaje, true);
+            helper.setFrom("FLOWMATIC <malacruz132@gmail.com>");
 
-            mailSender.send(email);
+            mailSender.send(mimeMessage);
 
             logger.info("Email enviado exitosamente a: {}", destinatario);
             return true;
 
         } catch (Exception e) {
-            logger.error("rror al enviar email: {}", e.getMessage());
+            logger.error("Error al enviar email de verificación: {}", e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -62,21 +77,36 @@ public class EmailService {
 
             String enlace = "http://localhost:" + serverPort + "/reset-password?token=" + token;
 
-            String asunto = "Recuperación de contraseña - FlowMatic";
-            String mensaje = "Hola " + nombre + ",\n\n" +
-                    "Recibimos una solicitud para restablecer tu contraseña.\n\n" +
-                    "Haz clic en el siguiente enlace:\n" +
-                    enlace + "\n\n" +
-                    "Si no solicitaste esto, ignora este mensaje.\n\n" +
-                    "Saludos,\nEquipo de FlowMatic";
+            String asunto = "🔐 Restablece tu contraseña en FLOWMATIC";
+            String mensaje = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f8f9fa; border-radius: 10px;'>" +
+                    "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;'>" +
+                    "<h1 style='color: white; margin: 0; font-size: 28px;'>FLOWMATIC</h1>" +
+                    "<p style='color: #e0e0e0; margin: 10px 0 0 0;'>Sistema de Gestión de Candidatos</p>" +
+                    "</div>" +
+                    "<div style='background: white; padding: 30px; border-radius: 0 0 10px 10px;'>" +
+                    "<h2 style='color: #333;'>¿Olvidaste tu contraseña, " + nombre + "?</h2>" +
+                    "<p style='color: #666; line-height: 1.6;'>Recibimos una solicitud para restablecer la contraseña de tu cuenta en FLOWMATIC.</p>" +
+                    "<p style='color: #666; line-height: 1.6;'>Haz clic en el siguiente botón para crear una nueva contraseña:</p>" +
+                    "<div style='text-align: center; margin: 30px 0;'>" +
+                    "<a href='" + enlace + "' style='background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;'>Restablecer contraseña</a>" +
+                    "</div>" +
+                    "<p style='color: #999; font-size: 12px; text-align: center;'>O copia y pega este enlace en tu navegador:</p>" +
+                    "<p style='color: #667eea; font-size: 12px; text-align: center; word-break: break-all;'>" + enlace + "</p>" +
+                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>Este enlace expirará en 1 hora.</p>" +
+                    "<hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>" +
+                    "<p style='color: #666; font-size: 12px;'>Si no solicitaste el restablecimiento de contraseña, puedes ignorar este correo. Tu contraseña actual seguirá siendo válida.</p>" +
+                    "<p style='color: #666; font-size: 12px; margin-top: 20px;'>Saludos cordiales,<br><strong>Equipo de FLOWMATIC</strong></p>" +
+                    "</div>" +
+                    "</div>";
 
-            SimpleMailMessage email = new SimpleMailMessage();
-            email.setTo(destinatario);
-            email.setSubject(asunto);
-            email.setText(mensaje);
-            email.setFrom("noreply@flowmatic.com");
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(destinatario);
+            helper.setSubject(asunto);
+            helper.setText(mensaje, true);
+            helper.setFrom("FLOWMATIC <malacruz132@gmail.com>");
 
-            mailSender.send(email);
+            mailSender.send(mimeMessage);
 
             logger.info("Email de recuperación enviado a: {}", destinatario);
             return true;

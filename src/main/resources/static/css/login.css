@@ -1,130 +1,10 @@
-<<<<<<< Updated upstream
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #0F3D5E, #1ABC9C);
-}
-
-.container {
-    display: flex;
-    width: 900px;
-    max-width: 95%;
-    min-height: 520px;
-    background: #fff;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
-
-.form-section {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.form-box {
-    width: 80%;
-    background: #F5F7FA;
-    padding: 30px;
-    border-radius: 12px;
-}
-
-.form-box h2 {
-    margin-bottom: 20px;
-    color: #0F3D5E;
-}
-
-.input-group {
-    margin-bottom: 15px;
-}
-
-.input-group label {
-    font-size: 14px;
-    color: #0F3D5E;
-    font-weight: bold;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 15px;
-    background: #1ABC9C;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-}
-
-button:hover {
-    background: #16A085;
-}
-
-a {
-    display: block;
-    margin-top: 15px;
-    text-align: center;
-    color: #0F3D5E;
-}
-
-.image-section {
-    width: 50%;
-    position: relative;
-    overflow: hidden;
-}
-
-.bg-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transform: translate(-50%, -50%);
-}
-
-.image-section::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.15);
-}
-
-.success {
-    color: #065f46;
-    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-    border-left: 5px solid #10b981;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-=======
 /* ================================================
    LOGIN — estilos específicos de la página
    El layout split, botones, inputs y loader
-   vienen de base.css. Solo override aquí si
-   esta página necesita algo diferente.
+   vienen de base.css.
    ================================================ */
 
-/* Mensaje de error de credenciales */
+/* Mensaje de error/éxito (compatibles con .alert) */
 .error {
   background: var(--fm-danger-bg);
   color: var(--fm-danger-text);
@@ -136,7 +16,6 @@ a {
   margin-bottom: 16px;
 }
 
-/* Mensaje de sesión cerrada */
 .success {
   background: var(--fm-success-bg);
   color: var(--fm-success-text);
@@ -148,14 +27,12 @@ a {
   margin-bottom: 16px;
 }
 
-/* Link "¿Olvidaste tu contraseña?" alineado a la derecha */
 .forgot-link-row {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 4px;
 }
 
-/* Divisor "o" entre login y registro */
 .auth-divider {
   display: flex;
   align-items: center;
@@ -172,4 +49,3 @@ a {
   font-size: 12px;
   color: var(--fm-text-muted);
 }
->>>>>>> Stashed changes

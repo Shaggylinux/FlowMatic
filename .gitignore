@@ -34,3 +34,12 @@ build/
 
 ### properties ###
 src/main/resources/application.properties
+
+### Compiled classes / artefactos sueltos ###
+*.class
+/HashPassword.*
+DB/**/out/
+DB/**/*.class
+
+### Logs ###
+nohup.out

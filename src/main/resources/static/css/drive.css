@@ -1,249 +1,9 @@
-<<<<<<< Updated upstream
-body {
-background: #f1f5f9;
-font-family: 'Segoe UI', sans-serif;
-}
-
-.drive-wrapper {
-display: flex;
-min-height: 100vh;
-}
-
-.sidebar {
-width: 220px;
-background: #0f172a;
-color: white;
-padding: 20px;
-display: flex;
-flex-direction: column;
-height: 100vh;
-}
-
-.sidebar h2 {
-margin-bottom: 30px;
-}
-
-.sidebar a {
-display: block;
-color: #cbd5f5;
-text-decoration: none;
-margin-bottom: 10px;
-}
-
-.sidebar a:hover {
-color: #10b981;
-}
-
-.main-content {
-flex: 1;
-padding: 30px;
-}
-
-.header {
-display: flex;
-justify-content: space-between;
-margin-bottom: 20px;
-}
-
-.actions {
-display: flex;
-gap: 10px;
-margin-bottom: 20px;
-}
-
-.actions form {
-display: flex;
-gap: 10px;
-}
-
-.table-container {
-background: white;
-border-radius: 10px;
-overflow: hidden;
-box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
-}
-
-table {
-width: 100%;
-border-collapse: collapse;
-}
-
-thead {
-background: #e2e8f0;
-}
-
-th, td {
-padding: 12px;
-text-align: left;
-}
-
-tr:hover {
-background: #f9fafb;
-}
-
-button {
-background: #10b981;
-color: white;
-border: none;
-padding: 6px 10px;
-border-radius: 6px;
-cursor: pointer;
-}
-
-button:hover {
-background: #059669;
-}
-
-.logout {
-margin-top: auto;
-padding-top: 20px;
-border-top: 1px solid #1e293b;
-}
-
-.new-folder-container {
-    margin-bottom: 25px;
-}
-
-.btn-new {
-    width: 100%;
-    background: #10b981;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: transform 0.2s, background 0.2s;
-}
-
-.btn-new:hover {
-    background: #059669;
-    transform: scale(1.02);
-}
-
-.btn-new .plus-icon {
-    font-size: 20px;
-    line-height: 1;
-}
-
-.sidebar-folders {
-    max-height: 400px; /* Ajusta según necesites */
-    overflow-y: auto;
-    margin-top: 20px;
-    border-top: 1px solid #1e293b;
-    padding-top: 15px;
-}
-
-.sidebar-folders a {
-    padding: 8px 5px;
-    border-radius: 4px;
-    transition: background 0.2s;
-}
-
-.sidebar-folders a:hover {
-    background: #1e293b;
-    color: #10b981 !important;
-}
-
-.sidebar-folders::-webkit-scrollbar {
-    width: 5px;
-}
-.sidebar-folders::-webkit-scrollbar-thumb {
-    background: #334155;
-    border-radius: 10px;
-}
-
-.file-upload {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-}
-
-.file-upload input[type="file"] {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-}
-
-.file-upload span {
-    display: inline-block;
-    padding: 10px 15px;
-    background: #e2e8f0;
-    color: #0f172a;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-weight: 500;
-}
-
-.file-upload span:hover {
-    background: #cbd5f5;
-}
-
-.btn-upload {
-    padding: 10px 15px;
-    border-radius: 8px;
-    background: #10b981;
-    color: white;
-    border: none;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn-upload:hover {
-    background: #059669;
-}
-
-.acciones-botones {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.btn-descargar {
-    background: #10b981;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 13px;
-    transition: 0.3s;
-}
-
-.btn-descargar:hover {
-    background: #059669;
-}
-
-.btn-eliminar {
-    background: #ef4444;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: none;
-    font-size: 13px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-eliminar:hover {
-    background: #dc2626;
-}
-=======
 /* ================================================
    DRIVE — estilos específicos del dashboard
    Layout, componentes exclusivos de esta pantalla.
    Sidebar, tablas y botones vienen de base.css.
    ================================================ */
 
-/* Layout principal */
 .drive-body { background: var(--fm-bg); }
 
 .drive-layout {
@@ -262,6 +22,18 @@ border-top: 1px solid #1e293b;
 .drive-content {
   flex: 1;
   padding: 28px 32px;
+}
+
+/* Stats grid */
+.drive-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+  .drive-stats-grid { grid-template-columns: 1fr; }
 }
 
 /* Header de sección */
@@ -322,4 +94,3 @@ border-top: 1px solid #1e293b;
   letter-spacing: 0.08em;
   color: var(--fm-text-muted);
 }
->>>>>>> Stashed changes

@@ -4534,3 +4534,237 @@ libva info: VA-API version 1.20.0
 libva info: Trying to open /snap/firefox/8107/gpu-2404/usr/lib/x86_64-linux-gnu/dri//radeonsi_drv_video.so
 libva info: Found init function __vaDriverInit_1_20
 libva info: va_openDriver() returns 0
+node:events:497
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: EBADF: bad file descriptor, read
+Emitted 'error' event on ReadStream instance at:
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at errorOrDestroy (node:internal/streams/destroy:239:7)
+    at node:internal/fs/streams:275:9
+    at FSReqCallback.wrapper [as oncomplete] (node:fs:671:5) {
+  errno: -9,
+  code: 'EBADF',
+  syscall: 'read'
+}
+
+Node.js v22.21.1
+Gtk-Message: 22:58:15.863: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+Gtk-Message: 22:58:19.839: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+[0.185s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-04-25 22:59:09,556 [  25349]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: VibrantInk from plugins: DBN
+2026-04-25 22:59:09,557 [  25350]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monocai from plugins: DBN
+2026-04-25 22:59:09,561 [  25354]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Twilight from plugins: DBN
+2026-04-25 22:59:09,565 [  25358]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Islands Light from plugins: DBN
+2026-04-25 22:59:09,566 [  25359]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: WarmNeon from plugins: DBN
+2026-04-25 22:59:09,567 [  25360]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Cobalt from plugins: DBN
+2026-04-25 22:59:09,570 [  25363]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: AllHallowsEve from plugins: DBN
+2026-04-25 22:59:09,575 [  25368]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Classic Light from plugins: DBN
+2026-04-25 22:59:09,580 [  25373]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monokai from plugins: DBN
+2026-04-25 22:59:09,581 [  25374]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Railscasts from plugins: DBN
+2026-04-25 22:59:09,582 [  25375]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Blackboard from plugins: DBN
+2026-04-25 22:59:11,909 [  27702]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-04-25 22:59:13,938 [  29731]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-04-25 22:59:13,938 [  29731]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+[0.321s][warning][cds] Archived non-system classes are disabled because the java.system.class.loader property is specified (value = "com.intellij.util.lang.PathClassLoader"). To use archived non-system classes, this property must not be set
+2026-04-30 19:05:08,894 [  18057]   WARN - #c.i.o.v.n.p.FSRecords - Records storage [/home/julieth/.cache/JetBrains/IdeaIC2025.2/caches/records.dat] was in use by process [OwnershipInfo{owner pid: 20713, acquired at: 1777175942486}] which is not exist now (wasn't closed properly/crashed?) -> re-acquiring forcibly
+2026-04-30 19:05:09,454 [  18617]   WARN - #c.i.o.v.n.p.PersistentFSLoader - [VFS load problem]: VFS wasn't safely shut down: records.wasClosedProperly is false
+2026-04-30 19:05:13,395 [  22558]   WARN - #c.i.o.v.n.p.PersistentFSLoader - [VFS load problem]: NOT_CLOSED_PROPERLY recovered, no problems remain
+2026-04-30 19:05:14,736 [  23899]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: VibrantInk from plugins: DBN
+2026-04-30 19:05:14,737 [  23900]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monocai from plugins: DBN
+2026-04-30 19:05:14,741 [  23904]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Twilight from plugins: DBN
+2026-04-30 19:05:14,742 [  23905]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Islands Light from plugins: DBN
+2026-04-30 19:05:14,742 [  23905]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: WarmNeon from plugins: DBN
+2026-04-30 19:05:14,742 [  23905]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Cobalt from plugins: DBN
+2026-04-30 19:05:14,745 [  23908]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: AllHallowsEve from plugins: DBN
+2026-04-30 19:05:14,748 [  23911]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Classic Light from plugins: DBN
+2026-04-30 19:05:14,749 [  23912]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Monokai from plugins: DBN
+2026-04-30 19:05:14,749 [  23912]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Railscasts from plugins: DBN
+2026-04-30 19:05:14,749 [  23912]   WARN - #c.i.o.e.c.i.EditorColorsManagerImpl - Cannot find scheme: Blackboard from plugins: DBN
+2026-04-30 19:05:19,583 [  28746]   WARN - #c.i.i.u.UIThemeBean - Unknown field: CombinedDiff
+2026-04-30 19:05:19,586 [  28749]   WARN - #c.i.i.u.UIThemeBean - Unknown field: BlockBorder
+2026-04-30 19:05:19,697 [  28860]   WARN - #c.i.i.s.p.i.BundledSharedIndexProvider - Bundled shared index is not found at: /opt/intellij/jdk-shared-indexes
+2026-04-30 19:05:29,558 [  38721]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-04-30 19:05:29,566 [  38729]   WARN - com.dbn.common.options.setting.Settings - Failed to read ENUM attribute (id): No enum constant com.dbn.assistant.provider.AIProviderId.VERTEX_AI
+2026-04-30 19:05:37,727 [  46890]   WARN - #c.i.i.SystemHealthMonitor - issue detected: ide.script.launcher.used (ignored)
+2026-04-30 19:05:37,860 [  47023]   WARN - #c.i.o.a.i.ActionUpdater - 4760 ms total to grab EDT 5 times to expand ToolWindowHeader$2#expandGroup@ToolwindowTitle (com.intellij.toolWindow.ToolWindowHeader$2). Use `ActionUpdateThread.BGT`.
+2026-04-30 19:05:37,874 [  47037]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - Discovery connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-04-30 19:05:39,219 [  48382]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+com.intellij.diagnostic.PluginException: Migrate com.dbn.project.ProjectStartupActivity to ProjectActivity [Plugin: DBN]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.doRunPostStartupActivities(StartupManagerImpl.kt:317)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$doRunPostStartupActivities(StartupManagerImpl.kt:72)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:210)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:44)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:166)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:209)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:613)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:1189)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:778)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:765)
+2026-04-30 19:05:41,670 [  50833]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:05:55,241 [  64404]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:05:56,249 [  65412]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:05:58,111 [  67274]   WARN - #c.i.s.c.i.StationSocketConnectionLoop - RecentProjects connection failed with NoSuchFileException (/run/user/1000/jb.station.sock)
+2026-04-30 19:05:59,715 [  68878]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:06:10,923 [  80086]   WARN - #c.i.u.i.p.ProjectIndexableFilesFilterHealthCheck - Following files are indexable but they were NOT found in filter. Errors count: 1. Examples:
+file id=305890 path=/home/julieth/Documentos/Gestion/target/generated-test-sources/test-annotations
+2026-04-30 19:08:38,692 [ 227855]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:09:07,165 [ 256328]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:09:22,187 [ 271350]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:09:37,183 [ 286346]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:09:52,197 [ 301360]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:10:07,245 [ 316408]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:10:22,224 [ 331387]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:10:37,276 [ 346439]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:10:52,445 [ 361608]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:11:08,516 [ 377679]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:11:08,829 [ 377992]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:11:22,799 [ 391962]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:11:37,712 [ 406875]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:11:52,745 [ 421908]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:12:07,829 [ 436992]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:12:22,830 [ 451993]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:12:37,860 [ 467023]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:12:52,909 [ 482072]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:13:07,864 [ 497027]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:13:22,933 [ 512096]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:13:37,954 [ 527117]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:13:53,001 [ 542164]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:14:08,072 [ 557235]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:14:23,070 [ 572233]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:14:38,145 [ 587308]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:14:51,803 [ 600966]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:15:06,860 [ 616023]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:15:23,227 [ 632390]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:15:38,202 [ 647365]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:15:42,219 [ 651382]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:15:49,070 [ 658233]   WARN - #zielu.gittoolbox.blame.blameCalculator - Blame failed for file:///home/julieth/Documentos/Gestion/src/main/resources/application.properties@b613cfa49582b21493d3bd8ad7aeb7a47ed8d57e - exit code=128:
+fatal: no such path src/main/resources/application.properties in b613cfa49582b21493d3bd8ad7aeb7a47ed8d57e
+2026-04-30 19:17:37,875 [ 767038]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:19:26,163 [ 875326]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:19:27,197 [ 876360]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:19:41,213 [ 890376]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:19:56,317 [ 905480]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:20:11,428 [ 920591]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:20:26,559 [ 935722]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:20:41,602 [ 950765]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:20:56,673 [ 965836]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:21:11,684 [ 980847]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:21:26,772 [ 995935]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:21:41,787 [1010950]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:21:57,001 [1026164]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:22:11,892 [1041055]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:22:27,032 [1056195]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:22:42,098 [1071261]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:22:57,149 [1086312]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:23:12,277 [1101440]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:23:27,284 [1116447]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:23:42,391 [1131554]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:23:57,467 [1146630]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:24:12,557 [1161720]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:24:27,655 [1176818]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:24:42,681 [1191844]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:24:57,898 [1207061]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:25:12,869 [1222032]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:25:27,958 [1237121]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:25:43,037 [1252200]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:25:58,156 [1267319]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:26:13,236 [1282399]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:26:28,280 [1297443]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:26:43,327 [1312490]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:26:58,446 [1327609]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:27:13,563 [1342726]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:27:28,620 [1357783]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:27:43,714 [1372877]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:27:58,675 [1387838]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:28:13,815 [1402978]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:28:28,853 [1418016]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:28:43,916 [1433079]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:28:59,018 [1448181]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:29:14,097 [1463260]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:29:29,190 [1478353]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:29:44,261 [1493424]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:29:59,324 [1508487]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:30:14,415 [1523578]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:30:29,516 [1538679]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:30:44,605 [1553768]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:30:59,694 [1568857]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:31:12,442 [1581605]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:31:31,066 [1600229]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:31:46,298 [1615461]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:32:01,211 [1630374]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:32:16,322 [1645485]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:32:31,349 [1660512]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:32:46,438 [1675601]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:33:01,523 [1690686]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:33:16,634 [1705797]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:33:31,689 [1720852]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:33:46,727 [1735890]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:34:01,852 [1751015]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:34:17,097 [1766260]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:34:32,034 [1781197]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:34:47,275 [1796438]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:35:02,162 [1811325]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:35:17,258 [1826421]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:35:32,277 [1841440]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:35:47,357 [1856520]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:36:02,473 [1871636]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:36:17,468 [1886631]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:36:32,557 [1901720]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:36:47,624 [1916787]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:37:02,782 [1931945]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:37:17,797 [1946960]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:37:32,957 [1962120]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:37:47,968 [1977131]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:38:03,060 [1992223]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:38:18,145 [2007308]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:38:33,185 [2022348]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:38:48,223 [2037386]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:39:03,372 [2052535]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:39:18,373 [2067536]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:39:33,453 [2082616]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:39:48,530 [2097693]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:40:03,629 [2112792]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:40:18,725 [2127888]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:40:33,801 [2142964]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:40:48,846 [2158009]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:41:03,895 [2173058]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:41:19,027 [2188190]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:41:34,061 [2203224]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:41:49,138 [2218301]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:42:04,229 [2233392]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:42:19,383 [2248546]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:42:34,494 [2263657]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:42:49,436 [2278599]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:43:04,497 [2293660]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:43:19,586 [2308749]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:43:34,603 [2323766]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:43:49,745 [2338908]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:44:04,877 [2354040]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:44:20,019 [2369182]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:44:34,946 [2384109]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:44:50,019 [2399182]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:45:05,074 [2414237]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:45:20,191 [2429354]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:45:35,384 [2444547]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:45:50,284 [2459447]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:46:05,372 [2474535]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:46:20,453 [2489616]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:46:35,546 [2504709]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:46:50,667 [2519830]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:47:05,673 [2534836]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:47:20,811 [2549974]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:47:35,852 [2565015]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:47:50,888 [2580051]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:48:06,004 [2595167]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:48:11,168 [2600331]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:48:41,033 [2630196]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:48:56,106 [2645269]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+2026-04-30 19:49:11,170 [2660333]   WARN - #c.j.r.u.i.ProtocolIconRegistry - Failed to serialize a model for icon com.dbn.common.icon.IconLoader$1@5e45fbab
+                                                                                                                                                                                                                                                                                                                        

@@ -11,15 +11,11 @@
 </head>
 <body class="page-auth">
 
-<<<<<<< Updated upstream
-<div class="container">
-=======
 <div class="loader-overlay" id="loader">
   <div class="loader"></div>
 </div>
 
 <div class="split-container">
->>>>>>> Stashed changes
 
   <div class="split-form">
     <div class="split-form-box">
@@ -31,54 +27,13 @@
       <h2 style="text-align:center; margin-bottom:24px;">Crear cuenta</h2>
 
       <div th:if="${mensajePendiente}" class="alert alert-success">
-        ✅ Cuenta creada. Revisa tu correo para activarla.
+        Cuenta creada. Revisa tu correo para activarla.
       </div>
       <div th:if="${errorDuplicado}" class="alert alert-error">
-        ❗ Este correo ya está registrado.
+        Este correo ya está registrado.
       </div>
 
-<<<<<<< Updated upstream
-            <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post">
-
-                <div class="input-group">
-                    <label>Nombre</label>
-                    <input type="text" th:field="*{username}" placeholder="Nombre">
-                    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-                </div>
-
-                <div class="input-group">
-                    <label>Apellido</label>
-                    <input type="text" th:field="*{apellido}" placeholder="Apellido">
-                    <p th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
-                </div>
-
-                <div class="input-group">
-                    <label>Correo</label>
-                    <input type="email" th:field="*{email}" placeholder="Correo">
-                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
-                </div>
-
-                <div class="input-group">
-                    <label>Teléfono</label>
-                    <input type="tel" th:field="*{telefono}" placeholder="Teléfono">
-                    <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></p>
-                </div>
-
-                <div class="input-group">
-                    <label>Contraseña</label>
-                    <input type="password" th:field="*{clave}" placeholder="Contraseña">
-                    <p th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></p>
-                </div>
-
-                <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
-
-                <button type="submit">Registrar</button>
-            </form>
-
-            <a th:href="@{/login}">¿Ya tienes cuenta?</a>
-=======
       <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post" id="formRegistro">
->>>>>>> Stashed changes
 
         <div class="form-group">
           <label class="form-label">Nombre</label>
@@ -133,7 +88,6 @@
   </div>
 
   <div class="split-visual">
-    <div class="split-visual-gradient"></div>
     <div class="split-visual-decor" style="top:-80px; right:-80px; width:160px; height:160px;"></div>
     <div class="split-visual-decor" style="bottom:-60px; left:-60px; width:120px; height:120px;"></div>
     <div class="split-visual-decor" style="top:33%; left:28%; width:80px; height:80px; border-width:1px;"></div>
@@ -167,13 +121,10 @@
 
 </div>
 
-<<<<<<< Updated upstream
-=======
 <script>
   document.getElementById("formRegistro").addEventListener("submit", () => {
     document.getElementById("loader").style.display = "flex";
   });
 </script>
->>>>>>> Stashed changes
 </body>
 </html>

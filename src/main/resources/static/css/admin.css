@@ -1,136 +1,14 @@
-<<<<<<< Updated upstream
-body {
-    background: #f1f5f9;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-}
-
-.admin-container {
-    display: flex;
-    min-height: 100vh;
-}
-
-.sidebar {
-    width: 240px;
-    background: #0f172a;
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-    justify-content: space-between;
-}
-
-.sidebar .logo {
-    color: #10b981;
-    font-weight: bold;
-    font-size: 1.5rem;
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-.sidebar-folders a {
-    display: block;
-    color: #cbd5f5;
-    text-decoration: none;
-    padding: 12px;
-    margin-bottom: 5px;
-    border-radius: 8px;
-    transition: 0.2s;
-}
-
-.sidebar-folders a:hover, .sidebar-folders a.active {
-    background: #1e293b;
-    color: #10b981 !important;
-}
-
-.logout {
-    border-top: 1px solid #1e293b;
-    padding-top: 20px;
-}
-
-.btn-logout-drive {
-    width: 100%;
-    background: transparent;
-    color: #ef4444;
-    border: 1px solid #ef4444;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn-logout-drive:hover {
-    background: #ef4444;
-    color: white;
-}
-
-.main-content {
-    flex: 1;
-    padding: 40px;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.card {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-    background: #0f172a !important;
-    color: white !important;
-    border-radius: 12px 12px 0 0 !important;
-    font-weight: bold;
-}
-
-.table-container {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.btn-upload {
-    background: #10b981;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-}
-
-.btn-eliminar {
-    background: #ef4444;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-}
-=======
 /* ================================================
    ADMIN — estilos específicos del panel admin
-   Sidebar, tabla, loader, badges y stat cards
-   vienen de base.css. Solo layout aquí.
+   Sidebar, tablas, badges y stat cards vienen
+   de base.css. Bootstrap 5 solo para el modal.
    ================================================ */
 
-.admin-body { 
-  background: var(--fm-bg); 
-  overflow-y: auto;
-}
+.admin-body { background: var(--fm-bg); }
 
-/* Layout principal */
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  height: 100vh;
 }
 
 .admin-main {
@@ -139,13 +17,11 @@ body {
   flex-direction: column;
   min-width: 0;
   background: var(--fm-bg);
-  overflow-y: auto;
 }
 
 .admin-content {
   flex: 1;
-  padding: 24px 28px;
-  overflow-y: auto;
+  padding: 28px 32px;
 }
 
 /* Fila de formulario multcolumna */
@@ -160,34 +36,6 @@ body {
   .admin-form-row { grid-template-columns: 1fr 1fr; }
 }
 
-/* Header de la pantalla admin */
-.admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.admin-header h2 {
-  font-size: var(--fm-size-h2);
-  font-weight: 700;
-  color: var(--fm-text);
-}
-
-/* Badge de rol "Admin" en el topbar */
-.badge-admin-label {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 10px;
-  border-radius: var(--fm-radius-full);
-  font-size: var(--fm-size-caption);
-  font-weight: 500;
-  background: var(--fm-brand-dark);
-  color: #ffffff;
-  margin-left: 10px;
-  vertical-align: middle;
-}
-
 /* Grid de stat cards */
 .stats-grid {
   display: grid;
@@ -196,21 +44,12 @@ body {
   margin-bottom: 24px;
 }
 
-/* Sección de tabla con su propio header */
-.table-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-.table-section-header h3 {
-  font-size: var(--fm-size-h3);
-  font-weight: 600;
-  color: var(--fm-text);
-}
+/* ── Overrides Bootstrap 5 para coherencia de marca ── */
 
-/* Sobreescritura de Bootstrap: card-header usa nuestro navy */
 .card-header.bg-primary,
 .card-header.bg-warning,
 .modal-header.bg-warning {
@@ -219,9 +58,7 @@ body {
   border: none;
 }
 
-/* Sobreescritura del btn-primary de Bootstrap */
-.btn.btn-primary,
-.btn-primary:not(.btn-ghost) {
+.btn.btn-primary {
   background: var(--fm-brand) !important;
   border-color: var(--fm-brand) !important;
   color: #ffffff !important;
@@ -231,26 +68,23 @@ body {
   border-color: var(--fm-brand-hover) !important;
 }
 
-/* Sobreescritura del btn-success de Bootstrap */
 .btn.btn-success {
   background: var(--fm-success) !important;
   border-color: var(--fm-success) !important;
 }
 
-/* Sobreescritura del btn-warning de Bootstrap */
 .btn.btn-warning {
   background: var(--fm-warning) !important;
   border-color: var(--fm-warning) !important;
   color: #ffffff !important;
 }
 
-/* Sobreescritura del btn-danger de Bootstrap */
 .btn.btn-danger {
   background: var(--fm-danger) !important;
   border-color: var(--fm-danger) !important;
 }
 
-/* Cabecera de tabla Bootstrap → nuestro navy */
+/* Cabecera de tabla Bootstrap */
 .table-dark th,
 thead.table-dark th {
   background: var(--fm-brand-dark) !important;
@@ -260,71 +94,18 @@ thead.table-dark th {
   letter-spacing: 0.05em;
 }
 
-/* Hover de filas de tabla Bootstrap */
 .table-hover tbody tr:hover {
   background: #F0FDFA !important;
 }
 
-/* ── Stats Cards (diseño prototipo) ── */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.stat-card {
-  background: var(--fm-surface);
-  border-radius: var(--fm-radius-lg);
-  border-left: 4px solid var(--fm-brand);
-  padding: 20px;
-  box-shadow: var(--fm-shadow-sm);
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.stat-card-icon {
-  font-size: 32px;
-  opacity: 0.4;
-}
-
-.stat-card-value {
-  font-size: 30px;
-  font-weight: 800;
-  color: var(--fm-text);
-  line-height: 1;
-}
-
-.stat-card-label {
+/* Modal Bootstrap form-control */
+.modal-body .form-control {
+  border-color: var(--fm-border);
+  border-radius: var(--fm-radius-md);
+  font-family: var(--fm-font);
   font-size: 14px;
-  color: var(--fm-text-muted);
-  margin-top: 4px;
 }
-
-@media (max-width: 1200px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.modal-body .form-control:focus {
+  border-color: var(--fm-brand);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
 }
-
-@media (max-width: 768px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ── Table header row ── */
-.table-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.table-header-row h3 {
-  font-size: var(--fm-size-h3);
-  font-weight: 600;
-  color: var(--fm-text);
-}
->>>>>>> Stashed changes
