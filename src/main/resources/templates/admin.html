@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — Flowmatic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +18,9 @@
   <aside class="fm-sidebar">
 
     <div class="fm-sidebar-header">
-      <a th:href="@{/admin}" class="fm-sidebar-logo" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+      <a th:href="@{/}" class="fm-sidebar-logo"
+         title="Ir al inicio"
+         style="display:flex; align-items:center; gap:10px; text-decoration:none;">
         <span th:replace="~{fragments/logo :: logoSidebar}"></span>
         <span style="color:#ffffff; font-size:16px; font-weight:800; letter-spacing:0.04em;">Flowmatic</span>
       </a>
