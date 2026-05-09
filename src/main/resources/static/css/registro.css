@@ -1,13 +1,11 @@
 /* ================================================
    REGISTRO — estilos específicos de la página
-   El layout split, botones, inputs, alertas y
-   loader vienen de base.css.
+   El layout split, botones, inputs y loader
+   vienen de base.css.
    ================================================ */
 
-/* Mensajes de validación de Bean Validation (Thymeleaf) */
 .error-msg {
   font-size: var(--fm-size-caption);
   color: var(--fm-danger);
   margin-top: 2px;
-  display: block;
 }
