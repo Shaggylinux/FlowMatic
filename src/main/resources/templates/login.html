@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login — Flowmatic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,7 +22,9 @@
     <div class="split-form-box">
 
       <div style="display:flex; justify-content:center; margin-bottom:20px;">
-        <span th:replace="~{fragments/logo :: logoFull}"></span>
+        <a th:href="@{/}" title="Ir al inicio" class="logo-link">
+          <span th:replace="~{fragments/logo :: logoFull}"></span>
+        </a>
       </div>
 
       <p style="text-align:center; font-size:13px; color:var(--fm-text-muted); margin-bottom:4px;">Bienvenido de vuelta</p>
@@ -59,7 +62,9 @@
     <div class="split-visual-decor" style="top:33%; left:28%; width:80px; height:80px; border-width:1px;"></div>
 
     <div class="split-visual-content">
-      <span th:replace="~{fragments/logo :: logoFull}"></span>
+      <a th:href="@{/}" title="Ir al inicio" class="logo-link">
+        <span th:replace="~{fragments/logo :: logoFull}"></span>
+      </a>
       <p class="split-visual-tagline">Gestión de Talento Inteligente</p>
 
       <ul class="split-visual-bullets">
