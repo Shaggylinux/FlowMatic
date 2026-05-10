@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .passwordParameter("clave")
                         .defaultSuccessUrl("/post-login", true)
                         .permitAll());
-                http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
+        http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
         return http.build();
     }
