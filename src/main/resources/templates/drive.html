@@ -15,7 +15,6 @@
 <body class="drive-body">
 <div class="drive-layout">
 
-  <!-- ── SIDEBAR ─────────────────────────────── -->
   <aside class="fm-sidebar">
 
     <div class="fm-sidebar-header">
@@ -32,7 +31,6 @@
         Principal
       </a>
 
-      <!-- RRHH: acciones y carpetas -->
       <div sec:authorize="hasRole('RRHH')">
 
         <span class="fm-sidebar-section-label">Acciones</span>
@@ -74,7 +72,6 @@
       </form>
     </div>
 
-    <!-- Formulario oculto para crear carpeta -->
     <form id="formCrearCarpeta" th:action="@{/drive/crear-carpeta}" method="post" style="display:none;"
           sec:authorize="hasRole('RRHH')">
       <input type="hidden" name="nombre" id="inputNombreCarpeta">
@@ -83,10 +80,8 @@
 
   </aside>
 
-  <!-- ── ÁREA PRINCIPAL ──────────────────────── -->
   <div class="drive-main">
 
-    <!-- Topbar -->
     <header class="fm-topbar">
       <div>
         <p class="fm-topbar-title" sec:authorize="hasRole('RRHH')">
@@ -100,10 +95,8 @@
       </div>
     </header>
 
-    <!-- Contenido principal -->
     <div class="drive-content">
 
-      <!-- Tarjeta de estado (solo candidato) -->
       <div sec:authorize="hasRole('CANDIDATO')" class="candidate-status-card">
         <div class="candidate-status-card-inner">
           <p class="candidate-status-card-label">Mi Estado Actual</p>
@@ -118,7 +111,6 @@
         </div>
       </div>
 
-      <!-- Stat cards (solo RRHH) -->
       <div sec:authorize="hasRole('RRHH')" class="drive-stats-grid">
         <div class="stat-card stat-card-brand">
           <div style="display:flex; align-items:center; justify-content:space-between;">
@@ -149,7 +141,6 @@
         </div>
       </div>
 
-      <!-- Subir archivo -->
       <div class="drive-section-header">
         <h3 class="drive-section-title" sec:authorize="hasRole('RRHH')">Archivos</h3>
         <h3 class="drive-section-title" sec:authorize="hasRole('CANDIDATO')">Mis Documentos</h3>
@@ -166,7 +157,6 @@
         </form>
       </div>
 
-      <!-- Tabla de archivos -->
       <div class="table-container">
         <table class="data-table">
           <thead>
@@ -214,7 +204,6 @@
         </table>
       </div>
 
-      <!-- ── Gestión de candidatos (solo RRHH) ── -->
       <div sec:authorize="hasRole('RRHH')" style="margin-top:40px;">
         <div class="drive-section-header" style="margin-bottom:16px;">
           <h3 class="drive-section-title">
@@ -272,17 +261,15 @@
         </div>
       </div>
 
-    </div><!-- /drive-content -->
-  </div><!-- /drive-main -->
-</div><!-- /drive-layout -->
+    </div>
+  </div>
+</div>
 
-<!-- Formulario oculto para compartir -->
 <form id="formCompartirArchivo" th:action="@{/drive/compartir}" method="post" style="display:none;">
   <input type="hidden" name="archivoId" id="inputCompartirId">
   <input type="hidden" name="emailDestinatario" id="inputCompartirEmail">
 </form>
 
-<!-- ── MODAL: Registrar Candidato ────────── -->
 <div id="modalOverlay" class="modal-overlay" style="display:none;" sec:authorize="hasRole('RRHH')">
   <div class="modal-box">
     <div class="modal-header">

@@ -17,11 +17,9 @@
 
 <div class="split-container">
 
-  <!-- Panel formulario -->
   <div class="split-form">
     <div class="split-form-box">
 
-      <!-- Logo centrado -->
       <div style="display:flex; justify-content:center; margin-bottom:20px;">
         <span th:replace="~{fragments/logo :: logoFull}"></span>
       </div>
@@ -30,7 +28,7 @@
       <h2 style="text-align:center; margin-bottom:24px;">Iniciar Sesión</h2>
 
       <div th:if="${param.error}" class="alert alert-error">Correo o contraseña incorrectos</div>
-      <div th:if="${param.logout}" class="alert alert-success">✅ Sesión cerrada correctamente</div>
+      <div th:if="${param.logout}" class="alert alert-success">Sesión cerrada correctamente</div>
 
       <form th:action="@{/login}" method="post" id="formLogin">
 
@@ -55,20 +53,15 @@
     </div>
   </div>
 
-<!-- Panel visual - Diseño idéntico al prototipo -->
   <div class="split-visual">
-    <!-- Gradiente de fondo idéntico al prototipo -->
-    <div class="split-visual-gradient"></div>
-    
-    <!-- Decoraciones geométricas -->
     <div class="split-visual-decor" style="top:-80px; right:-80px; width:160px; height:160px;"></div>
     <div class="split-visual-decor" style="bottom:-60px; left:-60px; width:120px; height:120px;"></div>
     <div class="split-visual-decor" style="top:33%; left:28%; width:80px; height:80px; border-width:1px;"></div>
- 
+
     <div class="split-visual-content">
       <span th:replace="~{fragments/logo :: logoFull}"></span>
       <p class="split-visual-tagline">Gestión de Talento Inteligente</p>
- 
+
       <ul class="split-visual-bullets">
         <li>
           <span class="split-visual-check">

@@ -14,7 +14,6 @@
 <body class="admin-body">
 <div class="admin-layout">
 
-  <!-- ── SIDEBAR ─────────────────────────────── -->
   <aside class="fm-sidebar">
 
     <div class="fm-sidebar-header">
@@ -45,10 +44,8 @@
     </div>
   </aside>
 
-  <!-- ── ÁREA PRINCIPAL ──────────────────────── -->
   <div class="admin-main">
 
-    <!-- Topbar -->
     <header class="fm-topbar">
       <div>
         <p class="fm-topbar-title">Panel de Administración</p>
@@ -60,42 +57,8 @@
       </a>
     </header>
 
-    <!-- Contenido -->
     <div class="admin-content">
 
-      <!-- ── Stats Cards (igual al prototipo) ── -->
-      <div class="stats-grid">
-        <div class="stat-card" style="border-left-color: var(--fm-brand);">
-          <div class="stat-card-icon">👥</div>
-          <div class="stat-card-content">
-            <p class="stat-card-value" th:text="${totalUsuarios}">0</p>
-            <p class="stat-card-label">Usuarios totales</p>
-          </div>
-        </div>
-        <div class="stat-card" style="border-left-color: var(--fm-info);">
-          <div class="stat-card-icon">✓</div>
-          <div class="stat-card-content">
-            <p class="stat-card-value" th:text="${rrhhActivos}">0</p>
-            <p class="stat-card-label">RRHH activos</p>
-          </div>
-        </div>
-        <div class="stat-card" style="border-left-color: var(--fm-brand);">
-          <div class="stat-card-icon">📋</div>
-          <div class="stat-card-content">
-            <p class="stat-card-value" th:text="${candidatos}">0</p>
-            <p class="stat-card-label">Candidatos</p>
-          </div>
-        </div>
-        <div class="stat-card" style="border-left-color: var(--fm-warning);">
-          <div class="stat-card-icon">⏳</div>
-          <div class="stat-card-content">
-            <p class="stat-card-value" th:text="${pendientes}">0</p>
-            <p class="stat-card-label">Pendientes</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Formulario crear RRHH ── -->
       <div class="card" style="margin-bottom:28px;">
         <div class="card-header-dark">Registrar Personal de RRHH</div>
         <div style="padding:20px;">
@@ -134,14 +97,11 @@
         </div>
       </div>
 
-      <!-- ── Tabla de usuarios ── -->
       <div class="table-container">
-        <div class="table-header-row">
-          <h3>Usuarios registrados</h3>
-        </div>
         <table class="data-table">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Nombre</th>
               <th>Email</th>
               <th>Rol</th>
@@ -151,7 +111,8 @@
           </thead>
           <tbody>
             <tr th:each="u : ${usuarios}">
-              <td th:text="${u.username + ' ' + u.apellido}"></td>
+              <td class="td-muted" th:text="${u.id}"></td>
+              <td th:text="${u.username}"></td>
               <td class="td-muted" th:text="${u.email}"></td>
               <td>
                 <span class="badge"
@@ -190,11 +151,10 @@
         </table>
       </div>
 
-    </div><!-- /admin-content -->
-  </div><!-- /admin-main -->
-</div><!-- /admin-layout -->
+    </div>
+  </div>
+</div>
 
-<!-- ── MODAL: Editar usuario ─────────────── -->
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content" style="border:none; border-radius:var(--fm-radius-lg); overflow:hidden;">
