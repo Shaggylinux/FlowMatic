@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/forgot-password",
-                                "/reset-password", "/js/**", "/home", "/videos/**", "/")
+                                "/reset-password", "/js/**", "/home", "/videos/**", "/", "/drive/ver-archivo/**")
                         .permitAll()
                         .requestMatchers("/candidato/**").hasRole("CANDIDATO")
                         .requestMatchers("/rrhh/**", "/subir-archivo", "/crear-carpeta", "/eliminar", "/descargar")
@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .passwordParameter("clave")
                         .defaultSuccessUrl("/post-login", true)
                         .permitAll());
+                http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
         return http.build();
     }

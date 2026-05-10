@@ -46,12 +46,11 @@ public class DriveController {
         }
     }
 
-@GetMapping
-public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder, 
+    @GetMapping
+    public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder, 
                             java.security.Principal principal, Model model) {
-    
     String loginId = (principal != null) ? principal.getName() : null;
-    if (loginId == null) return "redirect:/login"; // Si no hay sesión, al login directo
+    if (loginId == null) return "redirect:/login";
 
     Usuario userSession = usuarioRepository.findByUsername(loginId);
     if (userSession == null) {
@@ -212,4 +211,28 @@ public String mostrarPagina(@RequestParam(name = "folder", required = false, def
         
         return "redirect:/drive";
     }
+@GetMapping("/ver-archivo/{archivoId}")
+public ResponseEntity<Resource> previsualizar(@PathVariable Long archivoId) {
+    return filesRepository.findById(archivoId).map(archivo -> {
+        try {
+            Path path = Paths.get(archivo.getUbicacion());
+            Resource recurso = new UrlResource(path.toUri());
+
+            if (recurso.exists() || recurso.isReadable()) {
+                String contentType = Files.probeContentType(path);
+                if (contentType == null) {
+                    contentType = "application/octet-stream";
+                }
+
+                return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, contentType)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + archivo.getNombre() + "\"")
+                    .body(recurso);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.notFound().<Resource>build();
+    }).orElse(ResponseEntity.notFound().build());
+}
 }
