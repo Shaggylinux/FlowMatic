@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Logo animado para sidebar (28×28) -->
+<span th:fragment="logoSidebar">
+  <svg viewBox="0 0 100 100" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+    <style>
+      .arc1 { stroke: #0D9488; stroke-opacity: 1; stroke-width: 3.5; stroke-linecap: round; fill: none;
+              stroke-dasharray: 90; stroke-dashoffset: 90;
+              animation: full-cycle-a1 2.4s ease-in-out infinite; }
+      .arc2 { stroke: #0D9488; stroke-opacity: 0.65; stroke-width: 3; stroke-linecap: round; fill: none;
+              stroke-dasharray: 90; stroke-dashoffset: 90;
+              animation: full-cycle-a2 2.4s ease-in-out infinite; }
+      .arc3 { stroke: #0D9488; stroke-opacity: 0.4; stroke-width: 2.5; stroke-linecap: round; fill: none;
+              stroke-dasharray: 90; stroke-dashoffset: 90;
+              animation: full-cycle-a3 2.4s ease-in-out infinite; }
+      .node-core { fill: #0D9488; transform-origin: 50px 50px;
+                   animation: full-cycle-node 2.4s ease-in-out infinite; }
+      .node-glow { fill: none; stroke: #0D9488; stroke-opacity: 0;
+                   animation: full-cycle-glow 2.4s ease-in-out infinite; }
+      @keyframes full-cycle-a1 {
+        0%   { stroke-dashoffset: 90; opacity: 1; }
+        25%  { stroke-dashoffset: 0;  opacity: 1; }
+        83.3%{ stroke-dashoffset: 0;  opacity: 1; }
+        100% { stroke-dashoffset: 0;  opacity: 0; }
+      }
+      @keyframes full-cycle-a2 {
+        0%    { stroke-dashoffset: 90; opacity: 1; }
+        8.3%  { stroke-dashoffset: 90; opacity: 1; }
+        33.3% { stroke-dashoffset: 0;  opacity: 1; }
+        83.3% { stroke-dashoffset: 0;  opacity: 1; }
+        100%  { stroke-dashoffset: 0;  opacity: 0; }
+      }
+      @keyframes full-cycle-a3 {
+        0%    { stroke-dashoffset: 90; opacity: 1; }
+        16.7% { stroke-dashoffset: 90; opacity: 1; }
+        41.7% { stroke-dashoffset: 0;  opacity: 1; }
+        83.3% { stroke-dashoffset: 0;  opacity: 1; }
+        100%  { stroke-dashoffset: 0;  opacity: 0; }
+      }
+      @keyframes full-cycle-node {
+        0%    { transform: scale(0);    opacity: 1; }
+        41.7% { transform: scale(0);    opacity: 1; }
+        54.2% { transform: scale(1);    opacity: 1; }
+        58.3% { transform: scale(1.55); opacity: 1; }
+        66.7% { transform: scale(1);    opacity: 1; }
+        87.5% { transform: scale(1);    opacity: 1; }
+        100%  { transform: scale(1);    opacity: 0; }
+      }
+      @keyframes full-cycle-glow {
+        0%   { r: 5;  stroke-opacity: 0;    }
+        52%  { r: 5;  stroke-opacity: 0.35; }
+        72%  { r: 20; stroke-opacity: 0;    }
+        100% { r: 20; stroke-opacity: 0;    }
+      }
+    </style>
+    <path class="arc1" d="M 15 15 C 16 32, 32 48, 50 50" />
+    <path class="arc2" d="M 15 85 C 16 68, 32 52, 50 50" />
+    <path class="arc3" d="M 90 50 C 74 44, 62 47, 50 50" />
+    <circle class="node-glow" cx="50" cy="50" r="5" />
+    <circle class="node-core" cx="50" cy="50" r="5" />
+  </svg>
+</span>
+
+<!-- Logo animado grande para topbar / pantallas de auth (44×44) -->
+<span th:fragment="logoFull">
+  <svg viewBox="0 0 100 100" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+    <style>
+      .arc1f { stroke: #0D9488; stroke-opacity: 1; stroke-width: 3.5; stroke-linecap: round; fill: none;
+               stroke-dasharray: 90; stroke-dashoffset: 90;
+               animation: full-cycle-a1f 2.4s ease-in-out infinite; }
+      .arc2f { stroke: #0D9488; stroke-opacity: 0.65; stroke-width: 3; stroke-linecap: round; fill: none;
+               stroke-dasharray: 90; stroke-dashoffset: 90;
+               animation: full-cycle-a2f 2.4s ease-in-out infinite; }
+      .arc3f { stroke: #0D9488; stroke-opacity: 0.4; stroke-width: 2.5; stroke-linecap: round; fill: none;
+               stroke-dasharray: 90; stroke-dashoffset: 90;
+               animation: full-cycle-a3f 2.4s ease-in-out infinite; }
+      .ncf { fill: #0D9488; transform-origin: 50px 50px;
+             animation: full-cycle-nodef 2.4s ease-in-out infinite; }
+      .ngf { fill: none; stroke: #0D9488; stroke-opacity: 0;
+             animation: full-cycle-glowf 2.4s ease-in-out infinite; }
+      @keyframes full-cycle-a1f {
+        0%   { stroke-dashoffset: 90; opacity: 1; }
+        25%  { stroke-dashoffset: 0;  opacity: 1; }
+        83.3%{ stroke-dashoffset: 0;  opacity: 1; }
+        100% { stroke-dashoffset: 0;  opacity: 0; }
+      }
+      @keyframes full-cycle-a2f {
+        0%    { stroke-dashoffset: 90; opacity: 1; }
+        8.3%  { stroke-dashoffset: 90; opacity: 1; }
+        33.3% { stroke-dashoffset: 0;  opacity: 1; }
+        83.3% { stroke-dashoffset: 0;  opacity: 1; }
+        100%  { stroke-dashoffset: 0;  opacity: 0; }
+      }
+      @keyframes full-cycle-a3f {
+        0%    { stroke-dashoffset: 90; opacity: 1; }
+        16.7% { stroke-dashoffset: 90; opacity: 1; }
+        41.7% { stroke-dashoffset: 0;  opacity: 1; }
+        83.3% { stroke-dashoffset: 0;  opacity: 1; }
+        100%  { stroke-dashoffset: 0;  opacity: 0; }
+      }
+      @keyframes full-cycle-nodef {
+        0%    { transform: scale(0);    opacity: 1; }
+        41.7% { transform: scale(0);    opacity: 1; }
+        54.2% { transform: scale(1);    opacity: 1; }
+        58.3% { transform: scale(1.55); opacity: 1; }
+        66.7% { transform: scale(1);    opacity: 1; }
+        87.5% { transform: scale(1);    opacity: 1; }
+        100%  { transform: scale(1);    opacity: 0; }
+      }
+      @keyframes full-cycle-glowf {
+        0%   { r: 5;  stroke-opacity: 0;    }
+        52%  { r: 5;  stroke-opacity: 0.35; }
+        72%  { r: 20; stroke-opacity: 0;    }
+        100% { r: 20; stroke-opacity: 0;    }
+      }
+    </style>
+    <path class="arc1f" d="M 15 15 C 16 32, 32 48, 50 50" />
+    <path class="arc2f" d="M 15 85 C 16 68, 32 52, 50 50" />
+    <path class="arc3f" d="M 90 50 C 74 44, 62 47, 50 50" />
+    <circle class="ngf" cx="50" cy="50" r="5" />
+    <circle class="ncf" cx="50" cy="50" r="5" />
+  </svg>
+</span>
+
+</body>
+</html>

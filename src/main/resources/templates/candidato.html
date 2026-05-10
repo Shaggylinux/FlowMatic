@@ -1,1 +1,64 @@
-<h1>XD</h1>
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Candidato — Flowmatic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/drive.css}">
+</head>
+<body class="drive-body">
+<div class="drive-layout">
+
+  <!-- ── SIDEBAR ─────────────────────────────── -->
+  <aside class="fm-sidebar">
+
+    <div class="fm-sidebar-header">
+      <a th:href="@{/}" class="fm-sidebar-logo" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+        <span th:replace="~{fragments/logo :: logoSidebar}"></span>
+        <span style="color:#ffffff; font-size:16px; font-weight:800; letter-spacing:0.04em;">Flowmatic</span>
+      </a>
+    </div>
+
+    <nav style="padding-top:8px;">
+      <a th:href="@{/drive}" class="fm-nav-link active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Mis Documentos
+      </a>
+    </nav>
+
+    <div class="fm-sidebar-footer">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-logout btn-sm" style="width:100%;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Cerrar Sesión
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- ── ÁREA PRINCIPAL ──────────────────────── -->
+  <div class="drive-main">
+
+    <header class="fm-topbar">
+      <div>
+        <p class="fm-topbar-title">Panel de Candidato</p>
+        <p class="fm-topbar-sub">Bienvenido a Flowmatic</p>
+      </div>
+    </header>
+
+    <div class="drive-content">
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; text-align:center;">
+        <span th:replace="~{fragments/logo :: logoFull}"></span>
+        <h2 style="margin-top:24px; font-size:22px; color:var(--fm-text);">Vista en construcción</h2>
+        <p style="color:var(--fm-text-muted); margin-top:8px; font-size:14px;">Accede a tus documentos desde el Drive.</p>
+        <a th:href="@{/drive}" class="btn btn-primary" style="margin-top:24px;">Ir al Drive</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

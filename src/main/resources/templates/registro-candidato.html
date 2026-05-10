@@ -1,87 +1,131 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Registrar candidato</title>
-    <link rel="stylesheet" th:href="@{/css/registro.css}">
+  <meta charset="UTF-8">
+  <title>Registrar candidato — Flowmatic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/registro.css}">
 </head>
-<body>
+<body class="page-auth">
 
 <div class="loader-overlay" id="loader">
-    <div class="loader"></div>
+  <div class="loader"></div>
 </div>
 
-<div class="container">
+<div class="split-container">
 
-    <div class="form-section">
-        <div class="form-box">
+  <div class="split-form">
+    <div class="split-form-box">
 
-            <h2>Registrar candidato</h2>
+      <div style="display:flex; justify-content:center; margin-bottom:20px;">
+        <span th:replace="~{fragments/logo :: logoFull}"></span>
+      </div>
 
-            <div th:if="${mensajePendiente}" class="alert alert-success">
-                ✅ Cuenta creada, revisa tu correo
-            </div>
+      <h2 style="text-align:center; margin-bottom:24px;">Crear cuenta</h2>
 
-            <div th:if="${errorDuplicado}" class="alert alert-error">
-                ❗ Correo ya registrado
-            </div>
+      <div th:if="${mensajePendiente}" class="alert alert-success">
+        ✅ Cuenta creada. Revisa tu correo para activarla.
+      </div>
+      <div th:if="${errorDuplicado}" class="alert alert-error">
+        ❗ Este correo ya está registrado.
+      </div>
 
-            <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post" id="formRegistro">
+      <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post" id="formRegistro">
 
-                <div class="input-group">
-                    <label>Nombre</label>
-                    <input type="text" th:field="*{username}" required minlength="2" maxlength="50"
-                           pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
-                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-msg"></span>
-                </div>
-
-                <div class="input-group">
-                    <label>Apellido</label>
-                    <input type="text" th:field="*{apellido}" required minlength="2" maxlength="50"
-                           pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
-                    <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="error-msg"></span>
-                </div>
-
-                <div class="input-group">
-                    <label>Correo</label>
-                    <input type="email" th:field="*{email}" required maxlength="100">
-                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-msg"></span>
-                </div>
-
-                <div class="input-group">
-                    <label>Teléfono</label>
-                    <input type="tel" th:field="*{telefono}"
-                           pattern="[0-9]{7,15}" title="Solo números, entre 7 y 15 dígitos">
-                </div>
-
-                <div class="input-group">
-                    <label>Contraseña</label>
-                    <input type="password" th:field="*{clave}" required minlength="8" maxlength="100">
-                    <span th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}" class="error-msg"></span>
-                </div>
-
-                <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
-
-                <button type="submit">Registrar</button>
-            </form>
-
-            <a th:href="@{/login}">¿Ya tienes cuenta?</a>
-
+        <div class="form-group">
+          <label class="form-label">Nombre</label>
+          <input class="form-input" type="text" th:field="*{username}" required
+                 minlength="2" maxlength="50"
+                 pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
+                 placeholder="Tu nombre"/>
+          <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-msg"></span>
         </div>
-    </div>
 
-    <div class="image-section">
-        <video autoplay muted loop class="bg-video">
-            <source th:src="@{/videos/flowmatic-registro-candidato.mp4}" type="video/mp4">
-        </video>
+        <div class="form-group">
+          <label class="form-label">Apellido</label>
+          <input class="form-input" type="text" th:field="*{apellido}" required
+                 minlength="2" maxlength="50"
+                 pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
+                 placeholder="Tu apellido"/>
+          <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Correo</label>
+          <input class="form-input" type="email" th:field="*{email}" required maxlength="100"
+                 placeholder="correo@ejemplo.com"/>
+          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Teléfono</label>
+          <input class="form-input" type="tel" th:field="*{telefono}"
+                 pattern="[0-9]{7,15}" title="Solo números, entre 7 y 15 dígitos"
+                 placeholder="Ej: 3001234567"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <input class="form-input" type="password" th:field="*{clave}" required
+                 minlength="8" maxlength="100" placeholder="Mínimo 8 caracteres"/>
+          <span th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}" class="error-msg"></span>
+        </div>
+
+        <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
+
+        <button type="submit" class="btn btn-primary btn-full">Registrarme</button>
+      </form>
+
+      <p style="text-align:center; margin-top:16px; font-size:13px; color:var(--fm-text-muted);">
+        ¿Ya tienes cuenta?
+        <a class="fm-link" th:href="@{/login}">Inicia sesión</a>
+      </p>
+
     </div>
+  </div>
+
+  <div class="split-visual">
+    <div class="split-visual-gradient"></div>
+    <div class="split-visual-decor" style="top:-80px; right:-80px; width:160px; height:160px;"></div>
+    <div class="split-visual-decor" style="bottom:-60px; left:-60px; width:120px; height:120px;"></div>
+    <div class="split-visual-decor" style="top:33%; left:28%; width:80px; height:80px; border-width:1px;"></div>
+
+    <div class="split-visual-content">
+      <span th:replace="~{fragments/logo :: logoFull}"></span>
+      <p class="split-visual-tagline">Tu proceso de selección, digitalizado</p>
+
+      <ul class="split-visual-bullets">
+        <li>
+          <span class="split-visual-check">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="split-visual-list-text">Sube tus documentos fácilmente</span>
+        </li>
+        <li>
+          <span class="split-visual-check">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="split-visual-list-text">Sigue el estado de tu candidatura</span>
+        </li>
+        <li>
+          <span class="split-visual-check">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="split-visual-list-text">Comunicación directa con RRHH</span>
+        </li>
+      </ul>
+    </div>
+  </div>
 
 </div>
 
 <script>
-document.getElementById("formRegistro").addEventListener("submit", () => {
+  document.getElementById("formRegistro").addEventListener("submit", () => {
     document.getElementById("loader").style.display = "flex";
-});
+  });
 </script>
-
 </body>
 </html>

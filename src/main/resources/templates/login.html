@@ -1,60 +1,103 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Login</title>
-  <link rel="stylesheet" th:href="@{/css/login.css}" />
+  <meta charset="UTF-8">
+  <title>Login — Flowmatic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
-<body>
+<body class="page-auth">
 
 <div class="loader-overlay" id="loader">
   <div class="loader"></div>
 </div>
 
-<div class="container">
-  <div class="form-section">
-    <div class="form-box">
-      <h2>Iniciar Sesión</h2>
+<div class="split-container">
 
-      <div th:if="${param.error}" class="error">
-        Correo o contraseña incorrectos
+  <!-- Panel formulario -->
+  <div class="split-form">
+    <div class="split-form-box">
+
+      <!-- Logo centrado -->
+      <div style="display:flex; justify-content:center; margin-bottom:20px;">
+        <span th:replace="~{fragments/logo :: logoFull}"></span>
       </div>
 
-      <div th:if="${param.logout}" class="success">
-        Sesión cerrada correctamente
-      </div>
+      <p style="text-align:center; font-size:13px; color:var(--fm-text-muted); margin-bottom:4px;">Bienvenido de vuelta</p>
+      <h2 style="text-align:center; margin-bottom:24px;">Iniciar Sesión</h2>
+
+      <div th:if="${param.error}" class="alert alert-error">Correo o contraseña incorrectos</div>
+      <div th:if="${param.logout}" class="alert alert-success">✅ Sesión cerrada correctamente</div>
 
       <form th:action="@{/login}" method="post" id="formLogin">
-        <div class="input-group">
-          <label>Correo</label>
-          <input type="email" name="email" required maxlength="100" />
+
+        <div class="form-group">
+          <label class="form-label">Correo electrónico</label>
+          <input class="form-input" type="email" name="email" required maxlength="100"
+                 placeholder="nombre@empresa.com"/>
         </div>
 
-        <div class="input-group">
-          <label>Contraseña</label>
-          <input type="password" name="clave" required />
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <input class="form-input" type="password" name="clave" required placeholder="••••••••"/>
         </div>
 
-        <button type="submit">Ingresar</button>
-
-        <div style="text-align: right; margin-bottom: 10px">
-          <a th:href="@{/forgot-password}">¿Olvidaste tu contraseña?</a>
+        <div class="forgot-link-row">
+          <a class="fm-link" th:href="@{/forgot-password}">¿Olvidaste tu contraseña?</a>
         </div>
+
+        <button type="submit" class="btn btn-primary btn-full">Ingresar</button>
+
       </form>
     </div>
   </div>
 
-  <div class="image-section">
-    <video autoplay muted loop class="bg-video">
-      <source src="/videos/flowmatic-login.mp4" type="video/mp4" />
-    </video>
+<!-- Panel visual - Diseño idéntico al prototipo -->
+  <div class="split-visual">
+    <!-- Gradiente de fondo idéntico al prototipo -->
+    <div class="split-visual-gradient"></div>
+    
+    <!-- Decoraciones geométricas -->
+    <div class="split-visual-decor" style="top:-80px; right:-80px; width:160px; height:160px;"></div>
+    <div class="split-visual-decor" style="bottom:-60px; left:-60px; width:120px; height:120px;"></div>
+    <div class="split-visual-decor" style="top:33%; left:28%; width:80px; height:80px; border-width:1px;"></div>
+ 
+    <div class="split-visual-content">
+      <span th:replace="~{fragments/logo :: logoFull}"></span>
+      <p class="split-visual-tagline">Gestión de Talento Inteligente</p>
+ 
+      <ul class="split-visual-bullets">
+        <li>
+          <span class="split-visual-check">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="split-visual-list-text">Acceso seguro con roles</span>
+        </li>
+        <li>
+          <span class="split-visual-check">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="split-visual-list-text">Documentos centralizados</span>
+        </li>
+        <li>
+          <span class="split-visual-check">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="split-visual-list-text">Pipeline de candidatos en tiempo real</span>
+        </li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
 <script>
-document.getElementById("formLogin").addEventListener("submit", () => {
-  document.getElementById("loader").style.display = "flex";
-});
+  document.getElementById("formLogin").addEventListener("submit", () => {
+    document.getElementById("loader").style.display = "flex";
+  });
 </script>
-
 </body>
 </html>

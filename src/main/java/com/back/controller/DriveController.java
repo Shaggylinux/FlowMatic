@@ -121,6 +121,72 @@ public class DriveController {
         return "drive";
     }
 
+    String usernameReal = (userSession != null) ? userSession.getUsername() : loginId;
+    String emailReal = (userSession != null) ? userSession.getEmail() : loginId;
+
+    List<Archivos> listaPorUser = filesRepository.buscarArchivosVisiblesPara(usernameReal);
+    List<Archivos> listaPorEmail = filesRepository.buscarArchivosVisiblesPara(emailReal);
+    
+    Set<Archivos> conjuntoTodo = new HashSet<>();
+    if (listaPorUser != null) conjuntoTodo.addAll(listaPorUser);
+    if (listaPorEmail != null) conjuntoTodo.addAll(listaPorEmail);
+    List<Archivos> todos = new ArrayList<>(conjuntoTodo);
+
+    String folderActualURL = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+
+
+    Usuario tempUser = usuarioRepository.findByUsername(loginId);
+    if (tempUser == null) {
+        tempUser = usuarioRepository.findByEmail(loginId).orElse(null);
+    }
+    
+    final Usuario usuarioParaFiltro = tempUser;
+    if (listaPorUser != null) conjuntoTodo.addAll(listaPorUser);
+    if (listaPorEmail != null) conjuntoTodo.addAll(listaPorEmail);
+
+    List<Archivos> archivosEnEstaCarpeta = todos.stream()
+            .filter(a -> !a.isEsCarpeta()) 
+            .filter(a -> {
+                if (usuarioParaFiltro == null) return false; 
+
+                if ("ROLE_RRHH".equals(usuarioParaFiltro.getRol())) {
+                    String ubicacionDB = a.getUbicacion().replace("\\", "/");
+                    String folderEnDB = ubicacionDB
+                            .replace(ROOT_DIR.replace("\\", "/"), "")
+                            .replace(a.getNombre(), "")
+                            .replaceAll("^/+|/+$", "")
+                            .trim();
+                    return folderEnDB.equalsIgnoreCase(folderActualURL);
+                }
+                
+                if ("ROLE_CANDIDATO".equals(usuarioParaFiltro.getRol())) {
+                    return a.getPropietario() != null && 
+                           (a.getPropietario().equals(usuarioParaFiltro.getUsername()) || 
+                            a.getPropietario().equals(usuarioParaFiltro.getEmail()) ||
+                            a.getDestinario() != null && a.getDestinario().equals(usuarioParaFiltro.getEmail()));
+                }
+                
+                return true;
+            })
+            .toList();
+
+    model.addAttribute("usuarioActualObjeto", usuarioParaFiltro != null ? usuarioParaFiltro : new Usuario());
+    model.addAttribute("usuarioActual", loginId);
+    model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
+    model.addAttribute("archivos", archivosEnEstaCarpeta);
+    model.addAttribute("folderActual", folderActualURL);
+    model.addAttribute("listaCandidatos", usuarioRepository.findByRol("ROLE_CANDIDATO"));
+
+    model.addAttribute("usuarioActualObjeto", userSession != null ? userSession : new Usuario());
+    model.addAttribute("usuarioActual", loginId);
+    model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
+    model.addAttribute("archivos", archivosEnEstaCarpeta);
+    model.addAttribute("folderActual", folderActualURL);
+    model.addAttribute("listaCandidatos", usuarioRepository.findByRol("ROLE_CANDIDATO"));
+    
+    return "drive";
+}
+
     @PostMapping("/crear-carpeta")
     public String crearCarpeta(@RequestParam("nombre") String nombre,
             @RequestParam("folderDestino") String folderDestino,

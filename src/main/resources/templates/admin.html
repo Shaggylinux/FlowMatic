@@ -1,162 +1,251 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Flowmatic - Admin</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
+  <meta charset="UTF-8">
+  <title>Admin — Flowmatic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
-<body class="bg-light">
 
-<div class="admin-container">
+<body class="admin-body">
+<div class="admin-layout">
 
-    <aside class="sidebar">
-        <div>
-            <h2 class="logo">📂 Flowmatic</h2>
-            <nav class="sidebar-folders">
-                <a href="#" class="active">Dashboard</a>
-                <a href="#">RRHH</a>
-            </nav>
-        </div>
+  <!-- ── SIDEBAR ─────────────────────────────── -->
+  <aside class="fm-sidebar">
 
-        <div class="logout">
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn-logout-drive">Cerrar Sesión</button>
-            </form>
-        </div>
-    </aside>
-
-    <main class="main-content p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Panel de Administración</h2>
-            <a th:href="@{/admin/exportar}" class="btn btn-success">
-                Exportar Excel
-            </a>
-        </div>
-
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-primary text-white">Registrar Personal de RRHH</div>
-            <div class="card-body">
-                <form th:action="@{/admin/crear-rrhh}" method="post" class="row g-3">
-                    <div class="col-md-2">
-                        <input type="text" name="username" class="form-control" placeholder="Username"
-                               required minlength="2" maxlength="50"
-                               pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" name="apellido" class="form-control" placeholder="Apellido"
-                               required minlength="2" maxlength="50"
-                               pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
-                    </div>
-                    <div class="col-md-3">
-                        <input type="email" name="email" class="form-control" placeholder="Email"
-                               required maxlength="100">
-                    </div>
-                    <div class="col-md-3">
-                        <input type="password" name="clave" class="form-control" placeholder="Mínimo 8 caracteres"
-                               required minlength="8" maxlength="100">
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-success w-100">Crear RRHH</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-hover bg-white shadow-sm align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Rol</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="u : ${usuarios}">
-                        <td th:text="${u.id}"></td>
-                        <td th:text="${u.username}"></td>
-                        <td th:text="${u.email}"></td>
-                        <td><span class="badge bg-info text-dark" th:text="${u.rol}"></span></td>
-                        <td th:text="${u.estado}"></td>
-                        <td>
-                            <form th:action="@{/admin/eliminar/{id}(id=${u.id})}" method="post" style="display:inline;">
-                                <button class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro?')">Eliminar</button>
-                            </form>
-                            <button class="btn btn-warning btn-sm" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#modalEditar"
-                                    th:data-id="${u.id}"
-                                    th:data-username="${u.username}"
-                                    th:data-apellido="${u.apellido}"
-                                    th:data-email="${u.email}"
-                                    th:data-telefono="${u.telefono}"
-                                    onclick="llenarModal(this)">
-                                Editar
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
-</div>
-
-<div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title">Editar Usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form th:action="@{/admin/editar}" method="post">
-                <div class="modal-body">
-                    <input type="hidden" id="edit-id" name="id">
-                    <div class="mb-3">
-                        <label class="form-label">Username</label>
-                        <input type="text" class="form-control" id="edit-username" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="edit-apellido" name="apellido" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" id="edit-email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="edit-telefono" name="telefono"
-                               pattern="[0-9]{7,15}" title="Solo números, entre 7 y 15 dígitos">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Nueva Contraseña (opcional)</label>
-                        <input type="password" class="form-control" name="nuevaClave"
-                               placeholder="Mínimo 8 caracteres" minlength="8" maxlength="100">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                </div>
-            </form>
-        </div>
+    <div class="fm-sidebar-header">
+      <a th:href="@{/admin}" class="fm-sidebar-logo" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+        <span th:replace="~{fragments/logo :: logoSidebar}"></span>
+        <span style="color:#ffffff; font-size:16px; font-weight:800; letter-spacing:0.04em;">Flowmatic</span>
+      </a>
     </div>
+
+    <nav style="padding-top:8px;">
+      <a th:href="@{/admin}" class="fm-nav-link active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="fm-nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        RRHH
+      </a>
+    </nav>
+
+    <div class="fm-sidebar-footer">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-logout btn-sm" style="width:100%;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Cerrar Sesión
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- ── ÁREA PRINCIPAL ──────────────────────── -->
+  <div class="admin-main">
+
+    <!-- Topbar -->
+    <header class="fm-topbar">
+      <div>
+        <p class="fm-topbar-title">Panel de Administración</p>
+        <p class="fm-topbar-sub">Gestión de usuarios y personal</p>
+      </div>
+      <a th:href="@{/admin/exportar}" class="btn btn-primary btn-sm">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exportar Excel
+      </a>
+    </header>
+
+    <!-- Contenido -->
+    <div class="admin-content">
+
+      <!-- ── Stats Cards (igual al prototipo) ── -->
+      <div class="stats-grid">
+        <div class="stat-card" style="border-left-color: var(--fm-brand);">
+          <div class="stat-card-icon">👥</div>
+          <div class="stat-card-content">
+            <p class="stat-card-value" th:text="${totalUsuarios}">0</p>
+            <p class="stat-card-label">Usuarios totales</p>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left-color: var(--fm-info);">
+          <div class="stat-card-icon">✓</div>
+          <div class="stat-card-content">
+            <p class="stat-card-value" th:text="${rrhhActivos}">0</p>
+            <p class="stat-card-label">RRHH activos</p>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left-color: var(--fm-brand);">
+          <div class="stat-card-icon">📋</div>
+          <div class="stat-card-content">
+            <p class="stat-card-value" th:text="${candidatos}">0</p>
+            <p class="stat-card-label">Candidatos</p>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left-color: var(--fm-warning);">
+          <div class="stat-card-icon">⏳</div>
+          <div class="stat-card-content">
+            <p class="stat-card-value" th:text="${pendientes}">0</p>
+            <p class="stat-card-label">Pendientes</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Formulario crear RRHH ── -->
+      <div class="card" style="margin-bottom:28px;">
+        <div class="card-header-dark">Registrar Personal de RRHH</div>
+        <div style="padding:20px;">
+          <form th:action="@{/admin/crear-rrhh}" method="post">
+            <div class="admin-form-row">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="username" class="form-input"
+                       required minlength="2" maxlength="50"
+                       pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
+                       placeholder="Nombre">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Apellido</label>
+                <input type="text" name="apellido" class="form-input"
+                       required minlength="2" maxlength="50"
+                       pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
+                       placeholder="Apellido">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-input"
+                       required maxlength="100" placeholder="correo@empresa.com">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Contraseña</label>
+                <input type="password" name="clave" class="form-input"
+                       required minlength="8" maxlength="100"
+                       placeholder="Mínimo 8 caracteres">
+              </div>
+              <div style="display:flex; align-items:flex-end;">
+                <button type="submit" class="btn btn-primary" style="width:100%;">Crear RRHH</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ── Tabla de usuarios ── -->
+      <div class="table-container">
+        <div class="table-header-row">
+          <h3>Usuarios registrados</h3>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="u : ${usuarios}">
+              <td th:text="${u.username + ' ' + u.apellido}"></td>
+              <td class="td-muted" th:text="${u.email}"></td>
+              <td>
+                <span class="badge"
+                      th:classappend="${u.rol == 'ROLE_ADMINISTRADOR'} ? 'role-admin' :
+                                      (${u.rol == 'ROLE_RRHH'} ? 'role-rrhh' : 'role-candidato')"
+                      th:text="${u.rol}">
+                </span>
+              </td>
+              <td>
+                <span class="badge"
+                      th:classappend="${u.estado == 'activo' or u.activo} ? 'badge-active' : 'badge-pending'"
+                      th:text="${u.estado ?: (u.activo ? 'Activo' : 'Pendiente')}">
+                </span>
+              </td>
+              <td>
+                <div class="table-actions">
+                  <form th:action="@{/admin/eliminar/{id}(id=${u.id})}" method="post"
+                        onsubmit="return confirm('¿Eliminar este usuario?');" style="margin:0;">
+                    <button type="submit" class="btn btn-ghost-danger btn-sm">Eliminar</button>
+                  </form>
+                  <button class="btn btn-ghost-warning btn-sm"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalEditar"
+                          th:data-id="${u.id}"
+                          th:data-username="${u.username}"
+                          th:data-apellido="${u.apellido}"
+                          th:data-email="${u.email}"
+                          th:data-telefono="${u.telefono}"
+                          onclick="llenarModal(this)">
+                    Editar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-main -->
+</div><!-- /admin-layout -->
+
+<!-- ── MODAL: Editar usuario ─────────────── -->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border:none; border-radius:var(--fm-radius-lg); overflow:hidden;">
+      <div class="modal-header" style="background:var(--fm-brand-dark); color:#fff; border:none;">
+        <h5 class="modal-title" style="font-weight:700;">Editar Usuario</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <form th:action="@{/admin/editar}" method="post">
+        <div class="modal-body" style="padding:24px;">
+          <input type="hidden" id="edit-id" name="id">
+          <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-input" id="edit-username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Apellido</label>
+            <input type="text" class="form-input" id="edit-apellido" name="apellido" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" id="edit-email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Teléfono</label>
+            <input type="tel" class="form-input" id="edit-telefono" name="telefono"
+                   pattern="[0-9]{7,15}" title="Solo números, entre 7 y 15 dígitos">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">Nueva Contraseña (opcional)</label>
+            <input type="password" class="form-input" name="nuevaClave"
+                   placeholder="Mínimo 8 caracteres" minlength="8" maxlength="100">
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top:1px solid var(--fm-border); padding:16px 24px;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function llenarModal(btn) {
-        document.getElementById('edit-id').value = btn.getAttribute('data-id');
-        document.getElementById('edit-username').value = btn.getAttribute('data-username');
-        document.getElementById('edit-apellido').value = btn.getAttribute('data-apellido');
-        document.getElementById('edit-email').value = btn.getAttribute('data-email');
-        document.getElementById('edit-telefono').value = btn.getAttribute('data-telefono');
-    }
+  function llenarModal(btn) {
+    document.getElementById('edit-id').value       = btn.getAttribute('data-id');
+    document.getElementById('edit-username').value = btn.getAttribute('data-username');
+    document.getElementById('edit-apellido').value = btn.getAttribute('data-apellido');
+    document.getElementById('edit-email').value    = btn.getAttribute('data-email');
+    document.getElementById('edit-telefono').value = btn.getAttribute('data-telefono');
+  }
 </script>
-
 </body>
 </html>

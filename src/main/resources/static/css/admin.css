@@ -1,143 +1,212 @@
-body {
-    background: #f1f5f9;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
+/* ================================================
+   ADMIN — estilos específicos del panel admin
+   Sidebar, tabla, loader, badges y stat cards
+   vienen de base.css. Solo layout aquí.
+   ================================================ */
+
+.admin-body { 
+  background: var(--fm-bg); 
+  overflow-y: auto;
 }
 
-.admin-container {
-    display: flex;
-    min-height: 100vh;
+/* Layout principal */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  height: 100vh;
 }
 
-.sidebar {
-    width: 240px;
-    background: #0f172a;
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-    justify-content: space-between;
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--fm-bg);
+  overflow-y: auto;
 }
 
-.sidebar .logo {
-    color: #10b981;
-    font-weight: bold;
-    font-size: 1.5rem;
-    margin-bottom: 25px;
-    text-align: center;
+.admin-content {
+  flex: 1;
+  padding: 24px 28px;
+  overflow-y: auto;
 }
 
-.sidebar-folders a {
-    display: block;
-    color: #cbd5f5;
-    text-decoration: none;
-    padding: 12px;
-    margin-bottom: 5px;
-    border-radius: 8px;
-    transition: 0.2s;
+/* Fila de formulario multcolumna */
+.admin-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 1.5fr auto;
+  gap: 12px;
+  align-items: end;
 }
 
-.sidebar-folders a:hover, .sidebar-folders a.active {
-    background: #1e293b;
-    color: #10b981 !important;
+@media (max-width: 900px) {
+  .admin-form-row { grid-template-columns: 1fr 1fr; }
 }
 
-.logout {
-    border-top: 1px solid #1e293b;
-    padding-top: 20px;
+/* Header de la pantalla admin */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
-.btn-logout-drive {
-    width: 100%;
-    background: transparent;
-    color: #ef4444;
-    border: 1px solid #ef4444;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: 0.3s;
+.admin-header h2 {
+  font-size: var(--fm-size-h2);
+  font-weight: 700;
+  color: var(--fm-text);
 }
 
-.btn-logout-drive:hover {
-    background: #ef4444;
-    color: white;
+/* Badge de rol "Admin" en el topbar */
+.badge-admin-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--fm-radius-full);
+  font-size: var(--fm-size-caption);
+  font-weight: 500;
+  background: var(--fm-brand-dark);
+  color: #ffffff;
+  margin-left: 10px;
+  vertical-align: middle;
 }
 
-.main-content {
-    flex: 1;
-    padding: 40px;
+/* Grid de stat cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+/* Sección de tabla con su propio header */
+.table-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
-.card {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+.table-section-header h3 {
+  font-size: var(--fm-size-h3);
+  font-weight: 600;
+  color: var(--fm-text);
 }
 
-.card-header {
-    background: #0f172a !important;
-    color: white !important;
-    border-radius: 12px 12px 0 0 !important;
-    font-weight: bold;
+/* Sobreescritura de Bootstrap: card-header usa nuestro navy */
+.card-header.bg-primary,
+.card-header.bg-warning,
+.modal-header.bg-warning {
+  background: var(--fm-brand-dark) !important;
+  color: #ffffff !important;
+  border: none;
 }
 
-.table-container {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+/* Sobreescritura del btn-primary de Bootstrap */
+.btn.btn-primary,
+.btn-primary:not(.btn-ghost) {
+  background: var(--fm-brand) !important;
+  border-color: var(--fm-brand) !important;
+  color: #ffffff !important;
+}
+.btn.btn-primary:hover {
+  background: var(--fm-brand-hover) !important;
+  border-color: var(--fm-brand-hover) !important;
 }
 
-.btn-upload {
-    background: #10b981;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
+/* Sobreescritura del btn-success de Bootstrap */
+.btn.btn-success {
+  background: var(--fm-success) !important;
+  border-color: var(--fm-success) !important;
 }
 
-.btn-eliminar {
-    background: #ef4444;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
+/* Sobreescritura del btn-warning de Bootstrap */
+.btn.btn-warning {
+  background: var(--fm-warning) !important;
+  border-color: var(--fm-warning) !important;
+  color: #ffffff !important;
 }
 
-.loader-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(15, 61, 94, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    display: none;
+/* Sobreescritura del btn-danger de Bootstrap */
+.btn.btn-danger {
+  background: var(--fm-danger) !important;
+  border-color: var(--fm-danger) !important;
 }
 
-.loader {
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid #1ABC9C;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
+/* Cabecera de tabla Bootstrap → nuestro navy */
+.table-dark th,
+thead.table-dark th {
+  background: var(--fm-brand-dark) !important;
+  color: #ffffff !important;
+  font-size: var(--fm-size-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Hover de filas de tabla Bootstrap */
+.table-hover tbody tr:hover {
+  background: #F0FDFA !important;
+}
+
+/* ── Stats Cards (diseño prototipo) ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--fm-surface);
+  border-radius: var(--fm-radius-lg);
+  border-left: 4px solid var(--fm-brand);
+  padding: 20px;
+  box-shadow: var(--fm-shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-card-icon {
+  font-size: 32px;
+  opacity: 0.4;
+}
+
+.stat-card-value {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--fm-text);
+  line-height: 1;
+}
+
+.stat-card-label {
+  font-size: 14px;
+  color: var(--fm-text-muted);
+  margin-top: 4px;
+}
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Table header row ── */
+.table-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.table-header-row h3 {
+  font-size: var(--fm-size-h3);
+  font-weight: 600;
+  color: var(--fm-text);
 }

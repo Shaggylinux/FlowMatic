@@ -1,0 +1,99 @@
+/* ================================================
+   FLOWMATIC — DESIGN TOKENS
+   Fuente única de verdad para colores, tipografía,
+   espaciado y sombras de toda la aplicación.
+
+   REGLA: ningún archivo CSS puede tener un color
+   hex escrito directamente. Solo variables de aquí.
+   ================================================ */
+
+:root {
+
+  /* ── MARCA ─────────────────────────────────── */
+  --fm-brand-dark:    #0D1B2A;  /* navy — sidebar, cabeceras de tablas  */
+  --fm-brand:         #0D9488;  /* teal — botones primarios, acentos    */
+  --fm-brand-hover:   #0F766E;  /* teal oscuro — hover de elementos     */
+  --fm-brand-light:   #CCFBF1;  /* teal claro — fondos suaves, focus    */
+
+  /* ── FONDOS ─────────────────────────────────── */
+  --fm-bg:            #F8FAFC;  /* fondo general de la app              */
+  --fm-surface:       #FFFFFF;  /* cards, formularios, tablas, paneles  */
+
+  /* ── BORDES ─────────────────────────────────── */
+  --fm-border:        #E2E8F0;  /* separadores, bordes de inputs        */
+
+  /* ── TEXTO ──────────────────────────────────── */
+  --fm-text:          #0F172A;  /* texto principal                      */
+  --fm-text-muted:    #64748B;  /* texto secundario, descripciones      */
+  --fm-text-label:    #374151;  /* labels de formularios                */
+
+  /* ── SIDEBAR ────────────────────────────────── */
+  --fm-sidebar-link:  #94A3B8;  /* links inactivos                      */
+  --fm-sidebar-hover: #1E293B;  /* hover y bordes internos              */
+
+  /* ── ESTADO: ÉXITO ──────────────────────────── */
+  --fm-success:       #16A34A;
+  --fm-success-bg:    #DCFCE7;
+  --fm-success-text:  #166534;
+
+  /* ── ESTADO: ADVERTENCIA ────────────────────── */
+  --fm-warning:       #F59E0B;
+  --fm-warning-bg:    #FEF3C7;
+  --fm-warning-text:  #92400E;
+
+  /* ── ESTADO: PELIGRO ────────────────────────── */
+  --fm-danger:        #DC2626;
+  --fm-danger-bg:     #FEE2E2;
+  --fm-danger-text:   #991B1B;
+
+  /* ── ESTADO: INFORMATIVO ────────────────────── */
+  --fm-info:          #0EA5E9;
+  --fm-info-bg:       #DBEAFE;
+  --fm-info-text:     #1E40AF;
+
+  /* ── BADGES — ETAPAS DEL CANDIDATO ─────────── */
+  --fm-badge-registered-bg:   #F1F5F9;
+  --fm-badge-registered-text: #475569;
+
+  --fm-badge-review-bg:       #FEF3C7;
+  --fm-badge-review-text:     #92400E;
+
+  --fm-badge-interview-bg:    #DBEAFE;
+  --fm-badge-interview-text:  #1E40AF;
+
+  --fm-badge-selected-bg:     #DCFCE7;
+  --fm-badge-selected-text:   #166534;
+
+  --fm-badge-rejected-bg:     #FEE2E2;
+  --fm-badge-rejected-text:   #991B1B;
+
+  /* ── TIPOGRAFÍA ─────────────────────────────── */
+  --fm-font:          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --fm-size-display:  42px;
+  --fm-size-h1:       32px;
+  --fm-size-h2:       24px;
+  --fm-size-h3:       18px;
+  --fm-size-body:     15px;
+  --fm-size-small:    13px;
+  --fm-size-caption:  12px;
+
+  /* ── RADIOS DE BORDE ────────────────────────── */
+  --fm-radius-sm:     6px;
+  --fm-radius-md:     8px;
+  --fm-radius-lg:     12px;
+  --fm-radius-full:   999px;
+
+  /* ── SOMBRAS ────────────────────────────────── */
+  --fm-shadow-sm:  0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --fm-shadow-md:  0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+  --fm-shadow-lg:  0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+  --fm-shadow-xl:  0 10px 40px rgba(0,0,0,0.18);
+
+  /* ── TRANSICIONES ───────────────────────────── */
+  --fm-transition: 0.2s ease;
+
+  /* ── DIMENSIONES ────────────────────────────── */
+  --fm-sidebar-width:   240px;
+  --fm-topbar-height:    56px;
+}
