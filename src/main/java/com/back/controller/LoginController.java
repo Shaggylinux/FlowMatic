@@ -21,7 +21,7 @@ public class LoginController {
             return "redirect:/drive";
         }
 
-        if (roles.contains("ROLE_ADMINISTRADOR")) {
+        if (roles.contains("ROLE_ADMIN")) {
             return "redirect:/admin";
         }
         return "redirect:/";

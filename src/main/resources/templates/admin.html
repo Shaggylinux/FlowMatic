@@ -119,7 +119,7 @@
               <td class="td-muted" th:text="${u.email}"></td>
               <td>
                 <span class="badge"
-                      th:classappend="${u.rol == 'ROLE_ADMINISTRADOR'} ? 'role-admin' :
+                      th:classappend="${u.rol == 'ROLE_ADMIN'} ? 'role-admin' :
                                       (${u.rol == 'ROLE_RRHH'} ? 'role-rrhh' : 'role-candidato')"
                       th:text="${u.rol}">
                 </span>

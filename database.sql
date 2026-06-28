@@ -22,4 +22,4 @@ CREATE TABLE archivos (
     es_carpeta BOOLEAN
 );
 
-insert into usuarios(username, apellido, email, clave, telefono, rol, activo) values ('Esteban', 'Gomez', 'gomez@gmail.com', '$2a$10$JDYXxiV.Df.cj29mk19f3uUmiABNGiyHiidc8BMqSUd1hL49SvrwG', '123123123', 'ROLE_ADMINISTRADOR', true);
+insert into usuarios(username, apellido, email, clave, telefono, rol, activo) values ('Esteban', 'Gomez', 'gomez@gmail.com', '$2a$10$JDYXxiV.Df.cj29mk19f3uUmiABNGiyHiidc8BMqSUd1hL49SvrwG', '123123123', 'ROLE_ADMIN', true);
