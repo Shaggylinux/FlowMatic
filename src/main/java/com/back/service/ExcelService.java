@@ -19,7 +19,7 @@ public class ExcelService {
         Sheet sheet = workbook.createSheet("Usuarios");
 
         Row row = sheet.createRow(0);
-        String[] columnas = {"ID", "Username", "Apellido", "Email", "Rol", "Estado"};
+        String[] columnas = {"ID", "Usuario", "Apellido", "Email", "Rol", "Estado"};
         
         for (int i = 0; i < columnas.length; i++) {
             Cell cell = row.createCell(i);
