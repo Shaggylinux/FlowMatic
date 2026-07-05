@@ -64,23 +64,14 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Teléfono</label>
-          <input class="form-input" type="tel" th:field="*{telefono}"
-                 pattern="[0-9]{7,15}" title="Solo números, entre 7 y 15 dígitos"
-                 placeholder="Ej: 3001234567"/>
-        </div>
-
-        <div class="form-group">
           <label class="form-label">Contraseña</label>
           <input class="form-input" type="password" th:field="*{clave}" required
                  minlength="8" maxlength="100" placeholder="Mínimo 8 caracteres"/>
           <span th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}" class="error-msg"></span>
         </div>
 
-
         <button type="submit" class="btn btn-primary btn-full">Registrarme</button>
       </form>
-
       <p style="text-align:center; margin-top:16px; font-size:13px; color:var(--fm-text-muted);">
         ¿Ya tienes cuenta?
         <a class="fm-link" th:href="@{/login}">Inicia sesión</a>
