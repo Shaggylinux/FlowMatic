@@ -10,8 +10,11 @@ public class HistorialEstado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String estado_anterior;
-    private String estado_nuevo;
+    @Column(name = "estado_anterior")
+    private String estadoAnterior;
+
+    @Column(name = "estado_nuevo")
+    private String estadoNuevo;
     private String fecha;
     private String responsable;
 }
