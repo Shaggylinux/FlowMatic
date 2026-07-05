@@ -23,6 +23,7 @@ CREATE TABLE archivos (
 );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 insert into usuarios(username, apellido, email, clave, telefono, rol, activo) values ('Esteban', 'Gomez', 'gomez@gmail.com', '$2a$10$JDYXxiV.Df.cj29mk19f3uUmiABNGiyHiidc8BMqSUd1hL49SvrwG', '123123123', 'ROLE_ADMIN', true);
 =======
 create table historial (
@@ -35,3 +36,6 @@ create table historial (
 
 insert into usuarios(username, apellido, email, clave, telefono, rol, activo) values ('Esteban', 'Gomez', 'gomez@gmail.com', '$2a$10$JDYXxiV.Df.cj29mk19f3uUmiABNGiyHiidc8BMqSUd1hL49SvrwG', '123123123', 'ROLE_ADMINISTRADOR', true);
 >>>>>>> 96cbd90 (Feat : Create HistorialEstado.java)
+=======
+insert into usuarios(username, apellido, email, clave, telefono, rol, activo) values ('Esteban', 'Gomez', 'gomez@gmail.com', '$2a$10$JDYXxiV.Df.cj29mk19f3uUmiABNGiyHiidc8BMqSUd1hL49SvrwG', '123123123', 'ROLE_ADMIN', true);
+>>>>>>> 3aec487 (Update Conectar.java)
