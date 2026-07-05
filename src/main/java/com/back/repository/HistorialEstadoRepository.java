@@ -5,8 +5,8 @@ import java.util.Optional;
 
 public interface HistorialEstadoRepository extends JpaRepository<HistorialEstado, Long> {
     Optional<HistorialEstado> findById(Long id);
-    HistorialEstado findByEstado_anterior(String estado_anterior);
-    HistorialEstado findByEstado_nuevo(String estado_nuevo);
+    HistorialEstado findByEstadoAnterior(String estadoAnterior);
+    HistorialEstado findByEstadoNuevo(String estadoNuevo);
     HistorialEstado findByFecha(String fecha);
     HistorialEstado findByResponsable(String responsable);
 }
