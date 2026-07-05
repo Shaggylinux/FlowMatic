@@ -143,7 +143,6 @@
                           th:data-username="${u.username}"
                           th:data-apellido="${u.apellido}"
                           th:data-email="${u.email}"
-                          th:data-telefono="${u.telefono}"
                           onclick="llenarModal(this)">
                     Editar
                   </button>
@@ -180,11 +179,6 @@
             <label class="form-label">Email</label>
             <input type="email" class="form-input" id="edit-email" name="email" required>
           </div>
-          <div class="form-group">
-            <label class="form-label">Teléfono</label>
-            <input type="tel" class="form-input" id="edit-telefono" name="telefono"
-                   pattern="[0-9]{7,15}" title="Solo números, entre 7 y 15 dígitos">
-          </div>
           <div class="form-group" style="margin-bottom:0;">
             <label class="form-label">Nueva Contraseña (opcional)</label>
             <input type="password" class="form-input" name="nuevaClave"
@@ -207,7 +201,6 @@
     document.getElementById('edit-username').value = btn.getAttribute('data-username');
     document.getElementById('edit-apellido').value = btn.getAttribute('data-apellido');
     document.getElementById('edit-email').value    = btn.getAttribute('data-email');
-    document.getElementById('edit-telefono').value = btn.getAttribute('data-telefono');
   }
 </script>
 <script th:src="@{/js/i18n.js}"></script>
