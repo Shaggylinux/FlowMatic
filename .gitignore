@@ -33,7 +33,11 @@ build/
 .vscode/
 
 ### properties ###
+<<<<<<< HEAD
 /src/main/resources/application.properties
+=======
+# src/main/resources/application.properties
+>>>>>>> f36faee (Update .gitignore)
 
 ### Database ###
 database.sql
