@@ -77,7 +77,6 @@ public class AdminController {
             usuarioBD.setUsername(datosEditados.getUsername());
             usuarioBD.setApellido(datosEditados.getApellido());
             usuarioBD.setEmail(datosEditados.getEmail());
-            usuarioBD.setTelefono(datosEditados.getTelefono());
             
             if (nuevaClave != null && !nuevaClave.trim().isEmpty()) {
                 System.out.println("Detectada nueva clave para: " + usuarioBD.getUsername());
