@@ -42,8 +42,5 @@ public class Usuario {
     @Column(unique = true)
     private String tokenactivacion;
 
-    @Column(nullable = true)
-    private String telefono;
-
     private String estado;
 }
