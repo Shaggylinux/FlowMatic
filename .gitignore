@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### properties ###
-src/main/resources/application.properties
+# src/main/resources/application.properties
 
 ### Database ###
 database.sql
