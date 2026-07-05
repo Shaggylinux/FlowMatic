@@ -33,13 +33,15 @@ build/
 .vscode/
 
 ### properties ###
-src/main/resources/application.properties
+# src/main/resources/application.properties
+
+### Database ###
+database.sql
 
 ### Compiled classes / artefactos sueltos ###
 *.class
 /HashPassword.*
-DB/**/out/
-DB/**/*.class
+DB/
 
 ### Logs ###
 nohup.out

@@ -4,7 +4,6 @@
    Sidebar, tablas y botones vienen de base.css.
    ================================================ */
 
-/* Layout principal */
 .drive-body { background: var(--fm-bg); }
 
 .drive-layout {
@@ -23,6 +22,20 @@
 .drive-content {
   flex: 1;
   padding: 28px 32px;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+/* Stats grid */
+.drive-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+  .drive-stats-grid { grid-template-columns: 1fr; }
 }
 
 /* Header de sección */

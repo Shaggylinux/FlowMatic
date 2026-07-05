@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registrar candidato — Flowmatic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,7 +22,9 @@
     <div class="split-form-box">
 
       <div style="display:flex; justify-content:center; margin-bottom:20px;">
-        <span th:replace="~{fragments/logo :: logoFull}"></span>
+        <a th:href="@{/}" title="Ir al inicio" class="logo-link">
+          <span th:replace="~{fragments/logo :: logoFull}"></span>
+        </a>
       </div>
 
       <h2 style="text-align:center; margin-bottom:24px;">Crear cuenta</h2>
@@ -61,24 +64,14 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Teléfono</label>
-          <input class="form-input" type="tel" th:field="*{telefono}"
-                 pattern="[0-9]{7,15}" title="Solo números, entre 7 y 15 dígitos"
-                 placeholder="Ej: 3001234567"/>
-        </div>
-
-        <div class="form-group">
           <label class="form-label">Contraseña</label>
           <input class="form-input" type="password" th:field="*{clave}" required
                  minlength="8" maxlength="100" placeholder="Mínimo 8 caracteres"/>
           <span th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}" class="error-msg"></span>
         </div>
 
-        <input type="hidden" th:field="*{rol}" value="ROLE_USER"/>
-
         <button type="submit" class="btn btn-primary btn-full">Registrarme</button>
       </form>
-
       <p style="text-align:center; margin-top:16px; font-size:13px; color:var(--fm-text-muted);">
         ¿Ya tienes cuenta?
         <a class="fm-link" th:href="@{/login}">Inicia sesión</a>
@@ -93,7 +86,9 @@
     <div class="split-visual-decor" style="top:33%; left:28%; width:80px; height:80px; border-width:1px;"></div>
 
     <div class="split-visual-content">
-      <span th:replace="~{fragments/logo :: logoFull}"></span>
+      <a th:href="@{/}" title="Ir al inicio" class="logo-link">
+        <span th:replace="~{fragments/logo :: logoFull}"></span>
+      </a>
       <p class="split-visual-tagline">Tu proceso de selección, digitalizado</p>
 
       <ul class="split-visual-bullets">
@@ -126,5 +121,6 @@
     document.getElementById("loader").style.display = "flex";
   });
 </script>
+<script th:src="@{/js/i18n.js}"></script>
 </body>
 </html>

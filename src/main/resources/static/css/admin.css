@@ -109,23 +109,3 @@ thead.table-dark th {
   border-color: var(--fm-brand);
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
 }
-
-@media (max-width: 768px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ── Table header row ── */
-.table-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.table-header-row h3 {
-  font-size: var(--fm-size-h3);
-  font-weight: 600;
-  color: var(--fm-text);
-}

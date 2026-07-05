@@ -31,7 +31,7 @@ public String procesarRegistro(
         @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
 
     if (usuario.getRol() == null || usuario.getRol().isEmpty()){
-        usuario.setRol("ROLE_USER");
+        usuario.setRol("ROLE_CANDIDATO");
     }
 
     if (resultado.hasErrors()) {
@@ -102,7 +102,7 @@ public String procesarRegistro(
         }
 
         if (usuario.getRol() == null || usuario.getRol().isEmpty()){
-            usuario.setRol("ROLE_USER");
+            usuario.setRol("ROLE_CANDIDATO");
         }
 
         String respuesta = usuarioService.registrarUsuario(usuario);

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — Flowmatic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +18,9 @@
   <aside class="fm-sidebar">
 
     <div class="fm-sidebar-header">
-      <a th:href="@{/admin}" class="fm-sidebar-logo" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+      <a th:href="@{/}" class="fm-sidebar-logo"
+         title="Ir al inicio"
+         style="display:flex; align-items:center; gap:10px; text-decoration:none;">
         <span th:replace="~{fragments/logo :: logoSidebar}"></span>
         <span style="color:#ffffff; font-size:16px; font-weight:800; letter-spacing:0.04em;">Flowmatic</span>
       </a>
@@ -116,7 +119,7 @@
               <td class="td-muted" th:text="${u.email}"></td>
               <td>
                 <span class="badge"
-                      th:classappend="${u.rol == 'ROLE_ADMINISTRADOR'} ? 'role-admin' :
+                      th:classappend="${u.rol == 'ROLE_ADMIN'} ? 'role-admin' :
                                       (${u.rol == 'ROLE_RRHH'} ? 'role-rrhh' : 'role-candidato')"
                       th:text="${u.rol}">
                 </span>
@@ -140,7 +143,6 @@
                           th:data-username="${u.username}"
                           th:data-apellido="${u.apellido}"
                           th:data-email="${u.email}"
-                          th:data-telefono="${u.telefono}"
                           onclick="llenarModal(this)">
                     Editar
                   </button>
@@ -177,11 +179,6 @@
             <label class="form-label">Email</label>
             <input type="email" class="form-input" id="edit-email" name="email" required>
           </div>
-          <div class="form-group">
-            <label class="form-label">Teléfono</label>
-            <input type="tel" class="form-input" id="edit-telefono" name="telefono"
-                   pattern="[0-9]{7,15}" title="Solo números, entre 7 y 15 dígitos">
-          </div>
           <div class="form-group" style="margin-bottom:0;">
             <label class="form-label">Nueva Contraseña (opcional)</label>
             <input type="password" class="form-input" name="nuevaClave"
@@ -204,8 +201,8 @@
     document.getElementById('edit-username').value = btn.getAttribute('data-username');
     document.getElementById('edit-apellido').value = btn.getAttribute('data-apellido');
     document.getElementById('edit-email').value    = btn.getAttribute('data-email');
-    document.getElementById('edit-telefono').value = btn.getAttribute('data-telefono');
   }
 </script>
+<script th:src="@{/js/i18n.js}"></script>
 </body>
 </html>
