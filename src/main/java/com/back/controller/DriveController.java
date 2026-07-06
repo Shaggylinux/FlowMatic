@@ -53,58 +53,40 @@ public class DriveController {
         if (loginId == null)
             return "redirect:/login";
 
-        Usuario userSession = usuarioRepository.findByUsername(loginId);
-        if (userSession == null) {
-            userSession = usuarioRepository.findByEmail(loginId).orElse(null);
+        Usuario usuarioActual = usuarioRepository.findByUsername(loginId);
+        if (usuarioActual == null) {
+            usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
         }
 
-        String usernameReal = (userSession != null) ? userSession.getUsername() : loginId;
-        String emailReal = (userSession != null) ? userSession.getEmail() : loginId;
-
-        List<Archivos> listaPorUser = filesRepository.buscarArchivosVisiblesPara(usernameReal);
-        List<Archivos> listaPorEmail = filesRepository.buscarArchivosVisiblesPara(emailReal);
+        String usernameReal = (usuarioActual != null) ? usuarioActual.getUsername() : loginId;
+        String emailReal = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
 
         Set<Archivos> conjuntoTodo = new HashSet<>();
-        if (listaPorUser != null)
-            conjuntoTodo.addAll(listaPorUser);
-        if (listaPorEmail != null)
-            conjuntoTodo.addAll(listaPorEmail);
+        List<Archivos> listaPorUser = filesRepository.buscarArchivosVisiblesPara(usernameReal);
+        List<Archivos> listaPorEmail = filesRepository.buscarArchivosVisiblesPara(emailReal);
+        if (listaPorUser != null) conjuntoTodo.addAll(listaPorUser);
+        if (listaPorEmail != null) conjuntoTodo.addAll(listaPorEmail);
         List<Archivos> todos = new ArrayList<>(conjuntoTodo);
 
         String folderActualURL = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
 
-        Usuario tempUser = usuarioRepository.findByUsername(loginId);
-        if (tempUser == null) {
-            tempUser = usuarioRepository.findByEmail(loginId).orElse(null);
-        }
-
-        final Usuario usuarioParaFiltro = tempUser;
-        if (listaPorUser != null)
-            conjuntoTodo.addAll(listaPorUser);
-        if (listaPorEmail != null)
-            conjuntoTodo.addAll(listaPorEmail);
-
+        final Usuario refUsuario = usuarioActual;
         List<Archivos> archivosEnEstaCarpeta = todos.stream()
                 .filter(a -> !a.isEsCarpeta())
                 .filter(a -> {
-                    if (usuarioParaFiltro == null)
-                        return false;
-
-                    if ("ROLE_RRHH".equals(usuarioParaFiltro.getRol())) {
-                        String ubicacionDB = a.getUbicacion().replace("\\", "/");
-                        String folderEnDB = ubicacionDB
+                    if (refUsuario == null) return false;
+                    if ("ROLE_RRHH".equals(refUsuario.getRol())) {
+                        String folderEnDB = a.getUbicacion().replace("\\", "/")
                                 .replace(ROOT_DIR.replace("\\", "/"), "")
                                 .replace(a.getNombre(), "")
-                                .replaceAll("^/+|/+$", "")
-                                .trim();
+                                .replaceAll("^/+|/+$", "").trim();
                         return folderEnDB.equalsIgnoreCase(folderActualURL);
                     }
-
                     return true;
                 })
                 .toList();
 
-        model.addAttribute("usuarioActualObjeto", userSession != null ? userSession : new Usuario());
+        model.addAttribute("usuarioActualObjeto", usuarioActual != null ? usuarioActual : new Usuario());
         model.addAttribute("usuarioActual", loginId);
         model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
         model.addAttribute("archivos", archivosEnEstaCarpeta);
