@@ -3,6 +3,7 @@ package com.back.controller;
 import com.back.repository.UsuarioRepository;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +19,10 @@ import com.back.service.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -32,19 +37,14 @@ public class AdminController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public String panelAdmin(Model model) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
+    public String panelAdmin(Model model, @RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 1);
+        Page<Usuario> usuariosPage = usuarioRepository.findAll(pageable);
         
-        long totalUsuarios = usuarios.size();
-        long rrhhActivos = usuarios.stream().filter(u -> "ROLE_RRHH".equals(u.getRol()) && u.isActivo()).count();
-        long candidatos = usuarios.stream().filter(u -> "ROLE_CANDIDATO".equals(u.getRol())).count();
-        long pendientes = usuarios.stream().filter(u -> "ROLE_CANDIDATO".equals(u.getRol()) && !u.isActivo()).count();
-        
-        model.addAttribute("usuarios", usuarios);
-        model.addAttribute("totalUsuarios", totalUsuarios);
-        model.addAttribute("rrhhActivos", rrhhActivos);
-        model.addAttribute("candidatos", candidatos);
-        model.addAttribute("pendientes", pendientes);
+        model.addAttribute("usuarios", usuariosPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", usuariosPage.getTotalPages());
+        model.addAttribute("totalUsuarios", usuariosPage.getTotalElements()); 
         
         return "admin";
     }
