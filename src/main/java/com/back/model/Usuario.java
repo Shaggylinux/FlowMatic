@@ -42,5 +42,7 @@ public class Usuario {
     @Column(unique = true)
     private String tokenactivacion;
 
+    private String telefono;
+
     private String estado;
 }

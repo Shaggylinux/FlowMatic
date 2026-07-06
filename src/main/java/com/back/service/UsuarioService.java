@@ -35,7 +35,7 @@ public class UsuarioService {
         usuario.setClave(encoder.encode(usuario.getClave()));
 
         if (usuario.getRol() == null || usuario.getRol().isEmpty()) {
-            usuario.setRol("ROLE_CANDITATO");
+            usuario.setRol("ROLE_CANDIDATO");
         }
 
         String token = UUID.randomUUID().toString();

@@ -104,13 +104,6 @@ public class DriveController {
                 })
                 .toList();
 
-        model.addAttribute("usuarioActualObjeto", usuarioParaFiltro != null ? usuarioParaFiltro : new Usuario());
-        model.addAttribute("usuarioActual", loginId);
-        model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
-        model.addAttribute("archivos", archivosEnEstaCarpeta);
-        model.addAttribute("folderActual", folderActualURL);
-        model.addAttribute("listaCandidatos", usuarioRepository.findByRol("ROLE_CANDIDATO"));
-
         model.addAttribute("usuarioActualObjeto", userSession != null ? userSession : new Usuario());
         model.addAttribute("usuarioActual", loginId);
         model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
