@@ -153,20 +153,52 @@
         </table>
       </div>
 
-      <nav aria-label="Page navigation" class="mt-3">
-        <ul class="pagination justify-content-center">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mt-3 pf-bar">
+
+        <div class="d-flex align-items-center gap-2">
+          <select class="pf-select" data-base="/admin" onchange="pfCambiarFilas(this)">
+            <option value="10" th:selected="${pageSize == 10}">10</option>
+            <option value="20" th:selected="${pageSize == 20}">20</option>
+            <option value="50" th:selected="${pageSize == 50}">50</option>
+            <option value="100" th:selected="${pageSize == 100}">100</option>
+          </select>
+          <span class="text-muted small" th:if="${totalItems > 0}"
+                th:text="'Mostrando ' + ${startItem} + '–' + ${endItem} + ' de ' + ${totalItems} + ' usuarios'"></span>
+        </div>
+
+        <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+          <ul class="pagination mb-0">
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                <a class="page-link" th:href="@{/admin(page=${currentPage - 1})}">Anterior</a>
+              <a class="page-link" th:href="@{/admin(page=${currentPage - 1}, size=${pageSize})}"
+                 aria-label="Anterior">&lsaquo;</a>
             </li>
-            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
-                th:classappend="${i == currentPage} ? 'active'">
-                <a class="page-link" th:href="@{/admin(page=${i})}" th:text="${i + 1}">1</a>
-            </li>
+            <th:block th:each="item : ${pageItems}">
+              <li th:if="${item.ellipsis}" class="page-item disabled">
+                <span class="page-link">&hellip;</span>
+              </li>
+              <li th:unless="${item.ellipsis}"
+                  th:classappend="${item.number == currentPage} ? 'active'" class="page-item">
+                <a class="page-link" th:href="@{/admin(page=${item.number}, size=${pageSize})}"
+                   th:text="${item.number + 1}"></a>
+              </li>
+            </th:block>
             <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/admin(page=${currentPage + 1})}">Siguiente</a>
+              <a class="page-link" th:href="@{/admin(page=${currentPage + 1}, size=${pageSize})}"
+                 aria-label="Siguiente">&rsaquo;</a>
             </li>
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+
+        <div class="d-flex align-items-center gap-2" th:if="${totalPages > 1}">
+          <span class="text-muted small">Ir a p&aacute;gina</span>
+          <input type="number" class="pf-goto-input" min="1" th:max="${totalPages}"
+                 th:attr="data-max=${totalPages},data-size=${pageSize},data-base=/admin"
+                 value="1"
+                 onkeydown="if(event.key==='Enter')pfIrAPagina(this)"
+                 onblur="pfIrAPagina(this)">
+        </div>
+
+      </div>
 
     </div>
   </div>
@@ -217,6 +249,21 @@
     document.getElementById('edit-apellido').value = btn.getAttribute('data-apellido');
     document.getElementById('edit-email').value    = btn.getAttribute('data-email');
   }
+</script>
+<script>
+function pfCambiarFilas(select) {
+  var base = select.getAttribute('data-base');
+  if (base) window.location.href = base + '?page=0&size=' + select.value;
+}
+function pfIrAPagina(input) {
+  var p = parseInt(input.value);
+  var max = parseInt(input.getAttribute('data-max'));
+  if (!isNaN(p) && p >= 1 && p <= max) {
+    var base = input.getAttribute('data-base');
+    var size = input.getAttribute('data-size');
+    window.location.href = base + '?page=' + (p - 1) + '&size=' + size;
+  }
+}
 </script>
 <script th:src="@{/js/i18n.js}"></script>
 </body>
