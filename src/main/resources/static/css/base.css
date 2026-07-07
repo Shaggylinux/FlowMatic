@@ -311,6 +311,7 @@ body {
 .stat-card-info    { border-left-color: var(--fm-info); }
 .stat-card-warning { border-left-color: var(--fm-warning); }
 .stat-card-success { border-left-color: var(--fm-success); }
+.stat-card-danger  { border-left-color: var(--fm-danger); }
 
 .stat-card-number {
   font-size: 30px;

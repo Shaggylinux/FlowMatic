@@ -11,6 +11,7 @@ import java.util.List;
 import com.back.model.Usuario;
 import jakarta.servlet.http.HttpServletResponse;
 
+
 @Service
 public class ExcelService {
     public void exportarUsuarios(List<Usuario> usuarios, HttpServletResponse response) throws IOException {
@@ -19,7 +20,7 @@ public class ExcelService {
         Sheet sheet = workbook.createSheet("Usuarios");
 
         Row row = sheet.createRow(0);
-        String[] columnas = {"ID", "Usuario", "Apellido", "Email", "Rol", "Estado"};
+        String[] columnas = {"ID", "Username", "Apellido", "Email", "Rol", "Activo", "Etapa"};
         
         for (int i = 0; i < columnas.length; i++) {
             Cell cell = row.createCell(i);
@@ -34,7 +35,13 @@ public class ExcelService {
             dataRow.createCell(2).setCellValue(u.getApellido());
             dataRow.createCell(3).setCellValue(u.getEmail());
             dataRow.createCell(4).setCellValue(u.getRol());
-            dataRow.createCell(5).setCellValue(u.isActivo() ? "Activo" : "Pendiente");
+            dataRow.createCell(5).setCellValue(u.isActivo() ? "T" : "F");
+            
+            if(u.getEstado() == null){
+                dataRow.createCell(6).setCellValue("Registrado");
+            } else {
+                dataRow.createCell(6).setCellValue(u.getEstado());
+            }
         }
 
         workbook.write(response.getOutputStream());
