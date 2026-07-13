@@ -70,6 +70,56 @@
           <span th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}" class="error-msg"></span>
         </div>
 
+        <h3 style="font-size:16px; font-weight:600; color:var(--fm-text); margin:20px 0 12px;">Información profesional</h3>
+
+        <div class="form-group">
+          <label class="form-label">Cargo actual / Puesto de interés</label>
+          <input class="form-input" type="text" th:field="*{cargo}" maxlength="100"
+                 placeholder="Ej: Desarrollador Java Senior"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Ciudad</label>
+          <input class="form-input" type="text" th:field="*{ciudad}" maxlength="100"
+                 placeholder="Ej: Lima, Perú"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">LinkedIn</label>
+          <input class="form-input" type="url" th:field="*{linkedin}" maxlength="255"
+                 placeholder="https://linkedin.com/in/tu-perfil"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tecnologías (separadas por coma)</label>
+          <input class="form-input" type="text" th:field="*{tecnologias}" maxlength="500"
+                 placeholder="Ej: Java, Spring Boot, PostgreSQL, Docker"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Idiomas (separados por coma)</label>
+          <input class="form-input" type="text" th:field="*{idiomas}" maxlength="255"
+                 placeholder="Ej: Español (Nativo), Inglés (B1)"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Años de experiencia</label>
+          <input class="form-input" type="number" th:field="*{experiencia}" min="0" max="50"
+                 placeholder="Ej: 5"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Disponibilidad</label>
+          <select class="form-input" th:field="*{disponibilidad}">
+            <option value="">Seleccionar...</option>
+            <option value="Inmediata">Inmediata</option>
+            <option value="2 semanas">2 semanas</option>
+            <option value="1 mes">1 mes</option>
+            <option value="3 meses">3 meses</option>
+            <option value="Negociable">Negociable</option>
+          </select>
+        </div>
+
         <button type="submit" class="btn btn-primary btn-full">Registrarme</button>
       </form>
       <p style="text-align:center; margin-top:16px; font-size:13px; color:var(--fm-text-muted);">

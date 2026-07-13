@@ -23,9 +23,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/forgot-password",
-                            "/reset-password", "/js/**", "/home", "/videos/**", "/").permitAll()
+                            "/reset-password", "/js/**", "/home", "/videos/**", "/", "/api/seed").permitAll()
                         .requestMatchers("/candidato/**").hasRole("CANDIDATO")
                         .requestMatchers("/calendario/**").hasAnyRole("RRHH", "CANDIDATO")
+                        .requestMatchers("/gestion-candidatos/**").hasAnyRole("RRHH", "ADMINISTRADOR")
                         .requestMatchers("/rrhh/**", "/subir-archivo", "/crear-carpeta", "/eliminar", "/descargar", "/drive/ver-archivo/**")
                         .hasAnyRole("RRHH", "CANDIDATO")
                         .anyRequest().authenticated()).formLogin(form -> form
