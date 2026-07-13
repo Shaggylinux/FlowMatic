@@ -1,58 +1,10 @@
 /* ================================================
    ACTIVACIÓN — estilos específicos de la página
-   El layout split y video vienen de base.css.
+   El layout split y botones vienen de base.css.
    ================================================ */
 
-/* Botones de la pantalla de activación */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
-  border-radius: var(--fm-radius-md);
-  font-family: var(--fm-font);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--fm-brand);
-  background: var(--fm-brand);
-  color: #ffffff;
-  text-decoration: none;
-  transition: background var(--fm-transition);
-  margin-right: 8px;
-}
-
-.btn-primary:hover {
-  background: var(--fm-brand-hover);
-  border-color: var(--fm-brand-hover);
-}
-
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
-  border-radius: var(--fm-radius-md);
-  font-family: var(--fm-font);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--fm-border);
-  background: var(--fm-surface);
-  color: var(--fm-text);
-  text-decoration: none;
-  transition: background var(--fm-transition);
-}
-
-.btn-outline:hover {
-  background: var(--fm-bg);
-}
-
-/* Texto de la pantalla de activación */
 .split-form-box p {
-  color: var(--fm-text-muted);
-  font-size: var(--fm-size-body);
+  font-size: 14px;
   line-height: 1.6;
-  margin-top: 12px;
-  margin-bottom: 20px;
+  color: var(--fm-text-muted);
 }

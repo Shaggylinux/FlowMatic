@@ -2,6 +2,7 @@ package com.back.service;
 
 import com.back.model.Usuario;
 import com.back.repository.UsuarioRepository;
+import com.back.service.FilesServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class UsuarioService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private FilesServices filesServices;
+
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public String registrarUsuario(Usuario usuario) {
@@ -35,7 +39,7 @@ public class UsuarioService {
         usuario.setClave(encoder.encode(usuario.getClave()));
 
         if (usuario.getRol() == null || usuario.getRol().isEmpty()) {
-            usuario.setRol("ROLE_USER");
+            usuario.setRol("ROLE_CANDIDATO");
         }
 
         String token = UUID.randomUUID().toString();
@@ -44,6 +48,10 @@ public class UsuarioService {
 
         usuarioRepository.save(usuario);
         logger.info("Usuario guardado en BD: {}", usuario.getEmail());
+
+        if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
+            filesServices.crearCarpetaCandidato(usuario.getEmail());
+        }
 
         logger.info("Intentando enviar email de verificación a: {}", usuario.getEmail());
 

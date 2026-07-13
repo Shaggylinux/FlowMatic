@@ -8,7 +8,8 @@
 
 .admin-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .admin-main {
@@ -22,6 +23,7 @@
 .admin-content {
   flex: 1;
   padding: 28px 32px;
+  overflow-y: auto;
 }
 
 /* Fila de formulario multcolumna */
@@ -110,22 +112,95 @@ thead.table-dark th {
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
 }
 
-@media (max-width: 768px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
+/* ── Paginación Flowmatic ─────────────────── */
+/* Barra contenedora */
+.pf-bar {
+  font-size: var(--fm-size-small);
 }
 
-/* ── Table header row ── */
-.table-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.table-header-row h3 {
-  font-size: var(--fm-size-h3);
-  font-weight: 600;
+/* Selector de filas por página */
+.pf-select {
+  padding: 5px 28px 5px 10px;
+  border: 1px solid var(--fm-border);
+  border-radius: var(--fm-radius-md);
+  font-family: var(--fm-font);
+  font-size: var(--fm-size-small);
   color: var(--fm-text);
+  background: var(--fm-surface);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  transition: border-color var(--fm-transition);
+  min-width: 68px;
+}
+.pf-select:hover { border-color: var(--fm-brand); }
+.pf-select:focus {
+  outline: none;
+  border-color: var(--fm-brand);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+}
+
+/* Ir a página input */
+.pf-goto-input {
+  width: 52px;
+  padding: 5px 6px;
+  border: 1px solid var(--fm-border);
+  border-radius: var(--fm-radius-md);
+  font-family: var(--fm-font);
+  font-size: var(--fm-size-small);
+  color: var(--fm-text);
+  background: var(--fm-surface);
+  text-align: center;
+  transition: border-color var(--fm-transition);
+  -moz-appearance: textfield;
+}
+.pf-goto-input::-webkit-inner-spin-button,
+.pf-goto-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.pf-goto-input:hover { border-color: var(--fm-brand); }
+.pf-goto-input:focus {
+  outline: none;
+  border-color: var(--fm-brand);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+}
+
+/* Pills de página — Bootstrap override */
+.page-item .page-link {
+  border-radius: var(--fm-radius-full) !important;
+  margin: 0 2px;
+  min-width: 36px;
+  text-align: center;
+  font-size: var(--fm-size-small);
+  font-weight: 500;
+  color: var(--fm-text);
+  border-color: var(--fm-border);
+  padding: 6px 10px;
+  transition: all var(--fm-transition);
+}
+.page-item .page-link:hover {
+  background: var(--fm-brand-light);
+  border-color: var(--fm-brand);
+  color: var(--fm-brand);
+}
+.page-item.active .page-link {
+  background: var(--fm-brand) !important;
+  border-color: var(--fm-brand) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.18);
+}
+.page-item.disabled .page-link {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .pf-bar { gap: 0.75rem !important; }
+  .pf-bar .pagination { flex-wrap: wrap; justify-content: center; }
 }

@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Activación de cuenta — Flowmatic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +18,9 @@
     <div class="split-form-box" style="text-align:center;">
 
       <div style="display:flex; justify-content:center; margin-bottom:24px;">
-        <span th:replace="~{fragments/logo :: logoFull}"></span>
+        <a th:href="@{/}" title="Ir al inicio" class="logo-link">
+          <span th:replace="~{fragments/logo :: logoFull}"></span>
+        </a>
       </div>
 
       <div th:if="${activacionExitosa}">
@@ -58,12 +61,15 @@
     <div class="split-visual-decor" style="top:33%; left:28%; width:80px; height:80px; border-width:1px;"></div>
 
     <div class="split-visual-content">
-      <span th:replace="~{fragments/logo :: logoFull}"></span>
+      <a th:href="@{/}" title="Ir al inicio" class="logo-link">
+        <span th:replace="~{fragments/logo :: logoFull}"></span>
+      </a>
       <p class="split-visual-tagline">Flowmatic — Gestión de Talento</p>
     </div>
   </div>
 
 </div>
 
+<script th:src="@{/js/i18n.js}"></script>
 </body>
 </html>

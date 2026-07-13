@@ -31,7 +31,7 @@ public class Conectar {
             algo.setString(3, ema);
             algo.setString(4, tel);
             algo.setString(5, g.GenerarClave(cla));
-            algo.setString(6, "ROLE_ADMINISTRADOR");
+            algo.setString(6, "ROLE_ADMIN");
             algo.setBoolean(7, true);
             algo.executeUpdate();
         } catch (SQLException e){

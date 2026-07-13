@@ -1,11 +1,10 @@
 /* ================================================
    LOGIN — estilos específicos de la página
    El layout split, botones, inputs y loader
-   vienen de base.css. Solo override aquí si
-   esta página necesita algo diferente.
+   vienen de base.css.
    ================================================ */
 
-/* Mensaje de error de credenciales */
+/* Mensaje de error/éxito (compatibles con .alert) */
 .error {
   background: var(--fm-danger-bg);
   color: var(--fm-danger-text);
@@ -17,7 +16,6 @@
   margin-bottom: 16px;
 }
 
-/* Mensaje de sesión cerrada */
 .success {
   background: var(--fm-success-bg);
   color: var(--fm-success-text);
@@ -29,14 +27,12 @@
   margin-bottom: 16px;
 }
 
-/* Link "¿Olvidaste tu contraseña?" alineado a la derecha */
 .forgot-link-row {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 4px;
 }
 
-/* Divisor "o" entre login y registro */
 .auth-divider {
   display: flex;
   align-items: center;
