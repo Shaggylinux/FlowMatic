@@ -8,7 +8,8 @@
 
 .admin-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .admin-main {
@@ -22,6 +23,7 @@
 .admin-content {
   flex: 1;
   padding: 28px 32px;
+  overflow-y: auto;
 }
 
 /* Fila de formulario multcolumna */

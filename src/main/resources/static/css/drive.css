@@ -8,7 +8,8 @@
 
 .drive-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .drive-main {
@@ -23,6 +24,7 @@
   flex: 1;
   padding: 28px 32px;
   min-width: 0;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
