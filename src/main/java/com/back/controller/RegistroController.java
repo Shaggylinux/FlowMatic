@@ -3,6 +3,9 @@ package com.back.controller;
 import com.back.model.Usuario;
 import com.back.service.UsuarioService;
 import jakarta.validation.Valid;
+
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,8 +26,8 @@ public class RegistroController {
         return "registro-candidato";
     }
 
-@PostMapping
-public String procesarRegistro(
+    @PostMapping
+    public String procesarRegistro(
         @Valid @ModelAttribute("usuario") Usuario usuario,
         BindingResult resultado,
         Model model,
@@ -60,18 +63,32 @@ public String procesarRegistro(
     }
 
     @GetMapping("/activar")
-    public String activarCuenta(
-            @RequestParam("token") String token,
-            Model model
-    ){
-        boolean activado = usuarioService.activarCuenta(token);
+    public String activarCuenta(@RequestParam("token") String token, Model model) {
+        Usuario usuario = usuarioService.buscarPorToken(token);
 
-        if (activado){
-            model.addAttribute("activacionExitosa", true);
-        } else {
+        if (usuario == null) {
             model.addAttribute("tokenInvalido", true);
+            return "activacion";
         }
+
+        long segundos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).getSeconds();
+
+        if (segundos > 15) {
+            model.addAttribute("enlaceExpirado", true);
+            model.addAttribute("token", token);
+            return "caduco";
+        }
+
+        boolean activado = usuarioService.activarCuenta(token);
+        model.addAttribute("activacionExitosa", activado);
         return "activacion";
+    }
+
+    @PostMapping("/reenviar-activacion")
+    public String reenviarActivacion(@RequestParam("token") String token, Model model) {
+        usuarioService.regenerarYReenviarToken(token);
+        model.addAttribute("correoReenviado", true);
+        return "home";
     }
 
     @PostMapping("/verificar")
