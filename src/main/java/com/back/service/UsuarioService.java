@@ -76,7 +76,7 @@ public class UsuarioService {
         if (usuario != null) {
             String nuevoToken = UUID.randomUUID().toString();
             usuario.setTokenactivacion(nuevoToken);
-            usuario.setFechaCreacionToken(LocalDateTime.now());
+            usuario.setFechaCreacionToken(LocalDateTime.now()); 
             usuarioRepository.save(usuario);
             
             emailService.enviarEmailVerificacion(usuario.getEmail(), usuario.getUsername(), nuevoToken);
