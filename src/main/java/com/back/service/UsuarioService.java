@@ -1,8 +1,14 @@
 package com.back.service;
 
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+=======
+import com.back.model.Usuario;
+import com.back.repository.UsuarioRepository;
+import com.back.service.FilesServices;
+>>>>>>> 92fc563e3fa8f82021b214c91567440d0c216874
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +28,9 @@ public class UsuarioService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private FilesServices filesServices;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -49,6 +58,10 @@ public class UsuarioService {
 
         usuarioRepository.save(usuario);
         logger.info("Usuario guardado en BD: {}", usuario.getEmail());
+
+        if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
+            filesServices.crearCarpetaCandidato(usuario.getEmail());
+        }
 
         logger.info("Intentando enviar email de verificación a: {}", usuario.getEmail());
 

@@ -39,4 +39,6 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
                               @Param("candidatoId") Long candidatoId,
                               @Param("estado") String estado,
                               @Param("rrhhId") Long rrhhId);
+
+    List<Evento> findByCandidatoIdOrderByFechaDescHoraDesc(Long candidatoId);
 }

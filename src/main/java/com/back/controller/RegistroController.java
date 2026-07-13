@@ -41,6 +41,8 @@ public class RegistroController {
         return "registro-candidato";
     }
 
+    usuario.setUltimaActualizacion(java.time.LocalDateTime.now());
+
     String respuesta = usuarioService.registrarUsuario(usuario);
 
     if ("DUPLICADO".equals(respuesta)) {

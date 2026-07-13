@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table(name = "usuarios")
@@ -45,5 +47,26 @@ public class Usuario {
 
     private String estado;
 
-    private LocalDateTime fechaCreacionToken;
+    private String cargo;
+
+    private String ciudad;
+
+    private String linkedin;
+
+    private String tecnologias;
+
+    private String idiomas;
+
+    private Integer experiencia;
+
+    private String disponibilidad;
+
+    @Column(name = "proceso_actual")
+    private String procesoActual;
+
+    @Column(name = "foto_url")
+    private String fotoUrl;
+
+    @Column(name = "ultima_actualizacion")
+    private LocalDateTime ultimaActualizacion;
 }
