@@ -22,7 +22,7 @@ public class LoginController {
         }
 
         if (roles.contains("ROLE_ADMINISTRADOR")) {
-            return "redirect:/admin";
+            return "redirect:/admin/dashboard";
         }
         return "redirect:/";
     }

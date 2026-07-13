@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+
     Optional<Usuario> findByEmail(String email);
     Usuario findByUsername(String username);
     Optional<Usuario> findByTokenactivacion(String token);
@@ -35,12 +36,18 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
            "AND (:experienciaMin IS NULL OR experiencia >= :experienciaMin) " +
            "AND (cast(:ciudad as text) IS NULL OR LOWER(ciudad) LIKE LOWER(cast(:ciudad as text)))",
            nativeQuery = true)
-    Page<Usuario> findCandidatosFiltrados(@Param("search") String search,
-                                          @Param("cargo") String cargo,
-                                          @Param("estado") String estado,
-                                          @Param("experienciaMin") Integer experienciaMin,
-                                          @Param("ciudad") String ciudad,
-                                          Pageable pageable);
+    Page<Usuario> findCandidatosFiltrados(
+            @Param("search") String search,
+            @Param("cargo") String cargo,
+            @Param("estado") String estado,
+            @Param("experienciaMin") Integer experienciaMin,
+            @Param("ciudad") String ciudad,
+            Pageable pageable);
+
+    long countByRol(String rol);
+    long countByActivoTrue();
+    long countByActivoFalse();
+    List<Usuario> findTop10ByOrderByIdDesc();
 
     long countByRolAndActivo(String rol, boolean activo);
 
