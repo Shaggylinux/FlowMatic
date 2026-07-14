@@ -1,9 +1,5 @@
 package com.back.controller;
 
-import com.back.repository.UsuarioRepository;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,9 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import com.back.model.Usuario;
+import com.back.repository.UsuarioRepository;
 import com.back.service.ExcelService;
 import com.back.service.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -35,6 +37,69 @@ public class AdminController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private ExcelService excelService;
+
+    @GetMapping("/dashboard")
+    public String dashboard(Model model) {
+        long totalUsuarios = usuarioRepository.count();
+        long totalActivos = usuarioRepository.countByActivoTrue();
+        long totalPendientes = usuarioRepository.countByActivoFalse();
+        long totalRRHH = usuarioRepository.countByRol("ROLE_RRHH");
+        long totalCandidatos = usuarioRepository.countByRol("ROLE_CANDIDATO");
+        long totalAdmins = usuarioRepository.countByRol("ROLE_ADMIN");
+
+        List<Usuario> ultimosUsuarios = usuarioRepository.findTop10ByOrderByIdDesc();
+        List<Map<String, Object>> actividadReciente = buildActividadReciente(ultimosUsuarios);
+        List<Map<String, Object>> ultimosUsuariosData = buildUltimosUsuariosData(ultimosUsuarios);
+
+        model.addAttribute("totalUsuarios", totalUsuarios);
+        model.addAttribute("totalActivos", totalActivos);
+        model.addAttribute("totalPendientes", totalPendientes);
+        model.addAttribute("totalRRHH", totalRRHH);
+        model.addAttribute("totalCandidatos", totalCandidatos);
+        model.addAttribute("totalAdmins", totalAdmins);
+        model.addAttribute("actividadReciente", actividadReciente);
+        model.addAttribute("ultimosUsuarios", ultimosUsuariosData);
+        model.addAttribute("viewMode", "dashboard");
+
+        return "admin";
+    }
+
+    private List<Map<String, Object>> buildActividadReciente(List<Usuario> usuarios) {
+        List<Map<String, Object>> actividades = new ArrayList<>();
+        String[] colores = {"#0D9488", "#0EA5E9", "#8B5CF6", "#F59E0B", "#EF4444"};
+        int idx = 0;
+        for (Usuario u : usuarios) {
+            Map<String, Object> act = new HashMap<>();
+            act.put("titulo", "Nuevo usuario registrado");
+            act.put("usuario", u.getUsername() + " " + u.getApellido());
+            act.put("fecha", "Recién registrado");
+            act.put("tipo", u.getRol().replace("ROLE_", ""));
+            act.put("iniciales", (u.getUsername().charAt(0) + "" + u.getApellido().charAt(0)).toUpperCase());
+            act.put("colorAvatar", colores[idx % colores.length]);
+            actividades.add(act);
+            idx++;
+        }
+        return actividades;
+    }
+
+    private List<Map<String, Object>> buildUltimosUsuariosData(List<Usuario> usuarios) {
+        List<Map<String, Object>> lista = new ArrayList<>();
+        for (Usuario u : usuarios) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", u.getId());
+            map.put("username", u.getUsername());
+            map.put("apellido", u.getApellido());
+            map.put("email", u.getEmail());
+            map.put("rol", u.getRol());
+            map.put("activo", u.isActivo());
+            map.put("fechaRegistro", "Recién");
+            lista.add(map);
+        }
+        return lista;
+    }
+
     @GetMapping
     public String panelAdmin(Model model,
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -47,6 +112,11 @@ public class AdminController {
         int startItem = totalItems == 0 ? 0 : page * size + 1;
         int endItem = (int) Math.min((long) page * size + usuariosPage.getNumberOfElements(), totalItems);
 
+        long totalUsuarios = usuarioRepository.count();
+        long totalRRHH = usuarioRepository.countByRol("ROLE_RRHH");
+        long totalCandidatos = usuarioRepository.countByRol("ROLE_CANDIDATO");
+        long totalAdmins = usuarioRepository.countByRol("ROLE_ADMIN");
+
         model.addAttribute("usuarios", usuariosPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -55,6 +125,11 @@ public class AdminController {
         model.addAttribute("startItem", startItem);
         model.addAttribute("endItem", endItem);
         model.addAttribute("pageItems", getPageItems(page, totalPages));
+        model.addAttribute("totalUsuarios", totalUsuarios);
+        model.addAttribute("totalRRHH", totalRRHH);
+        model.addAttribute("totalCandidatos", totalCandidatos);
+        model.addAttribute("totalAdmins", totalAdmins);
+        model.addAttribute("viewMode", "usuarios");
 
         return "admin";
     }
@@ -122,9 +197,6 @@ public class AdminController {
         }
     return "redirect:/admin?editado";
     }
-
-    @Autowired
-    private ExcelService excelService;
 
     @GetMapping("/exportar")
     public void exportarAExcel(HttpServletResponse response) throws IOException {
