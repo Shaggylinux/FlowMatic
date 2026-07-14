@@ -1,0 +1,11 @@
+<div style="text-align: center; padding: 50px;">
+    <p>Lo sentimos, el tiempo de vida del enlace de activacion ha expirado.</p>
+    
+    <form th:action="@{/registro/candidato/reenviar-activacion}" method="POST">
+        <input type="hidden" name="token" th:value="${token}" />
+        
+        <button type="submit" style="padding: 10px 20px; background-color: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Click aquí para re-enviar enlace de activación
+        </button>
+    </form>
+</div>

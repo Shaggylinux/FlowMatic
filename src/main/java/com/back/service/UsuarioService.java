@@ -1,15 +1,22 @@
 package com.back.service;
 
+<<<<<<< HEAD
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+=======
 import com.back.model.Usuario;
 import com.back.repository.UsuarioRepository;
 import com.back.service.FilesServices;
+>>>>>>> 92fc563e3fa8f82021b214c91567440d0c216874
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import com.back.model.Usuario;
+import com.back.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
@@ -31,6 +38,7 @@ public class UsuarioService {
 
         logger.info("Iniciando registro de usuario: {}", usuario.getEmail());
 
+
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             logger.warn("Correo duplicado: {}", usuario.getEmail());
             return "DUPLICADO";
@@ -45,6 +53,8 @@ public class UsuarioService {
         String token = UUID.randomUUID().toString();
         usuario.setTokenactivacion(token);
         usuario.setActivo(false);
+        usuario.setFechaCreacionToken(LocalDateTime.now());
+        usuarioRepository.save(usuario);
 
         usuarioRepository.save(usuario);
         logger.info("Usuario guardado en BD: {}", usuario.getEmail());
@@ -67,6 +77,23 @@ public class UsuarioService {
         }
 
         return "EXITOSO";
+    }
+
+    public Usuario buscarPorToken(String token) {
+        return usuarioRepository.findByTokenactivacion(token).orElse(null);
+    }
+
+    public void regenerarYReenviarToken(String tokenViejo) {
+        Usuario usuario = usuarioRepository.findByTokenactivacion(tokenViejo).orElse(null);
+        
+        if (usuario != null) {
+            String nuevoToken = UUID.randomUUID().toString();
+            usuario.setTokenactivacion(nuevoToken);
+            usuario.setFechaCreacionToken(LocalDateTime.now()); 
+            usuarioRepository.save(usuario);
+            
+            emailService.enviarEmailVerificacion(usuario.getEmail(), usuario.getUsername(), nuevoToken);
+        }
     }
 
     public boolean activarCuenta(String token) {

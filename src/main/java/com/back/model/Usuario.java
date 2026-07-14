@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import java.time.LocalDateTime;
 
 import java.time.LocalDateTime;
 
@@ -43,8 +44,6 @@ public class Usuario {
 
     @Column(unique = true)
     private String tokenactivacion;
-
-    private String telefono;
 
     private String estado;
 
