@@ -1,12 +1,4 @@
 <div th:fragment="table">
-  <p th:if="${usuarios == null}" style="color: red; font-weight: bold">
-    ERROR: La variable usuarios no llegó desde el controlador
-  </p>
-
-  <p
-    th:if="${usuarios != null}"
-    th:text="'Usuarios recibidos: ' + ${#lists.size(usuarios)}"
-  ></p>
   <div class="table-container">
     <table class="data-table">
       <thead>

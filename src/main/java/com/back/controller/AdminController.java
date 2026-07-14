@@ -68,7 +68,7 @@ public class AdminController {
 
     private List<Map<String, Object>> buildActividadReciente(List<Usuario> usuarios) {
         List<Map<String, Object>> actividades = new ArrayList<>();
-        String[] colores = {"#0D9488", "#0EA5E9", "#8B5CF6", "#F59E0B", "#EF4444"};
+        String[] colores = { "#0D9488", "#0EA5E9", "#8B5CF6", "#F59E0B", "#EF4444" };
         int idx = 0;
         for (Usuario u : usuarios) {
             Map<String, Object> act = new HashMap<>();
@@ -137,29 +137,36 @@ public class AdminController {
     private List<PageItem> getPageItems(int current, int total) {
         List<PageItem> items = new ArrayList<>();
         if (total <= 5) {
-            for (int i = 0; i < total; i++) items.add(new PageItem(i, false));
+            for (int i = 0; i < total; i++)
+                items.add(new PageItem(i, false));
             return items;
         }
         items.add(new PageItem(0, false));
-        if (current > 2) items.add(new PageItem(-1, true));
+        if (current > 2)
+            items.add(new PageItem(-1, true));
         int start = Math.max(1, current - 1);
         int end = Math.min(total - 2, current + 1);
-        if (current <= 2) end = Math.min(3, total - 2);
-        if (current >= total - 3) start = Math.max(total - 4, 1);
-        for (int i = start; i <= end; i++) items.add(new PageItem(i, false));
-        if (current < total - 3) items.add(new PageItem(-1, true));
+        if (current <= 2)
+            end = Math.min(3, total - 2);
+        if (current >= total - 3)
+            start = Math.max(total - 4, 1);
+        for (int i = start; i <= end; i++)
+            items.add(new PageItem(i, false));
+        if (current < total - 3)
+            items.add(new PageItem(-1, true));
         items.add(new PageItem(total - 1, false));
         return items;
     }
 
-    public record PageItem(int number, boolean ellipsis) {}
+    public record PageItem(int number, boolean ellipsis) {
+    }
 
     @PostMapping("/crear-rrhh")
     public String crearRRHH(@ModelAttribute Usuario nuevoRRHH) {
         nuevoRRHH.setRol("ROLE_RRHH");
-        
+
         String respuesta = usuarioService.registrarUsuario(nuevoRRHH);
-        
+
         if ("DUPLICADO".equals(respuesta)) {
             return "redirect:/admin?error=duplicado";
         }
@@ -173,29 +180,29 @@ public class AdminController {
     }
 
     @PostMapping("/editar")
-    public String editarUsuario(@ModelAttribute Usuario datosEditados, 
-                                @RequestParam(value = "nuevaClave", required = false) String nuevaClave) {
-        
+    public String editarUsuario(@ModelAttribute Usuario datosEditados,
+            @RequestParam(value = "nuevaClave", required = false) String nuevaClave) {
+
         Usuario usuarioBD = usuarioRepository.findById(datosEditados.getId()).orElse(null);
-        
+
         if (usuarioBD != null) {
             usuarioBD.setUsername(datosEditados.getUsername());
             usuarioBD.setApellido(datosEditados.getApellido());
             usuarioBD.setEmail(datosEditados.getEmail());
-            
+
             if (nuevaClave != null && !nuevaClave.trim().isEmpty()) {
                 System.out.println("Detectada nueva clave para: " + usuarioBD.getUsername());
-                
+
                 String claveEncriptada = passwordEncoder.encode(nuevaClave);
                 usuarioBD.setClave(claveEncriptada);
-                
+
                 System.out.println("Clave encriptada y seteada correctamente.");
             } else {
                 System.out.println("No se envió nueva clave, se mantiene la anterior.");
             }
-        usuarioRepository.save(usuarioBD);
+            usuarioRepository.save(usuarioBD);
         }
-    return "redirect:/admin?editado";
+        return "redirect:/admin?editado";
     }
 
     @GetMapping("/exportar")

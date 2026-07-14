@@ -4,7 +4,7 @@
     <aside class="fm-sidebar" th:fragment="sidebarAdmin">
       <div class="fm-sidebar-header">
         <a
-          th:href="@{/}"
+          th:href="@{/admin/dashboard}"
           class="fm-sidebar-logo"
           title="Ir al inicio"
           style="
@@ -28,7 +28,11 @@
       </div>
 
       <nav style="padding-top: 8px">
-        <a th:href="@{/admin}" class="fm-nav-link active">
+        <a
+          th:href="@{admin/dashboard}"
+          class="fm-nav-link"
+          th:classappend="${viewMode == 'dashboard'} ? ' active' : ''"
+        >
           <svg
             width="16"
             height="16"
@@ -46,7 +50,11 @@
           </svg>
           Dashboard
         </a>
-        <a href="#" class="fm-nav-link">
+        <a
+          th:href="@{/admin}"
+          class="fm-nav-link"
+          th:classappend="${viewMode == 'usuarios'} ? ' active' : ''"
+        >
           <svg
             width="16"
             height="16"
