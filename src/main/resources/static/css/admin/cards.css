@@ -1,0 +1,106 @@
+.admin-cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+    margin-bottom:32px;
+}
+
+.admin-card{
+    background:#FFFFFF;
+    border:1px solid #E2E8F0;
+    border-radius:18px;
+    padding:24px;
+    transition:all .25s ease;
+}
+
+.admin-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 30px rgba(15,140,130,.12);
+}
+
+.admin-card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.admin-card-icon{
+    width:52px;
+    height:52px;
+
+    border-radius:14px;
+
+    background:#E8FAF7;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:22px;
+}
+
+
+.admin-card-badge{
+    background:#DCFCE7;
+    color:#16A34A;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:13px;
+
+    font-weight:600;
+}
+
+
+.admin-card-number{
+    margin:0;
+
+    font-size:38px;
+
+    font-weight:700;
+
+    color:#0F172A;
+}
+
+.admin-card-title{
+    margin-top:10px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    color:#334155;
+}
+
+.admin-card-description{
+    margin-top:6px;
+
+    color:#64748B;
+
+    font-size:14px;
+
+    line-height:1.5;
+}
+
+@media(max-width:1100px){
+
+    .admin-cards{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:700px){
+
+    .admin-cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

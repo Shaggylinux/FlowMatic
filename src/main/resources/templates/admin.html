@@ -1,437 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin — Flowmatic</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" th:href="@{/css/tokens.css}">
-  <link rel="stylesheet" th:href="@{/css/base.css}">
-  <link rel="stylesheet" th:href="@{/css/admin.css}">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Flowmatic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/tokens.css}" />
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <!-- <link rel="stylesheet" th:href="@{/css/admin/admin.css}" /> -->
+    <link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/cards.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/toolbar.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/table.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/modal.css}" />
 
-<body class="admin-body">
-<div class="admin-layout">
+    <link rel="stylesheet" th:href="@{/css/admin/modal.css}" />
 
-  <aside class="fm-sidebar">
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    ></script>
 
-    <div class="fm-sidebar-header">
-      <a th:href="@{/}" class="fm-sidebar-logo"
-         title="Ir al inicio"
-         style="display:flex; align-items:center; gap:10px; text-decoration:none;">
-        <span th:replace="~{fragments/logo :: logoSidebar}"></span>
-        <span style="color:#ffffff; font-size:16px; font-weight:800; letter-spacing:0.04em;">Flowmatic</span>
-      </a>
-    </div>
+    <script defer th:src="@{/js/admin.js}"></script>
+    <script defer th:src="@{/js/i18n.js}"></script>
+  </head>
 
-    <nav style="padding-top:8px;">
-      <a th:href="@{/admin/dashboard}" 
-         th:classappend="${viewMode == 'dashboard'} ? 'fm-nav-link active' : 'fm-nav-link'">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Dashboard
-      </a>
+  <body class="admin-body">
+    <div class="admin-layout">
+      <!--Sidebar-->
+      <div th:replace="~{fragments/sidebaradmin :: sidebarAdmin}"></div>
 
-      <span class="fm-sidebar-section-label">Acciones</span>
-
-      <a th:href="@{/admin}" 
-         th:classappend="${viewMode != 'dashboard'} ? 'fm-nav-link active' : 'fm-nav-link'">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 1 1 0 7.75"/></svg>
-        Registro de RRHH
-      </a>
-    </nav>
-
-    <div class="fm-sidebar-footer">
-      <form th:action="@{/logout}" method="post">
-        <button type="submit" class="btn btn-logout btn-sm" style="width:100%;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Cerrar Sesión
-        </button>
-      </form>
-    </div>
-  </aside>
-
-  <div class="admin-main">
-
-    <header class="fm-topbar">
-    <div style="display:flex; align-items:center; height:100%;">
-      <p class="fm-topbar-title" th:if="${viewMode == 'dashboard'}" style="margin:0;">Dashboard de Administración</p>
-      <p class="fm-topbar-title" th:unless="${viewMode == 'dashboard'}" style="margin:0;">Panel de Administración</p>
-    </div>
-      <a th:href="@{/admin/exportar}" class="btn btn-primary btn-sm">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Exportar Excel
-      </a>
-    </header>
-
-    <div class="admin-content">
-
-      <!-- DASHBOARD VIEW -->
-      <div th:if="${viewMode == 'dashboard'}">
-
-        <!-- KPI CARDS -->
-        <section class="kpi-section" style="margin-bottom:32px;">
-          <div class="kpi-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:20px;">
-            
-            <!-- Total Usuarios -->
-            <article class="kpi-card" style="background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:16px; padding:24px; box-shadow:var(--fm-shadow-sm); transition:transform .2s ease, box-shadow .2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--fm-shadow-md)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
-              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px;">
-                <div>
-                  <p class="kpi-label" style="font-size:var(--fm-size-small); color:var(--fm-text-muted); font-weight:500; margin:0 0 8px; text-transform:uppercase; letter-spacing:0.04em;">Total Usuarios</p>
-                  <p class="kpi-value" th:text="${totalUsuarios}" style="font-size:36px; font-weight:700; color:var(--fm-text); margin:0; line-height:1.2;">0</p>
-                  <p class="kpi-trend" style="font-size:var(--fm-size-caption); color:var(--fm-success); font-weight:600; margin:8px 0 0; display:flex; align-items:center; gap:4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5"/><line x1="17" y1="6" x2="17" y2="18"/><line x1="23" y1="18" x2="17" y2="18"/></svg>
-                    <span th:text="${'+' + (totalUsuarios * 0.12) + '% vs mes anterior'}">+12% vs mes anterior</span>
-                  </p>
-                </div>
-                <div class="kpi-icon" style="width:48px; height:48px; border-radius:12px; background:var(--fm-brand-light); display:flex; align-items:center; justify-content:center; color:var(--fm-brand); flex-shrink:0;">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 1 1 0 7.75"/></svg>
-                </div>
-              </div>
-            </article>
-
-            <!-- Usuarios Activos -->
-            <article class="kpi-card" style="background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:16px; padding:24px; box-shadow:var(--fm-shadow-sm); transition:transform .2s ease, box-shadow .2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--fm-shadow-md)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
-              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px;">
-                <div>
-                  <p class="kpi-label" style="font-size:var(--fm-size-small); color:var(--fm-text-muted); font-weight:500; margin:0 0 8px; text-transform:uppercase; letter-spacing:0.04em;">Usuarios Activos</p>
-                  <p class="kpi-value" th:text="${totalActivos}" style="font-size:36px; font-weight:700; color:var(--fm-text); margin:0; line-height:1.2;">0</p>
-                  <p class="kpi-trend" style="font-size:var(--fm-size-caption); color:var(--fm-success); font-weight:600; margin:8px 0 0; display:flex; align-items:center; gap:4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5"/><line x1="17" y1="6" x2="17" y2="18"/><line x1="23" y1="18" x2="17" y2="18"/></svg>
-                    <span th:text="${'+' + (totalActivos * 0.08) + '% vs mes anterior'}">+8% vs mes anterior</span>
-                  </p>
-                </div>
-                <div class="kpi-icon" style="width:48px; height:48px; border-radius:12px; background:var(--fm-success-bg); display:flex; align-items:center; justify-content:center; color:var(--fm-success); flex-shrink:0;">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                </div>
-              </div>
-            </article>
-
-            <!-- Usuarios Pendientes -->
-            <article class="kpi-card" style="background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:16px; padding:24px; box-shadow:var(--fm-shadow-sm); transition:transform .2s ease, box-shadow .2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--fm-shadow-md)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
-              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px;">
-                <div>
-                  <p class="kpi-label" style="font-size:var(--fm-size-small); color:var(--fm-text-muted); font-weight:500; margin:0 0 8px; text-transform:uppercase; letter-spacing:0.04em;">Pendientes</p>
-                  <p class="kpi-value" th:text="${totalPendientes}" style="font-size:36px; font-weight:700; color:var(--fm-text); margin:0; line-height:1.2;">0</p>
-                  <p class="kpi-trend" style="font-size:var(--fm-size-caption); color:var(--fm-warning); font-weight:600; margin:8px 0 0; display:flex; align-items:center; gap:4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 6 13.5 15.5 21.5 4.5"/><line x1="7" y1="6" x2="7" y2="18"/><line x1="1" y1="18" x2="7" y2="18"/></svg>
-                    <span th:text="${'+' + (totalPendientes * 0.15) + '% vs mes anterior'}">+15% vs mes anterior</span>
-                  </p>
-                </div>
-                <div class="kpi-icon" style="width:48px; height:48px; border-radius:12px; background:var(--fm-warning-bg); display:flex; align-items:center; justify-content:center; color:var(--fm-warning); flex-shrink:0;">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                </div>
-              </div>
-            </article>
-
-            <!-- Personal RRHH -->
-            <article class="kpi-card" style="background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:16px; padding:24px; box-shadow:var(--fm-shadow-sm); transition:transform .2s ease, box-shadow .2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--fm-shadow-md)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
-              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px;">
-                <div>
-                  <p class="kpi-label" style="font-size:var(--fm-size-small); color:var(--fm-text-muted); font-weight:500; margin:0 0 8px; text-transform:uppercase; letter-spacing:0.04em;">Personal RRHH</p>
-                  <p class="kpi-value" th:text="${totalRRHH}" style="font-size:36px; font-weight:700; color:var(--fm-text); margin:0; line-height:1.2;">0</p>
-                  <p class="kpi-trend" style="font-size:var(--fm-size-caption); color:var(--fm-info); font-weight:600; margin:8px 0 0; display:flex; align-items:center; gap:4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5"/><line x1="17" y1="6" x2="17" y2="18"/><line x1="23" y1="18" x2="17" y2="18"/></svg>
-                    <span th:text="${'+' + (totalRRHH * 0.05) + '% vs mes anterior'}">+5% vs mes anterior</span>
-                  </p>
-                </div>
-                <div class="kpi-icon" style="width:48px; height:48px; border-radius:12px; background:var(--fm-info-bg); display:flex; align-items:center; justify-content:center; color:var(--fm-info); flex-shrink:0;">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 1 1 0 7.75"/></svg>
-                </div>
-              </div>
-            </article>
-
-          </div>
-        </section>
-
-        <!-- ACTIVIDAD RECIENTE -->
-        <section class="activity-section" style="margin-bottom:32px;">
-          <div class="section-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-            <h2 style="font-size:var(--fm-size-h3); font-weight:700; color:var(--fm-text); margin:0;">Actividad Reciente</h2>
-            <a th:href="@{/admin}" class="fm-link" style="font-size:var(--fm-size-small); font-weight:500;">Ver todo</a>
-          </div>
-          <div class="activity-timeline" style="background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:16px; overflow:hidden;">
-            <div th:each="act, iter : ${actividadReciente}" class="activity-item" style="display:flex; gap:16px; padding:16px 20px; border-bottom:1px solid var(--fm-border); position:relative; transition:background .15s ease;" onmouseover="this.style.background='var(--fm-bg)'" onmouseout="this.style.background=''">
-              <div class="timeline-marker" style="position:relative; flex-shrink:0; width:20px; z-index:1;">
-                <div th:if="${iter.index == 0}" style="width:10px; height:10px; border-radius:50%; background:var(--fm-brand); border:3px solid var(--fm-surface); box-shadow:0 0 0 1px var(--fm-border);"></div>
-                <div th:unless="${iter.index == 0}" style="width:10px; height:10px; border-radius:50%; background:var(--fm-brand); border:3px solid var(--fm-surface); box-shadow:0 0 0 1px var(--fm-border);"></div>
-                <div th:unless="${iter.last}" style="position:absolute; top:10px; bottom:-16px; left:4px; width:2px; background:var(--fm-border);"></div>
-              </div>
-              <div class="activity-content" style="flex:1; min-width:0;">
-                <p class="activity-title" style="font-size:var(--fm-size-body); font-weight:600; color:var(--fm-text); margin:0 0 4px;" th:text="${act.titulo}">Nuevo usuario registrado</p>
-                <p class="activity-meta" style="font-size:var(--fm-size-small); color:var(--fm-text-muted); margin:0; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-                  <span th:text="${act.usuario}">Juan Pérez</span>
-                  <span style="color:var(--fm-border);">·</span>
-                  <span th:text="${act.fecha}">Hace 2 horas</span>
-                  <span th:if="${act.tipo}" style="padding:2px 8px; border-radius:var(--fm-radius-full); font-size:var(--fm-size-caption); font-weight:500; background:var(--fm-brand-light); color:var(--fm-brand);" th:text="${act.tipo}">Registro</span>
-                </p>
-              </div>
-              <div class="activity-avatar" style="width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:#fff; flex-shrink:0;" th:style="${'background:' + act.colorAvatar}" th:text="${act.iniciales}">JP</div>
-            </div>
-            <div th:if="${actividadReciente == null or actividadReciente.isEmpty()}" class="activity-empty" style="padding:40px 20px; text-align:center; color:var(--fm-text-muted);">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.3; margin-bottom:12px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <p style="margin:0; font-size:var(--fm-size-body);">No hay actividad reciente</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- ÚLTIMOS USUARIOS REGISTRADOS -->
-        <section class="users-section">
-          <div class="section-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-            <h2 style="font-size:var(--fm-size-h3); font-weight:700; color:var(--fm-text); margin:0;">Últimos Usuarios Registrados</h2>
-            <a th:href="@{/admin}" class="fm-link" style="font-size:var(--fm-size-small); font-weight:500;">Ver todos</a>
-          </div>
-          <div class="users-table-container" style="background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:16px; overflow:hidden;">
-            <table class="users-table" style="width:100%; border-collapse:collapse;">
-              <thead>
-                <tr style="background:var(--fm-bg); border-bottom:1px solid var(--fm-border);">
-                  <th style="padding:14px 20px; text-align:left; font-size:var(--fm-size-small); font-weight:600; color:var(--fm-text-muted); text-transform:uppercase; letter-spacing:0.04em;">Usuario</th>
-                  <th style="padding:14px 20px; text-align:left; font-size:var(--fm-size-small); font-weight:600; color:var(--fm-text-muted); text-transform:uppercase; letter-spacing:0.04em;">Email</th>
-                  <th style="padding:14px 20px; text-align:left; font-size:var(--fm-size-small); font-weight:600; color:var(--fm-text-muted); text-transform:uppercase; letter-spacing:0.04em;">Rol</th>
-                  <th style="padding:14px 20px; text-align:left; font-size:var(--fm-size-small); font-weight:600; color:var(--fm-text-muted); text-transform:uppercase; letter-spacing:0.04em;">Estado</th>
-                  <th style="padding:14px 20px; text-align:left; font-size:var(--fm-size-small); font-weight:600; color:var(--fm-text-muted); text-transform:uppercase; letter-spacing:0.04em;">Registro</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="u, iter : ${ultimosUsuarios}" style="border-bottom:1px solid var(--fm-border); transition:background .15s ease;" onmouseover="this.style.background='var(--fm-bg)'" onmouseout="this.style.background=''">
-                  <td style="padding:14px 20px;">
-                    <div style="display:flex; align-items:center; gap:12px;">
-                      <div class="user-avatar" style="width:36px; height:36px; border-radius:50%; background:var(--fm-brand-light); color:var(--fm-brand); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px;" th:text="${u.username?.charAt(0) + (u.apellido?.charAt(0) ?: '')}">JD</div>
-                      <div>
-                        <p style="font-size:var(--fm-size-body); font-weight:600; color:var(--fm-text); margin:0;" th:text="${u.username + ' ' + u.apellido}">Juan Delgado</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td style="padding:14px 20px; font-size:var(--fm-size-body); color:var(--fm-text);" th:text="${u.email}">juan@empresa.com</td>
-                  <td style="padding:14px 20px;">
-                    <span class="role-badge" th:classappend="${u.rol == 'ROLE_ADMIN'} ? 'badge-admin' : (${u.rol == 'ROLE_RRHH'} ? 'badge-rrhh' : 'badge-candidato')" style="display:inline-block; padding:4px 10px; border-radius:var(--fm-radius-full); font-size:var(--fm-size-caption); font-weight:600; text-transform:uppercase;" th:text="${u.rol}">ROLE_RRHH</span>
-                  </td>
-                  <td style="padding:14px 20px;">
-                    <span class="status-badge" th:classappend="${u.activo} ? 'badge-active' : 'badge-pending'" style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:var(--fm-radius-full); font-size:var(--fm-size-caption); font-weight:600;">
-                      <span class="status-dot" style="width:6px; height:6px; border-radius:50%;" th:classappend="${u.activo} ? 'bg-success' : 'bg-warning'"></span>
-                      <span th:text="${u.activo ? 'Activo' : 'Pendiente'}">Activo</span>
-                    </span>
-                  </td>
-                  <td style="padding:14px 20px; font-size:var(--fm-size-small); color:var(--fm-text-muted);" th:text="${u.fechaRegistro ?: '—'}">12 Ene 2025</td>
-                </tr>
-                <tr th:if="${ultimosUsuarios == null or ultimosUsuarios.isEmpty()}">
-                  <td colspan="5" style="padding:40px 20px; text-align:center; color:var(--fm-text-muted); font-size:var(--fm-size-body);">No hay usuarios registrados</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
+      <div class="admin-main">
+        <div class="admin-content">
+          <div th:replace="~{fragments/admin/header :: header}"></div>
+          <div th:replace="~{fragments/admin/cards :: cards}"></div>
+          <div th:replace="~{fragments/admin/toolbar :: toolbar}"></div>
+          <div
+            th:if="${viewMode == 'usuarios'}"
+            th:replace="~{fragments/admin/table :: table}"
+          ></div>
+          <div th:replace="~{fragments/admin/modal-rrhh :: modalRRHH}"></div>
+          <div
+            th:replace="~{fragments/admin/modal-editar :: modalEditar}"
+          ></div>
+        </div>
       </div>
-
-      <!-- USUARIOS VIEW (Registro RRHH) -->
-      <div th:unless="${viewMode == 'dashboard'}">
-        <div class="card" style="margin-bottom:28px;">
-          <div class="card-header-dark">Registrar Personal de RRHH</div>
-          <div style="padding:20px;">
-            <form th:action="@{/admin/crear-rrhh}" method="post">
-              <div class="admin-form-row">
-                <div class="form-group" style="margin-bottom:0;">
-                  <label class="form-label">Nombre</label>
-                  <input type="text" name="username" class="form-input"
-                         required minlength="2" maxlength="50"
-                         pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
-                         placeholder="Nombre">
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                  <label class="form-label">Apellido</label>
-                  <input type="text" name="apellido" class="form-input"
-                         required minlength="2" maxlength="50"
-                         pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
-                         placeholder="Apellido">
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                  <label class="form-label">Email</label>
-                  <input type="email" name="email" class="form-input"
-                         required maxlength="100" placeholder="correo@empresa.com">
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                  <label class="form-label">Contraseña</label>
-                  <input type="password" name="clave" class="form-input"
-                         required minlength="8" maxlength="100"
-                         placeholder="Mínimo 8 caracteres">
-                </div>
-                <div style="display:flex; align-items:flex-end;">
-                  <button type="submit" class="btn btn-primary" style="width:100%;">Crear RRHH</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="u : ${usuarios}">
-                <td class="td-muted" th:text="${u.id}"></td>
-                <td th:text="${u.username}"></td>
-                <td class="td-muted" th:text="${u.email}"></td>
-                <td>
-                  <span class="badge"
-                        th:classappend="${u.rol == 'ROLE_ADMIN'} ? 'role-admin' :
-                                        (${u.rol == 'ROLE_RRHH'} ? 'role-rrhh' : 'role-candidato')"
-                        th:text="${u.rol}">
-                  </span>
-                </td>
-                <td>
-                  <span class="badge"
-                        th:classappend="${u.estado == 'activo' or u.activo} ? 'badge-active' : 'badge-pending'"
-                        th:text="${u.estado ?: (u.activo ? 'Activo' : 'Pendiente')}">
-                  </span>
-                </td>
-                <td>
-                  <div class="table-actions">
-                    <form th:action="@{/admin/eliminar/{id}(id=${u.id})}" method="post"
-                          onsubmit="return confirm('¿Eliminar este usuario?');" style="margin:0;">
-                      <button type="submit" class="btn btn-ghost-danger btn-sm">Eliminar</button>
-                    </form>
-                    <button class="btn btn-ghost-warning btn-sm"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalEditar"
-                            th:data-id="${u.id}"
-                            th:data-username="${u.username}"
-                            th:data-apellido="${u.apellido}"
-                            th:data-email="${u.email}"
-                            onclick="llenarModal(this)">
-                      Editar
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mt-3 pf-bar">
-
-          <div class="d-flex align-items-center gap-2">
-            <select class="pf-select" data-base="/admin" onchange="pfCambiarFilas(this)">
-              <option value="10" th:selected="${pageSize == 10}">10</option>
-              <option value="20" th:selected="${pageSize == 20}">20</option>
-              <option value="50" th:selected="${pageSize == 50}">50</option>
-              <option value="100" th:selected="${pageSize == 100}">100</option>
-            </select>
-            <span class="text-muted small" th:if="${totalItems > 0}"
-                  th:text="'Mostrando ' + ${startItem} + '–' + ${endItem} + ' de ' + ${totalItems} + ' usuarios'"></span>
-          </div>
-
-          <nav aria-label="Page navigation" th:if="${totalPages > 1}">
-            <ul class="pagination mb-0">
-              <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                <a class="page-link" th:href="@{/admin(page=${currentPage - 1}, size=${pageSize})}"
-                   aria-label="Anterior">&lsaquo;</a>
-              </li>
-              <th:block th:each="item : ${pageItems}">
-                <li th:if="${item.ellipsis}" class="page-item disabled">
-                  <span class="page-link">&hellip;</span>
-                </li>
-                <li th:unless="${item.ellipsis}"
-                    th:classappend="${item.number == currentPage} ? 'active'" class="page-item">
-                  <a class="page-link" th:href="@{/admin(page=${item.number}, size=${pageSize})}"
-                     th:text="${item.number + 1}"></a>
-                </li>
-              </th:block>
-              <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/admin(page=${currentPage + 1}, size=${pageSize})}"
-                   aria-label="Siguiente">&rsaquo;</a>
-              </li>
-            </ul>
-          </nav>
-
-          <div class="d-flex align-items-center gap-2" th:if="${totalPages > 1}">
-            <span class="text-muted small">Ir a página</span>
-            <input type="number" class="pf-goto-input" min="1" th:max="${totalPages}"
-                   th:attr="data-max=${totalPages},data-size=${pageSize},data-base=/admin"
-                   value="1"
-                   onkeydown="if(event.key==='Enter')pfIrAPagina(this)"
-                   onblur="pfIrAPagina(this)">
-          </div>
-
-        </div>
-
-      </div>
-
     </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border:none; border-radius:var(--fm-radius-lg); overflow:hidden;">
-      <div class="modal-header" style="background:var(--fm-brand-dark); color:#fff; border:none;">
-        <h5 class="modal-title" style="font-weight:700;">Editar Usuario</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <form th:action="@{/admin/editar}" method="post">
-        <div class="modal-body" style="padding:24px;">
-          <input type="hidden" id="edit-id" name="id">
-          <div class="form-group">
-            <label class="form-label">Nombre</label>
-            <input type="text" class="form-input" id="edit-username" name="username" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Apellido</label>
-            <input type="text" class="form-input" id="edit-apellido" name="apellido" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-input" id="edit-email" name="email" required>
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label">Nueva Contraseña (opcional)</label>
-            <input type="password" class="form-input" name="nuevaClave"
-                   placeholder="Mínimo 8 caracteres" minlength="8" maxlength="100">
-          </div>
-        </div>
-        <div class="modal-footer" style="border-top:1px solid var(--fm-border); padding:16px 24px;">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  function llenarModal(btn) {
-    document.getElementById('edit-id').value       = btn.getAttribute('data-id');
-    document.getElementById('edit-username').value = btn.getAttribute('data-username');
-    document.getElementById('edit-apellido').value = btn.getAttribute('data-apellido');
-    document.getElementById('edit-email').value    = btn.getAttribute('data-email');
-  }
-</script>
-<script>
-function pfCambiarFilas(select) {
-  var base = select.getAttribute('data-base');
-  if (base) window.location.href = base + '?page=0&size=' + select.value;
-}
-function pfIrAPagina(input) {
-  var p = parseInt(input.value);
-  var max = parseInt(input.getAttribute('data-max'));
-  if (!isNaN(p) && p >= 1 && p <= max) {
-    var base = input.getAttribute('data-base');
-    var size = input.getAttribute('data-size');
-    window.location.href = base + '?page=' + (p - 1) + '&size=' + size;
-  }
-}
-</script>
-<script th:src="@{/js/i18n.js}"></script>
-</body>
+  </body>
 </html>

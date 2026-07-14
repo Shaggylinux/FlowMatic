@@ -1,0 +1,86 @@
+<div class="modal fade"id="modalEditar" tabindex="-1" aria-hidden="true" th:fragment="modalEditar">
+      <div class="modal-dialog modal-dialog-centered">
+        <div
+          class="modal-content"
+          style="
+            border: none;
+            border-radius: var(--fm-radius-lg);
+            overflow: hidden;
+          "
+        >
+          <div
+            class="modal-header"
+            style="background: var(--fm-brand-dark); color: #fff; border: none"
+          >
+            <h5 class="modal-title" style="font-weight: 700">Editar Usuario</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <form th:action="@{/admin/editar}" method="post">
+            <div class="modal-body" style="padding: 24px">
+              <input type="hidden" id="edit-id" name="id" />
+              <div class="form-group">
+                <label class="form-label">Nombre</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="edit-username"
+                  name="username"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Apellido</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="edit-apellido"
+                  name="apellido"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-input"
+                  id="edit-email"
+                  name="email"
+                  required
+                />
+              </div>
+              <div class="form-group" style="margin-bottom: 0">
+                <label class="form-label">Nueva Contraseña (opcional)</label>
+                <input
+                  type="password"
+                  class="form-input"
+                  name="nuevaClave"
+                  placeholder="Mínimo 8 caracteres"
+                  minlength="8"
+                  maxlength="100"
+                />
+              </div>
+            </div>
+            <div
+              class="modal-footer"
+              style="border-top: 1px solid var(--fm-border); padding: 16px 24px"
+            >
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Guardar Cambios
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>

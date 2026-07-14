@@ -1,0 +1,65 @@
+<header class="admin-header" th:fragment="header">
+
+    <div class="admin-header-container">
+
+        <!-- Parte superior -->
+        <div class="admin-header-top">
+
+            <div class="admin-header-breadcrumb">
+                <span>RRHH</span>
+                <span>/</span>
+                <span>ADMINISTRACIÓN</span>
+            </div>
+
+            <div class="admin-header-user">
+
+                <div class="admin-user-avatar">
+                    AF
+                </div>
+
+                <div class="admin-user-info">
+                    <span class="admin-user-name">Andrés Felipe</span>
+                    <span class="admin-user-role">Administrador</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Parte inferior -->
+        <div class="admin-header-bottom">
+
+            <div class="admin-header-info">
+
+                <h1>Administración de Recursos Humanos</h1>
+
+                <p>
+                    Gestiona empleados, roles y permisos del sistema.
+                </p>
+
+            </div>
+
+            <div class="admin-header-actions">
+
+                <a th:href="@{/admin/exportar}" class="btn btn-export"> 
+                    <!-- SVG -->
+                    Exportar Excel
+                </a>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalNuevoRRHH">
+
+                    Nuevo RRHH
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>

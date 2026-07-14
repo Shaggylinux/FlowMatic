@@ -1,0 +1,121 @@
+.admin-header{
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.admin-header-container{
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+}
+
+.admin-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-user-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #16B6A5;
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: 700;
+}
+
+.admin-header-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-header-breadcrumb{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.admin-header-breadcrumb span:first-child{
+    color:#64748B;
+}
+
+.admin-header-breadcrumb span:nth-child(2){
+    color:#CBD5E1;
+}
+
+.admin-header-breadcrumb span:last-child{
+    color:#16B6A5;
+    font-weight:600;
+}
+
+.admin-header-info h1{
+
+    font-size:40px;
+    font-weight:700;
+    color:#0F172A;
+
+    margin:0;
+}
+
+.admin-header-info p{
+
+    margin-top:8px;
+
+    color:#64748B;
+
+    font-size:16px;
+
+    line-height:1.6;
+}
+
+.admin-header-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+}
+
+
+.admin-user-info{
+    display:flex;
+    flex-direction:column;
+}
+
+.admin-user-name{
+    font-size:15px;
+    font-weight:600;
+    color:#1E293B;
+}
+
+.admin-user-role{
+    font-size:13px;
+    color:#64748B;
+}
+
+.admin-header{
+    width:100%;
+    background:#FFFFFF;
+    border-radius:16px;
+    padding:24px 28px;
+    border:1px solid #E2E8F0;
+    margin-bottom:32px;
+}

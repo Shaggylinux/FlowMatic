@@ -1,0 +1,167 @@
+.table-container{
+
+    background:#FFFFFF;
+
+    border:1px solid #E2E8F0;
+
+    border-radius:16px;
+
+    overflow:hidden;
+}
+
+.data-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+.data-table thead{
+
+    background:#F8FAFC;
+}
+
+.data-table th{
+
+    padding:18px 24px;
+
+    text-align:left;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#64748B;
+
+    text-transform:uppercase;
+
+    letter-spacing:.04em;
+
+    border-bottom:1px solid #E2E8F0;
+}
+
+.data-table td{
+
+    padding:18px 24px;
+
+    border-bottom:1px solid #F1F5F9;
+
+    vertical-align:middle;
+}
+
+.data-table tbody tr{
+
+    transition:.25s;
+}
+
+.data-table tbody tr:hover{
+
+    background:#F8FAFC;
+}
+
+.user-cell{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.user-avatar{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#16B6A5;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:700;
+
+    font-size:15px;
+}
+
+.user-info{
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+.user-name{
+
+    font-weight:600;
+
+    color:#0F172A;
+
+    font-size:15px;
+}
+
+.table-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+}
+
+.table-actions .btn{
+
+    min-width:90px;
+
+    border-radius:10px;
+
+    transition:.25s;
+}
+
+.badge{
+
+    padding:8px 12px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:600;
+}
+
+.role-admin{
+
+    background:#DBEAFE;
+
+    color:#1D4ED8;
+}
+
+.role-rrhh{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+}
+
+.badge-active{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+}
+
+.badge-pending{
+
+    background:#FEF3C7;
+
+    color:#B45309;
+}

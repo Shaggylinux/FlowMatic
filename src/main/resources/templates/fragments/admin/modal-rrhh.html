@@ -1,0 +1,135 @@
+<div
+    class="modal fade"
+    id="modalNuevoRRHH"
+    tabindex="-1"
+    aria-hidden="true"
+    th:fragment="modalRRHH">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <!-- Header -->
+
+            <div class="modal-header">
+                <div>
+                    <h4 class="modal-title">
+                        Nuevo usuario
+                    </h4>
+                    <p class="modal-subtitle">
+                        Completa los datos para registrar un nuevo colaborador.
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+            </div>
+
+            <!-- Body -->
+
+            <div class="modal-body">
+            <form th:action="@{/admin/crear-rrhh}" method="post" id="formNuevoRRHH">
+
+            <div class="admin-modal-grid">
+            <!-- Nombre -->
+            <div class="form-group">
+                <label class="form-label">
+                    Nombre
+                </label>
+                <input
+                    type="text"
+                    name="username"
+                    class="form-input"
+                    required
+                    minlength="2"
+                    maxlength="50"
+                    pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                    placeholder="Nombre">
+            </div>
+            <!-- Apellido -->
+            <div class="form-group">
+                <label class="form-label">
+                    Apellido
+                </label>
+                <input
+                    type="text"
+                    name="apellido"
+                    class="form-input"
+                    required
+                    minlength="2"
+                    maxlength="50"
+                    pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                    placeholder="Apellido">
+            </div>
+            <!-- Correo -->
+            <div class="form-group">
+
+                <label class="form-label">
+                    Correo electrónico
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    class="form-input"
+                    required
+                    maxlength="100"
+                    placeholder="correo@empresa.com">
+
+            </div>
+
+            <!-- Contraseña -->
+            <div class="form-group">
+
+                <label class="form-label">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    name="clave"
+                    class="form-input"
+                    required
+                    minlength="8"
+                    maxlength="100"
+                    placeholder="Mínimo 8 caracteres">
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+            <!-- Footer -->
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-light"
+                    data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button
+    type="submit"
+    form="formNuevoRRHH"
+    class="btn btn-primary">
+
+    Crear usuario
+
+</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

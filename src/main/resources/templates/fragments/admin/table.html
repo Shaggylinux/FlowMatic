@@ -1,0 +1,164 @@
+<div th:fragment="table">
+  <p th:if="${usuarios == null}" style="color: red; font-weight: bold">
+    ERROR: La variable usuarios no llegó desde el controlador
+  </p>
+
+  <p
+    th:if="${usuarios != null}"
+    th:text="'Usuarios recibidos: ' + ${#lists.size(usuarios)}"
+  ></p>
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="u : ${usuarios}">
+          <td class="td-muted" th:text="${u.id}"></td>
+          <td>
+            <div class="user-cell">
+              <div class="user-avatar">
+                <span th:text="${#strings.substring(u.username,0,1)}"></span>
+              </div>
+
+              <div class="user-info">
+                <span
+                  class="user-name"
+                  th:text="${u.username + ' ' + u.apellido}"
+                >
+                </span>
+              </div>
+            </div>
+          </td>
+          <td class="td-muted" th:text="${u.email}"></td>
+          <td>
+            <span
+              class="badge"
+              th:classappend="${u.rol == 'ROLE_ADMINISTRADOR'} ? 'role-admin' : 'role-rrhh'"
+              th:text="${u.rol == 'ROLE_ADMINISTRADOR'} ? 'Administrador' : 'Recursos Humanos'"
+            >
+            </span>
+          </td>
+          <td>
+            <span
+              class="badge"
+              th:classappend="${u.estado == 'activo' or u.activo} ? 'badge-active' : 'badge-pending'"
+              th:text="${u.estado ?: (u.activo ? 'Activo' : 'Pendiente')}"
+            >
+            </span>
+          </td>
+          <td>
+            <div class="table-actions">
+              <button
+                class="btn btn-ghost-warning btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#modalEditar"
+                th:data-id="${u.id}"
+                th:data-username="${u.username}"
+                th:data-apellido="${u.apellido}"
+                th:data-email="${u.email}"
+                onclick="llenarModal(this)"
+              >
+                Editar
+              </button>
+
+              <form
+                th:action="@{/admin/eliminar/{id}(id=${u.id})}"
+                method="post"
+                onsubmit="return confirm('¿Eliminar este usuario?');"
+                style="margin: 0"
+              >
+                <button type="submit" class="btn btn-ghost-danger btn-sm">
+                  Eliminar
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    class="d-flex flex-wrap align-items-center justify-content-between gap-3 mt-3 pf-bar"
+  >
+    <div class="d-flex align-items-center gap-2">
+      <select
+        class="pf-select"
+        data-base="/admin"
+        onchange="pfCambiarFilas(this)"
+      >
+        <option value="10" th:selected="${pageSize == 10}">10</option>
+        <option value="20" th:selected="${pageSize == 20}">20</option>
+        <option value="50" th:selected="${pageSize == 50}">50</option>
+        <option value="100" th:selected="${pageSize == 100}">100</option>
+      </select>
+      <span
+        class="text-muted small"
+        th:if="${totalItems > 0}"
+        th:text="'Mostrando ' + ${startItem} + '–' + ${endItem} + ' de ' + ${totalItems} + ' usuarios'"
+      ></span>
+    </div>
+
+    <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+      <ul class="pagination mb-0">
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+          <a
+            class="page-link"
+            th:href="@{/admin(page=${currentPage - 1}, size=${pageSize})}"
+            aria-label="Anterior"
+            >&lsaquo;</a
+          >
+        </li>
+        <th:block th:each="item : ${pageItems}">
+          <li th:if="${item.ellipsis}" class="page-item disabled">
+            <span class="page-link">&hellip;</span>
+          </li>
+          <li
+            th:unless="${item.ellipsis}"
+            th:classappend="${item.number == currentPage} ? 'active'"
+            class="page-item"
+          >
+            <a
+              class="page-link"
+              th:href="@{/admin(page=${item.number}, size=${pageSize})}"
+              th:text="${item.number + 1}"
+            ></a>
+          </li>
+        </th:block>
+        <li
+          class="page-item"
+          th:classappend="${currentPage == totalPages - 1} ? 'disabled'"
+        >
+          <a
+            class="page-link"
+            th:href="@{/admin(page=${currentPage + 1}, size=${pageSize})}"
+            aria-label="Siguiente"
+            >&rsaquo;</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <div class="d-flex align-items-center gap-2" th:if="${totalPages > 1}">
+      <span class="text-muted small">Ir a p&aacute;gina</span>
+      <input
+        type="number"
+        class="pf-goto-input"
+        min="1"
+        th:max="${totalPages}"
+        th:attr="data-max=${totalPages},data-size=${pageSize},data-base=/admin"
+        value="1"
+        onkeydown="if (event.key === 'Enter') pfIrAPagina(this);"
+        onblur="pfIrAPagina(this)"
+      />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="admin-toolbar" th:fragment="toolbar">
+  <!-- Lado izquierdo -->
+  <div class="admin-toolbar-left">
+    <form class="admin-search">
+      <input
+        type="text"
+        name="buscar"
+        placeholder="Buscar por ID o nombre..."
+        class="admin-search-input"
+      />
+    </form>
+
+    <select class="admin-filter">
+      <option value="">Todos los roles</option>
+      <option value="ROLE_ADMIN">Administrador</option>
+      <option value="ROLE_RRHH">RRHH</option>
+    </select>
+  </div>
+
+  <!-- Lado derecho -->
+  <div class="admin-toolbar-right">
+    <span class="admin-toolbar-count">
+      Mostrando
+      <strong th:text="${startItem}"></strong>
+      -
+      <strong th:text="${endItem}"></strong>
+
+      de
+
+      <strong th:text="${totalItems}"></strong>
+
+      usuarios
+    </span>
+  </div>
+</div>

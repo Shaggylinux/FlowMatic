@@ -1,0 +1,96 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <aside class="fm-sidebar" th:fragment="sidebarAdmin">
+      <div class="fm-sidebar-header">
+        <a
+          th:href="@{/}"
+          class="fm-sidebar-logo"
+          title="Ir al inicio"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+          "
+        >
+          <span th:replace="~{fragments/logo :: logoSidebar}"></span>
+          <span
+            style="
+              color: #ffffff;
+              font-size: 16px;
+              font-weight: 800;
+              letter-spacing: 0.04em;
+            "
+            >Flowmatic</span
+          >
+        </a>
+      </div>
+
+      <nav style="padding-top: 8px">
+        <a th:href="@{/admin}" class="fm-nav-link active">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="#" class="fm-nav-link">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          RRHH
+        </a>
+      </nav>
+
+      <div class="fm-sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+          <button
+            type="submit"
+            class="btn btn-logout btn-sm"
+            style="width: 100%"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Cerrar Sesión
+          </button>
+        </form>
+      </div>
+    </aside>
+  </body>
+</html>
