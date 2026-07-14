@@ -1,56 +1,65 @@
-/* ================================================
-   CONTENEDOR — estilos del modal de registro
-   de candidato desde el Drive.
-   ================================================ */
-
 .modal-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(13, 27, 42, 0.55);
+  background: rgba(15, 23, 42, 0.45);
   z-index: 1000;
   justify-content: center;
   align-items: center;
 }
 
-/* Modal box (reemplaza .modal-content para no colisionar con Bootstrap en admin) */
 .modal-box {
   background: var(--fm-surface);
-  border-radius: var(--fm-radius-lg);
+  border-radius: 16px;
   width: 440px;
   max-width: 95vw;
-  box-shadow: var(--fm-shadow-xl);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
   overflow: hidden;
+  animation: gc-fade-in 0.15s ease;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--fm-brand-dark);
-  padding: 16px 24px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .modal-header h3 {
-  font-size: var(--fm-size-h3);
+  font-size: 16px;
   font-weight: 700;
-  color: #ffffff;
+  color: #0F172A;
   margin: 0;
 }
 
 .modal-close {
-  background: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
   border: none;
-  color: rgba(255,255,255,0.7);
-  font-size: 22px;
+  background: transparent;
+  color: #94A3B8;
+  font-size: 18px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
   padding: 0;
+  transition: all 0.15s ease;
 }
-.modal-close:hover { color: #ffffff; }
+.modal-close:hover {
+  background: #F8FAFC;
+  color: #0F172A;
+}
 
 .modal-box form {
   padding: 24px;
 }
 
-/* Los .form-group e inputs del modal usan las clases de base.css */
+.modal-box .btn-full {
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+}

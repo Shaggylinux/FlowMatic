@@ -132,4 +132,10 @@ public class CandidatoService {
     public List<String> getCiudades() {
         return usuarioRepository.findDistinctCiudadesByRolCandidato();
     }
+
+    public List<Usuario> listarCandidatosSinPaginar(String search, String estado) {
+        String searchVal = (search != null && !search.isBlank()) ? "%" + search + "%" : null;
+        String estadoVal = (estado != null && !estado.isBlank()) ? estado : null;
+        return usuarioRepository.findCandidatosFiltradosSinPaginar(searchVal, estadoVal);
+    }
 }

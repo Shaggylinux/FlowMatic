@@ -57,7 +57,8 @@
           Nueva Carpeta
         </button>
 
-        <button class="fm-nav-link" id="openModal" style="width:100%; background:none; border:none; cursor:pointer; text-align:left;">
+        <button class="fm-nav-link" id="openModal" style="width:100%; background:none; border:none; cursor:pointer; text-align:left;"
+                onclick="document.getElementById('modalOverlay').style.display='flex'">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
           Registrar Candidato
         </button>
@@ -286,46 +287,13 @@
   <input type="hidden" name="emailDestinatario" id="inputCompartirEmail">
 </form>
 
-<div id="modalOverlay" class="modal-overlay" style="display:none;" sec:authorize="hasRole('RRHH')">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>Registrar Nuevo Candidato</h3>
-      <button id="closeModal" class="modal-close" aria-label="Cerrar">&times;</button>
-    </div>
-    <form id="formRegistroModal">
-      <div class="form-group">
-        <label class="form-label">Nombre</label>
-        <input type="text" name="username" class="form-input" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Apellido</label>
-        <input type="text" name="apellido" class="form-input" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Correo</label>
-        <input type="email" name="email" class="form-input" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Contraseña</label>
-        <input type="password" name="clave" class="form-input" required>
-      </div>
-      <input type="hidden" name="rol" value="ROLE_CANDIDATO">
-      <button type="button" class="btn btn-primary btn-full" onclick="enviarRegistro()">Registrar</button>
-    </form>
-  </div>
-</div>
+<div th:replace="~{fragments/modal-registro :: modalRegistro(
+  modalId='modalOverlay',
+  formId='formRegistroModal',
+  closeBtnId='closeModal'
+)}"></div>
 
 <script>
-  const openBtn  = document.getElementById('openModal');
-  const closeBtn = document.getElementById('closeModal');
-  const modal    = document.getElementById('modalOverlay');
-
-  if (openBtn) {
-    openBtn.onclick  = () => modal.style.display = 'flex';
-    closeBtn.onclick = () => modal.style.display = 'none';
-    modal.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
-  }
-
   function solicitarNombreCarpeta() {
     const nombre = prompt('Ingresa el nombre de la nueva carpeta:');
     if (nombre && nombre.trim()) {
@@ -341,15 +309,6 @@
       document.getElementById('inputCompartirEmail').value = email;
       document.getElementById('formCompartirArchivo').submit();
     }
-  }
-
-  function enviarRegistro() {
-    const datos = Object.fromEntries(new FormData(document.getElementById('formRegistroModal')).entries());
-    fetch('/registro/candidato/api', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(datos)
-    }).then(res => res.ok ? location.reload() : alert('Error al registrar'));
   }
 </script>
 <script th:src="@{/js/i18n.js}"></script>

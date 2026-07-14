@@ -53,4 +53,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query("SELECT DISTINCT u.cargo FROM Usuario u WHERE u.rol = 'ROLE_CANDIDATO' AND u.cargo IS NOT NULL AND u.cargo <> ''")
     List<String> findDistinctCargosByRolCandidato();
+
+    @Query(value = "SELECT * FROM usuarios WHERE rol = 'ROLE_CANDIDATO' " +
+           "AND (cast(:search as text) IS NULL OR LOWER(username) LIKE LOWER(cast(:search as text)) " +
+           "OR LOWER(apellido) LIKE LOWER(cast(:search as text)) " +
+           "OR LOWER(email) LIKE LOWER(cast(:search as text))) " +
+           "AND (cast(:estado as text) IS NULL OR estado = cast(:estado as text)) " +
+           "ORDER BY ultima_actualizacion DESC NULLS LAST",
+           nativeQuery = true)
+    List<Usuario> findCandidatosFiltradosSinPaginar(@Param("search") String search,
+                                                     @Param("estado") String estado);
 }

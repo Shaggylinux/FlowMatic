@@ -5,6 +5,7 @@ import com.back.model.Usuario;
 import com.back.repository.UsuarioRepository;
 import com.back.service.EmailService;
 import com.back.service.EventoService;
+import com.back.service.NotificacionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class CalendarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private NotificacionService notificacionService;
 
     @Autowired
     private EmailService emailService;
@@ -165,6 +169,10 @@ public class CalendarioController {
                 Usuario candidato = usuarioRepository.findById(candidatoId).orElse(null);
                 String candidatoNombre = candidato != null ? candidato.getUsername() + " " + candidato.getApellido() : "Candidato";
                 emailService.enviarEmailEntrevista(rrhh.getEmail(), rrhh.getUsername(), evento, candidatoNombre);
+
+                notificacionService.crear("ENTREVISTA",
+                    "Entrevista agendada: " + candidatoNombre + " — " + (tipo != null ? tipo : "Entrevista") + " el " + fecha.toString(),
+                    candidatoId, candidatoNombre, "/calendario");
             } catch (Exception emailEx) {
                 logger.warn("No se pudo enviar el email de confirmación: {}", emailEx.getMessage());
             }

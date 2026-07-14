@@ -7,8 +7,12 @@ import com.back.repository.UsuarioRepository;
 import com.back.repository.ArchivosRepository;
 import com.back.repository.EventoRepository;
 import com.back.service.CandidatoService;
+import com.back.service.CvService;
 import com.back.service.EventoService;
+import com.back.service.ExcelService;
 import com.back.service.FilesServices;
+import com.back.service.NotificacionService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +50,15 @@ public class CandidatoController {
 
     @Autowired
     private FilesServices filesServices;
+
+    @Autowired
+    private ExcelService excelService;
+
+    @Autowired
+    private CvService cvService;
+
+    @Autowired
+    private NotificacionService notificacionService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -181,10 +194,92 @@ public class CandidatoController {
             return ResponseEntity.badRequest().body(Map.of("error", "Estado requerido"));
         }
         Usuario c = opt.get();
+        String estadoAnterior = c.getEstado();
         c.setEstado(estado);
         c.setUltimaActualizacion(LocalDateTime.now());
         usuarioRepository.save(c);
+
+        if (estadoAnterior == null || !estadoAnterior.equals(estado)) {
+            String nombre = c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : "");
+            notificacionService.crear("ESTADO",
+                "Estado actualizado: " + nombre + " ahora como \"" + estado + "\"",
+                id, nombre, "/gestion-candidatos");
+        }
+
         return ResponseEntity.ok(Map.of("success", true, "estado", estado));
+    }
+
+    @PostMapping("/{id}/editar")
+    @ResponseBody
+    public ResponseEntity<?> editarCandidato(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        Optional<Usuario> opt = usuarioRepository.findById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Usuario c = opt.get();
+
+        String nombre = body.getOrDefault("nombre", "").trim();
+        String apellido = body.getOrDefault("apellido", "").trim();
+        String email = body.getOrDefault("email", "").trim();
+        String telefono = body.getOrDefault("telefono", "").trim();
+        String cargo = body.getOrDefault("cargo", "").trim();
+        String ciudad = body.getOrDefault("ciudad", "").trim();
+        String experienciaStr = body.getOrDefault("experiencia", "0").trim();
+        String disponibilidad = body.getOrDefault("disponibilidad", "").trim();
+        String tecnologias = body.getOrDefault("tecnologias", "").trim();
+        String idiomas = body.getOrDefault("idiomas", "").trim();
+        String procesoActual = body.getOrDefault("procesoActual", "").trim();
+
+        if (nombre.isBlank() || apellido.isBlank() || email.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Nombre, apellido y email son obligatorios"));
+        }
+
+        c.setUsername(nombre);
+        c.setApellido(apellido);
+        c.setEmail(email);
+        c.setTelefono(telefono);
+        c.setCargo(cargo);
+        c.setCiudad(ciudad);
+        try {
+            c.setExperiencia(Integer.parseInt(experienciaStr));
+        } catch (NumberFormatException e) {
+            c.setExperiencia(0);
+        }
+        c.setDisponibilidad(disponibilidad);
+        c.setTecnologias(tecnologias);
+        c.setIdiomas(idiomas);
+        c.setProcesoActual(procesoActual);
+        c.setUltimaActualizacion(LocalDateTime.now());
+        usuarioRepository.save(c);
+
+        String nombreEdit = c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : "");
+        notificacionService.crear("EDICION",
+            "Perfil editado: " + nombreEdit,
+            id, nombreEdit, "/gestion-candidatos");
+
+        return ResponseEntity.ok(Map.of("success", true));
+    }
+
+    @PostMapping("/{id}/eliminar")
+    @ResponseBody
+    public ResponseEntity<?> eliminarCandidato(@PathVariable Long id) {
+        Optional<Usuario> opt = usuarioRepository.findById(id);
+        if (opt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Usuario c = opt.get();
+        String email = c.getEmail();
+        String prefix = "superfolder/Candidatos/" + email;
+        List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
+        for (Archivos doc : docs) {
+            try {
+                java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
+            } catch (java.io.IOException ignored) {}
+            archivosRepository.delete(doc);
+        }
+        eventoRepository.deleteByCandidatoId(id);
+        usuarioRepository.delete(c);
+        return ResponseEntity.ok(Map.of("success", true));
     }
 
     @GetMapping("/stats")
@@ -256,5 +351,26 @@ public class CandidatoController {
             return m;
         }).collect(Collectors.toList());
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/{id}/cv")
+    public void descargarCV(@PathVariable Long id, HttpServletResponse response) throws IOException {
+        Optional<Usuario> opt = usuarioRepository.findById(id);
+        if (opt.isEmpty()) {
+            response.sendRedirect("/gestion-candidatos");
+            return;
+        }
+        cvService.generarCv(opt.get(), response);
+    }
+
+    @GetMapping("/export")
+    public void exportarExcel(@RequestParam(required = false) String search,
+                              @RequestParam(required = false) String estado,
+                              HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=candidatos_reporte.xlsx");
+
+        List<Usuario> candidatos = candidatoService.listarCandidatosSinPaginar(search, estado);
+        excelService.exportarCandidatos(candidatos, response);
     }
 }
