@@ -1,14 +1,8 @@
 package com.back.service;
 
-<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-=======
-import com.back.model.Usuario;
-import com.back.repository.UsuarioRepository;
-import com.back.service.FilesServices;
->>>>>>> 92fc563e3fa8f82021b214c91567440d0c216874
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.back.model.Usuario;
 import com.back.repository.UsuarioRepository;
+import com.back.service.FilesServices;
 
 @Service
 public class UsuarioService {

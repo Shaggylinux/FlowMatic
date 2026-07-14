@@ -7,8 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import java.time.LocalDateTime;
 
-import java.time.LocalDateTime;
-
 @Data
 @Entity
 @Table(name = "usuarios")
@@ -45,6 +43,8 @@ public class Usuario {
     @Column(unique = true)
     private String tokenactivacion;
 
+    private String telefono;
+
     private String estado;
 
     private String cargo;
@@ -69,4 +69,7 @@ public class Usuario {
 
     @Column(name = "ultima_actualizacion")
     private LocalDateTime ultimaActualizacion;
+
+    @Column(name = "fecha_creacion_token")
+    private LocalDateTime fechaCreacionToken;
 }
