@@ -5,6 +5,7 @@ import com.back.model.Usuario;
 import com.back.repository.UsuarioRepository;
 import com.back.service.EmailService;
 import com.back.service.EventoService;
+import com.back.service.ExcelService;
 import com.back.service.NotificacionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/calendario")
@@ -39,6 +42,9 @@ public class CalendarioController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private ExcelService excelService;
+
     @GetMapping
     public String verCalendario(Model model, Principal principal) {
         List<Usuario> candidatos = usuarioRepository.findByRol("ROLE_CANDIDATO");
@@ -51,16 +57,26 @@ public class CalendarioController {
             model.addAttribute("currentUserRol", user.getRol());
         }
 
-        model.addAttribute("totalHoy", eventoService.contarHoy());
-        model.addAttribute("totalPendientes", eventoService.contarPendientes());
-        model.addAttribute("totalConfirmadas", eventoService.contarConfirmadas());
-        model.addAttribute("totalReprogramadas", eventoService.contarReprogramadas());
-        model.addAttribute("totalCanceladas", eventoService.contarCanceladas());
+        LocalDate hoy = LocalDate.now();
+        LocalDate ayer = hoy.minusDays(1);
+
+        long totalHoy = eventoService.contarHoy();
+        long totalPendientes = eventoService.contarPendientes();
+        long totalConfirmadas = eventoService.contarConfirmadas();
+        long totalReprogramadas = eventoService.contarReprogramadas();
+        long totalCanceladas = eventoService.contarCanceladas();
+
+        model.addAttribute("totalHoy", totalHoy);
+        model.addAttribute("totalPendientes", totalPendientes);
+        model.addAttribute("totalConfirmadas", totalConfirmadas);
+        model.addAttribute("totalReprogramadas", totalReprogramadas);
+        model.addAttribute("totalCanceladas", totalCanceladas);
         model.addAttribute("totalEsteMes", eventoService.contarTotalEsteMes());
         model.addAttribute("candidatosUnicosEsteMes", eventoService.contarCandidatosUnicosEsteMes());
 
-        Optional<Evento> proxima = eventoService.obtenerProximaEntrevista();
-        model.addAttribute("proximaEntrevista", proxima.orElse(null));
+        model.addAttribute("difHoy", totalHoy - eventoService.contarFecha(ayer));
+
+        model.addAttribute("proximasEntrevistas", eventoService.obtenerProximasEntrevistas(10));
 
         return "calendario";
     }
@@ -95,10 +111,14 @@ public class CalendarioController {
             map.put("start", e.getFecha().toString() + "T" + e.getHora().toString());
 
             Map<String, Object> props = new HashMap<>();
+            props.put("candidatoId", e.getCandidatoId());
             props.put("candidatoNombre", e.getCandidatoNombre());
             props.put("tipo", e.getTipo() != null ? e.getTipo() : "");
             props.put("estado", e.getEstado() != null ? e.getEstado() : "");
             props.put("lugar", e.getLugar() != null ? e.getLugar() : "");
+            props.put("vacante", e.getVacante() != null ? e.getVacante() : "");
+            props.put("modalidad", e.getModalidad() != null ? e.getModalidad() : "");
+            props.put("entrevistador", e.getEntrevistador() != null ? e.getEntrevistador() : "");
             props.put("observaciones", e.getObservaciones() != null ? e.getObservaciones() : "");
             map.put("extendedProps", props);
 
@@ -148,6 +168,9 @@ public class CalendarioController {
             @RequestParam(required = false) String tipo,
             @RequestParam(required = false) String lugar,
             @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String vacante,
+            @RequestParam(required = false) String modalidad,
+            @RequestParam(required = false) String entrevistador,
             @RequestParam(required = false) String observaciones,
             Principal principal) {
 
@@ -161,7 +184,7 @@ public class CalendarioController {
         }
 
         try {
-            Evento evento = eventoService.crearEvento(candidatoId, fecha, hora, tipo, lugar, observaciones, estado, rrhh.getId());
+            Evento evento = eventoService.crearEvento(candidatoId, fecha, hora, tipo, lugar, vacante, modalidad, entrevistador, observaciones, estado, rrhh.getId());
             response.put("success", true);
             response.put("eventoId", evento.getId());
 
@@ -258,5 +281,36 @@ public class CalendarioController {
             response.put("error", e.getMessage());
         }
         return response;
+    }
+
+    @GetMapping("/export")
+    public void exportar(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+            @RequestParam(required = false) Long candidatoId,
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) Long rrhhId,
+            Principal principal,
+            HttpServletResponse response) throws IOException {
+
+        Usuario user = obtenerUsuario(principal);
+        if (user == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        if ("ROLE_CANDIDATO".equals(user.getRol())) {
+            candidatoId = user.getId();
+        }
+
+        if (start == null) start = LocalDate.now().withDayOfMonth(1);
+        if (end == null) end = start.withDayOfMonth(start.lengthOfMonth());
+
+        List<Evento> eventos = eventoService.obtenerEventosFiltrados(start, end, candidatoId, estado, rrhhId);
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=entrevistas.xlsx");
+
+        excelService.exportarEventos(eventos, response);
     }
 }

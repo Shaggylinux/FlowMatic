@@ -746,14 +746,13 @@ body {
 /* ── 11. TOPBAR DEL DASHBOARD ───────────────── */
 
 .fm-topbar {
-  height: var(--fm-topbar-height);
   min-height: var(--fm-topbar-height);
   background: var(--fm-surface);
   border-bottom: 1px solid var(--fm-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 8px 24px;
   flex-shrink: 0;
   position: sticky;
   top: 0;
@@ -764,12 +763,19 @@ body {
   font-size: var(--fm-size-h3);
   font-weight: 600;
   color: var(--fm-text);
+  font-family: var(--fm-font);
+  white-space: nowrap;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .fm-topbar-sub {
   font-size: var(--fm-size-caption);
   color: var(--fm-text-muted);
-  margin-top: 1px;
+  font-family: var(--fm-font);
+  white-space: nowrap;
+  margin: 0;
+  line-height: 1.2;
 }
 
 /* ── LINK SIMPLE ────────────────────────────── */

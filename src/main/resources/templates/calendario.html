@@ -11,11 +11,11 @@
   <link rel="stylesheet" th:href="@{/css/base.css}">
   <link rel="stylesheet" th:href="@{/css/drive.css}">
   <link rel="stylesheet" th:href="@{/css/contenedor.css}">
+  <link rel="stylesheet" th:href="@{/css/gestion-candidatos.css}">
   <link rel="stylesheet" th:href="@{/css/calendario.css}">
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body class="drive-body">
 <div class="drive-layout cal-sidebar-fixed">
 
@@ -28,69 +28,54 @@
         <span style="color:#ffffff; font-size:16px; font-weight:800; letter-spacing:0.04em;">Flowmatic</span>
       </a>
     </div>
-
     <nav style="padding-top:8px;">
       <a th:href="@{/drive}" class="fm-nav-link">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Principal
       </a>
-
       <span class="fm-sidebar-section-label">Acciones</span>
-
       <a th:href="@{/calendario}" class="fm-nav-link active">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Calendario
       </a>
-
       <div sec:authorize="hasRole('RRHH')">
         <span class="fm-sidebar-section-label">RRHH</span>
         <a th:href="@{/gestion-candidatos}" class="fm-nav-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          Gestión de Candidatos
+          Gesti&oacute;n de Candidatos
         </a>
       </div>
-
       <div sec:authorize="hasRole('RRHH')">
-
-        <button class="fm-nav-link" style="width:100%; background:none; border:none; cursor:pointer; text-align:left;"
-                onclick="solicitarNombreCarpeta()">
+        <button class="fm-nav-link" style="width:100%; background:none; border:none; cursor:pointer; text-align:left;" onclick="solicitarNombreCarpeta()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
           Nueva Carpeta
         </button>
-
         <button class="fm-nav-link" id="openModal" style="width:100%; background:none; border:none; cursor:pointer; text-align:left;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
           Registrar Candidato
         </button>
-
         <span class="fm-sidebar-section-label">Mis Carpetas</span>
-
         <div class="fm-sidebar-scroll">
           <div th:each="folder : ${carpetas}">
-            <a th:href="@{/drive(folder=${folder.ubicacion.replace('superfolder/', '')})}"
-               class="fm-nav-link" style="font-size:13px;">
+            <a th:href="@{/drive(folder=${folder.ubicacion.replace('superfolder/', '')})}" class="fm-nav-link" style="font-size:13px;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
               <span th:text="${folder.nombre}"></span>
             </a>
           </div>
-          <p th:if="${carpetas != null && carpetas.isEmpty()}" style="padding:8px 20px; font-size:12px; color:#475569;">Sin carpetas aún.</p>
-          <p th:if="${carpetas == null}" style="padding:8px 20px; font-size:12px; color:#475569;">Sin carpetas aún.</p>
+          <p th:if="${carpetas != null && carpetas.isEmpty()}" style="padding:8px 20px; font-size:12px; color:#475569;">Sin carpetas a&uacute;n.</p>
+          <p th:if="${carpetas == null}" style="padding:8px 20px; font-size:12px; color:#475569;">Sin carpetas a&uacute;n.</p>
         </div>
-
       </div>
     </nav>
-
     <div class="fm-sidebar-footer">
       <form th:action="@{/logout}" method="post">
         <button type="submit" class="btn btn-logout btn-sm" style="width:100%;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Cerrar Sesión
+          Cerrar Sesi&oacute;n
         </button>
       </form>
     </div>
-
-    <form id="formCrearCarpeta" th:action="@{/drive/crear-carpeta}" method="post" style="display:none;"
-          sec:authorize="hasRole('RRHH')">
+    <form id="formCrearCarpeta" th:action="@{/drive/crear-carpeta}" method="post" style="display:none;" sec:authorize="hasRole('RRHH')">
       <input type="hidden" name="nombre" id="inputNombreCarpeta">
       <input type="hidden" name="folderDestino" th:value="${folderActual != null ? folderActual : ''}">
     </form>
@@ -100,641 +85,809 @@
     <header class="fm-topbar">
       <div>
         <p class="fm-topbar-title">Calendario de Entrevistas</p>
+        <p class="fm-topbar-sub">Agenda y gesti&oacute;n de entrevistas</p>
       </div>
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span style="font-size:13px; color:var(--fm-text-muted);" sec:authentication="name"></span>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="position:relative;">
+          <button type="button" class="gc-bell-btn" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="gc-bell-dot" id="gc-notif-badge">0</span>
+          </button>
+          <div class="gc-notif-panel" id="gc-notif-panel">
+            <div class="gc-notif-header">
+              <span>Notificaciones</span>
+              <button class="gc-notif-leer-todas" onclick="marcarTodasNotificaciones()">Leer todas</button>
+            </div>
+            <div class="gc-notif-list"></div>
+          </div>
+        </div>
+        <button type="button" class="gc-topbar-btn" onclick="exportarCalendario()" title="Exportar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exportar
+        </button>
+        <button type="button" class="gc-topbar-btn gc-topbar-btn-primary" onclick="abrirModalCrear()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nueva Entrevista
+        </button>
       </div>
     </header>
 
+    <div class="drive-content" style="padding-bottom:0;">
+
     <div class="cal-page">
 
-      <div class="cal-header">
-        <div class="cal-header-left">
-          <h1>Calendario de Entrevistas</h1>
-          <p>Agenda y gesti&oacute;n de entrevistas con candidatos</p>
+      <!-- KPIs -->
+      <div class="cal-stats-grid">
+        <div class="cal-stat-card">
+          <div class="cal-stat-inner">
+            <div class="cal-stat-icon cal-stat-icon-turq">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+            </div>
+            <div class="cal-stat-info">
+              <p class="cal-stat-number" th:text="${totalHoy}">0</p>
+              <p class="cal-stat-label">Entrevistas hoy</p>
+              <p class="cal-stat-diff" th:classappend="${difHoy > 0} ? 'up' : (${difHoy < 0} ? 'down' : 'neutral')" th:text="${difHoy >= 0 ? '+' + difHoy : difHoy} + ' vs ayer'">0 vs ayer</p>
+            </div>
+          </div>
         </div>
-        <div class="cal-header-right" th:if="${currentUserRol == 'ROLE_RRHH'}">
-          <button type="button" class="btn btn-primary" onclick="abrirFormularioNuevo()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Nueva Entrevista
-          </button>
+        <div class="cal-stat-card">
+          <div class="cal-stat-inner">
+            <div class="cal-stat-icon cal-stat-icon-orang">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="cal-stat-info">
+              <p class="cal-stat-number" th:text="${totalPendientes}">0</p>
+              <p class="cal-stat-label">Pendientes</p>
+            </div>
+          </div>
+        </div>
+        <div class="cal-stat-card">
+          <div class="cal-stat-inner">
+            <div class="cal-stat-icon cal-stat-icon-green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="cal-stat-info">
+              <p class="cal-stat-number" th:text="${totalConfirmadas}">0</p>
+              <p class="cal-stat-label">Confirmadas</p>
+            </div>
+          </div>
+        </div>
+        <div class="cal-stat-card">
+          <div class="cal-stat-inner">
+            <div class="cal-stat-icon cal-stat-icon-purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </div>
+            <div class="cal-stat-info">
+              <p class="cal-stat-number" th:text="${totalReprogramadas}">0</p>
+              <p class="cal-stat-label">Reprogramadas</p>
+            </div>
+          </div>
+        </div>
+        <div class="cal-stat-card">
+          <div class="cal-stat-inner">
+            <div class="cal-stat-icon cal-stat-icon-red">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
+            <div class="cal-stat-info">
+              <p class="cal-stat-number" th:text="${totalCanceladas}">0</p>
+              <p class="cal-stat-label">Canceladas</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="cal-content">
-
-        <div class="cal-stats-grid">
-          <div class="stat-card stat-card-brand">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div>
-                <p class="stat-card-number" th:text="${totalHoy}">0</p>
-                <p class="stat-card-label">Entrevistas hoy</p>
-              </div>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--fm-text-muted)" stroke-width="1.5" style="opacity:0.35;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
-            </div>
-          </div>
-          <div class="stat-card stat-card-warning">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div>
-                <p class="stat-card-number" th:text="${totalPendientes}">0</p>
-                <p class="stat-card-label">Pendientes</p>
-              </div>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--fm-text-muted)" stroke-width="1.5" style="opacity:0.35;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-          </div>
-          <div class="stat-card stat-card-success">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div>
-                <p class="stat-card-number" th:text="${totalConfirmadas}">0</p>
-                <p class="stat-card-label">Confirmadas</p>
-              </div>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--fm-text-muted)" stroke-width="1.5" style="opacity:0.35;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            </div>
-          </div>
-          <div class="stat-card" style="border-left-color:#F97316;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div>
-                <p class="stat-card-number" th:text="${totalReprogramadas}">0</p>
-                <p class="stat-card-label">Reprogramadas</p>
-              </div>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--fm-text-muted)" stroke-width="1.5" style="opacity:0.35;"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            </div>
-          </div>
-          <div class="stat-card stat-card-danger">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div>
-                <p class="stat-card-number" th:text="${totalCanceladas}">0</p>
-                <p class="stat-card-label">Canceladas</p>
-              </div>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--fm-text-muted)" stroke-width="1.5" style="opacity:0.35;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="cal-main-grid">
-
-          <div class="cal-calendar-area">
-            <div class="cal-legend">
-              <div class="cal-legend-item">
-                <span class="cal-legend-dot" style="background:#EAB308;"></span>
-                Pendiente
-              </div>
-              <div class="cal-legend-item">
-                <span class="cal-legend-dot" style="background:#22C55E;"></span>
-                Confirmado
-              </div>
-              <div class="cal-legend-item">
-                <span class="cal-legend-dot" style="background:#F97316;"></span>
-                Reprogramado
-              </div>
-              <div class="cal-legend-item">
-                <span class="cal-legend-dot" style="background:#EF4444;"></span>
-                Cancelado
-              </div>
-            </div>
-
-            <div id="calendar" style="position:relative;" th:attr="data-rrhh-id=${rrhhId}"></div>
-
-            <div id="filterDropdown" class="cal-filter-dropdown">
-              <div class="cal-filter-dropdown-section">
-                <span class="cal-filters-label">Candidato</span>
-                <select id="filterCandidato" class="cal-filter-select">
-                  <option value="">Todos los candidatos</option>
-                  <option th:each="c : ${candidatos}" th:value="${c.id}"
-                          th:text="${c.username + ' ' + c.apellido}"></option>
-                </select>
-              </div>
-              <div class="cal-filter-dropdown-section">
-                <span class="cal-filters-label">Estado</span>
-                <div class="cal-filter-chips">
-                  <button type="button" class="cal-filter-chip active" data-estado="">Todos</button>
-                  <button type="button" class="cal-filter-chip" data-estado="PENDIENTE">Pendiente</button>
-                  <button type="button" class="cal-filter-chip" data-estado="CONFIRMADO">Confirmado</button>
-                  <button type="button" class="cal-filter-chip" data-estado="REPROGRAMADO">Reprogramado</button>
-                  <button type="button" class="cal-filter-chip" data-estado="CANCELADO">Cancelado</button>
-                </div>
-              </div>
-              <div class="cal-filter-dropdown-divider"></div>
-              <div class="cal-filter-dropdown-section">
-                <button type="button" id="filterMisEntrevistas" class="cal-filter-chip-mis">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  Solo mis entrevistas
-                </button>
-              </div>
-            </div>
-
-            <div class="cal-bottom-grid">
-              <div class="cal-bottom-card">
-                <p class="cal-bottom-card-label">Total de entrevistas</p>
-                <p class="cal-bottom-card-value" th:text="${totalEsteMes}">0</p>
-                <p class="cal-bottom-card-sub">este mes</p>
-              </div>
-              <div class="cal-bottom-card">
-                <p class="cal-bottom-card-label">Candidatos &uacute;nicos</p>
-                <p class="cal-bottom-card-value" th:text="${candidatosUnicosEsteMes}">0</p>
-                <p class="cal-bottom-card-sub">este mes</p>
-              </div>
-              <div class="cal-bottom-card" th:if="${proximaEntrevista != null}">
-                <p class="cal-bottom-card-label">Pr&oacute;xima entrevista</p>
-                <p class="cal-bottom-card-value" style="font-size:14px; font-weight:600;" th:text="${#temporals.format(proximaEntrevista.fecha, 'dd MMM')}"></p>
-                <div class="cal-bottom-card-proxima">
-                  <p th:text="${proximaEntrevista.candidatoNombre}"></p>
-                  <small th:text="${proximaEntrevista.hora != null ? #temporals.format(proximaEntrevista.hora, 'HH:mm') : ''}"></small>
-                </div>
-              </div>
-              <div class="cal-bottom-card" th:if="${proximaEntrevista == null}">
-                <p class="cal-bottom-card-label">Pr&oacute;xima entrevista</p>
-                <p class="cal-bottom-card-value" style="font-size:14px; font-weight:400; color:var(--fm-text-muted);">Sin programar</p>
-                <div class="cal-bottom-card-proxima">
-                  <p style="font-size:13px; color:var(--fm-text-muted);">No hay entrevistas pendientes</p>
-                </div>
-              </div>
-              <div class="cal-bottom-card">
-                <p class="cal-bottom-card-label">Lugar</p>
-                <p class="cal-bottom-card-value" style="font-size:16px; font-weight:600;"
-                   th:if="${proximaEntrevista != null && proximaEntrevista.lugar != null}"
-                   th:text="${proximaEntrevista.lugar}">—</p>
-                <p class="cal-bottom-card-value" style="font-size:16px; font-weight:400; color:var(--fm-text-muted);"
-                   th:if="${proximaEntrevista == null || proximaEntrevista.lugar == null}">—</p>
-                <p class="cal-bottom-card-sub">pr&oacute;xima entrevista</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
+      <!-- LEGEND -->
+      <div class="cal-legend">
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:#EA580C;"></span> Pendiente</div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:#16A34A;"></span> Confirmada</div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:#8B5CF6;"></span> Reprogramada</div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:#EF4444;"></span> Cancelada</div>
       </div>
+
+      <!-- MAIN GRID -->
+      <div class="cal-main-grid" id="calMainGrid">
+
+        <!-- CALENDAR -->
+        <div class="cal-calendar-area">
+          <div id="calendar" style="position:relative;" th:attr="data-rrhh-id=${rrhhId}"></div>
+          <div id="filterDropdown" class="cal-filter-dropdown">
+            <div class="cal-filter-dropdown-section">
+              <span class="cal-filter-label">Candidato</span>
+              <select id="filterCandidato" class="cal-filter-select">
+                <option value="">Todos los candidatos</option>
+                <option th:each="c : ${candidatos}" th:value="${c.id}" th:text="${c.username + ' ' + c.apellido}"></option>
+              </select>
+            </div>
+            <div class="cal-filter-dropdown-section">
+              <span class="cal-filter-label">Estado</span>
+              <div class="cal-filter-chips">
+                <button type="button" class="cal-filter-chip active" data-estado="">Todos</button>
+                <button type="button" class="cal-filter-chip" data-estado="PENDIENTE">Pendiente</button>
+                <button type="button" class="cal-filter-chip" data-estado="CONFIRMADO">Confirmado</button>
+                <button type="button" class="cal-filter-chip" data-estado="REPROGRAMADO">Reprogramado</button>
+                <button type="button" class="cal-filter-chip" data-estado="CANCELADO">Cancelado</button>
+              </div>
+            </div>
+            <div class="cal-filter-dropdown-section">
+              <button type="button" id="filterMisEntrevistas" class="cal-filter-chip-mis" style="display:inline-flex; align-items:center; gap:6px; padding:7px 16px; border-radius:8px; font-size:12px; font-weight:500; border:1px dashed #E2E8F0; background:#fff; color:#64748B; cursor:pointer; width:100%; justify-content:center; font-family:var(--fm-font); transition:all 0.15s ease;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Solo mis entrevistas
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAWER -->
+        <aside class="gc-drawer cal-drawer" id="cal-drawer"></aside>
+      </div>
+
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- MODAL CREAR ENTREVISTA -->
+<div class="cal-modal-overlay" id="calModalOverlay">
+  <div class="cal-modal-card">
+    <div class="cal-modal-header">
+      <div>
+        <h2 id="calModalTitle">Nueva Entrevista</h2>
+        <p>Programar entrevista con candidato</p>
+      </div>
+      <button type="button" class="cal-modal-close" onclick="cerrarModalCrear()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cal-modal-body">
+      <form id="calEventoForm" onsubmit="return false;">
+        <input type="hidden" name="eventoId" id="calEventoId" value="">
+        <div class="cal-modal-field">
+          <label class="cal-modal-label" for="calCandidato">Candidato <span class="required">*</span></label>
+          <select name="candidatoId" id="calCandidato" class="cal-modal-input" required>
+            <option value="">Seleccionar candidato...</option>
+            <option th:each="c : ${candidatos}" th:value="${c.id}" th:text="${c.username + ' ' + c.apellido}"></option>
+          </select>
+        </div>
+        <div class="cal-modal-field">
+          <label class="cal-modal-label" for="calVacante">Vacante</label>
+          <input type="text" name="vacante" id="calVacante" class="cal-modal-input" placeholder="Ej: Ingeniero Backend Senior" maxlength="200">
+        </div>
+        <div class="cal-modal-field">
+          <label class="cal-modal-label" for="calTipo">Tipo de entrevista <span class="required">*</span></label>
+          <select name="tipo" id="calTipo" class="cal-modal-input">
+            <option value="ENTREVISTA_INICIAL">Entrevista inicial</option>
+            <option value="ENTREVISTA_TECNICA">Entrevista t&eacute;cnica</option>
+            <option value="ENTREVISTA_FINAL">Entrevista final</option>
+            <option value="SEGUIMIENTO">Seguimiento</option>
+          </select>
+        </div>
+        <div class="cal-modal-row">
+          <div class="cal-modal-field">
+            <label class="cal-modal-label" for="calFecha">Fecha <span class="required">*</span></label>
+            <input type="date" name="fecha" id="calFecha" class="cal-modal-input" required>
+          </div>
+          <div class="cal-modal-field">
+            <label class="cal-modal-label" for="calHora">Hora <span class="required">*</span></label>
+            <input type="time" name="hora" id="calHora" class="cal-modal-input" required>
+          </div>
+        </div>
+        <div class="cal-modal-field">
+          <label class="cal-modal-label">Modalidad</label>
+          <div class="cal-modal-toggle">
+            <button type="button" class="cal-modal-toggle-btn active" data-value="VIRTUAL" onclick="selectModalidad(this)">Virtual</button>
+            <button type="button" class="cal-modal-toggle-btn" data-value="PRESENCIAL" onclick="selectModalidad(this)">Presencial</button>
+          </div>
+          <input type="hidden" name="modalidad" id="calModalidad" value="VIRTUAL">
+        </div>
+        <div class="cal-modal-field">
+          <label class="cal-modal-label" for="calLugar">Ubicaci&oacute;n o enlace</label>
+          <input type="text" name="lugar" id="calLugar" class="cal-modal-input" placeholder="Ej: https://meet.google.com/xxx" maxlength="200">
+        </div>
+        <div class="cal-modal-field">
+          <label class="cal-modal-label" for="calEntrevistador">Entrevistador</label>
+          <input type="text" name="entrevistador" id="calEntrevistador" class="cal-modal-input" placeholder="Nombre del entrevistador" maxlength="200">
+        </div>
+        <div class="cal-modal-field">
+          <label class="cal-modal-label" for="calObs">Observaciones</label>
+          <textarea name="observaciones" id="calObs" class="cal-modal-input" placeholder="Notas adicionales..." maxlength="500"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="cal-modal-footer">
+      <button type="button" class="cal-modal-btn cal-modal-btn-secondary" onclick="cerrarModalCrear()">Cancelar</button>
+      <button type="button" class="cal-modal-btn cal-modal-btn-primary" onclick="guardarEntrevista()">Crear Entrevista</button>
     </div>
   </div>
 </div>
 
-<div class="cal-backdrop" id="calBackdrop" onclick="cerrarPanel()" th:if="${currentUserRol == 'ROLE_RRHH'}"></div>
 
-<aside class="cal-side-panel" id="sidePanel" th:if="${currentUserRol == 'ROLE_RRHH'}">
-  <div class="cal-panel-header">
-    <div>
-      <h3 id="panelTitle">Nueva Entrevista</h3>
-      <p>Programar entrevista con candidato</p>
-    </div>
-    <button type="button" onclick="cerrarPanel()" style="background:none; border:none; cursor:pointer; color:var(--fm-text-muted); padding:4px;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-            <div class="cal-panel-body">
-              <form id="eventoForm">
-                <input type="hidden" name="eventoId" id="eventoId" value="">
 
-                <div class="cal-form-group" id="fgCandidato">
-                  <label for="eventoCandidato">Candidato <span class="required">*</span></label>
-                  <select name="candidatoId" id="eventoCandidato" class="cal-form-control" required>
-                    <option value="">Seleccionar candidato...</option>
-                    <option th:each="c : ${candidatos}" th:value="${c.id}"
-                            th:text="${c.username + ' ' + c.apellido}"></option>
-                  </select>
-                  <p class="cal-form-error" id="errCandidato">Selecciona un candidato</p>
-                </div>
-
-                <div class="cal-form-group" id="fgFecha">
-                  <label for="eventoFecha">Fecha <span class="required">*</span></label>
-                  <input type="date" name="fecha" id="eventoFecha" class="cal-form-control" required>
-                  <p class="cal-form-error" id="errFecha">La fecha no puede ser anterior a hoy</p>
-                </div>
-
-                <div class="cal-form-group" id="fgHora">
-                  <label for="eventoHora">Hora <span class="required">*</span></label>
-                  <input type="time" name="hora" id="eventoHora" class="cal-form-control" required>
-                  <p class="cal-form-error" id="errHora">Selecciona una hora v&aacute;lida</p>
-                </div>
-
-                <div class="cal-form-group">
-                  <label for="eventoTipo">Tipo de entrevista</label>
-                  <select name="tipo" id="eventoTipo" class="cal-form-control">
-                    <option value="ENTREVISTA_INICIAL">Entrevista inicial</option>
-                    <option value="ENTREVISTA_TECNICA">Entrevista t&eacute;cnica</option>
-                    <option value="ENTREVISTA_FINAL">Entrevista final</option>
-                    <option value="SEGUIMIENTO">Seguimiento</option>
-                  </select>
-                </div>
-
-                <div class="cal-form-group">
-                  <label for="eventoLugar">Lugar</label>
-                  <input type="text" name="lugar" id="eventoLugar" class="cal-form-control"
-                         placeholder="Ej: Google Meet, Oficina Principal" maxlength="200">
-                </div>
-
-                <div class="cal-form-group">
-                  <label for="eventoObservaciones">Observaciones</label>
-                  <textarea name="observaciones" id="eventoObservaciones" class="cal-form-control"
-                            placeholder="Notas adicionales..." maxlength="500"></textarea>
-                </div>
-
-                <div class="cal-form-group" id="fgGeneral" style="display:none;">
-                  <p class="cal-form-error visible" id="errGeneral" style="margin:0;"></p>
-                </div>
-
-                <div class="cal-panel-actions">
-                  <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">Cancelar</button>
-                  <button type="submit" class="btn btn-primary">Guardar entrevista</button>
-                </div>
-              </form>
-            </div>
-          </aside>
-
-<div class="modal fade" id="detalleModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-sm modal-dialog-centered">
-    <div class="modal-content" style="border-radius:var(--fm-radius-lg); border:none; box-shadow:var(--fm-shadow-lg);">
-      <div class="modal-header" style="border-bottom:1px solid var(--fm-border); padding:16px 20px;">
-        <h5 class="modal-title" style="font-weight:700; font-size:15px;">Detalle de entrevista</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body" style="padding:20px;">
-        <div style="margin-bottom:12px;">
-          <span id="detalleEstadoBadge" style="display:inline-block; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:600;"></span>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-          <div style="width:36px; height:36px; border-radius:50%; background:var(--fm-brand-light); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--fm-brand); font-size:14px; flex-shrink:0;" id="detalleAvatar"></div>
-          <div>
-            <p style="margin:0; font-weight:600; color:var(--fm-text); font-size:15px;" id="detalleCandidato"></p>
-            <p style="margin:0; font-size:var(--fm-size-caption); color:var(--fm-text-muted);" id="detalleFechaHora"></p>
-          </div>
-        </div>
-        <div style="padding:12px; background:var(--fm-bg); border-radius:var(--fm-radius-md); margin-bottom:12px;" th:if="true" id="detalleLugarRow">
-          <p style="margin:0; font-size:var(--fm-size-caption); color:var(--fm-text-muted);">Lugar</p>
-          <p style="margin:2px 0 0; font-size:var(--fm-size-small); font-weight:500; color:var(--fm-text);" id="detalleLugar"></p>
-        </div>
-        <div th:if="true" id="detalleObsRow">
-          <p style="margin:0 0 4px; font-size:var(--fm-size-caption); color:var(--fm-text-muted);">Observaciones</p>
-          <p style="margin:0; font-size:var(--fm-size-small); color:var(--fm-text-label);" id="detalleObservaciones"></p>
-        </div>
-      </div>
-      <div class="modal-footer" style="border-top:1px solid var(--fm-border); padding:12px 20px; flex-wrap:wrap; gap:6px;">
-        <!-- RRHH: 4 estados -->
-        <div style="display:flex; gap:6px; flex-wrap:wrap; width:100%;" th:if="${currentUserRol == 'ROLE_RRHH'}">
-          <button type="button" class="btn btn-sm" onclick="cambiarEstado(currentEventoId, 'PENDIENTE')"
-                  style="background:#FEF9C3; color:#854D0E; border:1px solid #EAB308; border-radius:6px; font-weight:600; flex:1;">Pendiente</button>
-          <button type="button" class="btn btn-sm" onclick="cambiarEstado(currentEventoId, 'CONFIRMADO')"
-                  style="background:#DCFCE7; color:#166534; border:1px solid #22C55E; border-radius:6px; font-weight:600; flex:1;">Confirmar</button>
-          <button type="button" class="btn btn-sm" onclick="cambiarEstado(currentEventoId, 'REPROGRAMADO')"
-                  style="background:#FFEDD5; color:#9A3412; border:1px solid #F97316; border-radius:6px; font-weight:600; flex:1;">Reprogramar</button>
-          <button type="button" class="btn btn-sm" onclick="cambiarEstado(currentEventoId, 'CANCELADO')"
-                  style="background:#FEE2E2; color:#991B1B; border:1px solid #EF4444; border-radius:6px; font-weight:600; flex:1;">Cancelar</button>
-        </div>
-        <!-- CANDIDATO: solo Confirmar / Cancelar -->
-        <div style="display:flex; gap:6px; flex-wrap:wrap; width:100%;" th:if="${currentUserRol == 'ROLE_CANDIDATO'}">
-          <button type="button" class="btn btn-sm" onclick="cambiarEstado(currentEventoId, 'CONFIRMADO')"
-                  style="background:#DCFCE7; color:#166534; border:1px solid #22C55E; border-radius:6px; font-weight:600; flex:1;">Aceptar entrevista</button>
-          <button type="button" class="btn btn-sm" onclick="cambiarEstado(currentEventoId, 'CANCELADO')"
-                  style="background:#FEE2E2; color:#991B1B; border:1px solid #EF4444; border-radius:6px; font-weight:600; flex:1;">Rechazar entrevista</button>
-        </div>
-        <div style="display:flex; gap:6px; width:100%; margin-top:4px;">
-          <button type="button" id="btnEliminarEvento" class="btn btn-danger btn-sm" style="flex:1;" th:if="${currentUserRol == 'ROLE_RRHH'}">Eliminar</button>
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="flex:1;">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+<script th:src="@{/js/gestion-candidatos.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  var currentUserRol = '[[${currentUserRol}]]';
-  var currentEventoId = null;
-  document.addEventListener('DOMContentLoaded', function() {
-    const calendarEl = document.getElementById('calendar');
+var currentUserRol = '[[${currentUserRol}]]';
+var calendarInstance = null;
 
-    function getEstadoInfo(estado) {
-      switch (estado) {
-        case 'CONFIRMADO': return { label: 'Confirmado', bg: '#DCFCE7', text: '#166534', dot: '#22C55E' };
-        case 'REPROGRAMADO': return { label: 'Reprogramado', bg: '#FFEDD5', text: '#9A3412', dot: '#F97316' };
-        case 'CANCELADO': return { label: 'Cancelado', bg: '#FEE2E2', text: '#991B1B', dot: '#EF4444' };
-        default: return { label: 'Pendiente', bg: '#FEF9C3', text: '#854D0E', dot: '#EAB308' };
+// ── DRAWER STATE ─────────────────────────────
+var calDrawerState = 'closed';
+var calSelectedDate = '';
+
+// ── HELPERS ──────────────────────────────────
+function getEstadoInfo(estado) {
+  switch (estado) {
+    case 'CONFIRMADO': return { label: 'Confirmado', bg: '#DCFCE7', text: '#166534', dot: '#22C55E' };
+    case 'REPROGRAMADO': return { label: 'Reprogramado', bg: '#FFEDD5', text: '#9A3412', dot: '#F97316' };
+    case 'CANCELADO': return { label: 'Cancelado', bg: '#FEE2E2', text: '#991B1B', dot: '#EF4444' };
+    default: return { label: 'Pendiente', bg: '#FEF9C3', text: '#854D0E', dot: '#EAB308' };
+  }
+}
+
+function formatTime(date) {
+  if (!date) return '--:--';
+  return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatDateEs(dateStr) {
+  var d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function getEventsForDate(dateStr) {
+  if (!calendarInstance) return [];
+  var all = calendarInstance.getEvents();
+  var result = [];
+  for (var i = 0; i < all.length; i++) {
+    var start = all[i].start;
+    if (start) {
+      var evDate = start.toISOString().split('T')[0];
+      if (evDate === dateStr) {
+        result.push(all[i]);
       }
     }
+  }
+  return result;
+}
 
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      locale: 'es',
-      firstDay: 1,
-      height: 'auto',
-      customButtons: {
-        filterButton: {
-          text: '',
-          click: function() {
-            toggleFilterDropdown();
-          }
-        }
-      },
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,dayGridDay filterButton'
-      },
-      buttonText: {
-        today: 'Hoy',
-        month: 'Mes',
-        week: 'Semana',
-        day: 'Día'
-      },
-      dayMaxEvents: 3,
-      moreLinkText: function(n) { return '+' + n + ' más'; },
-      eventContent: function(arg) {
-        let time = arg.timeText || '';
-        let name = arg.event.title.split(' — ')[0] || arg.event.title;
-        let estadoInfo = getEstadoInfo(arg.event.extendedProps.estado);
+function getInitials(fullName) {
+  if (!fullName) return '?';
+  var parts = fullName.trim().split(' ');
+  if (parts.length === 0) return '?';
+  var first = parts[0].charAt(0).toUpperCase();
+  if (parts.length === 1) return first;
+  var last = parts[parts.length - 1].charAt(0).toUpperCase();
+  return first + last;
+}
 
-        let container = document.createElement('div');
-        container.style.cssText = 'display:flex; align-items:center; gap:4px; padding:1px 0;';
+function getGcBadgeClass(estado) {
+  switch (estado) {
+    case 'CONFIRMADO': return 'gc-badge-available';
+    case 'REPROGRAMADO': return 'gc-badge-progress';
+    case 'CANCELADO': return 'gc-badge-rejected';
+    default: return 'gc-badge-pending';
+  }
+}
 
-        let dot = document.createElement('span');
-        dot.style.cssText = 'width:6px; height:6px; border-radius:50%; background:' + estadoInfo.dot + '; flex-shrink:0;';
-        container.appendChild(dot);
+function escapeHtml(str) {
+  if (!str) return '';
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
 
-        let text = document.createElement('span');
-        text.style.cssText = 'font-size:11px; line-height:1.3; color:' + estadoInfo.text + '; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;';
-        text.textContent = time + ' ' + name;
-        container.appendChild(text);
+function removeSelectedDay() {
+  document.querySelectorAll('.fc-daygrid-day.cal-day-active').forEach(function(el) {
+    el.classList.remove('cal-day-active');
+  });
+}
 
-        return { domNodes: [container] };
-      },
-      events: function(fetchInfo, successCallback, failureCallback) {
-        const start = fetchInfo.startStr.split('T')[0];
-        const end = fetchInfo.endStr.split('T')[0];
-        var candidatoId = document.getElementById('filterCandidato').value;
-        var estado = document.querySelector('.cal-filter-chip.active')?.getAttribute('data-estado') || '';
-        var misEntrevistas = document.getElementById('filterMisEntrevistas').classList.contains('active');
-        var url = '/calendario/eventos?start=' + start + '&end=' + end;
-        if (candidatoId) url += '&candidatoId=' + encodeURIComponent(candidatoId);
-        if (estado) url += '&estado=' + encodeURIComponent(estado);
-        if (misEntrevistas) url += '&rrhhId=' + encodeURIComponent(document.getElementById('calendar').dataset.rrhhId || '');
-        fetch(url)
-          .then(function(res) { return res.json(); })
-          .then(function(data) { successCallback(data); })
-          .catch(function(err) { failureCallback(err); });
-      },
-      dateClick: function(info) {
-        if (currentUserRol !== 'ROLE_RRHH') return;
-        document.getElementById('eventoFecha').value = info.dateStr;
-        document.getElementById('eventoHora').value = '10:00';
-        document.getElementById('eventoCandidato').value = '';
-        document.getElementById('eventoTipo').value = 'ENTREVISTA_INICIAL';
-        document.getElementById('eventoLugar').value = '';
-        document.getElementById('eventoObservaciones').value = '';
-        document.getElementById('eventoId').value = '';
-        document.getElementById('panelTitle').textContent = 'Nueva Entrevista';
-        abrirPanel();
-      },
-      eventClick: function(info) {
-        currentEventoId = info.event.id;
-        var props = info.event.extendedProps;
-        var estadoInfo = getEstadoInfo(props.estado);
+function highlightSelectedDay(dateStr) {
+  removeSelectedDay();
+  if (!dateStr) return;
+  var cell = document.querySelector('.fc-daygrid-day[data-date="' + dateStr + '"]');
+  if (cell) cell.classList.add('cal-day-active');
+}
 
-        document.getElementById('detalleEstadoBadge').textContent = estadoInfo.label;
-        document.getElementById('detalleEstadoBadge').style.background = estadoInfo.bg;
-        document.getElementById('detalleEstadoBadge').style.color = estadoInfo.text;
-        document.getElementById('detalleCandidato').textContent = props.candidatoNombre || '—';
+// ── DRAWER: TIMELINE VIEW ────────────────────
+function openDayDrawer(dateStr) {
+  calSelectedDate = dateStr;
+  calDrawerState = 'open';
 
-        var initials = (props.candidatoNombre || '??').split(' ').map(function(w) { return w.charAt(0); }).join('').substring(0, 2).toUpperCase();
-        document.getElementById('detalleAvatar').textContent = initials;
+  var events = getEventsForDate(dateStr);
+  var drawer = document.getElementById('cal-drawer');
+  var grid = document.getElementById('calMainGrid');
 
-        var startDate = info.event.start;
-        var options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        document.getElementById('detalleFechaHora').textContent = startDate ? startDate.toLocaleDateString('es-ES', options) : '—';
+  var d = new Date(dateStr + 'T12:00:00');
+  var dateLabel = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+  var dayName = d.toLocaleDateString('es-ES', { weekday: 'long' });
+  dayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
 
-        document.getElementById('detalleLugar').textContent = props.lugar || 'No especificado';
-        document.getElementById('detalleObservaciones').textContent = props.observaciones || 'Sin observaciones';
+  // Count by status
+  var pendientes = 0, confirmadas = 0, reprogramadas = 0, canceladas = 0;
+  for (var i = 0; i < events.length; i++) {
+    var est = events[i].extendedProps.estado || 'PENDIENTE';
+    if (est === 'PENDIENTE') pendientes++;
+    else if (est === 'CONFIRMADO') confirmadas++;
+    else if (est === 'REPROGRAMADO') reprogramadas++;
+    else if (est === 'CANCELADO') canceladas++;
+  }
 
-        var modal = new bootstrap.Modal(document.getElementById('detalleModal'));
-        modal.show();
-      }
-    });
+  // Summary
+  var summaryHtml = '<div class="cal-drawer-summary">' +
+    '<span class="cal-summary-item"><strong>' + events.length + '</strong> ' + (events.length === 1 ? 'entrevista' : 'entrevistas') + '</span>' +
+    (confirmadas > 0 ? '<span class="cal-summary-item"><span class="cal-summary-dot" style="background:#22C55E"></span>' + confirmadas + ' confirmada' + (confirmadas !== 1 ? 's' : '') + '</span>' : '') +
+    (pendientes > 0 ? '<span class="cal-summary-item"><span class="cal-summary-dot" style="background:#EAB308"></span>' + pendientes + ' pendiente' + (pendientes !== 1 ? 's' : '') + '</span>' : '') +
+    (reprogramadas > 0 ? '<span class="cal-summary-item"><span class="cal-summary-dot" style="background:#F97316"></span>' + reprogramadas + ' reprogramada' + (reprogramadas !== 1 ? 's' : '') + '</span>' : '') +
+    (canceladas > 0 ? '<span class="cal-summary-item"><span class="cal-summary-dot" style="background:#EF4444"></span>' + canceladas + ' cancelada' + (canceladas !== 1 ? 's' : '') + '</span>' : '') +
+  '</div>';
 
-    calendarInstance = calendar;
+  // Content: timeline or empty state
+  var contentHtml = '';
+  if (events.length === 0) {
+    contentHtml =
+      '<div class="cal-drawer-empty">' +
+        '<svg class="cal-drawer-empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
+        '<p class="cal-drawer-empty-title">No hay entrevistas para esta fecha</p>' +
+        '<p class="cal-drawer-empty-sub">Programa la primera entrevista.</p>' +
+        '<button type="button" class="gc-topbar-btn gc-topbar-btn-primary cal-drawer-empty-btn" onclick="abrirModalCrearParaFecha(\'' + dateStr + '\')">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+          ' Nueva entrevista' +
+        '</button>' +
+      '</div>';
+  } else {
+    contentHtml = '<div class="cal-timeline">';
+    for (var i = 0; i < events.length; i++) {
+      var ev = events[i];
+      var props = ev.extendedProps;
+      var esInfo = getEstadoInfo(props.estado);
+      var time = formatTime(ev.start);
+      var tipo = (props.tipo || 'Entrevista').replace(/_/g, ' ');
+      var nombre = props.candidatoNombre || 'Sin nombre';
+      var vacante = props.vacante || '';
+      var initials = getInitials(nombre);
+      var gcBadgeClass = getGcBadgeClass(props.estado);
+      var estadoLabel = esInfo.label;
+      var candidatoId = props.candidatoId || '';
+      var isRRHH = currentUserRol === 'ROLE_RRHH';
 
-    var hoy = new Date();
-    var eventoFecha = document.getElementById('eventoFecha');
-    if (eventoFecha) {
-      eventoFecha.setAttribute('min', hoy.toISOString().split('T')[0]);
+      contentHtml +=
+        '<div class="cal-timeline-item" id="cal-item-' + ev.id + '">' +
+          '<div class="cal-timeline-time">' + time + '</div>' +
+          '<div class="cal-timeline-line">' +
+            '<div class="cal-timeline-dot" style="background:' + esInfo.dot + '"></div>' +
+            '<div class="cal-timeline-connector"></div>' +
+          '</div>' +
+          '<div class="cal-timeline-card" onclick="toggleEventExpand(\'' + ev.id + '\')">' +
+            '<div class="cal-timeline-card-header">' +
+              '<div class="cal-timeline-card-avatar"><div class="gc-avatar">' + escapeHtml(initials) + '</div></div>' +
+              '<div class="cal-timeline-card-info">' +
+                '<div class="cal-timeline-card-name">' + escapeHtml(nombre) + '</div>' +
+                '<div class="cal-timeline-card-role">' + (vacante ? escapeHtml(vacante) : escapeHtml(tipo)) + '</div>' +
+              '</div>' +
+              '<div class="cal-timeline-badge"><span class="gc-badge ' + gcBadgeClass + '">' + estadoLabel + '</span></div>' +
+              (isRRHH ? '<div class="cal-timeline-actions"><div class="gc-actions" onclick="event.stopPropagation()">' +
+                (candidatoId ? '<button class="gc-action-btn" data-tooltip="Abrir expediente" onclick="abrirExpediente(' + candidatoId + ')">' +
+                  '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>' +
+                '</button>' : '') +
+                '<div class="gc-action-more">' +
+                  '<button class="gc-action-btn" data-tooltip="M&aacute;s acciones" onclick="toggleCalendarDropdown(this)">' +
+                    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>' +
+                  '</button>' +
+                  '<div class="gc-dropdown-menu">' +
+                    '<button onclick="reprogramarEvento(\'' + ev.id + '\')">Reprogramar</button>' +
+                    '<button onclick="cancelarEvento(\'' + ev.id + '\')">Cancelar</button>' +
+                  '</div>' +
+                '</div>' +
+              '</div></div>' : '') +
+            '</div>' +
+            '<div class="cal-timeline-detail" id="cal-detail-' + ev.id + '"></div>' +
+          '</div>' +
+        '</div>';
     }
+    contentHtml += '</div>';
+  }
 
-    calendar.render();
+  drawer.innerHTML =
+    '<div class="gc-drawer-content">' +
+      '<div class="gc-drawer-header" style="padding:16px 20px;border-bottom:none;">' +
+        '<div>' +
+          '<div class="cal-header-date">' + dateLabel + '</div>' +
+          '<span class="cal-header-day">' + dayName + '</span>' +
+        '</div>' +
+        '<div class="cal-drawer-header-actions">' +
+          '<button type="button" class="gc-topbar-btn gc-topbar-btn-primary" onclick="abrirModalCrearParaFecha(\'' + dateStr + '\')" style="white-space:nowrap;">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
+            ' Nueva' +
+          '</button>' +
+          '<button class="gc-drawer-close" onclick="closeCalendarDrawer()">' +
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>' +
+          '</button>' +
+        '</div>' +
+      '</div>' +
+      summaryHtml +
+      contentHtml +
+    '</div>';
 
-    document.getElementById('filterCandidato').addEventListener('change', function() {
+  highlightSelectedDay(dateStr);
+  grid.classList.add('drawer-open');
+}
+
+// ── DRAWER: TOGGLE EVENT EXPAND ──────────────
+function toggleEventExpand(eventoId) {
+  var detail = document.getElementById('cal-detail-' + eventoId);
+  if (!detail) return;
+
+  var item = detail.closest('.cal-timeline-item');
+  var isOpen = detail.classList.contains('expanded');
+
+  // Close all other open details
+  document.querySelectorAll('.cal-timeline-detail.expanded').forEach(function(el) {
+    el.classList.remove('expanded');
+    el.style.display = 'none';
+    var p = el.closest('.cal-timeline-item');
+    if (p) p.classList.remove('expanded');
+  });
+
+  if (isOpen) return;
+
+  // Render detail if not yet rendered
+  if (detail.getAttribute('data-rendered') !== 'true') {
+    renderEventDetail(eventoId, detail);
+  }
+
+  detail.classList.add('expanded');
+  detail.style.display = 'block';
+  if (item) item.classList.add('expanded');
+}
+
+function renderEventDetail(eventoId, detailEl) {
+  if (!calendarInstance) return;
+  var all = calendarInstance.getEvents();
+  var ev = null;
+  for (var i = 0; i < all.length; i++) {
+    if (all[i].id == eventoId) {
+      ev = all[i];
+      break;
+    }
+  }
+  if (!ev) return;
+
+  var props = ev.extendedProps;
+  var tipo = (props.tipo || 'Entrevista').replace(/_/g, ' ');
+  var candidatoId = props.candidatoId || '';
+  var isRRHH = currentUserRol === 'ROLE_RRHH';
+
+  var html = '<div class="cal-timeline-detail-inner">';
+
+  if (props.vacante) {
+    html += '<div class="cal-timeline-detail-row"><span class="cal-timeline-detail-label">Cargo postulado</span><span class="cal-timeline-detail-value">' + escapeHtml(props.vacante) + '</span></div>';
+  }
+  html += '<div class="cal-timeline-detail-row"><span class="cal-timeline-detail-label">Tipo</span><span class="cal-timeline-detail-value">' + escapeHtml(tipo) + '</span></div>';
+  html += '<div class="cal-timeline-detail-row"><span class="cal-timeline-detail-label">Modalidad</span><span class="cal-timeline-detail-value">' + escapeHtml(props.modalidad || 'No especificada') + '</span></div>';
+  html += '<div class="cal-timeline-detail-row"><span class="cal-timeline-detail-label">Ubicaci&oacute;n</span><span class="cal-timeline-detail-value">' + escapeHtml(props.lugar || 'No especificado') + '</span></div>';
+
+  if (props.entrevistador) {
+    html += '<div class="cal-timeline-detail-row"><span class="cal-timeline-detail-label">Entrevistador</span><span class="cal-timeline-detail-value">' + escapeHtml(props.entrevistador) + '</span></div>';
+  }
+  if (props.observaciones) {
+    html += '<div class="cal-timeline-detail-row"><span class="cal-timeline-detail-label">Observaciones</span><span class="cal-timeline-detail-value">' + escapeHtml(props.observaciones) + '</span></div>';
+  }
+
+  if (isRRHH && (candidatoId || eventoId)) {
+    html += '<div class="cal-timeline-detail-divider"></div>';
+    html += '<div class="cal-timeline-detail-actions">';
+    if (candidatoId) {
+      html += '<button class="cal-timeline-detail-btn" onclick="abrirExpediente(' + candidatoId + ')">Abrir expediente</button>';
+    }
+    html += '<button class="cal-timeline-detail-btn cal-timeline-detail-btn-secondary" onclick="reprogramarEvento(\'' + eventoId + '\')">Reprogramar</button>';
+    html += '<button class="cal-timeline-detail-btn cal-timeline-detail-btn-danger" onclick="cancelarEvento(\'' + eventoId + '\')">Cancelar</button>';
+    html += '</div>';
+  }
+
+  html += '</div>';
+  detailEl.innerHTML = html;
+  detailEl.setAttribute('data-rendered', 'true');
+}
+
+// ── DRAWER: NAVIGATION ───────────────────────
+function closeCalendarDrawer() {
+  calDrawerState = 'closed';
+  calSelectedDate = '';
+  var drawer = document.getElementById('cal-drawer');
+  var grid = document.getElementById('calMainGrid');
+  drawer.innerHTML = '';
+  grid.classList.remove('drawer-open');
+  removeSelectedDay();
+}
+
+// ── DROPDOWN ─────────────────────────────────
+function toggleCalendarDropdown(btn) {
+  var menu = btn.nextElementSibling;
+  if (!menu) return;
+  menu.classList.toggle('show');
+}
+
+// ── MODAL: CREATE INTERVIEW ──────────────────
+function abrirModalCrear() {
+  document.getElementById('calFecha').value = '';
+  document.getElementById('calHora').value = '10:00';
+  document.getElementById('calCandidato').value = '';
+  document.getElementById('calTipo').value = 'ENTREVISTA_INICIAL';
+  document.getElementById('calVacante').value = '';
+  document.getElementById('calLugar').value = '';
+  document.getElementById('calEntrevistador').value = '';
+  document.getElementById('calObs').value = '';
+  document.getElementById('calEventoId').value = '';
+  document.getElementById('calModalTitle').textContent = 'Nueva Entrevista';
+  document.getElementById('calModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function abrirModalCrearParaFecha(dateStr) {
+  document.getElementById('calFecha').value = dateStr;
+  document.getElementById('calHora').value = '10:00';
+  document.getElementById('calCandidato').value = '';
+  document.getElementById('calTipo').value = 'ENTREVISTA_INICIAL';
+  document.getElementById('calVacante').value = '';
+  document.getElementById('calLugar').value = '';
+  document.getElementById('calEntrevistador').value = '';
+  document.getElementById('calObs').value = '';
+  document.getElementById('calEventoId').value = '';
+  document.getElementById('calModalTitle').textContent = 'Nueva Entrevista';
+  document.getElementById('calModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalCrear() {
+  document.getElementById('calModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function selectModalidad(btn) {
+  document.querySelectorAll('.cal-modal-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('calModalidad').value = btn.dataset.value;
+}
+
+function guardarEntrevista() {
+  var form = document.getElementById('calEventoForm');
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+  var formData = new URLSearchParams(new FormData(form));
+  fetch('/calendario/crear', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData.toString()
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.success) {
+      cerrarModalCrear();
       if (calendarInstance) calendarInstance.refetchEvents();
-    });
-
-    document.querySelectorAll('.cal-filter-chip').forEach(function(chip) {
-      chip.addEventListener('click', function() {
-        document.querySelectorAll('.cal-filter-chip').forEach(function(c) { c.classList.remove('active'); });
-        this.classList.add('active');
-        if (calendarInstance) calendarInstance.refetchEvents();
-      });
-    });
-
-    document.getElementById('filterMisEntrevistas').addEventListener('click', function() {
-      this.classList.toggle('active');
-      if (calendarInstance) calendarInstance.refetchEvents();
-    });
-
-    document.addEventListener('click', function(e) {
-      var dropdown = document.getElementById('filterDropdown');
-      var btn = document.querySelector('.fc-filterButton-button');
-      if (!dropdown.classList.contains('show')) return;
-      if (!dropdown.contains(e.target) && btn && !btn.contains(e.target)) {
-        dropdown.classList.remove('show');
-      }
-    });
-
-    var eventoForm = document.getElementById('eventoForm');
-    if (eventoForm) {
-      eventoForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      limpiarErrores();
-      if (!validarFormulario()) return;
-
-      var form = this;
-      var formData = new URLSearchParams(new FormData(form));
-
-      fetch('/calendario/crear', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formData.toString()
-      })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (data.success) {
-          limpiarFormulario();
-          if (calendarInstance) calendarInstance.refetchEvents();
-        } else {
-          mostrarErrorGeneral(data.error || 'No se pudo crear la entrevista');
-        }
-      })
-      .catch(function(err) { mostrarErrorGeneral('Error al guardar: ' + err.message); });
-    });
+      location.reload();
+    } else {
+      alert(data.error || 'No se pudo crear la entrevista');
     }
+  })
+  .catch(function(err) { alert('Error: ' + err.message); });
+}
 
-    var btnEliminar = document.getElementById('btnEliminarEvento');
-    if (btnEliminar) {
-      btnEliminar.addEventListener('click', function() {
-      if (!currentEventoId) return;
-      if (!confirm('¿Eliminar esta entrevista?')) return;
-      fetch('/calendario/eliminar/' + currentEventoId, { method: 'POST' })
+// ── EVENT ACTIONS ────────────────────────────
+function cambiarEstado(id, nuevoEstado) {
+  if (!id) return;
+  var estados = { PENDIENTE: 'Pendiente', CONFIRMADO: 'Confirmado', REPROGRAMADO: 'Reprogramado', CANCELADO: 'Cancelado' };
+  if (!confirm('\u00bfCambiar estado a "' + (estados[nuevoEstado] || nuevoEstado) + '"?')) return;
+  fetch('/calendario/cambiar-estado/' + id, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'estado=' + encodeURIComponent(nuevoEstado)
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.success) {
+      if (calendarInstance) calendarInstance.refetchEvents();
+      location.reload();
+    } else {
+      alert('Error: ' + (data.error || 'No se pudo cambiar el estado'));
+    }
+  })
+  .catch(function(err) { alert('Error: ' + err.message); });
+}
+
+function cancelarEvento(eventoId) {
+  if (!confirm('\u00bfEst\u00e1s seguro de cancelar esta entrevista?')) return;
+  cambiarEstado(eventoId, 'CANCELADO');
+}
+
+function reprogramarEvento(eventoId) {
+  if (!calendarInstance) return;
+  var events = calendarInstance.getEvents();
+  var ev = null;
+  for (var i = 0; i < events.length; i++) {
+    if (events[i].id == eventoId) {
+      ev = events[i];
+      break;
+    }
+  }
+  if (!ev) return;
+
+  var props = ev.extendedProps;
+  var dateStr = ev.start ? ev.start.toISOString().split('T')[0] : '';
+
+  document.getElementById('calFecha').value = dateStr;
+  document.getElementById('calHora').value = formatTime(ev.start);
+  document.getElementById('calCandidato').value = props.candidatoId || '';
+  document.getElementById('calTipo').value = props.tipo || 'ENTREVISTA_INICIAL';
+  document.getElementById('calVacante').value = props.vacante || '';
+  document.getElementById('calLugar').value = props.lugar || '';
+  document.getElementById('calEntrevistador').value = props.entrevistador || '';
+  document.getElementById('calObs').value = props.observaciones || '';
+  document.getElementById('calEventoId').value = eventoId;
+  document.getElementById('calModalTitle').textContent = 'Reprogramar Entrevista';
+
+  cambiarEstado(eventoId, 'REPROGRAMADO');
+  document.getElementById('calModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function abrirExpediente(candidatoId) {
+  window.location.href = '/gestion-candidatos';
+}
+
+function exportarCalendario() {
+  var params = new URLSearchParams();
+  var candidatoId = document.getElementById('filterCandidato').value;
+  var estado = document.querySelector('.cal-filter-chip.active')?.getAttribute('data-estado') || '';
+  var misEntrevistas = document.getElementById('filterMisEntrevistas').classList.contains('active');
+  if (candidatoId) params.set('candidatoId', candidatoId);
+  if (estado) params.set('estado', estado);
+  if (misEntrevistas && calendarInstance) {
+    params.set('rrhhId', document.getElementById('calendar').dataset.rrhhId || '');
+  }
+  if (calendarInstance) {
+    var view = calendarInstance.view;
+    params.set('start', view.activeStart.toISOString().split('T')[0]);
+    params.set('end', view.activeEnd.toISOString().split('T')[0]);
+  }
+  window.location.href = '/calendario/export?' + params.toString();
+}
+
+function solicitarNombreCarpeta() {
+  var nombre = prompt('Nombre de la carpeta:');
+  if (nombre && nombre.trim()) {
+    document.getElementById('inputNombreCarpeta').value = nombre.trim();
+    document.getElementById('formCrearCarpeta').submit();
+  }
+}
+
+function toggleFilterDropdown() {
+  document.getElementById('filterDropdown').classList.toggle('show');
+}
+
+// ── FULLCALENDAR INIT ────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'es',
+    firstDay: 1,
+    height: 'auto',
+    customButtons: {
+      filterButton: {
+        text: '',
+        click: function() { toggleFilterDropdown(); }
+      }
+    },
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,dayGridDay filterButton'
+    },
+    buttonText: {
+      today: 'Hoy',
+      month: 'Mes',
+      week: 'Semana',
+      day: 'D\u00eda'
+    },
+    dayMaxEvents: 2,
+    moreLinkText: function(n) { return '+' + n + ' entrevistas'; },
+    eventContent: function(arg) {
+      var time = arg.timeText || '';
+      var name = arg.event.title.split(' \u2014 ')[0] || arg.event.title;
+      var estadoInfo = getEstadoInfo(arg.event.extendedProps.estado);
+      var container = document.createElement('div');
+      container.style.cssText = 'display:flex; align-items:center; gap:4px; padding:1px 0;';
+      var dot = document.createElement('span');
+      dot.style.cssText = 'width:6px; height:6px; border-radius:50%; background:' + estadoInfo.dot + '; flex-shrink:0;';
+      container.appendChild(dot);
+      var text = document.createElement('span');
+      text.style.cssText = 'font-size:11px; line-height:1.3; color:' + estadoInfo.text + '; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;';
+      text.textContent = time + ' ' + name;
+      container.appendChild(text);
+      return { domNodes: [container] };
+    },
+    datesSet: function() {
+      if (calDrawerState === 'closed') removeSelectedDay();
+      else if (calSelectedDate) highlightSelectedDay(calSelectedDate);
+    },
+    events: function(fetchInfo, successCallback, failureCallback) {
+      var start = fetchInfo.startStr.split('T')[0];
+      var end = fetchInfo.endStr.split('T')[0];
+      var candidatoId = document.getElementById('filterCandidato').value;
+      var estado = document.querySelector('.cal-filter-chip.active')?.getAttribute('data-estado') || '';
+      var misEntrevistas = document.getElementById('filterMisEntrevistas').classList.contains('active');
+      var url = '/calendario/eventos?start=' + start + '&end=' + end;
+      if (candidatoId) url += '&candidatoId=' + encodeURIComponent(candidatoId);
+      if (estado) url += '&estado=' + encodeURIComponent(estado);
+      if (misEntrevistas) url += '&rrhhId=' + encodeURIComponent(document.getElementById('calendar').dataset.rrhhId || '');
+      fetch(url)
         .then(function(res) { return res.json(); })
-        .then(function(data) {
-          if (data.success) {
-            var modal = bootstrap.Modal.getInstance(document.getElementById('detalleModal'));
-            modal.hide();
-            if (calendarInstance) calendarInstance.refetchEvents();
-          } else {
-            alert('Error: ' + (data.error || 'No se pudo eliminar'));
-          }
-        })
-        .catch(function(err) { alert('Error al eliminar: ' + err.message); });
-    });
+        .then(function(data) { successCallback(data); })
+        .catch(function(err) { failureCallback(err); });
+    },
+    dateClick: function(info) {
+      openDayDrawer(info.dateStr);
+    },
+    eventClick: function(info) {
+      if (calDrawerState === 'open') {
+        toggleEventExpand(info.event.id);
+      } else {
+        var dateStr = info.event.start ? info.event.start.toISOString().split('T')[0] : '';
+        if (dateStr) {
+          openDayDrawer(dateStr);
+          setTimeout(function() { toggleEventExpand(info.event.id); }, 50);
+        }
+      }
     }
   });
 
-  function abrirPanel() {
-    var panel = document.getElementById('sidePanel');
-    if (!panel) return;
-    panel.classList.add('open');
-    document.getElementById('calBackdrop').classList.add('open');
-    document.body.style.overflow = 'hidden';
+  calendarInstance = calendar;
+
+  var hoy = new Date();
+  var eventoFecha = document.getElementById('calFecha');
+  if (eventoFecha) {
+    eventoFecha.setAttribute('min', hoy.toISOString().split('T')[0]);
   }
 
-  function cerrarPanel() {
-    document.getElementById('sidePanel')?.classList.remove('open');
-    document.getElementById('calBackdrop')?.classList.remove('open');
-    document.body.style.overflow = '';
-  }
+  calendar.render();
 
-  function abrirFormularioNuevo() {
-    limpiarErrores();
-    var hoy = new Date().toISOString().split('T')[0];
-    document.getElementById('eventoFecha').value = hoy;
-    document.getElementById('eventoFecha').setAttribute('min', hoy);
-    document.getElementById('eventoHora').value = '10:00';
-    document.getElementById('eventoCandidato').value = '';
-    document.getElementById('eventoTipo').value = 'ENTREVISTA_INICIAL';
-    document.getElementById('eventoLugar').value = '';
-    document.getElementById('eventoObservaciones').value = '';
-    document.getElementById('eventoId').value = '';
-    document.getElementById('panelTitle').textContent = 'Nueva Entrevista';
-    abrirPanel();
-  }
+  document.getElementById('filterCandidato').addEventListener('change', function() {
+    if (calendarInstance) calendarInstance.refetchEvents();
+  });
 
-  function limpiarFormulario() {
-    limpiarErrores();
-    document.getElementById('eventoForm').reset();
-    document.getElementById('eventoId').value = '';
-    document.getElementById('panelTitle').textContent = 'Nueva Entrevista';
-    cerrarPanel();
-  }
+  document.querySelectorAll('.cal-filter-chip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      document.querySelectorAll('.cal-filter-chip').forEach(function(c) { c.classList.remove('active'); });
+      this.classList.add('active');
+      if (calendarInstance) calendarInstance.refetchEvents();
+    });
+  });
 
-  var calendarInstance = null;
+  document.getElementById('filterMisEntrevistas').addEventListener('click', function() {
+    this.classList.toggle('active');
+    if (calendarInstance) calendarInstance.refetchEvents();
+  });
 
-  function toggleFilterDropdown() {
+  document.addEventListener('click', function(e) {
     var dropdown = document.getElementById('filterDropdown');
-    dropdown.classList.toggle('show');
-  }
-
-  function cambiarEstado(id, nuevoEstado) {
-    if (!id) return;
-    var estados = { PENDIENTE: 'Pendiente', CONFIRMADO: 'Confirmado', REPROGRAMADO: 'Reprogramado', CANCELADO: 'Cancelado' };
-    if (!confirm('¿Cambiar estado a "' + (estados[nuevoEstado] || nuevoEstado) + '"?')) return;
-    fetch('/calendario/cambiar-estado/' + id, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'estado=' + encodeURIComponent(nuevoEstado)
-    })
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-      if (data.success) {
-        var modal = bootstrap.Modal.getInstance(document.getElementById('detalleModal'));
-        modal.hide();
-        if (calendarInstance) calendarInstance.refetchEvents();
-      } else {
-        alert('Error: ' + (data.error || 'No se pudo cambiar el estado'));
-      }
-    })
-    .catch(function(err) { alert('Error: ' + err.message); });
-  }
-
-  function limpiarErrores() {
-    document.querySelectorAll('.cal-form-group.is-invalid').forEach(function(el) {
-      el.classList.remove('is-invalid');
-    });
-    document.querySelectorAll('.cal-form-control.is-invalid').forEach(function(el) {
-      el.classList.remove('is-invalid');
-    });
-    var g = document.getElementById('fgGeneral');
-    g.style.display = 'none';
-  }
-
-  function mostrarError(campoId, errorId) {
-    var fg = document.getElementById('fg' + campoId);
-    if (fg) fg.classList.add('is-invalid');
-    var input = document.getElementById('evento' + campoId);
-    if (input) input.classList.add('is-invalid');
-  }
-
-  function mostrarErrorGeneral(msg) {
-    var g = document.getElementById('fgGeneral');
-    g.style.display = 'block';
-    document.getElementById('errGeneral').textContent = msg;
-  }
-
-  function validarFormulario() {
-    var valido = true;
-    var hoy = new Date();
-    var hoyStr = hoy.toISOString().split('T')[0];
-
-    var candidato = document.getElementById('eventoCandidato').value;
-    if (!candidato) {
-      mostrarError('Candidato', 'errCandidato');
-      valido = false;
+    var btn = document.querySelector('.fc-filterButton-button');
+    if (!dropdown.classList.contains('show')) return;
+    if (!dropdown.contains(e.target) && btn && !btn.contains(e.target)) {
+      dropdown.classList.remove('show');
     }
+  });
 
-    var fechaStr = document.getElementById('eventoFecha').value;
-    if (!fechaStr) {
-      mostrarError('Fecha', 'errFecha');
-      valido = false;
-    } else if (fechaStr < hoyStr) {
-      mostrarError('Fecha', 'errFecha');
-      valido = false;
+  // Close calendar action dropdowns on outside click
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.gc-action-more')) {
+      document.querySelectorAll('.gc-dropdown-menu.show').forEach(function(m) {
+        m.classList.remove('show');
+      });
     }
-
-    var horaStr = document.getElementById('eventoHora').value;
-    if (!horaStr) {
-      mostrarError('Hora', 'errHora');
-      valido = false;
-    } else if (fechaStr === hoyStr) {
-      var partes = horaStr.split(':');
-      var horaSel = new Date();
-      horaSel.setHours(parseInt(partes[0]), parseInt(partes[1]), 0, 0);
-      var ahora = new Date();
-      if (horaSel <= ahora) {
-        document.getElementById('errHora').textContent = 'La hora seleccionada ya pasó';
-        mostrarError('Hora', 'errHora');
-        valido = false;
-      }
-    }
-
-    if (!valido) {
-      var firstError = document.querySelector('.cal-form-group.is-invalid .cal-form-control');
-      if (firstError) firstError.focus();
-    }
-
-    return valido;
-  }
-
-  function solicitarNombreCarpeta() {
-    var nombre = prompt('Nombre de la carpeta:');
-    if (nombre && nombre.trim()) {
-      document.getElementById('inputNombreCarpeta').value = nombre.trim();
-      document.getElementById('formCrearCarpeta').submit();
-    }
-  }
+  });
+});
 </script>
 </body>
 </html>
