@@ -22,8 +22,9 @@ public class EventoService {
     private UsuarioRepository usuarioRepository;
 
     public Evento crearEvento(Long candidatoId, LocalDate fecha, LocalTime hora,
-                              String tipo, String lugar, String observaciones,
-                              String estado, Long rrhhId) {
+                              String tipo, String lugar, String vacante,
+                              String modalidad, String entrevistador,
+                              String observaciones, String estado, Long rrhhId) {
 
         if (fecha.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha no puede ser anterior a hoy");
@@ -59,10 +60,22 @@ public class EventoService {
         evento.setTipo(tipo != null ? tipo : "ENTREVISTA_INICIAL");
         evento.setEstado(estado != null ? estado : "PENDIENTE");
         evento.setLugar(lugar);
+        evento.setVacante(vacante);
+        evento.setModalidad(modalidad);
+        evento.setEntrevistador(entrevistador);
         evento.setObservaciones(observaciones);
         evento.setRrhhId(rrhhId);
 
         return eventoRepository.save(evento);
+    }
+
+    public List<Evento> obtenerProximasEntrevistas(int limite) {
+        return eventoRepository.findByFechaAfterOrderByFechaAscHoraAsc(LocalDate.now().minusDays(1))
+                .stream().limit(limite).toList();
+    }
+
+    public long contarFecha(LocalDate fecha) {
+        return eventoRepository.countByFecha(fecha);
     }
 
     public List<Evento> obtenerEventosEnRango(LocalDate start, LocalDate end) {

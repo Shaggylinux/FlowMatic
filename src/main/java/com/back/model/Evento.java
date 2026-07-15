@@ -32,6 +32,12 @@ public class Evento {
 
     private String lugar;
 
+    private String vacante;
+
+    private String modalidad;
+
+    private String entrevistador;
+
     private String observaciones;
 
     @Column(nullable = false)

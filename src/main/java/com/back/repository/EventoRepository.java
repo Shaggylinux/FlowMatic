@@ -13,6 +13,8 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     List<Evento> findByFechaBetween(LocalDate start, LocalDate end);
 
+    List<Evento> findByFechaAfterOrderByFechaAscHoraAsc(LocalDate fecha);
+
     long countByFecha(LocalDate fecha);
 
     long countByEstado(String estado);
