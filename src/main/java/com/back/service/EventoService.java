@@ -98,6 +98,52 @@ public class EventoService {
         return eventoRepository.save(evento);
     }
 
+    public Evento actualizarEvento(Long id, LocalDate fecha, LocalTime hora,
+                                    String tipo, String lugar, String vacante,
+                                    String modalidad, String entrevistador,
+                                    String observaciones) {
+        Evento evento = eventoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
+
+        if (fecha.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha no puede ser anterior a hoy");
+        }
+        if (fecha.equals(LocalDate.now()) && hora.isBefore(LocalTime.now().withSecond(0).withNano(0))) {
+            throw new IllegalArgumentException("La hora seleccionada ya pas\u00f3");
+        }
+        if (hora.isBefore(LocalTime.of(7, 0)) || hora.isAfter(LocalTime.of(19, 0))) {
+            throw new IllegalArgumentException("La hora debe estar entre 07:00 y 19:00");
+        }
+        if (lugar != null && lugar.length() > 200) {
+            throw new IllegalArgumentException("El lugar no puede tener m\u00e1s de 200 caracteres");
+        }
+        if (observaciones != null && observaciones.length() > 500) {
+            throw new IllegalArgumentException("Las observaciones no pueden tener m\u00e1s de 500 caracteres");
+        }
+
+        evento.setFecha(fecha);
+        evento.setHora(hora);
+        evento.setTipo(tipo != null ? tipo : "ENTREVISTA_INICIAL");
+        evento.setEstado("REPROGRAMADO");
+        evento.setLugar(lugar);
+        evento.setVacante(vacante);
+        evento.setModalidad(modalidad);
+        evento.setEntrevistador(entrevistador);
+        evento.setObservaciones(observaciones);
+
+        return eventoRepository.save(evento);
+    }
+
+    public Evento actualizarObservaciones(Long id, String observaciones) {
+        Evento evento = eventoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
+        if (observaciones != null && observaciones.length() > 500) {
+            throw new IllegalArgumentException("Las observaciones no pueden tener m\u00e1s de 500 caracteres");
+        }
+        evento.setObservaciones(observaciones);
+        return eventoRepository.save(evento);
+    }
+
     public long contarHoy() {
         return eventoRepository.countByFecha(LocalDate.now());
     }

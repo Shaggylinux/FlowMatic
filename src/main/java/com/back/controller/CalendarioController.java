@@ -197,7 +197,52 @@ public class CalendarioController {
                     "Entrevista agendada: " + candidatoNombre + " — " + (tipo != null ? tipo : "Entrevista") + " el " + fecha.toString(),
                     candidatoId, candidatoNombre, "/calendario");
             } catch (Exception emailEx) {
-                logger.warn("No se pudo enviar el email de confirmación: {}", emailEx.getMessage());
+                logger.warn("No se pudo enviar el email de confirmaci\u00f3n: {}", emailEx.getMessage());
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+
+        return response;
+    }
+
+    @PostMapping("/actualizar/{id}")
+    @ResponseBody
+    public Map<String, Object> actualizarEvento(
+            @PathVariable Long id,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime hora,
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) String lugar,
+            @RequestParam(required = false) String vacante,
+            @RequestParam(required = false) String modalidad,
+            @RequestParam(required = false) String entrevistador,
+            @RequestParam(required = false) String observaciones,
+            Principal principal) {
+
+        Map<String, Object> response = new HashMap<>();
+        Usuario rrhh = obtenerUsuario(principal);
+
+        if (rrhh == null || !"ROLE_RRHH".equals(rrhh.getRol())) {
+            response.put("success", false);
+            response.put("error", "No autorizado");
+            return response;
+        }
+
+        try {
+            eventoService.actualizarEvento(id, fecha, hora, tipo, lugar, vacante, modalidad, entrevistador, observaciones);
+            response.put("success", true);
+
+            try {
+                Evento evento = eventoService.buscarPorId(id);
+                if (evento != null) {
+                    notificacionService.crear("ENTREVISTA",
+                        "Entrevista reprogramada: " + evento.getCandidatoNombre() + " \u2014 " + (tipo != null ? tipo : "Entrevista") + " el " + fecha.toString(),
+                        evento.getCandidatoId(), evento.getCandidatoNombre(), "/calendario");
+                }
+            } catch (Exception notifEx) {
+                logger.warn("No se pudo enviar notificaci\u00f3n de reprogramaci\u00f3n: {}", notifEx.getMessage());
             }
         } catch (Exception e) {
             response.put("success", false);
@@ -280,6 +325,47 @@ public class CalendarioController {
             response.put("success", false);
             response.put("error", e.getMessage());
         }
+        return response;
+    }
+
+    @PostMapping("/{id}/nota")
+    @ResponseBody
+    public Map<String, Object> guardarNota(
+            @PathVariable Long id,
+            @RequestParam String observaciones,
+            Principal principal) {
+
+        Map<String, Object> response = new HashMap<>();
+        Usuario user = obtenerUsuario(principal);
+        if (user == null) {
+            response.put("success", false);
+            response.put("error", "Usuario no encontrado");
+            return response;
+        }
+
+        Evento evento = eventoService.buscarPorId(id);
+        if (evento == null) {
+            response.put("success", false);
+            response.put("error", "Evento no encontrado");
+            return response;
+        }
+
+        if ("ROLE_CANDIDATO".equals(user.getRol())) {
+            if (!evento.getCandidatoId().equals(user.getId())) {
+                response.put("success", false);
+                response.put("error", "No autorizado");
+                return response;
+            }
+        }
+
+        try {
+            eventoService.actualizarObservaciones(id, observaciones);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+
         return response;
     }
 

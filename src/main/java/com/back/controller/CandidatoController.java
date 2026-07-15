@@ -71,7 +71,8 @@ public class CandidatoController {
                                   @RequestParam(required = false) String cargo,
                                   @RequestParam(required = false) String estado,
                                   @RequestParam(required = false) String experiencia,
-                                  @RequestParam(required = false) String ciudad) {
+                                  @RequestParam(required = false) String ciudad,
+                                  @RequestParam(required = false) Long selectedId) {
 
         Page<Usuario> candidatos = candidatoService.listarCandidatos(
             search, cargo, estado, experiencia, ciudad, page, size);
@@ -103,7 +104,14 @@ public class CandidatoController {
         List<Integer> expOptions = Arrays.asList(1, 2, 3, 5, 10);
         model.addAttribute("experienciaOptions", expOptions);
 
+        model.addAttribute("selectedId", selectedId);
+
         return "gestion-candidatos";
+    }
+
+    @GetMapping("/detalle/{id}")
+    public String verDetalle(@PathVariable Long id) {
+        return "redirect:/gestion-candidatos?selectedId=" + id;
     }
 
     @GetMapping("/api")

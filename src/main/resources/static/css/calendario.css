@@ -395,6 +395,9 @@
   transition: all 0.15s ease;
   border: none;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   background: var(--fm-brand);
   color: #fff;
 }
@@ -453,6 +456,9 @@
   align-items: center;
   gap: 6px;
 }
+
+/* Badge reprogramado (naranja) — compatible con GC */
+.gc-badge-reprogramado { background: #FFEDD5; color: #9A3412; }
 
 /* ── FULLCALENDAR OVERRIDES ─────────────────── */
 
