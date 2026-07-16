@@ -16,21 +16,13 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El nombre es obligatorio")
-    @Column(nullable = false)
-    private String username;
-
-    @NotBlank(message = "El apellido es obligatorio")
-    @Column(nullable = false)
-    private String apellido;
-
     @NotBlank(message = "El correo es obligatorio")
-    @Email(message = "Ingresa un correo válido")
+    @Email(message = "Ingresa un correo v\u00e1lido")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 8, message = "La contraseña debe tener mínimo 8 caracteres")
+    @NotBlank(message = "La contrase\u00f1a es obligatoria")
+    @Size(min = 8, message = "La contrase\u00f1a debe tener m\u00ednimo 8 caracteres")
     @Column(nullable = false)
     private String clave;
 
@@ -42,33 +34,6 @@ public class Usuario {
 
     @Column(unique = true)
     private String tokenactivacion;
-
-    private String telefono;
-
-    private String estado;
-
-    private String cargo;
-
-    private String ciudad;
-
-    private String linkedin;
-
-    private String tecnologias;
-
-    private String idiomas;
-
-    private Integer experiencia;
-
-    private String disponibilidad;
-
-    @Column(name = "proceso_actual")
-    private String procesoActual;
-
-    @Column(name = "foto_url")
-    private String fotoUrl;
-
-    @Column(name = "ultima_actualizacion")
-    private LocalDateTime ultimaActualizacion;
 
     @Column(name = "fecha_creacion_token")
     private LocalDateTime fechaCreacionToken;

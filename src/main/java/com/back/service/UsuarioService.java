@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.back.model.Candidato;
 import com.back.model.Usuario;
+import com.back.repository.CandidatoRepository;
 import com.back.repository.UsuarioRepository;
-import com.back.service.FilesServices;
 
 @Service
 public class UsuarioService {
@@ -22,6 +23,9 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private CandidatoRepository candidatoRepository;
+
+    @Autowired
     private EmailService emailService;
 
     @Autowired
@@ -29,10 +33,9 @@ public class UsuarioService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public String registrarUsuario(Usuario usuario) {
+    public String registrarUsuario(Usuario usuario, String username, String apellido) {
 
         logger.info("Iniciando registro de usuario: {}", usuario.getEmail());
-
 
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             logger.warn("Correo duplicado: {}", usuario.getEmail());
@@ -49,26 +52,29 @@ public class UsuarioService {
         usuario.setTokenactivacion(token);
         usuario.setActivo(false);
         usuario.setFechaCreacionToken(LocalDateTime.now());
-        usuarioRepository.save(usuario);
-
-        usuarioRepository.save(usuario);
-        logger.info("Usuario guardado en BD: {}", usuario.getEmail());
+        usuario = usuarioRepository.save(usuario);
 
         if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
+            Candidato candidato = new Candidato();
+            candidato.setId(usuario.getId());
+            candidato.setUsername(username);
+            candidato.setApellido(apellido);
+            candidatoRepository.save(candidato);
+
             filesServices.crearCarpetaCandidato(usuario.getEmail());
         }
 
-        logger.info("Intentando enviar email de verificación a: {}", usuario.getEmail());
+        logger.info("Intentando enviar email de verificaci\u00f3n a: {}", usuario.getEmail());
 
         boolean emailSent = emailService.enviarEmailVerificacion(
                 usuario.getEmail(),
-                usuario.getUsername(),
+                username,
                 token);
 
         if (emailSent) {
             logger.info("Email enviado correctamente");
         } else {
-            logger.warn("Email no pudo ser enviado, pero el usuario se registró");
+            logger.warn("Email no pudo ser enviado, pero el usuario se registr\u00f3");
         }
 
         return "EXITOSO";
@@ -80,25 +86,25 @@ public class UsuarioService {
 
     public void regenerarYReenviarToken(String tokenViejo) {
         Usuario usuario = usuarioRepository.findByTokenactivacion(tokenViejo).orElse(null);
-        
+
         if (usuario != null) {
             String nuevoToken = UUID.randomUUID().toString();
             usuario.setTokenactivacion(nuevoToken);
-            usuario.setFechaCreacionToken(LocalDateTime.now()); 
+            usuario.setFechaCreacionToken(LocalDateTime.now());
             usuarioRepository.save(usuario);
-            
-            emailService.enviarEmailVerificacion(usuario.getEmail(), usuario.getUsername(), nuevoToken);
+
+            String nombre = obtenerNombreOApellido(usuario);
+            emailService.enviarEmailVerificacion(usuario.getEmail(), nombre, nuevoToken);
         }
     }
 
     public boolean activarCuenta(String token) {
-
-        logger.info("Buscando token de activación: {}", token);
+        logger.info("Buscando token de activaci\u00f3n: {}", token);
 
         var optional = usuarioRepository.findByTokenactivacion(token);
 
         if (optional.isEmpty()) {
-            logger.warn("Token no encontrado o inválido");
+            logger.warn("Token no encontrado o inv\u00e1lido");
             return false;
         }
 
@@ -113,7 +119,6 @@ public class UsuarioService {
     }
 
     public void generarTokenRecuperacion(String email) {
-
         var optional = usuarioRepository.findByEmail(email);
 
         if (optional.isEmpty()) {
@@ -124,21 +129,13 @@ public class UsuarioService {
 
         String token = UUID.randomUUID().toString();
         usuario.setTokenactivacion(token);
-
-        if (usuario.getApellido() == null || usuario.getApellido().isBlank()) {
-            usuario.setApellido("N/A");
-        }
-
         usuarioRepository.save(usuario);
 
-        emailService.enviarEmailRecuperacion(
-                email,
-                usuario.getUsername(),
-                token);
+        String nombre = obtenerNombreOApellido(usuario);
+        emailService.enviarEmailRecuperacion(email, nombre, token);
     }
 
     public boolean cambiarPassword(String token, String nuevaPassword) {
-
         var optional = usuarioRepository.findByTokenactivacion(token);
 
         if (optional.isEmpty()) {
@@ -153,5 +150,14 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
 
         return true;
+    }
+
+    private String obtenerNombreOApellido(Usuario usuario) {
+        if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
+            return candidatoRepository.findById(usuario.getId())
+                    .map(c -> c.getUsername() + " " + c.getApellido())
+                    .orElse("Usuario");
+        }
+        return "Usuario";
     }
 }

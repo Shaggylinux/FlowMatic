@@ -1,6 +1,8 @@
 package com.back.controller;
 
+import com.back.model.RegistroRequest;
 import com.back.model.Usuario;
+import com.back.model.Candidato;
 import com.back.service.UsuarioService;
 import jakarta.validation.Valid;
 
@@ -22,28 +24,27 @@ public class RegistroController {
 
     @GetMapping
     public String mostrarFormulario(Model model) {
-        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("registro", new RegistroRequest());
         return "registro-candidato";
     }
 
     @PostMapping
     public String procesarRegistro(
-        @Valid @ModelAttribute("usuario") Usuario usuario,
+        @Valid @ModelAttribute("registro") RegistroRequest registro,
         BindingResult resultado,
         Model model,
         @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
-
-    if (usuario.getRol() == null || usuario.getRol().isEmpty()){
-        usuario.setRol("ROLE_CANDIDATO");
-    }
 
     if (resultado.hasErrors()) {
         return "registro-candidato";
     }
 
-    usuario.setUltimaActualizacion(java.time.LocalDateTime.now());
+    Usuario usuario = new Usuario();
+    usuario.setEmail(registro.getEmail());
+    usuario.setClave(registro.getClave());
+    usuario.setRol("ROLE_CANDIDATO");
 
-    String respuesta = usuarioService.registrarUsuario(usuario);
+    String respuesta = usuarioService.registrarUsuario(usuario, registro.getUsername(), registro.getApellido());
 
     if ("DUPLICADO".equals(respuesta)) {
         model.addAttribute("errorDuplicado", true);
@@ -59,7 +60,7 @@ public class RegistroController {
 
     @GetMapping(params = "pendiente")
     public String registropendiente(Model model){
-        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("registro", new RegistroRequest());
         model.addAttribute("mensajePendiente", true);
         return "registro-candidato";
     }
@@ -106,25 +107,24 @@ public class RegistroController {
         } else {
             model.addAttribute("mensajePendiente", true);
             model.addAttribute("errorVerificacion", true);
-            model.addAttribute("usuario", new Usuario());
+            model.addAttribute("registro", new RegistroRequest());
             return "registro-candidato";
         }
     }
 
     @PostMapping("/api")
     @ResponseBody
-    public ResponseEntity<?> registrarDesdeModal(@Valid @RequestBody Usuario usuario, BindingResult resultado) {
+    public ResponseEntity<?> registrarDesdeModal(@Valid @RequestBody RegistroRequest registro, BindingResult resultado) {
+        if (resultado.hasErrors()) {
+            return ResponseEntity.badRequest().body("Datos inv\u00e1lidos");
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setEmail(registro.getEmail());
+        usuario.setClave(registro.getClave());
         usuario.setRol("ROLE_CANDIDATO");
 
-        if (resultado.hasErrors()) {
-            return ResponseEntity.badRequest().body("Datos inválidos");
-        }
-
-        if (usuario.getRol() == null || usuario.getRol().isEmpty()){
-            usuario.setRol("ROLE_CANDIDATO");
-        }
-
-        String respuesta = usuarioService.registrarUsuario(usuario);
+        String respuesta = usuarioService.registrarUsuario(usuario, registro.getUsername(), registro.getApellido());
 
         if ("DUPLICADO".equals(respuesta)) {
             return ResponseEntity.status(409).body("El usuario ya existe");

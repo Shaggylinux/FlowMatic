@@ -36,7 +36,7 @@
         Este correo ya está registrado.
       </div>
 
-      <form th:action="@{/registro/candidato}" th:object="${usuario}" method="post" id="formRegistro">
+      <form th:action="@{/registro/candidato}" th:object="${registro}" method="post" id="formRegistro">
 
         <div class="form-group">
           <label class="form-label">Nombre</label>
@@ -82,12 +82,6 @@
           <label class="form-label">Ciudad</label>
           <input class="form-input" type="text" th:field="*{ciudad}" maxlength="100"
                  placeholder="Ej: Lima, Perú"/>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">LinkedIn</label>
-          <input class="form-input" type="url" th:field="*{linkedin}" maxlength="255"
-                 placeholder="https://linkedin.com/in/tu-perfil"/>
         </div>
 
         <div class="form-group">

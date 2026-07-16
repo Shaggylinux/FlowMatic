@@ -8,19 +8,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.back.model.Archivos;
 import com.back.model.Usuario;
+import com.back.model.Candidato;
 import org.springframework.http.HttpHeaders;
 import org.springframework.core.io.Resource;
 import com.back.repository.ArchivosRepository;
 import com.back.repository.UsuarioRepository;
+import com.back.repository.CandidatoRepository;
 import org.springframework.ui.Model;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/drive")
@@ -34,6 +33,9 @@ public class DriveController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private CandidatoRepository candidatoRepository;
+
     @jakarta.annotation.PostConstruct
     public void init() {
         try {
@@ -42,27 +44,23 @@ public class DriveController {
                 Files.createDirectories(rutaRaiz);
             }
         } catch (IOException e) {
-            System.err.println("Error: No se pudo crear la carpeta raíz: " + e.getMessage());
+            System.err.println("Error: No se pudo crear la carpeta ra\u00edz: " + e.getMessage());
         }
     }
 
     @GetMapping
     public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder,
-            java.security.Principal principal, Model model) {
+            Principal principal, Model model) {
         String loginId = (principal != null) ? principal.getName() : null;
         if (loginId == null)
             return "redirect:/login";
 
-        Usuario usuarioActual = usuarioRepository.findByUsername(loginId);
-        if (usuarioActual == null) {
-            usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
-        }
+        Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
 
-        String usernameReal = (usuarioActual != null) ? usuarioActual.getUsername() : loginId;
         String emailReal = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
 
         Set<Archivos> conjuntoTodo = new HashSet<>();
-        List<Archivos> listaPorUser = filesRepository.buscarArchivosVisiblesPara(usernameReal);
+        List<Archivos> listaPorUser = filesRepository.buscarArchivosVisiblesPara(emailReal);
         List<Archivos> listaPorEmail = filesRepository.buscarArchivosVisiblesPara(emailReal);
         if (listaPorUser != null) conjuntoTodo.addAll(listaPorUser);
         if (listaPorEmail != null) conjuntoTodo.addAll(listaPorEmail);
@@ -86,145 +84,156 @@ public class DriveController {
                 })
                 .toList();
 
-        model.addAttribute("usuarioActualObjeto", usuarioActual != null ? usuarioActual : new Usuario());
+        Map<String, Object> usuarioData = new HashMap<>();
+        if (usuarioActual != null) {
+            usuarioData.put("id", usuarioActual.getId());
+            usuarioData.put("email", usuarioActual.getEmail());
+            usuarioData.put("rol", usuarioActual.getRol());
+            usuarioData.put("activo", usuarioActual.isActivo());
+
+            if ("ROLE_CANDIDATO".equals(usuarioActual.getRol())) {
+                Candidato candidato = candidatoRepository.findById(usuarioActual.getId()).orElse(null);
+                if (candidato != null) {
+                    usuarioData.put("username", candidato.getUsername());
+                    usuarioData.put("apellido", candidato.getApellido());
+                    usuarioData.put("estado", candidato.getEstado() != null ? candidato.getEstado() : "Registrado");
+                }
+            }
+        }
+
+        model.addAttribute("usuarioActualObjeto", usuarioData);
         model.addAttribute("usuarioActual", loginId);
         model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
         model.addAttribute("archivos", archivosEnEstaCarpeta);
         model.addAttribute("folderActual", folderActualURL);
-        model.addAttribute("listaCandidatos", usuarioRepository.findByRol("ROLE_CANDIDATO"));
+        List<Candidato> candidatoList = candidatoRepository.findAll();
+        List<Map<String, Object>> candidatosConEmail = new ArrayList<>();
+        for (Candidato c : candidatoList) {
+            Map<String, Object> cm = new HashMap<>();
+            cm.put("id", c.getId());
+            cm.put("username", c.getUsername());
+            cm.put("apellido", c.getApellido());
+            cm.put("estado", c.getEstado() != null ? c.getEstado() : "Registrado");
+            usuarioRepository.findById(c.getId()).ifPresent(u -> cm.put("email", u.getEmail()));
+            candidatosConEmail.add(cm);
+        }
+        model.addAttribute("listaCandidatos", candidatosConEmail);
 
         return "drive";
     }
 
     @PostMapping("/crear-carpeta")
     public String crearCarpeta(@RequestParam("nombre") String nombre,
-            @RequestParam("folderDestino") String folderDestino,
-            java.security.Principal principal) {
-        Path rutaFisica = Paths.get(ROOT_DIR, nombre);
+                                Principal principal, Model model) {
+        String loginId = (principal != null) ? principal.getName() : null;
+        if (loginId == null) return "redirect:/login";
+
+        Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
+        String email = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
+
+        if (nombre == null || nombre.trim().isEmpty()) return "redirect:/drive";
+
+        String rutaSinSuper = nombre.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+        String rutaCarpeta = ROOT_DIR + rutaSinSuper + "/";
+
         try {
-            if (!Files.exists(rutaFisica)) {
-                Files.createDirectories(rutaFisica);
-                Archivos carpeta = new Archivos();
-                carpeta.setNombre(nombre);
-                carpeta.setUbicacion(rutaFisica.toString().replace("\\", "/"));
-                carpeta.setEsCarpeta(true);
-                carpeta.setPropietario(principal.getName());
-                filesRepository.save(carpeta);
-            }
+            Files.createDirectories(Paths.get(rutaCarpeta));
+            Archivos carpeta = new Archivos();
+            carpeta.setNombre(rutaSinSuper);
+            carpeta.setUbicacion(rutaCarpeta);
+            carpeta.setEsCarpeta(true);
+            carpeta.setPropietario(email);
+            filesRepository.save(carpeta);
         } catch (IOException e) {
-            e.printStackTrace();
+            model.addAttribute("error", "No se pudo crear la carpeta: " + e.getMessage());
+            return "redirect:/drive";
         }
-        return "redirect:/drive?folder=" + folderDestino.replace("\\", "/");
+        return "redirect:/drive?folder=" + nombre;
     }
 
     @PostMapping("/subir-archivo")
-    public String subirArchivo(@RequestParam("archivo") MultipartFile file,
-            @RequestParam("folderDestino") String folderDestino,
-            java.security.Principal principal) {
-        if (file.isEmpty())
-            return "redirect:/drive?folder=" + folderDestino;
-        String folderLimpio = folderDestino.replace(ROOT_DIR, "").replace("\\", "/").trim();
-        Path directorioFisico = Paths.get(ROOT_DIR, folderLimpio);
-        try {
-            if (!Files.exists(directorioFisico))
-                Files.createDirectories(directorioFisico);
-            Path rutaArchivoFinal = directorioFisico.resolve(file.getOriginalFilename());
-            Files.copy(file.getInputStream(), rutaArchivoFinal, StandardCopyOption.REPLACE_EXISTING);
-            Archivos nuevoArchivo = new Archivos();
-            nuevoArchivo.setNombre(file.getOriginalFilename());
-            nuevoArchivo.setUbicacion(rutaArchivoFinal.toString().replace("\\", "/"));
-            nuevoArchivo.setPropietario(principal.getName());
-            nuevoArchivo.setEsCarpeta(false);
-            filesRepository.save(nuevoArchivo);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "redirect:/drive?folder=" + folderLimpio;
-    }
+    public String subirArchivo(@RequestParam("archivo") MultipartFile archivo,
+                                @RequestParam("folder") String folder,
+                                Principal principal) {
+        String loginId = (principal != null) ? principal.getName() : null;
+        if (loginId == null) return "redirect:/login";
 
-    @PostMapping("/eliminar")
-    public String eliminarArchivo(@RequestParam Long archivoId, java.security.Principal principal) {
-        filesRepository.findById(archivoId).ifPresent(archivo -> {
-            if (archivo.getPropietario().equals(principal.getName())) {
-                try {
-                    Files.deleteIfExists(Paths.get(archivo.getUbicacion()));
-                    filesRepository.delete(archivo);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        return "redirect:/drive";
+        Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
+        String email = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
+
+        folder = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+
+        try {
+            String rutaDestino = ROOT_DIR + (folder.isEmpty() ? "" : folder + "/") + archivo.getOriginalFilename();
+            Path rutaCompleta = Paths.get(rutaDestino);
+            Files.createDirectories(rutaCompleta.getParent());
+            Files.copy(archivo.getInputStream(), rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
+
+            Archivos doc = new Archivos();
+            doc.setNombre(archivo.getOriginalFilename());
+            doc.setUbicacion(rutaDestino);
+            doc.setPropietario(email);
+            filesRepository.save(doc);
+        } catch (IOException e) {
+            return "redirect:/drive?folder=" + folder;
+        }
+
+        return "redirect:/drive?folder=" + folder;
     }
 
     @GetMapping("/descargar")
-    public ResponseEntity<Resource> descargarArchivo(@RequestParam Long archivoId) {
-        return filesRepository.findById(archivoId).map(archivo -> {
-            try {
-                Path ruta = Paths.get(archivo.getUbicacion());
-                Resource recurso = new UrlResource(ruta.toUri());
-                if (recurso.exists() || recurso.isReadable()) {
-                    return ResponseEntity.ok()
-                            .header(HttpHeaders.CONTENT_DISPOSITION,
-                                    "attachment; filename=\"" + archivo.getNombre() + "\"")
-                            .body(recurso);
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            return ResponseEntity.notFound().<Resource>build();
-        }).orElse(ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/compartir")
-    public String compartirArchivo(@RequestParam("archivoId") Long archivoId,
-            @RequestParam("emailDestinatario") String emailDestinatario,
-            java.security.Principal principal) {
-        filesRepository.findById(archivoId).ifPresent(archivo -> {
-            if (archivo.getPropietario().equals(principal.getName())) {
-                archivo.setDestinario(emailDestinatario);
-                filesRepository.save(archivo);
-            }
-        });
-        return "redirect:/drive";
-    }
-
-    @PostMapping("/actualizar-estado")
-    public String actualizarEstado(@RequestParam("usuarioId") Long usuarioId,
-            @RequestParam("nuevoEstado") String nuevoEstado) {
-
-        Optional<Usuario> userOpt = usuarioRepository.findById(usuarioId);
-        if (userOpt.isPresent()) {
-            Usuario u = userOpt.get();
-            u.setEstado(nuevoEstado);
-            usuarioRepository.save(u);
+    public ResponseEntity<Resource> descargarArchivo(@RequestParam("fileId") Long fileId) {
+        Optional<Archivos> archivoOpt = filesRepository.findById(fileId);
+        if (archivoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-
-        return "redirect:/drive";
+        Archivos archivo = archivoOpt.get();
+        try {
+            Path path = Paths.get(archivo.getUbicacion()).normalize();
+            Resource resource = new UrlResource(path.toUri());
+            if (!resource.exists()) return ResponseEntity.notFound().build();
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + archivo.getNombre() + "\"")
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @GetMapping("/ver-archivo/{archivoId}")
-    public ResponseEntity<Resource> previsualizar(@PathVariable Long archivoId) {
-        return filesRepository.findById(archivoId).map(archivo -> {
-            try {
-                Path path = Paths.get(archivo.getUbicacion());
-                Resource recurso = new UrlResource(path.toUri());
+    @PostMapping("/eliminar")
+    public String eliminarArchivo(@RequestParam("fileId") Long fileId,
+                                   @RequestParam(value = "folder", defaultValue = "") String folder) {
+        Optional<Archivos> archivoOpt = filesRepository.findById(fileId);
+        if (archivoOpt.isEmpty()) return "redirect:/drive?folder=" + folder;
+        Archivos archivo = archivoOpt.get();
+        try {
+            Path path = Paths.get(archivo.getUbicacion());
+            Files.deleteIfExists(path);
+        } catch (IOException ignored) {}
+        filesRepository.delete(archivo);
 
-                if (recurso.exists() || recurso.isReadable()) {
-                    String contentType = Files.probeContentType(path);
-                    if (contentType == null) {
-                        contentType = "application/octet-stream";
-                    }
+        return "redirect:/drive?folder=" + folder;
+    }
 
-                    return ResponseEntity.ok()
-                            .header(HttpHeaders.CONTENT_TYPE, contentType)
-                            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + archivo.getNombre() + "\"")
-                            .body(recurso);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return ResponseEntity.notFound().<Resource>build();
-        }).orElse(ResponseEntity.notFound().build());
+    @GetMapping("/ver-archivo/{id}")
+    public ResponseEntity<Resource> verArchivo(@PathVariable Long id) {
+        Optional<Archivos> archivoOpt = filesRepository.findById(id);
+        if (archivoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Archivos archivo = archivoOpt.get();
+        try {
+            Path path = Paths.get(archivo.getUbicacion()).normalize();
+            Resource resource = new UrlResource(path.toUri());
+            if (!resource.exists()) return ResponseEntity.notFound().build();
+            String contentType = Files.probeContentType(path);
+            if (contentType == null) contentType = "application/octet-stream";
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + archivo.getNombre() + "\"")
+                    .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
+                    .body(resource);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

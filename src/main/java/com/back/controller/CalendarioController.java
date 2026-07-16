@@ -2,7 +2,11 @@ package com.back.controller;
 
 import com.back.model.Evento;
 import com.back.model.Usuario;
+import com.back.model.Candidato;
+import com.back.model.RRHH;
 import com.back.repository.UsuarioRepository;
+import com.back.repository.CandidatoRepository;
+import com.back.repository.RRHHRepository;
 import com.back.service.EmailService;
 import com.back.service.EventoService;
 import com.back.service.ExcelService;
@@ -37,6 +41,12 @@ public class CalendarioController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private CandidatoRepository candidatoRepository;
+
+    @Autowired
+    private RRHHRepository rrhhRepository;
+
+    @Autowired
     private NotificacionService notificacionService;
 
     @Autowired
@@ -47,7 +57,7 @@ public class CalendarioController {
 
     @GetMapping
     public String verCalendario(Model model, Principal principal) {
-        List<Usuario> candidatos = usuarioRepository.findByRol("ROLE_CANDIDATO");
+        List<Candidato> candidatos = candidatoRepository.findAll();
         model.addAttribute("candidatos", candidatos);
 
         Usuario user = obtenerUsuario(principal);
@@ -152,11 +162,7 @@ public class CalendarioController {
 
     private Usuario obtenerUsuario(Principal principal) {
         if (principal == null) return null;
-        Usuario user = usuarioRepository.findByUsername(principal.getName());
-        if (user == null) {
-            user = usuarioRepository.findByEmail(principal.getName()).orElse(null);
-        }
-        return user;
+        return usuarioRepository.findByEmail(principal.getName()).orElse(null);
     }
 
     @PostMapping("/crear")
@@ -189,9 +195,14 @@ public class CalendarioController {
             response.put("eventoId", evento.getId());
 
             try {
-                Usuario candidato = usuarioRepository.findById(candidatoId).orElse(null);
+                Candidato candidato = candidatoRepository.findById(candidatoId).orElse(null);
                 String candidatoNombre = candidato != null ? candidato.getUsername() + " " + candidato.getApellido() : "Candidato";
-                emailService.enviarEmailEntrevista(rrhh.getEmail(), rrhh.getUsername(), evento, candidatoNombre);
+                String rrhhNombre = rrhh.getEmail();
+                RRHH rrhhProfile = rrhhRepository.findById(rrhh.getId()).orElse(null);
+                if (rrhhProfile != null) {
+                    rrhhNombre = rrhhProfile.getUsername() + " " + rrhhProfile.getApellido();
+                }
+                emailService.enviarEmailEntrevista(rrhh.getEmail(), rrhhNombre, evento, candidatoNombre);
 
                 notificacionService.crear("ENTREVISTA",
                     "Entrevista agendada: " + candidatoNombre + " — " + (tipo != null ? tipo : "Entrevista") + " el " + fecha.toString(),

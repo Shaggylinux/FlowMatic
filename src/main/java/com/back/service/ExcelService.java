@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import com.back.model.Usuario;
+import com.back.model.Candidato;
 import com.back.model.Evento;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -21,7 +22,7 @@ public class ExcelService {
         Sheet sheet = workbook.createSheet("Usuarios");
 
         Row row = sheet.createRow(0);
-        String[] columnas = {"ID", "Username", "Apellido", "Email", "Rol", "Activo", "Etapa"};
+        String[] columnas = {"ID", "Email", "Rol", "Activo"};
         
         for (int i = 0; i < columnas.length; i++) {
             Cell cell = row.createCell(i);
@@ -32,24 +33,16 @@ public class ExcelService {
         for (Usuario u : usuarios) {
             Row dataRow = sheet.createRow(rowIdx++);
             dataRow.createCell(0).setCellValue(u.getId());
-            dataRow.createCell(1).setCellValue(u.getUsername());
-            dataRow.createCell(2).setCellValue(u.getApellido());
-            dataRow.createCell(3).setCellValue(u.getEmail());
-            dataRow.createCell(4).setCellValue(u.getRol());
-            dataRow.createCell(5).setCellValue(u.isActivo() ? "T" : "F");
-            
-            if(u.getEstado() == null){
-                dataRow.createCell(6).setCellValue("Registrado");
-            } else {
-                dataRow.createCell(6).setCellValue(u.getEstado());
-            }
+            dataRow.createCell(1).setCellValue(u.getEmail());
+            dataRow.createCell(2).setCellValue(u.getRol());
+            dataRow.createCell(3).setCellValue(u.isActivo() ? "T" : "F");
         }
 
         workbook.write(response.getOutputStream());
         workbook.close();
     }
 
-    public void exportarCandidatos(List<Usuario> candidatos, HttpServletResponse response) throws IOException {
+    public void exportarCandidatos(List<Candidato> candidatos, HttpServletResponse response) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Candidatos");
 
@@ -61,21 +54,21 @@ public class ExcelService {
         }
 
         int rowIdx = 1;
-        for (Usuario u : candidatos) {
+        for (Candidato c : candidatos) {
             Row r = sheet.createRow(rowIdx++);
-            r.createCell(0).setCellValue(u.getId());
-            r.createCell(1).setCellValue(u.getUsername() != null ? u.getUsername() : "");
-            r.createCell(2).setCellValue(u.getApellido() != null ? u.getApellido() : "");
-            r.createCell(3).setCellValue(u.getEmail() != null ? u.getEmail() : "");
-            r.createCell(4).setCellValue(u.getTelefono() != null ? u.getTelefono() : "");
-            r.createCell(5).setCellValue(u.getCargo() != null ? u.getCargo() : "");
-            r.createCell(6).setCellValue(u.getCiudad() != null ? u.getCiudad() : "");
-            r.createCell(7).setCellValue(u.getExperiencia() != null ? u.getExperiencia() : 0);
-            r.createCell(8).setCellValue(u.getDisponibilidad() != null ? u.getDisponibilidad() : "");
-            r.createCell(9).setCellValue(u.getTecnologias() != null ? u.getTecnologias() : "");
-            r.createCell(10).setCellValue(u.getIdiomas() != null ? u.getIdiomas() : "");
-            r.createCell(11).setCellValue(u.getEstado() != null ? u.getEstado() : "Registrado");
-            r.createCell(12).setCellValue(u.getProcesoActual() != null ? u.getProcesoActual() : "");
+            r.createCell(0).setCellValue(c.getId());
+            r.createCell(1).setCellValue(c.getUsername() != null ? c.getUsername() : "");
+            r.createCell(2).setCellValue(c.getApellido() != null ? c.getApellido() : "");
+            r.createCell(3).setCellValue("");
+            r.createCell(4).setCellValue(c.getTelefono() != null ? c.getTelefono() : "");
+            r.createCell(5).setCellValue(c.getCargo() != null ? c.getCargo() : "");
+            r.createCell(6).setCellValue(c.getCiudad() != null ? c.getCiudad() : "");
+            r.createCell(7).setCellValue(c.getExperiencia() != null ? c.getExperiencia() : 0);
+            r.createCell(8).setCellValue(c.getDisponibilidad() != null ? c.getDisponibilidad() : "");
+            r.createCell(9).setCellValue(c.getTecnologias() != null ? c.getTecnologias() : "");
+            r.createCell(10).setCellValue(c.getIdiomas() != null ? c.getIdiomas() : "");
+            r.createCell(11).setCellValue(c.getEstado() != null ? c.getEstado() : "Registrado");
+            r.createCell(12).setCellValue(c.getProcesoActual() != null ? c.getProcesoActual() : "");
         }
 
         workbook.write(response.getOutputStream());

@@ -1,6 +1,7 @@
 package com.back.service;
 
-import com.back.model.Usuario;
+import com.back.model.Candidato;
+import com.back.repository.CandidatoRepository;
 import com.back.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,10 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +18,9 @@ import java.util.Map;
 
 @Service
 public class CandidatoService {
+
+    @Autowired
+    private CandidatoRepository candidatoRepository;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -34,20 +35,20 @@ public class CandidatoService {
 
     public long contarNuevos() {
         LocalDateTime since = LocalDateTime.now().minusDays(30);
-        return usuarioRepository.countByRolAndUltimaActualizacionAfter("ROLE_CANDIDATO", since);
+        return candidatoRepository.countByUltimaActualizacionAfter(since);
     }
 
     public long contarEnProceso() {
-        return usuarioRepository.countByRolAndEstadoIn("ROLE_CANDIDATO", ESTADOS_EN_PROCESO);
+        return candidatoRepository.countByEstadoIn(ESTADOS_EN_PROCESO);
     }
 
     public long contarContratables() {
         LocalDateTime since = LocalDateTime.now().minusDays(90);
-        List<Usuario> candidatos = usuarioRepository.findByRol("ROLE_CANDIDATO");
+        List<Candidato> candidatos = candidatoRepository.findAll();
         return candidatos.stream()
-            .filter(u -> u.getUltimaActualizacion() != null && u.getUltimaActualizacion().isAfter(since))
-            .filter(u -> u.getCargo() != null && !u.getCargo().isBlank())
-            .filter(u -> u.getTecnologias() != null && !u.getTecnologias().isBlank())
+            .filter(c -> c.getUltimaActualizacion() != null && c.getUltimaActualizacion().isAfter(since))
+            .filter(c -> c.getCargo() != null && !c.getCargo().isBlank())
+            .filter(c -> c.getTecnologias() != null && !c.getTecnologias().isBlank())
             .count();
     }
 
@@ -57,16 +58,16 @@ public class CandidatoService {
         LocalDateTime weekAgo = now.minusDays(7);
         LocalDateTime twoWeeksAgo = now.minusDays(14);
 
-        long actual = usuarioRepository.countByRolAndUltimaActualizacionAfter("ROLE_CANDIDATO", weekAgo);
-        long anterior = usuarioRepository.countByRolAndUltimaActualizacionAfter("ROLE_CANDIDATO", twoWeeksAgo);
+        long actual = candidatoRepository.countByUltimaActualizacionAfter(weekAgo);
+        long anterior = candidatoRepository.countByUltimaActualizacionAfter(twoWeeksAgo);
 
         comp.put("nuevosActual", actual);
         comp.put("nuevosAnterior", anterior);
         return comp;
     }
 
-    public Page<Usuario> listarCandidatos(String search, String cargo, String estado,
-                                           String experiencia, String ciudad, int page, int size) {
+    public Page<Candidato> listarCandidatos(String search, String cargo, String estado,
+                                             String experiencia, String ciudad, int page, int size) {
         Integer expMin = null;
         if (experiencia != null && !experiencia.isBlank()) {
             try { expMin = Integer.parseInt(experiencia); } catch (NumberFormatException ignored) {}
@@ -78,15 +79,14 @@ public class CandidatoService {
         String ciudadVal = (ciudad != null && !ciudad.isBlank()) ? "%" + ciudad + "%" : null;
 
         Pageable pageable = PageRequest.of(page, size, Sort.unsorted());
-        return usuarioRepository.findCandidatosFiltrados(searchVal, cargoVal, estadoVal, expMin, ciudadVal, pageable);
+        return candidatoRepository.findFiltrados(searchVal, cargoVal, estadoVal, expMin, ciudadVal, pageable);
     }
 
-    public int calcularMatchScore(Usuario candidato) {
+    public int calcularMatchScore(Candidato candidato) {
         int score = 0;
 
         if (candidato.getCargo() != null && !candidato.getCargo().isBlank()) score += 5;
         if (candidato.getCiudad() != null && !candidato.getCiudad().isBlank()) score += 5;
-        if (candidato.getLinkedin() != null && !candidato.getLinkedin().isBlank()) score += 5;
         if (candidato.getTelefono() != null && !candidato.getTelefono().isBlank()) score += 5;
 
         if (candidato.getExperiencia() != null && candidato.getExperiencia() > 0) {
@@ -111,7 +111,7 @@ public class CandidatoService {
         if (candidato.getDisponibilidad() != null && !candidato.getDisponibilidad().isBlank()) {
             String disp = candidato.getDisponibilidad().toLowerCase();
             if (disp.contains("inmediata")) score += 15;
-            else if (disp.contains("semana") || disp.contains("día")) score += 10;
+            else if (disp.contains("semana") || disp.contains("d\u00eda")) score += 10;
             else score += 5;
         }
 
@@ -122,20 +122,20 @@ public class CandidatoService {
         if (score >= 80) return "Excelente perfil";
         if (score >= 60) return "Buena coincidencia";
         if (score >= 40) return "Perfil en desarrollo";
-        return "Perfil básico";
+        return "Perfil b\u00e1sico";
     }
 
     public List<String> getCargos() {
-        return usuarioRepository.findDistinctCargosByRolCandidato();
+        return candidatoRepository.findDistinctCargos();
     }
 
     public List<String> getCiudades() {
-        return usuarioRepository.findDistinctCiudadesByRolCandidato();
+        return candidatoRepository.findDistinctCiudades();
     }
 
-    public List<Usuario> listarCandidatosSinPaginar(String search, String estado) {
+    public List<Candidato> listarCandidatosSinPaginar(String search, String estado) {
         String searchVal = (search != null && !search.isBlank()) ? "%" + search + "%" : null;
         String estadoVal = (estado != null && !estado.isBlank()) ? estado : null;
-        return usuarioRepository.findCandidatosFiltradosSinPaginar(searchVal, estadoVal);
+        return candidatoRepository.findFiltradosSinPaginar(searchVal, estadoVal);
     }
 }

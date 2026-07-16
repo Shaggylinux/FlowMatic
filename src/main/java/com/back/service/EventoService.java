@@ -1,9 +1,9 @@
 package com.back.service;
 
 import com.back.model.Evento;
-import com.back.model.Usuario;
+import com.back.model.Candidato;
 import com.back.repository.EventoRepository;
-import com.back.repository.UsuarioRepository;
+import com.back.repository.CandidatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public class EventoService {
     private EventoRepository eventoRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private CandidatoRepository candidatoRepository;
 
     public Evento crearEvento(Long candidatoId, LocalDate fecha, LocalTime hora,
                               String tipo, String lugar, String vacante,
@@ -49,7 +49,7 @@ public class EventoService {
             throw new IllegalArgumentException("Las observaciones no pueden tener más de 500 caracteres");
         }
 
-        Usuario candidato = usuarioRepository.findById(candidatoId)
+        Candidato candidato = candidatoRepository.findById(candidatoId)
                 .orElseThrow(() -> new IllegalArgumentException("Candidato no encontrado"));
 
         Evento evento = new Evento();

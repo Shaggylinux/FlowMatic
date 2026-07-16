@@ -1,6 +1,6 @@
 package com.back.service;
 
-import com.back.model.Usuario;
+import com.back.model.Candidato;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -13,7 +13,7 @@ import java.io.IOException;
 @Service
 public class CvService {
 
-    public void generarCv(Usuario candidato, HttpServletResponse response) throws IOException {
+    public void generarCv(Candidato candidato, String email, HttpServletResponse response) throws IOException {
         XWPFDocument doc = new XWPFDocument();
 
         String nombre = candidato.getUsername() != null ? candidato.getUsername() : "";
@@ -30,20 +30,20 @@ public class CvService {
         titleRun.setColor("0D9488");
 
         addSection(doc, "Contacto");
-        addLine(doc, "Email: " + (candidato.getEmail() != null ? candidato.getEmail() : "—"));
+        addLine(doc, "Email: " + (email != null ? email : "\u2014"));
         if (candidato.getTelefono() != null && !candidato.getTelefono().isBlank())
-            addLine(doc, "Teléfono: " + candidato.getTelefono());
+            addLine(doc, "Tel\u00e9fono: " + candidato.getTelefono());
         if (candidato.getCiudad() != null && !candidato.getCiudad().isBlank())
-            addLine(doc, "Ubicación: " + candidato.getCiudad());
+            addLine(doc, "Ubicaci\u00f3n: " + candidato.getCiudad());
 
         addSection(doc, "Perfil Profesional");
         if (candidato.getCargo() != null && !candidato.getCargo().isBlank())
             addLine(doc, "Cargo deseado: " + candidato.getCargo());
         int exp = candidato.getExperiencia() != null ? candidato.getExperiencia() : 0;
-        addLine(doc, "Experiencia: " + exp + " años");
+        addLine(doc, "Experiencia: " + exp + " a\u00f1os");
 
         if (candidato.getTecnologias() != null && !candidato.getTecnologias().isBlank()) {
-            addSection(doc, "Habilidades Técnicas");
+            addSection(doc, "Habilidades T\u00e9cnicas");
             for (String tech : candidato.getTecnologias().split(",")) {
                 String t = tech.trim();
                 if (!t.isEmpty()) addBullet(doc, t);
@@ -96,7 +96,7 @@ public class CvService {
         p.setSpacingBefore(30);
         p.setSpacingAfter(30);
         XWPFRun r = p.createRun();
-        r.setText("•  " + text);
+        r.setText("\u2022  " + text);
         r.setFontSize(11);
         r.setFontFamily("Calibri");
         r.setColor("334155");

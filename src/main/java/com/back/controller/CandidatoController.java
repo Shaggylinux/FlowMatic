@@ -1,9 +1,11 @@
 package com.back.controller;
 
 import com.back.model.Usuario;
+import com.back.model.Candidato;
 import com.back.model.Archivos;
 import com.back.model.Evento;
 import com.back.repository.UsuarioRepository;
+import com.back.repository.CandidatoRepository;
 import com.back.repository.ArchivosRepository;
 import com.back.repository.EventoRepository;
 import com.back.service.CandidatoService;
@@ -40,6 +42,9 @@ public class CandidatoController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private CandidatoRepository candidatoRepository;
+
+    @Autowired
     private EventoService eventoService;
 
     @Autowired
@@ -74,7 +79,7 @@ public class CandidatoController {
                                   @RequestParam(required = false) String ciudad,
                                   @RequestParam(required = false) Long selectedId) {
 
-        Page<Usuario> candidatos = candidatoService.listarCandidatos(
+        Page<Candidato> candidatos = candidatoService.listarCandidatos(
             search, cargo, estado, experiencia, ciudad, page, size);
 
         model.addAttribute("activos", candidatoService.contarActivos());
@@ -124,19 +129,24 @@ public class CandidatoController {
                                           @RequestParam(required = false) String experiencia,
                                           @RequestParam(required = false) String ciudad) {
 
-        Page<Usuario> candidatos = candidatoService.listarCandidatos(
+        Page<Candidato> candidatos = candidatoService.listarCandidatos(
             search, cargo, estado, experiencia, ciudad, page, size);
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
 
+        List<Long> ids = candidatos.getContent().stream().map(Candidato::getId).collect(Collectors.toList());
+        Map<Long, Usuario> usuarioMap = usuarioRepository.findAllById(ids).stream()
+            .collect(Collectors.toMap(Usuario::getId, u -> u));
+
         List<Map<String, Object>> data = candidatos.getContent().stream().map(c -> {
             Map<String, Object> m = new LinkedHashMap<>();
+            Usuario u = usuarioMap.get(c.getId());
             m.put("id", c.getId());
             m.put("nombre", c.getUsername());
             m.put("apellido", c.getApellido() != null ? c.getApellido() : "");
             m.put("ciudad", c.getCiudad() != null ? c.getCiudad() : "");
             m.put("cargo", c.getCargo() != null ? c.getCargo() : "");
-            m.put("email", c.getEmail());
+            m.put("email", u != null ? u.getEmail() : "");
             m.put("telefono", c.getTelefono() != null ? c.getTelefono() : "");
             m.put("estado", c.getEstado() != null ? c.getEstado() : "Registrado");
             m.put("procesoActual", c.getProcesoActual() != null ? c.getProcesoActual() : "");
@@ -160,32 +170,32 @@ public class CandidatoController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<?> detalleCandidato(@PathVariable Long id) {
-        Optional<Usuario> opt = usuarioRepository.findById(id);
-        if (opt.isEmpty()) {
+        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        if (candidato == null) {
             return ResponseEntity.notFound().build();
         }
-        Usuario c = opt.get();
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+
         Map<String, Object> m = new LinkedHashMap<>();
-        m.put("id", c.getId());
-        m.put("nombre", c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : ""));
-        m.put("apellido", c.getApellido() != null ? c.getApellido() : "");
-        m.put("email", c.getEmail());
-        m.put("telefono", c.getTelefono() != null ? c.getTelefono() : "");
-        m.put("cargo", c.getCargo() != null ? c.getCargo() : "");
-        m.put("ciudad", c.getCiudad() != null ? c.getCiudad() : "");
-        m.put("linkedin", c.getLinkedin() != null ? c.getLinkedin() : "");
-        m.put("tecnologias", c.getTecnologias() != null ? c.getTecnologias() : "");
-        m.put("idiomas", c.getIdiomas() != null ? c.getIdiomas() : "");
-        m.put("experiencia", c.getExperiencia() != null ? c.getExperiencia() : 0);
-        m.put("disponibilidad", c.getDisponibilidad() != null ? c.getDisponibilidad() : "");
-        m.put("estado", c.getEstado() != null ? c.getEstado() : "Registrado");
-        m.put("procesoActual", c.getProcesoActual() != null ? c.getProcesoActual() : "");
-        m.put("fotoUrl", c.getFotoUrl() != null ? c.getFotoUrl() : "");
-        m.put("matchScore", candidatoService.calcularMatchScore(c));
-        m.put("matchLabel", candidatoService.getMatchLabel(candidatoService.calcularMatchScore(c)));
+        m.put("id", candidato.getId());
+        m.put("nombre", candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : ""));
+        m.put("apellido", candidato.getApellido() != null ? candidato.getApellido() : "");
+        m.put("email", usuario != null ? usuario.getEmail() : "");
+        m.put("telefono", candidato.getTelefono() != null ? candidato.getTelefono() : "");
+        m.put("cargo", candidato.getCargo() != null ? candidato.getCargo() : "");
+        m.put("ciudad", candidato.getCiudad() != null ? candidato.getCiudad() : "");
+        m.put("tecnologias", candidato.getTecnologias() != null ? candidato.getTecnologias() : "");
+        m.put("idiomas", candidato.getIdiomas() != null ? candidato.getIdiomas() : "");
+        m.put("experiencia", candidato.getExperiencia() != null ? candidato.getExperiencia() : 0);
+        m.put("disponibilidad", candidato.getDisponibilidad() != null ? candidato.getDisponibilidad() : "");
+        m.put("estado", candidato.getEstado() != null ? candidato.getEstado() : "Registrado");
+        m.put("procesoActual", candidato.getProcesoActual() != null ? candidato.getProcesoActual() : "");
+        m.put("fotoUrl", candidato.getFotoUrl() != null ? candidato.getFotoUrl() : "");
+        m.put("matchScore", candidatoService.calcularMatchScore(candidato));
+        m.put("matchLabel", candidatoService.getMatchLabel(candidatoService.calcularMatchScore(candidato)));
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
-        m.put("ultimaActualizacion", c.getUltimaActualizacion() != null ? c.getUltimaActualizacion().format(fmt) : "");
+        m.put("ultimaActualizacion", candidato.getUltimaActualizacion() != null ? candidato.getUltimaActualizacion().format(fmt) : "");
 
         return ResponseEntity.ok(m);
     }
@@ -193,22 +203,23 @@ public class CandidatoController {
     @PostMapping("/{id}/estado")
     @ResponseBody
     public ResponseEntity<?> actualizarEstado(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        Optional<Usuario> opt = usuarioRepository.findById(id);
-        if (opt.isEmpty()) {
+        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        if (candidato == null) {
             return ResponseEntity.notFound().build();
         }
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+
         String estado = body.getOrDefault("estado", body.getOrDefault("estado_nuevo", ""));
         if (estado.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Estado requerido"));
         }
-        Usuario c = opt.get();
-        String estadoAnterior = c.getEstado();
-        c.setEstado(estado);
-        c.setUltimaActualizacion(LocalDateTime.now());
-        usuarioRepository.save(c);
+        String estadoAnterior = candidato.getEstado();
+        candidato.setEstado(estado);
+        candidato.setUltimaActualizacion(LocalDateTime.now());
+        candidatoRepository.save(candidato);
 
         if (estadoAnterior == null || !estadoAnterior.equals(estado)) {
-            String nombre = c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : "");
+            String nombre = candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : "");
             notificacionService.crear("ESTADO",
                 "Estado actualizado: " + nombre + " ahora como \"" + estado + "\"",
                 id, nombre, "/gestion-candidatos");
@@ -220,11 +231,11 @@ public class CandidatoController {
     @PostMapping("/{id}/editar")
     @ResponseBody
     public ResponseEntity<?> editarCandidato(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        Optional<Usuario> opt = usuarioRepository.findById(id);
-        if (opt.isEmpty()) {
+        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        if (candidato == null) {
             return ResponseEntity.notFound().build();
         }
-        Usuario c = opt.get();
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
 
         String nombre = body.getOrDefault("nombre", "").trim();
         String apellido = body.getOrDefault("apellido", "").trim();
@@ -242,25 +253,29 @@ public class CandidatoController {
             return ResponseEntity.badRequest().body(Map.of("error", "Nombre, apellido y email son obligatorios"));
         }
 
-        c.setUsername(nombre);
-        c.setApellido(apellido);
-        c.setEmail(email);
-        c.setTelefono(telefono);
-        c.setCargo(cargo);
-        c.setCiudad(ciudad);
+        candidato.setUsername(nombre);
+        candidato.setApellido(apellido);
+        candidato.setTelefono(telefono);
+        candidato.setCargo(cargo);
+        candidato.setCiudad(ciudad);
         try {
-            c.setExperiencia(Integer.parseInt(experienciaStr));
+            candidato.setExperiencia(Integer.parseInt(experienciaStr));
         } catch (NumberFormatException e) {
-            c.setExperiencia(0);
+            candidato.setExperiencia(0);
         }
-        c.setDisponibilidad(disponibilidad);
-        c.setTecnologias(tecnologias);
-        c.setIdiomas(idiomas);
-        c.setProcesoActual(procesoActual);
-        c.setUltimaActualizacion(LocalDateTime.now());
-        usuarioRepository.save(c);
+        candidato.setDisponibilidad(disponibilidad);
+        candidato.setTecnologias(tecnologias);
+        candidato.setIdiomas(idiomas);
+        candidato.setProcesoActual(procesoActual);
+        candidato.setUltimaActualizacion(LocalDateTime.now());
+        candidatoRepository.save(candidato);
 
-        String nombreEdit = c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : "");
+        if (usuario != null && !email.equals(usuario.getEmail())) {
+            usuario.setEmail(email);
+            usuarioRepository.save(usuario);
+        }
+
+        String nombreEdit = candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : "");
         notificacionService.crear("EDICION",
             "Perfil editado: " + nombreEdit,
             id, nombreEdit, "/gestion-candidatos");
@@ -271,22 +286,27 @@ public class CandidatoController {
     @PostMapping("/{id}/eliminar")
     @ResponseBody
     public ResponseEntity<?> eliminarCandidato(@PathVariable Long id) {
-        Optional<Usuario> opt = usuarioRepository.findById(id);
-        if (opt.isEmpty()) {
+        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        if (candidato == null) {
             return ResponseEntity.notFound().build();
         }
-        Usuario c = opt.get();
-        String email = c.getEmail();
-        String prefix = "superfolder/Candidatos/" + email;
-        List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
-        for (Archivos doc : docs) {
-            try {
-                java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
-            } catch (java.io.IOException ignored) {}
-            archivosRepository.delete(doc);
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario != null) {
+            String email = usuario.getEmail();
+            String prefix = "superfolder/Candidatos/" + email;
+            List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
+            for (Archivos doc : docs) {
+                try {
+                    java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
+                } catch (java.io.IOException ignored) {}
+                archivosRepository.delete(doc);
+            }
         }
         eventoRepository.deleteByCandidatoId(id);
-        usuarioRepository.delete(c);
+        candidatoRepository.delete(candidato);
+        if (usuario != null) {
+            usuarioRepository.delete(usuario);
+        }
         return ResponseEntity.ok(Map.of("success", true));
     }
 
@@ -304,9 +324,9 @@ public class CandidatoController {
     @GetMapping("/{id}/documentos")
     @ResponseBody
     public ResponseEntity<?> documentosCandidato(@PathVariable Long id) {
-        Optional<Usuario> opt = usuarioRepository.findById(id);
-        if (opt.isEmpty()) return ResponseEntity.notFound().build();
-        String email = opt.get().getEmail();
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) return ResponseEntity.notFound().build();
+        String email = usuario.getEmail();
         String prefix = "superfolder/Candidatos/" + email;
         List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
@@ -328,9 +348,9 @@ public class CandidatoController {
     public ResponseEntity<?> subirDocumento(@PathVariable Long id,
                                              @RequestParam("file") MultipartFile file,
                                              @RequestParam(required = false) String tipo) {
-        Optional<Usuario> opt = usuarioRepository.findById(id);
-        if (opt.isEmpty()) return ResponseEntity.notFound().build();
-        String email = opt.get().getEmail();
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) return ResponseEntity.notFound().build();
+        String email = usuario.getEmail();
         try {
             Archivos doc = filesServices.guardarDocumento(file, email, tipo);
             return ResponseEntity.ok(Map.of("success", true, "id", doc.getId(), "nombre", doc.getNombre()));
@@ -342,8 +362,8 @@ public class CandidatoController {
     @GetMapping("/{id}/eventos")
     @ResponseBody
     public ResponseEntity<?> eventosCandidato(@PathVariable Long id) {
-        Optional<Usuario> opt = usuarioRepository.findById(id);
-        if (opt.isEmpty()) return ResponseEntity.notFound().build();
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) return ResponseEntity.notFound().build();
         List<Evento> eventos = eventoRepository.findByCandidatoIdOrderByFechaDescHoraDesc(id);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
         List<Map<String, Object>> list = eventos.stream().map(e -> {
@@ -363,12 +383,14 @@ public class CandidatoController {
 
     @GetMapping("/{id}/cv")
     public void descargarCV(@PathVariable Long id, HttpServletResponse response) throws IOException {
-        Optional<Usuario> opt = usuarioRepository.findById(id);
-        if (opt.isEmpty()) {
+        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        if (candidato == null) {
             response.sendRedirect("/gestion-candidatos");
             return;
         }
-        cvService.generarCv(opt.get(), response);
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        String email = usuario != null ? usuario.getEmail() : "";
+        cvService.generarCv(candidato, email, response);
     }
 
     @GetMapping("/export")
@@ -378,7 +400,7 @@ public class CandidatoController {
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=candidatos_reporte.xlsx");
 
-        List<Usuario> candidatos = candidatoService.listarCandidatosSinPaginar(search, estado);
+        List<Candidato> candidatos = candidatoService.listarCandidatosSinPaginar(search, estado);
         excelService.exportarCandidatos(candidatos, response);
     }
 }
