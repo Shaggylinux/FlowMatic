@@ -43,6 +43,7 @@ public class DataMigrationRunner implements CommandLineRunner {
         } catch (Exception e) {
             System.out.println("[Migration] No se pudo migrar (probablemente ya migrado): " + e.getMessage());
         }
+        dropOldColumns();
     }
 
     private void migrateCandidatos() {
@@ -111,6 +112,31 @@ public class DataMigrationRunner implements CommandLineRunner {
             administradorRepository.save(a);
         }
         System.out.println("[Migration] Migrados " + rows.size() + " administradores");
+    }
+
+    private void dropOldColumns() {
+        try {
+            jdbcTemplate.execute("""
+                ALTER TABLE usuarios
+                  DROP COLUMN IF EXISTS username,
+                  DROP COLUMN IF EXISTS apellido,
+                  DROP COLUMN IF EXISTS telefono,
+                  DROP COLUMN IF EXISTS estado,
+                  DROP COLUMN IF EXISTS cargo,
+                  DROP COLUMN IF EXISTS ciudad,
+                  DROP COLUMN IF EXISTS linkedin,
+                  DROP COLUMN IF EXISTS tecnologias,
+                  DROP COLUMN IF EXISTS idiomas,
+                  DROP COLUMN IF EXISTS experiencia,
+                  DROP COLUMN IF EXISTS disponibilidad,
+                  DROP COLUMN IF EXISTS proceso_actual,
+                  DROP COLUMN IF EXISTS foto_url,
+                  DROP COLUMN IF EXISTS ultima_actualizacion
+            """);
+            System.out.println("[Migration] Columnas viejas eliminadas de usuarios");
+        } catch (Exception e) {
+            System.out.println("[Migration] No se pudieron eliminar columnas viejas: " + e.getMessage());
+        }
     }
 
     private Long toLong(Object val) {

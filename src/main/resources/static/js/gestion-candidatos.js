@@ -1079,3 +1079,27 @@ document.addEventListener('DOMContentLoaded', () => {
   cargarNotificaciones();
   setInterval(cargarNotificaciones, 30000);
 });
+
+// ── REGISTRAR CANDIDATO DESDE MODAL ──────────────
+
+function enviarRegistro(modalId, formId) {
+  var modal = document.getElementById(modalId);
+  var form = document.getElementById(formId);
+  if (!modal || !form) return;
+  var datos = Object.fromEntries(new FormData(form).entries());
+  fetch('/registro/candidato/api', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(datos)
+  }).then(function(res) {
+    if (res.ok) {
+      modal.style.display = 'none';
+      form.reset();
+      location.reload();
+    } else {
+      alert('Error al registrar candidato');
+    }
+  }).catch(function() {
+    alert('Error de conexión al registrar candidato');
+  });
+}

@@ -46,6 +46,7 @@
   function enviarRegistro(modalId, formId) {
     var modal = document.getElementById(modalId);
     var form = document.getElementById(formId);
+    if (!modal || !form) return;
     var datos = Object.fromEntries(new FormData(form).entries());
     fetch('/registro/candidato/api', {
       method: 'POST',
@@ -64,6 +65,5 @@
     });
   }
 </script>
-
 </body>
 </html>
