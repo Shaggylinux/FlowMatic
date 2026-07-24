@@ -1,0 +1,43 @@
+package com.back.shared;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+
+    public BCryptPasswordEncoder passwordEncoder() {
+
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/forgot-password",
+                            "/reset-password", "/js/**", "/home", "/videos/**", "/", "/api/seed").permitAll()
+                        .requestMatchers("/candidato/**").hasRole("CANDIDATO")
+                        .requestMatchers("/calendario/**").hasAnyRole("RRHH", "CANDIDATO")
+                        .requestMatchers("/gestion-candidatos/**").hasAnyRole("RRHH", "ADMINISTRADOR")
+                        .requestMatchers("/rrhh/**", "/subir-archivo", "/crear-carpeta", "/eliminar", "/descargar", "/drive/ver-archivo/**")
+                        .hasAnyRole("RRHH", "CANDIDATO")
+                        .anyRequest().authenticated()).formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .usernameParameter("email")
+                        .passwordParameter("clave")
+                        .defaultSuccessUrl("/post-login", true)
+                        .permitAll());
+        http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
+
+        return http.build();
+    }
+}
