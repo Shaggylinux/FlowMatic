@@ -1074,8 +1074,10 @@ document.addEventListener('click', function(e) {
 // ── INIT ────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadStats();
-  loadPage(0);
+  if (tableBody) {
+    loadStats();
+    loadPage(0);
+  }
   cargarNotificaciones();
   setInterval(cargarNotificaciones, 30000);
 });
