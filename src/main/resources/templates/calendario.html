@@ -239,8 +239,7 @@
       </button>
     </div>
     <div class="cal-modal-body">
-      <form id="calEventoForm" onsubmit="return false;">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <form id="calEventoForm" th:action="@{/calendario/crear}" method="post" onsubmit="return false;">
         <input type="hidden" name="eventoId" id="calEventoId" value="">
         <div class="cal-modal-field">
           <label class="cal-modal-label" for="calCandidato">Candidato <span class="required">*</span></label>
