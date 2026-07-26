@@ -240,6 +240,7 @@
     </div>
     <div class="cal-modal-body">
       <form id="calEventoForm" onsubmit="return false;">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <input type="hidden" name="eventoId" id="calEventoId" value="">
         <div class="cal-modal-field">
           <label class="cal-modal-label" for="calCandidato">Candidato <span class="required">*</span></label>
@@ -587,7 +588,7 @@ function renderEventDetail(eventoId, detailEl) {
   // Candidate actions: confirm, cancel, leave note
   if (!isRRHH && candidatoId) {
     html += '<div class="cal-timeline-detail-divider"></div>';
-    html += '<div class="cal-timeline-detail-actions">';
+    html += '    html += '<div class="cal-timeline-detail-actions">';
     html += '<button class="cal-timeline-detail-btn" onclick="cambiarEstado(\'' + eventoId + '\',\'CONFIRMADO\')">Confirmar entrevista</button>';
     html += '<button class="cal-timeline-detail-btn cal-timeline-detail-btn-danger" onclick="cancelarEvento(\'' + eventoId + '\')">Cancelar</button>';
     html += '</div>';
