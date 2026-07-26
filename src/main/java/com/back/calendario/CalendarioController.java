@@ -91,7 +91,7 @@ public class CalendarioController {
 
     @GetMapping("/eventos")
     @ResponseBody
-    public List<Map<String, Object>> obtenerEventos(
+    public List<EventoCalendarioDTO> obtenerEventos(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
             @RequestParam(required = false) Long candidatoId,
@@ -113,11 +113,6 @@ public class CalendarioController {
         }
 
         return eventos.stream().map(e -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", e.getId());
-            map.put("title", e.getCandidatoNombre() + " — " + e.getHora().toString());
-            map.put("start", e.getFecha().toString() + "T" + e.getHora().toString());
-
             Map<String, Object> props = new HashMap<>();
             props.put("candidatoId", e.getCandidatoId());
             props.put("candidatoNombre", e.getCandidatoNombre());
@@ -128,33 +123,31 @@ public class CalendarioController {
             props.put("modalidad", e.getModalidad() != null ? e.getModalidad() : "");
             props.put("entrevistador", e.getEntrevistador() != null ? e.getEntrevistador() : "");
             props.put("observaciones", e.getObservaciones() != null ? e.getObservaciones() : "");
-            map.put("extendedProps", props);
 
             String estadoEvento = e.getEstado() != null ? e.getEstado() : "PENDIENTE";
+            String bgColor, borderColor, textColor;
             switch (estadoEvento) {
                 case "CONFIRMADO" -> {
-                    map.put("backgroundColor", "#DCFCE7");
-                    map.put("borderColor", "#22C55E");
-                    map.put("textColor", "#166534");
+                    bgColor = "#DCFCE7"; borderColor = "#22C55E"; textColor = "#166534";
                 }
                 case "REPROGRAMADO" -> {
-                    map.put("backgroundColor", "#FFEDD5");
-                    map.put("borderColor", "#F97316");
-                    map.put("textColor", "#9A3412");
+                    bgColor = "#FFEDD5"; borderColor = "#F97316"; textColor = "#9A3412";
                 }
                 case "CANCELADO" -> {
-                    map.put("backgroundColor", "#FEE2E2");
-                    map.put("borderColor", "#EF4444");
-                    map.put("textColor", "#991B1B");
+                    bgColor = "#FEE2E2"; borderColor = "#EF4444"; textColor = "#991B1B";
                 }
                 default -> {
-                    map.put("backgroundColor", "#FEF9C3");
-                    map.put("borderColor", "#EAB308");
-                    map.put("textColor", "#854D0E");
+                    bgColor = "#FEF9C3"; borderColor = "#EAB308"; textColor = "#854D0E";
                 }
             }
 
-            return map;
+            return new EventoCalendarioDTO(
+                e.getId(),
+                e.getCandidatoNombre() + " — " + e.getHora().toString(),
+                e.getFecha().toString() + "T" + e.getHora().toString(),
+                bgColor, borderColor, textColor,
+                props
+            );
         }).toList();
     }
 

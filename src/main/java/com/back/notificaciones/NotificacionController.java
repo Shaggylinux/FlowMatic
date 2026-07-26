@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/notificaciones")
@@ -15,9 +16,15 @@ public class NotificacionController {
 
     @GetMapping
     public ResponseEntity<?> obtenerNoLeidas() {
-        return ResponseEntity.ok(Map.of(
-            "notificaciones", notificacionService.obtenerNoLeidas(),
-            "total", notificacionService.contarNoLeidas()
+        return ResponseEntity.ok(new NotificacionListaDTO(
+            notificacionService.obtenerNoLeidas().stream()
+                .map(n -> new NotificacionDTO(
+                    n.getId(), n.getTipo(), n.getMensaje(),
+                    n.getCandidatoId(), n.getCandidatoNombre(),
+                    n.getFecha(), n.isLeida(), n.getEnlace()
+                ))
+                .collect(Collectors.toList()),
+            notificacionService.contarNoLeidas()
         ));
     }
 

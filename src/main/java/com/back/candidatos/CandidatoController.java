@@ -5,6 +5,7 @@ import com.back.drive.Archivos;
 import com.back.calendario.Evento;
 import com.back.auth.UsuarioRepository;
 import com.back.drive.ArchivosRepository;
+import com.back.calendario.EventoCandidatoDTO;
 import com.back.calendario.EventoRepository;
 import com.back.shared.CvService;
 import com.back.calendario.EventoService;
@@ -118,13 +119,13 @@ public class CandidatoController {
 
     @GetMapping("/api")
     @ResponseBody
-    public Map<String, Object> listarApi(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "10") int size,
-                                          @RequestParam(required = false) String search,
-                                          @RequestParam(required = false) String cargo,
-                                          @RequestParam(required = false) String estado,
-                                          @RequestParam(required = false) String experiencia,
-                                          @RequestParam(required = false) String ciudad) {
+    public CandidatoPageDTO listarApi(@RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size,
+                                      @RequestParam(required = false) String search,
+                                      @RequestParam(required = false) String cargo,
+                                      @RequestParam(required = false) String estado,
+                                      @RequestParam(required = false) String experiencia,
+                                      @RequestParam(required = false) String ciudad) {
 
         Page<Candidato> candidatos = candidatoService.listarCandidatos(
             search, cargo, estado, experiencia, ciudad, page, size);
@@ -135,33 +136,32 @@ public class CandidatoController {
         Map<Long, Usuario> usuarioMap = usuarioRepository.findAllById(ids).stream()
             .collect(Collectors.toMap(Usuario::getId, u -> u));
 
-        List<Map<String, Object>> data = candidatos.getContent().stream().map(c -> {
-            Map<String, Object> m = new LinkedHashMap<>();
+        List<CandidatoListaDTO> data = candidatos.getContent().stream().map(c -> {
             Usuario u = usuarioMap.get(c.getId());
-            m.put("id", c.getId());
-            m.put("nombre", c.getUsername());
-            m.put("apellido", c.getApellido() != null ? c.getApellido() : "");
-            m.put("ciudad", c.getCiudad() != null ? c.getCiudad() : "");
-            m.put("cargo", c.getCargo() != null ? c.getCargo() : "");
-            m.put("email", u != null ? u.getEmail() : "");
-            m.put("telefono", c.getTelefono() != null ? c.getTelefono() : "");
-            m.put("estado", c.getEstado() != null ? c.getEstado() : "Registrado");
-            m.put("procesoActual", c.getProcesoActual() != null ? c.getProcesoActual() : "");
-            m.put("ultimaActualizacion", c.getUltimaActualizacion() != null ? c.getUltimaActualizacion().format(fmt) : "");
-            m.put("matchScore", candidatoService.calcularMatchScore(c));
-            return m;
+            return new CandidatoListaDTO(
+                c.getId(),
+                c.getUsername(),
+                c.getApellido() != null ? c.getApellido() : "",
+                c.getCiudad() != null ? c.getCiudad() : "",
+                c.getCargo() != null ? c.getCargo() : "",
+                u != null ? u.getEmail() : "",
+                c.getTelefono() != null ? c.getTelefono() : "",
+                c.getEstado() != null ? c.getEstado() : "Registrado",
+                c.getProcesoActual() != null ? c.getProcesoActual() : "",
+                c.getUltimaActualizacion() != null ? c.getUltimaActualizacion().format(fmt) : "",
+                candidatoService.calcularMatchScore(c)
+            );
         }).collect(Collectors.toList());
 
-        Map<String, Object> result = new LinkedHashMap<>();
-        result.put("data", data);
-        result.put("currentPage", candidatos.getNumber());
-        result.put("totalPages", candidatos.getTotalPages());
-        result.put("totalElements", candidatos.getTotalElements());
-        result.put("pageSize", candidatos.getSize());
-        result.put("from", candidatos.getNumber() * candidatos.getSize() + 1);
-        result.put("to", Math.min((candidatos.getNumber() + 1) * candidatos.getSize(), (int) candidatos.getTotalElements()));
-
-        return result;
+        return new CandidatoPageDTO(
+            data,
+            candidatos.getNumber(),
+            candidatos.getTotalPages(),
+            candidatos.getTotalElements(),
+            candidatos.getSize(),
+            candidatos.getNumber() * candidatos.getSize() + 1,
+            Math.min((candidatos.getNumber() + 1) * candidatos.getSize(), (int) candidatos.getTotalElements())
+        );
     }
 
     @GetMapping("/{id}")
@@ -173,28 +173,28 @@ public class CandidatoController {
         }
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
 
-        Map<String, Object> m = new LinkedHashMap<>();
-        m.put("id", candidato.getId());
-        m.put("nombre", candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : ""));
-        m.put("apellido", candidato.getApellido() != null ? candidato.getApellido() : "");
-        m.put("email", usuario != null ? usuario.getEmail() : "");
-        m.put("telefono", candidato.getTelefono() != null ? candidato.getTelefono() : "");
-        m.put("cargo", candidato.getCargo() != null ? candidato.getCargo() : "");
-        m.put("ciudad", candidato.getCiudad() != null ? candidato.getCiudad() : "");
-        m.put("tecnologias", candidato.getTecnologias() != null ? candidato.getTecnologias() : "");
-        m.put("idiomas", candidato.getIdiomas() != null ? candidato.getIdiomas() : "");
-        m.put("experiencia", candidato.getExperiencia() != null ? candidato.getExperiencia() : 0);
-        m.put("disponibilidad", candidato.getDisponibilidad() != null ? candidato.getDisponibilidad() : "");
-        m.put("estado", candidato.getEstado() != null ? candidato.getEstado() : "Registrado");
-        m.put("procesoActual", candidato.getProcesoActual() != null ? candidato.getProcesoActual() : "");
-        m.put("fotoUrl", candidato.getFotoUrl() != null ? candidato.getFotoUrl() : "");
-        m.put("matchScore", candidatoService.calcularMatchScore(candidato));
-        m.put("matchLabel", candidatoService.getMatchLabel(candidatoService.calcularMatchScore(candidato)));
-
+        int score = candidatoService.calcularMatchScore(candidato);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
-        m.put("ultimaActualizacion", candidato.getUltimaActualizacion() != null ? candidato.getUltimaActualizacion().format(fmt) : "");
 
-        return ResponseEntity.ok(m);
+        return ResponseEntity.ok(new DetalleCandidatoDTO(
+            candidato.getId(),
+            candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : ""),
+            candidato.getApellido() != null ? candidato.getApellido() : "",
+            usuario != null ? usuario.getEmail() : "",
+            candidato.getTelefono() != null ? candidato.getTelefono() : "",
+            candidato.getCargo() != null ? candidato.getCargo() : "",
+            candidato.getCiudad() != null ? candidato.getCiudad() : "",
+            candidato.getTecnologias() != null ? candidato.getTecnologias() : "",
+            candidato.getIdiomas() != null ? candidato.getIdiomas() : "",
+            candidato.getExperiencia() != null ? candidato.getExperiencia() : 0,
+            candidato.getDisponibilidad() != null ? candidato.getDisponibilidad() : "",
+            candidato.getEstado() != null ? candidato.getEstado() : "Registrado",
+            candidato.getProcesoActual() != null ? candidato.getProcesoActual() : "",
+            candidato.getFotoUrl() != null ? candidato.getFotoUrl() : "",
+            score,
+            candidatoService.getMatchLabel(score),
+            candidato.getUltimaActualizacion() != null ? candidato.getUltimaActualizacion().format(fmt) : ""
+        ));
     }
 
     @PostMapping("/{id}/estado")
@@ -204,7 +204,6 @@ public class CandidatoController {
         if (candidato == null) {
             return ResponseEntity.notFound().build();
         }
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
 
         String estado = body.getOrDefault("estado", body.getOrDefault("estado_nuevo", ""));
         if (estado.isBlank()) {
@@ -222,7 +221,7 @@ public class CandidatoController {
                 id, nombre, "/gestion-candidatos");
         }
 
-        return ResponseEntity.ok(Map.of("success", true, "estado", estado));
+        return ResponseEntity.ok(new EstadoResponseDTO(true, estado));
     }
 
     @PostMapping("/{id}/editar")
@@ -277,7 +276,7 @@ public class CandidatoController {
             "Perfil editado: " + nombreEdit,
             id, nombreEdit, "/gestion-candidatos");
 
-        return ResponseEntity.ok(Map.of("success", true));
+        return ResponseEntity.ok(new EditarResponseDTO(true));
     }
 
     @PostMapping("/{id}/eliminar")
@@ -304,18 +303,18 @@ public class CandidatoController {
         if (usuario != null) {
             usuarioRepository.delete(usuario);
         }
-        return ResponseEntity.ok(Map.of("success", true));
+        return ResponseEntity.ok(new EliminarResponseDTO(true));
     }
 
     @GetMapping("/stats")
     @ResponseBody
-    public Map<String, Object> stats() {
-        Map<String, Object> s = new LinkedHashMap<>();
-        s.put("total", candidatoService.contarActivos());
-        s.put("nuevos", candidatoService.contarNuevos());
-        s.put("enProceso", candidatoService.contarEnProceso());
-        s.put("contratados", candidatoService.contarContratables());
-        return s;
+    public StatsDTO stats() {
+        return new StatsDTO(
+            candidatoService.contarActivos(),
+            candidatoService.contarNuevos(),
+            candidatoService.contarEnProceso(),
+            candidatoService.contarContratables()
+        );
     }
 
     @GetMapping("/{id}/documentos")
@@ -326,17 +325,16 @@ public class CandidatoController {
         String email = usuario.getEmail();
         String prefix = "superfolder/Candidatos/" + email;
         List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
-        List<Map<String, Object>> list = docs.stream().map(d -> {
-            Map<String, Object> m = new LinkedHashMap<>();
-            m.put("id", d.getId());
-            m.put("nombre", d.getNombre());
-            m.put("tipoDocumento", d.getTipoDocumento() != null ? d.getTipoDocumento() : "Otro");
-            m.put("etapa", d.getEtapa() != null ? d.getEtapa() : "");
-            m.put("estado", d.getDestinario() != null && !d.getDestinario().isEmpty() ? "Compartido" : "Privado");
-            m.put("ubicacion", d.getUbicacion());
-            return m;
-        }).collect(Collectors.toList());
+        List<DocumentoDTO> list = docs.stream().map(d ->
+            new DocumentoDTO(
+                d.getId(),
+                d.getNombre(),
+                d.getTipoDocumento() != null ? d.getTipoDocumento() : "Otro",
+                d.getEtapa() != null ? d.getEtapa() : "",
+                d.getDestinario() != null && !d.getDestinario().isEmpty() ? "Compartido" : "Privado",
+                d.getUbicacion()
+            )
+        ).collect(Collectors.toList());
         return ResponseEntity.ok(list);
     }
 
@@ -363,18 +361,18 @@ public class CandidatoController {
         if (usuario == null) return ResponseEntity.notFound().build();
         List<Evento> eventos = eventoRepository.findByCandidatoIdOrderByFechaDescHoraDesc(id);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
-        List<Map<String, Object>> list = eventos.stream().map(e -> {
-            Map<String, Object> m = new LinkedHashMap<>();
-            m.put("id", e.getId());
-            m.put("titulo", e.getTipo() != null ? e.getTipo() : "Entrevista");
-            m.put("fecha", e.getFecha() != null ? e.getFecha().format(fmt) : "");
-            m.put("hora", e.getHora() != null ? e.getHora().toString() : "");
-            m.put("estado", e.getEstado() != null ? e.getEstado() : "");
-            m.put("tipo", e.getTipo() != null ? e.getTipo() : "");
-            m.put("lugar", e.getLugar() != null ? e.getLugar() : "");
-            m.put("observaciones", e.getObservaciones() != null ? e.getObservaciones() : "");
-            return m;
-        }).collect(Collectors.toList());
+        List<EventoCandidatoDTO> list = eventos.stream().map(e ->
+            new EventoCandidatoDTO(
+                e.getId(),
+                e.getTipo() != null ? e.getTipo() : "Entrevista",
+                e.getFecha() != null ? e.getFecha().format(fmt) : "",
+                e.getHora() != null ? e.getHora().toString() : "",
+                e.getEstado() != null ? e.getEstado() : "",
+                e.getTipo() != null ? e.getTipo() : "",
+                e.getLugar() != null ? e.getLugar() : "",
+                e.getObservaciones() != null ? e.getObservaciones() : ""
+            )
+        ).collect(Collectors.toList());
         return ResponseEntity.ok(list);
     }
 
