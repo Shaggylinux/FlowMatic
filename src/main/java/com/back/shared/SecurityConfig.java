@@ -23,7 +23,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, LoginFailureHandler loginFailureHandler) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, LoginFailureHandler loginFailureHandler, LoginSuccessHandler loginSuccessHandler) throws Exception {
         http
                 .csrf(csrf -> csrf
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login")
                         .usernameParameter("email")
                         .passwordParameter("clave")
-                        .defaultSuccessUrl("/post-login", true)
+                        .successHandler(loginSuccessHandler)
                         .failureHandler(loginFailureHandler)
                         .permitAll());
         http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
