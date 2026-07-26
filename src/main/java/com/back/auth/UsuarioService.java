@@ -136,6 +136,17 @@ public class UsuarioService {
         emailService.enviarEmailRecuperacion(email, nombre, token);
     }
 
+    public String validarTokenReset(String token) {
+        var optional = usuarioRepository.findByTokenactivacion(token);
+        if (optional.isEmpty()) return "INVALIDO";
+        Usuario usuario = optional.get();
+        if (usuario.getFechaCreacionToken() != null) {
+            long minutos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).toMinutes();
+            if (minutos > 15) return "EXPIRADO";
+        }
+        return "VALIDA";
+    }
+
     public boolean cambiarPassword(String token, String nuevaPassword) {
         var optional = usuarioRepository.findByTokenactivacion(token);
 

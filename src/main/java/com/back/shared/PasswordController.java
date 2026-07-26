@@ -25,6 +25,13 @@ public class PasswordController {
 
     @GetMapping("/reset-password")
     public String mostrarReset(@RequestParam String token, Model model) {
+        String estado = usuarioService.validarTokenReset(token);
+        if ("EXPIRADO".equals(estado)) {
+            return "caduco-reset";
+        }
+        if ("INVALIDO".equals(estado)) {
+            return "redirect:/forgot-password?errorToken";
+        }
         model.addAttribute("token", token);
         return "reset-password";
     }
@@ -38,6 +45,14 @@ public class PasswordController {
             model.addAttribute("token", token);
             model.addAttribute("errorPassword", true);
             return "reset-password";
+        }
+
+        String estado = usuarioService.validarTokenReset(token);
+        if ("EXPIRADO".equals(estado)) {
+            return "caduco-reset";
+        }
+        if ("INVALIDO".equals(estado)) {
+            return "redirect:/forgot-password?errorToken";
         }
 
         boolean ok = usuarioService.cambiarPassword(token, password);

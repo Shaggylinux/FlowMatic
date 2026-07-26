@@ -361,18 +361,28 @@ public class CandidatoController {
         if (usuario == null) return ResponseEntity.notFound().build();
         List<Evento> eventos = eventoRepository.findByCandidatoIdOrderByFechaDescHoraDesc(id);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
-        List<EventoCandidatoDTO> list = eventos.stream().map(e ->
-            new EventoCandidatoDTO(
+        List<EventoCandidatoDTO> list = eventos.stream().map(e -> {
+            String tipo = e.getTipo();
+            String color;
+            if (tipo == null) color = "#6366F1";
+            else switch (tipo) {
+                case "Entrevista RRHH" -> color = "#0EA5E9";
+                case "Entrevista Técnica" -> color = "#8B5CF6";
+                case "Reunión" -> color = "#F59E0B";
+                default -> color = "#6366F1";
+            }
+            return new EventoCandidatoDTO(
                 e.getId(),
-                e.getTipo() != null ? e.getTipo() : "Entrevista",
+                tipo != null ? tipo : "Entrevista",
                 e.getFecha() != null ? e.getFecha().format(fmt) : "",
                 e.getHora() != null ? e.getHora().toString() : "",
                 e.getEstado() != null ? e.getEstado() : "",
-                e.getTipo() != null ? e.getTipo() : "",
+                tipo != null ? tipo : "",
                 e.getLugar() != null ? e.getLugar() : "",
-                e.getObservaciones() != null ? e.getObservaciones() : ""
-            )
-        ).collect(Collectors.toList());
+                e.getObservaciones() != null ? e.getObservaciones() : "",
+                color
+            );
+        }).collect(Collectors.toList());
         return ResponseEntity.ok(list);
     }
 
