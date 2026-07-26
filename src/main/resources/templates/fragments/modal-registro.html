@@ -50,6 +50,7 @@
     var datos = Object.fromEntries(new FormData(form).entries());
     fetch('/registro/candidato/api', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(datos)
     }).then(function(res) {

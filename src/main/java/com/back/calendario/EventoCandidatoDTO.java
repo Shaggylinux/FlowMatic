@@ -8,5 +8,6 @@ public record EventoCandidatoDTO(
     String estado,
     String tipo,
     String lugar,
-    String observaciones
+    String observaciones,
+    String color
 ) {}

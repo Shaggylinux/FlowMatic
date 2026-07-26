@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recuperar contraseña — Flowmatic</title>
+  <title>Enlace expirado — Flowmatic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/tokens.css}">
   <link rel="stylesheet" th:href="@{/css/base.css}">
-  <link rel="stylesheet" th:href="@{/css/password.css}">
 </head>
 <body class="page-auth">
 
@@ -27,31 +26,12 @@
         </a>
       </div>
 
-      <h2 style="text-align:center; margin-bottom:8px;">Recuperar contraseña</h2>
+      <h2 style="text-align:center; margin-bottom:8px;">Enlace expirado</h2>
       <p style="text-align:center; font-size:13px; color:var(--fm-text-muted); margin-bottom:24px;">
-        Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
+        El enlace para restablecer tu contraseña ha caducado. Solicita uno nuevo.
       </p>
 
-      <div th:if="${success != null or param.success != null}" class="alert alert-success">
-        Revisa tu correo para continuar
-      </div>
-      <div th:if="${param.errorToken != null}" class="alert alert-error">
-        El enlace ha caducado o es inválido. Solicita uno nuevo.
-      </div>
-
-      <form th:if="${param.success == null}"
-            th:action="@{/forgot-password}"
-            method="post"
-            id="formForgot">
-
-        <div class="form-group">
-          <label class="form-label">Correo electrónico</label>
-          <input class="form-input" type="email" name="email" required
-                 placeholder="correo@empresa.com"/>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-full">Enviar enlace</button>
-      </form>
+      <a th:href="@{/forgot-password}" class="btn btn-primary btn-full" style="text-align:center; display:block;">Solicitar nuevo enlace</a>
 
       <div style="margin-top:16px; text-align:center;">
         <a class="fm-link" th:href="@{/login}">← Volver al inicio de sesión</a>
@@ -75,14 +55,6 @@
 
 </div>
 
-<script>
-  const form = document.getElementById("formForgot");
-  if (form) {
-    form.addEventListener("submit", () => {
-      document.getElementById("loader").style.display = "flex";
-    });
-  }
-</script>
 <script th:src="@{/js/csrf.js}"></script>
 <script th:src="@{/js/i18n.js}"></script>
 </body>

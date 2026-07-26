@@ -145,7 +145,7 @@ function renderTable(data) {
             <button class="gc-action-btn" data-tooltip="Ver detalle" onclick="event.stopPropagation();openDrawer(${c.id})">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
-            <button class="gc-action-btn" data-tooltip="Cambiar estado" onclick="event.stopPropagation();openDrawer(${c.id})">
+            <button class="gc-action-btn" data-tooltip="Ver detalle" onclick="event.stopPropagation();openDrawer(${c.id})">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </button>
             <div class="gc-action-more">
@@ -478,12 +478,6 @@ function toggleDrawerDropdown(btn) {
   const menu = btn.parentElement.querySelector('.gc-dropdown-menu');
   if (menu) menu.classList.toggle('show');
 }
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.gc-action-more')) {
-    $$('.gc-dropdown-menu.show').forEach(m => m.classList.remove('show'));
-  }
-});
 
 // Cierra el dropdown automáticamente al hacer clic en cualquier botón dentro
 document.addEventListener('click', function(e) {
@@ -1005,8 +999,8 @@ function cargarNotificaciones() {
   const badge = document.getElementById('gc-notif-badge');
   if (!list) return;
 
-  fetch('/notificaciones')
-    .then(r => r.json())
+  fetch('/notificaciones', { credentials: 'same-origin' })
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(res => {
       const notifs = res.notificaciones || [];
       const total = res.total || 0;
@@ -1033,19 +1027,28 @@ function cargarNotificaciones() {
           <button class="gc-notif-marcar" onclick="marcarNotificacion(${n.id})" title="Marcar como leída">✓</button>
         </div>
       `).join('');
-    });
+    })
+    .catch(err => console.error('Error cargando notificaciones:', err));
 }
 
 function marcarNotificacion(id) {
-  fetch('/notificaciones/' + id + '/leer', { method: 'POST' })
+  fetch('/notificaciones/' + id + '/leer', {
+    method: 'POST',
+    credentials: 'same-origin'
+  })
     .then(r => r.json())
-    .then(() => cargarNotificaciones());
+    .then(() => cargarNotificaciones())
+    .catch(err => console.error('Error marcando notificación:', err));
 }
 
 function marcarTodasNotificaciones() {
-  fetch('/notificaciones/leer-todas', { method: 'POST' })
+  fetch('/notificaciones/leer-todas', {
+    method: 'POST',
+    credentials: 'same-origin'
+  })
     .then(r => r.json())
-    .then(() => cargarNotificaciones());
+    .then(() => cargarNotificaciones())
+    .catch(err => console.error('Error marcando notificaciones:', err));
 }
 
 function toggleNotifPanel() {
@@ -1091,6 +1094,7 @@ function enviarRegistro(modalId, formId) {
   var datos = Object.fromEntries(new FormData(form).entries());
   fetch('/registro/candidato/api', {
     method: 'POST',
+    credentials: 'same-origin',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(datos)
   }).then(function(res) {
