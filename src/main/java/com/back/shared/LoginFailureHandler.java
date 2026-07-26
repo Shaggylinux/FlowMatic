@@ -19,6 +19,10 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                                         AuthenticationException exception) throws IOException {
         String email = request.getParameter("email");
         if (email != null) {
+            if (loginAttemptService.isBlocked(email)) {
+                getRedirectStrategy().sendRedirect(request, response, "/login?bloqueado");
+                return;
+            }
             loginAttemptService.recordFailed(email);
         }
         getRedirectStrategy().sendRedirect(request, response, "/login?error");

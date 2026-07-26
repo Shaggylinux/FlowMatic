@@ -31,6 +31,7 @@
       <h2 style="text-align:center; margin-bottom:24px;">Iniciar Sesión</h2>
 
       <div th:if="${param.error}" class="alert alert-error">Correo o contraseña incorrectos</div>
+      <div th:if="${param.bloqueado}" class="alert alert-error">Demasiados intentos fallidos. Intenta de nuevo en 15 minutos.</div>
       <div th:if="${param.logout}" class="alert alert-success">Sesión cerrada correctamente</div>
 
       <form th:action="@{/login}" method="post" id="formLogin">
