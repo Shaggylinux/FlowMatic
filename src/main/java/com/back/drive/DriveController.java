@@ -12,12 +12,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.core.io.Resource;
 import com.back.auth.UsuarioRepository;
 import com.back.candidatos.CandidatoRepository;
+import com.back.notificaciones.NotificacionService;
 import org.springframework.ui.Model;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.*;
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/drive")
@@ -33,6 +35,12 @@ public class DriveController {
 
     @Autowired
     private CandidatoRepository candidatoRepository;
+
+    @Autowired
+    private FilesServices filesServices;
+
+    @Autowired
+    private NotificacionService notificacionService;
 
     @jakarta.annotation.PostConstruct
     public void init() {
@@ -122,6 +130,7 @@ public class DriveController {
 
     @PostMapping("/crear-carpeta")
     public String crearCarpeta(@RequestParam("nombre") String nombre,
+                                @RequestParam(value = "folder", defaultValue = "") String folder,
                                 Principal principal, Model model) {
         String loginId = (principal != null) ? principal.getName() : null;
         if (loginId == null) return "redirect:/login";
@@ -131,8 +140,9 @@ public class DriveController {
 
         if (nombre == null || nombre.trim().isEmpty()) return "redirect:/drive";
 
+        folder = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
         String rutaSinSuper = nombre.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
-        String rutaCarpeta = ROOT_DIR + rutaSinSuper + "/";
+        String rutaCarpeta = ROOT_DIR + (folder.isEmpty() ? "" : folder + "/") + rutaSinSuper + "/";
 
         try {
             Files.createDirectories(Paths.get(rutaCarpeta));
@@ -146,7 +156,8 @@ public class DriveController {
             model.addAttribute("error", "No se pudo crear la carpeta: " + e.getMessage());
             return "redirect:/drive";
         }
-        return "redirect:/drive?folder=" + nombre;
+        String rutaRelativa = folder.isEmpty() ? rutaSinSuper : folder + "/" + rutaSinSuper;
+        return "redirect:/drive?folder=" + rutaRelativa;
     }
 
     @PostMapping("/subir-archivo")
@@ -211,6 +222,34 @@ public class DriveController {
         filesRepository.delete(archivo);
 
         return "redirect:/drive?folder=" + folder;
+    }
+
+    @PostMapping("/compartir")
+    public String compartirArchivo(@RequestParam("archivoId") Long archivoId,
+                                    @RequestParam("emailDestinatario") String email) {
+        filesServices.compartirArchivo(archivoId, email);
+        return "redirect:/drive";
+    }
+
+    @PostMapping("/actualizar-estado")
+    public String actualizarEstado(@RequestParam("usuarioId") Long id,
+                                    @RequestParam("nuevoEstado") String estado) {
+        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        if (candidato == null) return "redirect:/drive";
+
+        String estadoAnterior = candidato.getEstado();
+        candidato.setEstado(estado);
+        candidato.setUltimaActualizacion(LocalDateTime.now());
+        candidatoRepository.save(candidato);
+
+        if (estadoAnterior == null || !estadoAnterior.equals(estado)) {
+            String nombre = candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : "");
+            notificacionService.crear("ESTADO",
+                "Estado actualizado: " + nombre + " ahora como \"" + estado + "\"",
+                id, nombre, "/gestion-candidatos");
+        }
+
+        return "redirect:/drive";
     }
 
     @GetMapping("/ver-archivo/{id}")

@@ -92,7 +92,7 @@
     <form id="formCrearCarpeta" th:action="@{/drive/crear-carpeta}" method="post" style="display:none;"
           sec:authorize="hasRole('RRHH')">
       <input type="hidden" name="nombre" id="inputNombreCarpeta">
-      <input type="hidden" name="folderDestino" th:value="${folderActual}">
+      <input type="hidden" name="folder" th:value="${folderActual}">
     </form>
 
   </aside>
@@ -164,7 +164,7 @@
 
         <form th:action="@{/drive/subir-archivo}" method="post" enctype="multipart/form-data"
               style="display:flex; align-items:center; gap:8px;" sec:authorize="hasAnyRole('RRHH','CANDIDATO')">
-          <input type="hidden" name="folderDestino" th:value="${folderActual}">
+          <input type="hidden" name="folder" th:value="${folderActual}">
           <label class="file-upload-label">
             <input type="file" name="archivo" required style="display:none;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -192,7 +192,7 @@
               </td>
               <td>
                 <div class="table-actions">
-                  <a th:href="@{/drive/descargar(archivoId=${archivo.id})}"
+                   <a th:href="@{/drive/descargar(fileId=${archivo.id})}"
                      class="btn btn-ghost btn-sm">Descargar</a>
 
                   <div sec:authorize="hasRole('RRHH')" style="display:flex; gap:6px;">
@@ -204,7 +204,7 @@
                     <form th:if="${archivo.propietario == usuarioActual}"
                           th:action="@{/drive/eliminar}" method="post"
                           onsubmit="return confirm('¿Eliminar archivo?');">
-                      <input type="hidden" name="archivoId" th:value="${archivo.id}">
+                      <input type="hidden" name="fileId" th:value="${archivo.id}">
                       <button type="submit" class="btn btn-ghost-danger btn-sm">Eliminar</button>
                     </form>
                   </div>
