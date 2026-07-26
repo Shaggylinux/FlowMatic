@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import com.back.auth.UsuarioRepository;
 import com.back.candidatos.CandidatoRepository;
 import com.back.notificaciones.NotificacionService;
+import com.back.shared.Sanitizer;
 import org.springframework.ui.Model;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -140,8 +141,9 @@ public class DriveController {
 
         if (nombre == null || nombre.trim().isEmpty()) return "redirect:/drive";
 
-        folder = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
-        String rutaSinSuper = nombre.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+        folder = Sanitizer.sanitizePath(folder);
+        String rutaSinSuper = Sanitizer.sanitizePath(nombre);
+        if (rutaSinSuper.isEmpty()) return "redirect:/drive";
         String rutaCarpeta = ROOT_DIR + (folder.isEmpty() ? "" : folder + "/") + rutaSinSuper + "/";
 
         try {
@@ -170,16 +172,20 @@ public class DriveController {
         Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
         String email = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
 
-        folder = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+        folder = Sanitizer.sanitizePath(folder);
+        String filename = archivo.getOriginalFilename();
+        if (!Sanitizer.isValidFileName(filename)) {
+            return "redirect:/drive?folder=" + folder;
+        }
 
         try {
-            String rutaDestino = ROOT_DIR + (folder.isEmpty() ? "" : folder + "/") + archivo.getOriginalFilename();
+            String rutaDestino = ROOT_DIR + (folder.isEmpty() ? "" : folder + "/") + filename;
             Path rutaCompleta = Paths.get(rutaDestino);
             Files.createDirectories(rutaCompleta.getParent());
             Files.copy(archivo.getInputStream(), rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
 
             Archivos doc = new Archivos();
-            doc.setNombre(archivo.getOriginalFilename());
+            doc.setNombre(filename);
             doc.setUbicacion(rutaDestino);
             doc.setPropietario(email);
             filesRepository.save(doc);
@@ -190,10 +196,18 @@ public class DriveController {
         return "redirect:/drive?folder=" + folder;
     }
 
+    private boolean esPropietarioODestinatario(Archivos archivo, String email) {
+        if (email == null) return false;
+        return email.equalsIgnoreCase(archivo.getPropietario())
+            || (archivo.getDestinario() != null && email.equalsIgnoreCase(archivo.getDestinario()));
+    }
+
     @GetMapping("/descargar")
-    public ResponseEntity<Resource> descargarArchivo(@RequestParam("fileId") Long fileId) {
+    public ResponseEntity<Resource> descargarArchivo(@RequestParam("fileId") Long fileId,
+                                                      Principal principal) {
+        String email = principal != null ? principal.getName() : null;
         Optional<Archivos> archivoOpt = filesRepository.findById(fileId);
-        if (archivoOpt.isEmpty()) {
+        if (archivoOpt.isEmpty() || !esPropietarioODestinatario(archivoOpt.get(), email)) {
             return ResponseEntity.notFound().build();
         }
         Archivos archivo = archivoOpt.get();
@@ -211,10 +225,13 @@ public class DriveController {
 
     @PostMapping("/eliminar")
     public String eliminarArchivo(@RequestParam("fileId") Long fileId,
-                                   @RequestParam(value = "folder", defaultValue = "") String folder) {
+                                   @RequestParam(value = "folder", defaultValue = "") String folder,
+                                   Principal principal) {
+        String email = principal != null ? principal.getName() : null;
         Optional<Archivos> archivoOpt = filesRepository.findById(fileId);
-        if (archivoOpt.isEmpty()) return "redirect:/drive?folder=" + folder;
+        if (archivoOpt.isEmpty() || email == null) return "redirect:/drive?folder=" + folder;
         Archivos archivo = archivoOpt.get();
+        if (!email.equalsIgnoreCase(archivo.getPropietario())) return "redirect:/drive?folder=" + folder;
         try {
             Path path = Paths.get(archivo.getUbicacion());
             Files.deleteIfExists(path);
@@ -226,8 +243,13 @@ public class DriveController {
 
     @PostMapping("/compartir")
     public String compartirArchivo(@RequestParam("archivoId") Long archivoId,
-                                    @RequestParam("emailDestinatario") String email) {
-        filesServices.compartirArchivo(archivoId, email);
+                                    @RequestParam("emailDestinatario") String destinatario,
+                                    Principal principal) {
+        String email = principal != null ? principal.getName() : null;
+        Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
+        if (archivoOpt.isEmpty() || email == null) return "redirect:/drive";
+        if (!email.equalsIgnoreCase(archivoOpt.get().getPropietario())) return "redirect:/drive";
+        filesServices.compartirArchivo(archivoId, destinatario);
         return "redirect:/drive";
     }
 
@@ -253,9 +275,10 @@ public class DriveController {
     }
 
     @GetMapping("/ver-archivo/{id}")
-    public ResponseEntity<Resource> verArchivo(@PathVariable Long id) {
+    public ResponseEntity<Resource> verArchivo(@PathVariable Long id, Principal principal) {
+        String email = principal != null ? principal.getName() : null;
         Optional<Archivos> archivoOpt = filesRepository.findById(id);
-        if (archivoOpt.isEmpty()) {
+        if (archivoOpt.isEmpty() || !esPropietarioODestinatario(archivoOpt.get(), email)) {
             return ResponseEntity.notFound().build();
         }
         Archivos archivo = archivoOpt.get();

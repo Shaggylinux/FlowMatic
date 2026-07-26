@@ -3,6 +3,7 @@ package com.back.drive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.back.shared.Sanitizer;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,16 +19,20 @@ public class FilesServices {
     private final String rootFolder = "superfolder";
 
     public void guardarArchivoPorEtapa(MultipartFile file, String emailPropietario, String etapa) throws IOException {
+        String filename = file.getOriginalFilename();
+        if (!Sanitizer.isValidFileName(filename)) {
+            throw new IOException("Nombre de archivo inválido: " + filename);
+        }
         Path directoryPath = Paths.get(rootFolder, etapa, emailPropietario);
         if (!Files.exists(directoryPath)) {
             Files.createDirectories(directoryPath);
         }
 
-        Path filePath = directoryPath.resolve(file.getOriginalFilename());
+        Path filePath = directoryPath.resolve(filename);
         Files.copy(file.getInputStream(), filePath);
 
         Archivos nuevoArchivo = new Archivos();
-        nuevoArchivo.setNombre(file.getOriginalFilename());
+        nuevoArchivo.setNombre(filename);
         nuevoArchivo.setUbicacion(filePath.toString());
         nuevoArchivo.setPropietario(emailPropietario);
         nuevoArchivo.setEtapa(etapa);
@@ -64,12 +69,16 @@ public class FilesServices {
     }
 
     public Archivos guardarDocumento(MultipartFile file, String email, String tipoDocumento) throws IOException {
+        String filename = file.getOriginalFilename();
+        if (!Sanitizer.isValidFileName(filename)) {
+            throw new IOException("Nombre de archivo inválido: " + filename);
+        }
         Path dir = Paths.get(rootFolder, "Candidatos", email);
         if (!Files.exists(dir)) Files.createDirectories(dir);
-        Path filePath = dir.resolve(file.getOriginalFilename());
+        Path filePath = dir.resolve(filename);
         Files.copy(file.getInputStream(), filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
         Archivos doc = new Archivos();
-        doc.setNombre(file.getOriginalFilename());
+        doc.setNombre(filename);
         doc.setUbicacion(filePath.toString().replace("\\", "/"));
         doc.setPropietario(email);
         doc.setEsCarpeta(false);
