@@ -30,6 +30,8 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     boolean existsByCandidatoIdAndFechaAndHora(Long candidatoId, LocalDate fecha, LocalTime hora);
 
+    Optional<Evento> findFirstByCandidatoIdAndFechaAndHora(Long candidatoId, LocalDate fecha, LocalTime hora);
+
     @Query("SELECT e FROM Evento e WHERE e.fecha BETWEEN :start AND :end " +
            "AND (:candidatoId IS NULL OR e.candidatoId = :candidatoId) " +
            "AND (:estado IS NULL OR e.estado = :estado) " +

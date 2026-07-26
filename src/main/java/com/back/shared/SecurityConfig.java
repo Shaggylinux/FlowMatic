@@ -1,5 +1,6 @@
 package com.back.shared;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,15 +12,17 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private LoginAttemptService loginAttemptService;
+
     @Bean
-
     public BCryptPasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, LoginFailureHandler loginFailureHandler) throws Exception {
         http
                 .csrf(csrf -> csrf
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
@@ -38,6 +41,7 @@ public class SecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("clave")
                         .defaultSuccessUrl("/post-login", true)
+                        .failureHandler(loginFailureHandler)
                         .permitAll());
         http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 

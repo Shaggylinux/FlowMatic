@@ -129,6 +129,7 @@ public class UsuarioService {
 
         String token = UUID.randomUUID().toString();
         usuario.setTokenactivacion(token);
+        usuario.setFechaCreacionToken(LocalDateTime.now());
         usuarioRepository.save(usuario);
 
         String nombre = obtenerNombreOApellido(usuario);
@@ -143,6 +144,15 @@ public class UsuarioService {
         }
 
         Usuario usuario = optional.get();
+
+        if (usuario.getFechaCreacionToken() != null) {
+            long minutos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).toMinutes();
+            if (minutos > 15) {
+                usuario.setTokenactivacion(null);
+                usuarioRepository.save(usuario);
+                return false;
+            }
+        }
 
         usuario.setClave(encoder.encode(nuevaPassword));
         usuario.setTokenactivacion(null);

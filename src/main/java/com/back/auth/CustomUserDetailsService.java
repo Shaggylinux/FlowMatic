@@ -16,11 +16,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Correo no encontrado: " + email));
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
 
-        if (!usuario.isActivo()) {
-            throw new UsernameNotFoundException("Cuenta no activada. Revisa tu email para activar la cuenta.");
+        if (usuario == null || !usuario.isActivo()) {
+            throw new UsernameNotFoundException("Credenciales invalidas");
         }
 
     return User.builder()

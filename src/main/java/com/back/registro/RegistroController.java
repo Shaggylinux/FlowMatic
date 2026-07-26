@@ -73,9 +73,9 @@ public class RegistroController {
             return "activacion";
         }
 
-        long segundos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).getSeconds();
+        long minutos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).toMinutes();
 
-        if (segundos > 15) {
+        if (minutos > 15) {
             model.addAttribute("enlaceExpirado", true);
             model.addAttribute("token", token);
             return "caduco";

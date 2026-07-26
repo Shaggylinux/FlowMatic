@@ -45,7 +45,7 @@ public class EmailService {
                     "</div>" +
                     "<p style='color: #999; font-size: 12px; text-align: center;'>O copia y pega este enlace en tu navegador:</p>" +
                     "<p style='color: #667eea; font-size: 12px; text-align: center; word-break: break-all;'>" + enlaceActivacion + "</p>" +
-                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>Este enlace expires en 24 horas.</p>" +
+                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>Este enlace expira en 15 minutos.</p>" +
                     "<hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>" +
                     "<p style='color: #666; font-size: 12px;'>Si no creaste esta cuenta, puedes ignorar este correo sin preocupaciones.</p>" +
                     "<p style='color: #666; font-size: 12px; margin-top: 20px;'>Saludos cordiales,<br><strong>Equipo de FLOWMATIC</strong></p>" +
@@ -92,7 +92,7 @@ public class EmailService {
                     "</div>" +
                     "<p style='color: #999; font-size: 12px; text-align: center;'>O copia y pega este enlace en tu navegador:</p>" +
                     "<p style='color: #667eea; font-size: 12px; text-align: center; word-break: break-all;'>" + enlace + "</p>" +
-                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>Este enlace expirará en 1 hora.</p>" +
+                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>Este enlace expira en 15 minutos.</p>" +
                     "<hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>" +
                     "<p style='color: #666; font-size: 12px;'>Si no solicitaste el restablecimiento de contraseña, puedes ignorar este correo. Tu contraseña actual seguirá siendo válida.</p>" +
                     "<p style='color: #666; font-size: 12px; margin-top: 20px;'>Saludos cordiales,<br><strong>Equipo de FLOWMATIC</strong></p>" +

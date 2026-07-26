@@ -284,7 +284,7 @@ public class CalendarioController {
                 response.put("error", "No autorizado");
                 return response;
             }
-            if (!"CONFIRMADO".equals(estado) && !"CANCELADO".equals(estado)) {
+            if (!"CONFIRMADO".equals(estado) && !"CANCELADO".equals(estado) && !"REPROGRAMADO".equals(estado)) {
                 response.put("success", false);
                 response.put("error", "Solo puedes confirmar o cancelar la entrevista");
                 return response;
@@ -302,6 +302,27 @@ public class CalendarioController {
                 "id", ev.getId(),
                 "estado", ev.getEstado()
             ));
+
+            if ("ROLE_CANDIDATO".equals(user.getRol())) {
+                try {
+                    String candidatoNombre = ev.getCandidatoNombre() != null ? ev.getCandidatoNombre() : "Candidato";
+                    String asunto = "El candidato " + candidatoNombre + " ha " +
+                        ("CONFIRMADO".equals(estado) ? "confirmado" : "solicitado cambios en") +
+                        " su entrevista";
+                    String mensaje = "El candidato " + candidatoNombre +
+                        " ha actualizado el estado de la entrevista del " + ev.getFecha() +
+                        " a las " + ev.getHora() + " a \"" + estado + "\".";
+
+                    if (ev.getRrhhId() != null) {
+                        usuarioRepository.findById(ev.getRrhhId()).ifPresent(rrhh -> {
+                            notificacionService.crear("ENTREVISTA", mensaje,
+                                ev.getCandidatoId(), candidatoNombre, "/calendario");
+                        });
+                    }
+                } catch (Exception notifEx) {
+                    logger.warn("No se pudo notificar a RRHH: {}", notifEx.getMessage());
+                }
+            }
         } catch (Exception e) {
             response.put("success", false);
             response.put("error", e.getMessage());

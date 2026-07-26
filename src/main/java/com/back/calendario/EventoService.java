@@ -119,6 +119,14 @@ public class EventoService {
             throw new IllegalArgumentException("Las observaciones no pueden tener m\u00e1s de 500 caracteres");
         }
 
+        if (eventoRepository.existsByCandidatoIdAndFechaAndHora(evento.getCandidatoId(), fecha, hora)) {
+            Evento existente = eventoRepository
+                .findFirstByCandidatoIdAndFechaAndHora(evento.getCandidatoId(), fecha, hora).orElse(null);
+            if (existente != null && !existente.getId().equals(id)) {
+                throw new IllegalArgumentException("El candidato ya tiene una entrevista en esa fecha y hora");
+            }
+        }
+
         evento.setFecha(fecha);
         evento.setHora(hora);
         evento.setTipo(tipo != null ? tipo : "ENTREVISTA_INICIAL");
