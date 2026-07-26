@@ -42,6 +42,16 @@ logs/
 .DS_Store
 Thumbs.db
 
+### IDE ###
+.classpath
+.factorypath
+.project
+.settings/
+
+### App ###
+nohup.out
+superfolder/
+
 ### Spring Boot ###
 *.pid
 heapdump.*.hprof
