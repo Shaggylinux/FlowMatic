@@ -239,7 +239,8 @@
       </button>
     </div>
     <div class="cal-modal-body">
-      <form id="calEventoForm" th:action="@{/calendario/crear}" method="post" onsubmit="return false;">
+      <form id="calEventoForm" onsubmit="return false;">
+        <input type="hidden" name="_csrf" id="csrfToken" th:value="${_csrf.token}" />
         <input type="hidden" name="eventoId" id="calEventoId" value="">
         <div class="cal-modal-field">
           <label class="cal-modal-label" for="calCandidato">Candidato <span class="required">*</span></label>
@@ -611,6 +612,7 @@ function guardarNota(eventoId) {
   var observaciones = textarea.value.trim();
   var formData = new URLSearchParams();
   formData.set('observaciones', observaciones);
+  formData.set('_csrf', getCsrfToken());
   fetch('/calendario/' + eventoId + '/nota', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -700,6 +702,10 @@ function guardarEntrevista() {
   var eventoId = document.getElementById('calEventoId').value;
   var isReprogram = eventoId ? true : false;
   var formData = new URLSearchParams(new FormData(form));
+  if (!formData.has('_csrf')) {
+    var csrf = document.getElementById('csrfToken');
+    if (csrf) formData.set('_csrf', csrf.value);
+  }
   var url = isReprogram ? '/calendario/actualizar/' + eventoId : '/calendario/crear';
   fetch(url, {
     method: 'POST',
@@ -720,6 +726,11 @@ function guardarEntrevista() {
 }
 
 // ── EVENT ACTIONS ────────────────────────────
+function getCsrfToken() {
+  var el = document.getElementById('csrfToken');
+  return el ? el.value : '';
+}
+
 function cambiarEstado(id, nuevoEstado) {
   if (!id) return;
   var estados = { PENDIENTE: 'Pendiente', CONFIRMADO: 'Confirmado', REPROGRAMADO: 'Reprogramado', CANCELADO: 'Cancelado' };
@@ -727,7 +738,7 @@ function cambiarEstado(id, nuevoEstado) {
   fetch('/calendario/cambiar-estado/' + id, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: 'estado=' + encodeURIComponent(nuevoEstado)
+    body: 'estado=' + encodeURIComponent(nuevoEstado) + '&_csrf=' + encodeURIComponent(getCsrfToken())
   })
   .then(function(res) { return res.json(); })
   .then(function(data) {

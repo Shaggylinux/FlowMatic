@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -54,7 +55,11 @@ public class CalendarioController {
     private ExcelService excelService;
 
     @GetMapping
-    public String verCalendario(Model model, Principal principal) {
+    public String verCalendario(Model model, Principal principal, HttpServletRequest request) {
+        var csrf = (org.springframework.security.web.csrf.CsrfToken) request.getAttribute("_csrf");
+        if (csrf != null) {
+            model.addAttribute("_csrf", csrf);
+        }
         List<Candidato> candidatos = candidatoRepository.findAll();
         model.addAttribute("candidatos", candidatos);
 
