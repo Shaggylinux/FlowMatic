@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 28px;">FLOWMATIC</h1>
+            <p style="color: #e0e0e0; margin: 10px 0 0 0;">Sistema de Gestión de Candidatos</p>
+        </div>
+        <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px;">
+            <h2 style="color: #333;">¿Olvidaste tu contraseña, <span th:text="${nombre}">Usuario</span>?</h2>
+            <p style="color: #666; line-height: 1.6;">Recibimos una solicitud para restablecer la contraseña de tu cuenta en FLOWMATIC.</p>
+            <p style="color: #666; line-height: 1.6;">Haz clic en el siguiente botón para crear una nueva contraseña:</p>
+            <div style="text-align: center; margin: 30px 0;">
+                <a th:href="${enlace}" style="background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Restablecer contraseña</a>
+            </div>
+            <p style="color: #999; font-size: 12px; text-align: center;">O copia y pega este enlace en tu navegador:</p>
+            <p style="color: #667eea; font-size: 12px; text-align: center; word-break: break-all;" th:text="${enlace}"></p>
+            <p style="color: #999; font-size: 12px; margin-top: 20px;">Este enlace expira en 15 minutos.</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="color: #666; font-size: 12px;">Si no solicitaste el restablecimiento de contraseña, puedes ignorar este correo. Tu contraseña actual seguirá siendo válida.</p>
+            <p style="color: #666; font-size: 12px; margin-top: 20px;">Saludos cordiales,<br><strong>Equipo de FLOWMATIC</strong></p>
+        </div>
+    </div>
+</body>
+</html>
