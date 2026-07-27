@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.back.candidatos.Candidato;
-import com.back.candidatos.CandidatoRepository;
-import com.back.drive.FilesServices;
+import com.back.auth.event.UsuarioRegistradoEvent;
 import com.back.shared.EmailService;
+import org.springframework.context.ApplicationEventPublisher;
 
 @Service
 public class UsuarioService {
@@ -23,13 +22,10 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
     private EmailService emailService;
 
     @Autowired
-    private FilesServices filesServices;
+    private ApplicationEventPublisher eventPublisher;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -54,15 +50,7 @@ public class UsuarioService {
         usuario.setFechaCreacionToken(LocalDateTime.now());
         usuario = usuarioRepository.save(usuario);
 
-        if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
-            Candidato candidato = new Candidato();
-            candidato.setId(usuario.getId());
-            candidato.setUsername(username);
-            candidato.setApellido(apellido);
-            candidatoRepository.save(candidato);
-
-            filesServices.crearCarpetaCandidato(usuario.getEmail());
-        }
+        eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(), usuario.getEmail(), usuario.getRol(), username, apellido));
 
         logger.info("Intentando enviar email de verificaci\u00f3n a: {}", usuario.getEmail());
 
@@ -174,11 +162,6 @@ public class UsuarioService {
     }
 
     private String obtenerNombreOApellido(Usuario usuario) {
-        if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
-            return candidatoRepository.findById(usuario.getId())
-                    .map(c -> c.getUsername() + " " + c.getApellido())
-                    .orElse("Usuario");
-        }
         return "Usuario";
     }
 }
