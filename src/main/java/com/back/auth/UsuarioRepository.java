@@ -10,7 +10,8 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByEmail(String email);
-    Optional<Usuario> findByTokenactivacion(String token);
+    Optional<Usuario> findByTokenActivacion(String token);
+    Optional<Usuario> findByTokenResetPassword(String token);
     List<Usuario> findByRol(String rol);
     List<Usuario> findTop10ByOrderByIdDesc();
     long countByRol(String rol);
@@ -22,4 +23,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Page<Usuario> findByRol(String rol, Pageable pageable);
     Page<Usuario> findByEmailContainingIgnoreCase(String email, Pageable pageable);
     Page<Usuario> findByRolAndEmailContainingIgnoreCase(String rol, String email, Pageable pageable);
+
+    void deleteByEmail(String email);
 }

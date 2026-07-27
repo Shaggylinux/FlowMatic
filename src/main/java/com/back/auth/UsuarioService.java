@@ -51,7 +51,7 @@ public class UsuarioService {
         }
 
         String token = UUID.randomUUID().toString();
-        usuario.setTokenactivacion(token);
+        usuario.setTokenActivacion(token);
         usuario.setActivo(false);
         usuario.setFechaCreacionToken(LocalDateTime.now());
         usuario = usuarioRepository.save(usuario);
@@ -76,15 +76,19 @@ public class UsuarioService {
     }
 
     public Usuario buscarPorToken(String token) {
-        return usuarioRepository.findByTokenactivacion(token).orElse(null);
+        return usuarioRepository.findByTokenActivacion(token).orElse(null);
+    }
+
+    public Usuario buscarPorTokenReset(String token) {
+        return usuarioRepository.findByTokenResetPassword(token).orElse(null);
     }
 
     public void regenerarYReenviarToken(String tokenViejo) {
-        Usuario usuario = usuarioRepository.findByTokenactivacion(tokenViejo).orElse(null);
+        Usuario usuario = usuarioRepository.findByTokenActivacion(tokenViejo).orElse(null);
 
         if (usuario != null) {
             String nuevoToken = UUID.randomUUID().toString();
-            usuario.setTokenactivacion(nuevoToken);
+            usuario.setTokenActivacion(nuevoToken);
             usuario.setFechaCreacionToken(LocalDateTime.now());
             usuarioRepository.save(usuario);
 
@@ -96,7 +100,7 @@ public class UsuarioService {
     public boolean activarCuenta(String token) {
         logger.info("Buscando token de activaci\u00f3n: {}", token);
 
-        var optional = usuarioRepository.findByTokenactivacion(token);
+        var optional = usuarioRepository.findByTokenActivacion(token);
 
         if (optional.isEmpty()) {
             logger.warn("Token no encontrado o inv\u00e1lido");
@@ -105,7 +109,7 @@ public class UsuarioService {
 
         Usuario usuario = optional.get();
         usuario.setActivo(true);
-        usuario.setTokenactivacion(null);
+        usuario.setTokenActivacion(null);
         usuarioRepository.save(usuario);
 
         logger.info("Cuenta activada para: {}", usuario.getEmail());
@@ -123,8 +127,8 @@ public class UsuarioService {
         Usuario usuario = optional.get();
 
         String token = UUID.randomUUID().toString();
-        usuario.setTokenactivacion(token);
-        usuario.setFechaCreacionToken(LocalDateTime.now());
+        usuario.setTokenResetPassword(token);
+        usuario.setFechaCreacionTokenReset(LocalDateTime.now());
         usuarioRepository.save(usuario);
 
         String nombre = obtenerNombreOApellido(usuario);
@@ -132,19 +136,19 @@ public class UsuarioService {
     }
 
     public String validarTokenReset(String token) {
-        var optional = usuarioRepository.findByTokenactivacion(token);
+        var optional = usuarioRepository.findByTokenResetPassword(token);
         if (optional.isEmpty()) return "INVALIDO";
         Usuario usuario = optional.get();
-        if (usuario.getFechaCreacionToken() != null) {
-            long minutos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).toMinutes();
+        if (usuario.getFechaCreacionTokenReset() != null) {
+            long minutos = java.time.Duration.between(usuario.getFechaCreacionTokenReset(), LocalDateTime.now()).toMinutes();
             long expiry = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
             if (minutos > expiry) return "EXPIRADO";
         }
         return "VALIDA";
     }
 
-    public boolean cambiarPassword(String token, String nuevaPassword) {
-        var optional = usuarioRepository.findByTokenactivacion(token);
+public boolean cambiarPassword(String token, String nuevaPassword) {
+        var optional = usuarioRepository.findByTokenResetPassword(token);
 
         if (optional.isEmpty()) {
             return false;
@@ -152,18 +156,18 @@ public class UsuarioService {
 
         Usuario usuario = optional.get();
 
-        if (usuario.getFechaCreacionToken() != null) {
-            long minutos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).toMinutes();
+        if (usuario.getFechaCreacionTokenReset() != null) {
+            long minutos = java.time.Duration.between(usuario.getFechaCreacionTokenReset(), LocalDateTime.now()).toMinutes();
             long expiry = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
             if (minutos > expiry) {
-                usuario.setTokenactivacion(null);
+                usuario.setTokenResetPassword(null);
                 usuarioRepository.save(usuario);
                 return false;
             }
         }
 
         usuario.setClave(encoder.encode(nuevaPassword));
-        usuario.setTokenactivacion(null);
+        usuario.setTokenResetPassword(null);
 
         usuarioRepository.save(usuario);
 

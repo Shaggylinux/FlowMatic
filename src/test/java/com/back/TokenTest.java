@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class TokenTest {
+@Transactional
+class TokenTest extends BaseIntegrationTest {
 
     @Autowired
     private UsuarioService usuarioService;
@@ -22,17 +23,18 @@ public class TokenTest {
 
     @Test
     public void testToken() {
+        String email = "test-reset-" + System.currentTimeMillis() + "@flowmatic.com";
         Usuario u = new Usuario();
-        u.setEmail("test-reset@flowmatic.com");
+        u.setEmail(email);
         u.setClave("12345678");
         u.setRol("ROLE_CANDIDATO");
         usuarioRepository.save(u);
 
-        usuarioService.generarTokenRecuperacion("test-reset@flowmatic.com");
+        usuarioService.generarTokenRecuperacion(email);
 
-        Usuario fromDb = usuarioRepository.findByEmail("test-reset@flowmatic.com").orElse(null);
+        Usuario fromDb = usuarioRepository.findByEmail(email).orElse(null);
         assertNotNull(fromDb);
-        String token = fromDb.getTokenactivacion();
+        String token = fromDb.getTokenResetPassword();
         assertNotNull(token);
 
         String estado = usuarioService.validarTokenReset(token);

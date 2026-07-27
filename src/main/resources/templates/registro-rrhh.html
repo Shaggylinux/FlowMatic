@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registro RRHH - FlowMatic</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h2>Registro de Personal de RRHH</h2>
+        
+        <div th:if="${mensajeExito}" class="alert alert-success">
+            Registro exitoso. Se ha enviado un correo de verificaci&oacute;n.
+        </div>
+        <div th:if="${errorDuplicado}" class="alert alert-danger">
+            El correo ya est&aacute; registrado.
+        </div>
+        <div th:if="${errorClaveCorta}" class="alert alert-danger">
+            La contrase&ntilde;a es demasiado corta.
+        </div>
+        
+        <form th:action="@{/registro/rrhh}" th:object="${registro}" method="post">
+            <div>
+                <label>Nombre:</label>
+                <input type="text" th:field="*{username}" required>
+            </div>
+            <div>
+                <label>Apellido:</label>
+                <input type="text" th:field="*{apellido}">
+            </div>
+            <div>
+                <label>Email:</label>
+                <input type="email" th:field="*{email}" required>
+            </div>
+            <div>
+                <label>Contrase&ntilde;a:</label>
+                <input type="password" th:field="*{clave}" required>
+            </div>
+            <button type="submit">Registrar RRHH</button>
+        </form>
+    </div>
+</body>
+</html>

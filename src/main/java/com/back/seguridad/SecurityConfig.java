@@ -34,11 +34,13 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/api/seed"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/forgot-password",
-                                "/reset-password", "/js/**", "/home", "/", "/api/seed")
+                                "/reset-password", "/js/**", "/home", "/", "/api/seed", "/videos/**")
                         .permitAll()
                         .requestMatchers("/candidato/**").hasRole("CANDIDATO")
                         .requestMatchers("/calendario/**").hasAnyRole("RRHH", "CANDIDATO")
                         .requestMatchers("/gestion-candidatos/**").hasAnyRole("RRHH", "ADMINISTRADOR")
+                        .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/drive/**").hasAnyRole("RRHH", "CANDIDATO")
                         .requestMatchers("/rrhh/**", "/subir-archivo", "/crear-carpeta", "/eliminar", "/descargar",
                                 "/drive/ver-archivo/**")
                         .hasAnyRole("RRHH", "CANDIDATO")

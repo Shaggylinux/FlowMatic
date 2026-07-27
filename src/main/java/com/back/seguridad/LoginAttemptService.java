@@ -3,7 +3,8 @@ package com.back.seguridad;
 import com.back.admin.ConfiguracionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 public class LoginAttemptService {
@@ -11,24 +12,44 @@ public class LoginAttemptService {
     @Autowired
     private ConfiguracionService configuracionService;
 
-    private final ConcurrentHashMap<String, LoginAttemptInfo> cache = new ConcurrentHashMap<>();
+    private final LoginAttemptRepository loginAttemptRepository;
 
+    public LoginAttemptService(ConfiguracionService configuracionService, LoginAttemptRepository loginAttemptRepository) {
+        this.configuracionService = configuracionService;
+        this.loginAttemptRepository = loginAttemptRepository;
+    }
+
+    @Transactional
     public void recordFailed(String email) {
+        String normalizedEmail = email.toLowerCase();
         int maxAttempts = Integer.parseInt(configuracionService.getValor("login.max.attempts", "5"));
         long blockMinutes = Long.parseLong(configuracionService.getValor("login.block.minutes", "15"));
-        cache.merge(
-            email.toLowerCase(),
-            LoginAttemptInfo.first(),
-            (old, val) -> old.isBlocked() ? old : old.increment(maxAttempts, blockMinutes)
-        );
+        
+        LoginAttempt attempt = loginAttemptRepository.findByEmail(normalizedEmail)
+            .orElse(new LoginAttempt(normalizedEmail));
+            
+        if (attempt.getBlockedUntil() != null && attempt.getBlockedUntil().isAfter(LocalDateTime.now())) {
+            return; // Already blocked
+        }
+        
+        attempt.setAttempts(attempt.getAttempts() + 1);
+        
+        if (attempt.getAttempts() >= maxAttempts) {
+            attempt.setBlockedUntil(LocalDateTime.now().plusMinutes(blockMinutes));
+            attempt.setAttempts(0); // Optional: reset attempts once blocked
+        }
+        
+        loginAttemptRepository.save(attempt);
     }
 
     public boolean isBlocked(String email) {
-        LoginAttemptInfo info = cache.get(email.toLowerCase());
-        return info != null && info.isBlocked();
+        return loginAttemptRepository.findByEmail(email.toLowerCase())
+            .map(attempt -> attempt.getBlockedUntil() != null && attempt.getBlockedUntil().isAfter(LocalDateTime.now()))
+            .orElse(false);
     }
 
+    @Transactional
     public void reset(String email) {
-        cache.remove(email.toLowerCase());
+        loginAttemptRepository.deleteByEmail(email.toLowerCase());
     }
 }

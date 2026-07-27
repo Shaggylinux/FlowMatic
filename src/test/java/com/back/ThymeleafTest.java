@@ -7,7 +7,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 @SpringBootTest
-public class ThymeleafTest {
+class ThymeleafTest extends BaseIntegrationTest {
 
     @Autowired
     private TemplateEngine templateEngine;
