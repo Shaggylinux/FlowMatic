@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
@@ -93,5 +94,20 @@ public class CandidatoService {
         String searchVal = (search != null && !search.isBlank()) ? "%" + search + "%" : null;
         String estadoVal = (estado != null && !estado.isBlank()) ? estado : null;
         return candidatoRepository.findFiltradosSinPaginar(searchVal, estadoVal);
+    }
+
+    public String getNombreCompleto(Long id) {
+        return candidatoRepository.findById(id)
+                .map(c -> c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : ""))
+                .orElse("Candidato");
+    }
+
+    public List<Map<String, Object>> getSimpleList() {
+        return candidatoRepository.findAll().stream().map(c -> {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", c.getId());
+            m.put("nombre", c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : ""));
+            return m;
+        }).collect(Collectors.toList());
     }
 }

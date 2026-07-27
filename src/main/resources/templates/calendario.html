@@ -195,7 +195,7 @@
               <span class="cal-filter-label">Candidato</span>
               <select id="filterCandidato" class="cal-filter-select">
                 <option value="">Todos los candidatos</option>
-                <option th:each="c : ${candidatos}" th:value="${c.id}" th:text="${c.username + ' ' + c.apellido}"></option>
+                <option th:each="c : ${candidatos}" th:value="${c['id']}" th:text="${c['nombre']}"></option>
               </select>
             </div>
             <div class="cal-filter-dropdown-section">
@@ -245,7 +245,7 @@
           <label class="cal-modal-label" for="calCandidato">Candidato <span class="required">*</span></label>
           <select name="candidatoId" id="calCandidato" class="cal-modal-input" required>
             <option value="">Seleccionar candidato...</option>
-            <option th:each="c : ${candidatos}" th:value="${c.id}" th:text="${c.username + ' ' + c.apellido}"></option>
+            <option th:each="c : ${candidatos}" th:value="${c['id']}" th:text="${c['nombre']}"></option>
           </select>
         </div>
         <div class="cal-modal-field">

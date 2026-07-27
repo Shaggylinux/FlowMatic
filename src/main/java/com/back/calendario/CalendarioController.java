@@ -1,10 +1,9 @@
 package com.back.calendario;
 
 import com.back.auth.Usuario;
-import com.back.candidatos.Candidato;
 import com.back.admin.RRHH;
 import com.back.auth.UsuarioRepository;
-import com.back.candidatos.CandidatoRepository;
+import com.back.candidatos.CandidatoService;
 import com.back.admin.RRHHRepository;
 import com.back.notificaciones.EmailService;
 import com.back.exportacion.ExcelService;
@@ -36,7 +35,7 @@ public class CalendarioController {
 
     private final EventoService eventoService;
     private final UsuarioRepository usuarioRepository;
-    private final CandidatoRepository candidatoRepository;
+    private final CandidatoService candidatoService;
     private final RRHHRepository rrhhRepository;
     private final NotificacionService notificacionService;
     private final EmailService emailService;
@@ -44,8 +43,7 @@ public class CalendarioController {
 
     @GetMapping
     public String verCalendario(Model model, Principal principal) {
-        List<Candidato> candidatos = candidatoRepository.findAll();
-        model.addAttribute("candidatos", candidatos);
+        model.addAttribute("candidatos", candidatoService.getSimpleList());
 
         Usuario user = obtenerUsuario(principal);
         if (user != null) {
@@ -178,15 +176,14 @@ public class CalendarioController {
         }
 
         try {
-            Evento evento = eventoService.crearEvento(candidatoId, fecha, hora, tipo, lugar, vacante, modalidad,
+            String candidatoNombre = candidatoService.getNombreCompleto(candidatoId);
+
+            Evento evento = eventoService.crearEvento(candidatoId, candidatoNombre, fecha, hora, tipo, lugar, vacante, modalidad,
                     entrevistador, observaciones, estado, rrhh.getId());
             response.put("success", true);
             response.put("eventoId", evento.getId());
 
             try {
-                Candidato candidato = candidatoRepository.findById(candidatoId).orElse(null);
-                String candidatoNombre = candidato != null ? candidato.getUsername() + " " + candidato.getApellido()
-                        : "Candidato";
                 String rrhhNombre = rrhh.getEmail();
                 RRHH rrhhProfile = rrhhRepository.findById(rrhh.getId()).orElse(null);
                 if (rrhhProfile != null) {

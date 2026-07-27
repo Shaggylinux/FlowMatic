@@ -1,8 +1,5 @@
 package com.back.calendario;
 
-import com.back.candidatos.Candidato;
-import com.back.candidatos.CandidatoRepository;
-
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,9 +14,8 @@ import lombok.RequiredArgsConstructor;
 public class EventoService {
 
     private final EventoRepository eventoRepository;
-    private final CandidatoRepository candidatoRepository;
 
-    public Evento crearEvento(Long candidatoId, LocalDate fecha, LocalTime hora,
+    public Evento crearEvento(Long candidatoId, String candidatoNombre, LocalDate fecha, LocalTime hora,
                               String tipo, String lugar, String vacante,
                               String modalidad, String entrevistador,
                               String observaciones, String estado, Long rrhhId) {
@@ -30,12 +26,9 @@ public class EventoService {
             throw new IllegalArgumentException("El candidato ya tiene una entrevista en esa fecha y hora");
         }
 
-        Candidato candidato = candidatoRepository.findById(candidatoId)
-                .orElseThrow(() -> new IllegalArgumentException("Candidato no encontrado"));
-
         Evento evento = new Evento();
         evento.setCandidatoId(candidatoId);
-        evento.setCandidatoNombre(candidato.getUsername() + " " + candidato.getApellido());
+        evento.setCandidatoNombre(candidatoNombre);
         evento.setFecha(fecha);
         evento.setHora(hora);
         evento.setTipo(tipo != null ? tipo : "ENTREVISTA_INICIAL");
