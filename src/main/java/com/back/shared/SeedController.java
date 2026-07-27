@@ -7,7 +7,7 @@ import com.back.auth.UsuarioRepository;
 import com.back.candidatos.CandidatoRepository;
 import com.back.admin.RRHHRepository;
 import com.back.drive.FilesServices;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,25 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class SeedController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private RRHHRepository rrhhRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    private FilesServices filesServices;
+    private final UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final RRHHRepository rrhhRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final FilesServices filesServices;
 
     @PostMapping("/seed")
     public ResponseEntity<?> seed() {

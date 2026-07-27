@@ -2,19 +2,18 @@ package com.back.shared;
 
 import com.back.admin.ConfiguracionService;
 import com.back.auth.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class PasswordController {
 
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private ConfiguracionService configuracionService;
+    private final UsuarioService usuarioService;
+    private final ConfiguracionService configuracionService;
 
     @GetMapping("/forgot-password")
     public String mostrarFormulario() {
@@ -28,7 +27,16 @@ public class PasswordController {
     }
 
     @GetMapping("/reset-password")
-    public String mostrarReset(@RequestParam String token, Model model) {
+    public String mostrarReset(@RequestParam(required = false) String token,
+            @RequestParam(required = false) String success,
+            Model model) {
+        if (success != null) {
+            return "reset-password";
+        }
+
+        if (token == null || token.isEmpty()) {
+            return "redirect:/forgot-password?errorToken";
+        }
         String estado = usuarioService.validarTokenReset(token);
         if ("EXPIRADO".equals(estado)) {
             return "caduco-reset";
@@ -42,8 +50,8 @@ public class PasswordController {
 
     @PostMapping("/reset-password")
     public String cambiarPassword(@RequestParam String token,
-                                @RequestParam String password,
-                                Model model) {
+            @RequestParam String password,
+            Model model) {
 
         int minLength = Integer.parseInt(configuracionService.getValor("password.min.length", "8"));
         if (password == null || password.trim().length() < minLength) {
@@ -66,6 +74,6 @@ public class PasswordController {
             return "redirect:/forgot-password?errorToken";
         }
 
-        return "redirect:/reset-password?token=" + token + "&success";
+        return "redirect:/login?reset_ok";
     }
 }

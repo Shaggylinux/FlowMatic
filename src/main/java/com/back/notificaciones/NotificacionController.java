@@ -1,18 +1,20 @@
 package com.back.notificaciones;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/notificaciones")
+@RequiredArgsConstructor
 public class NotificacionController {
 
-    @Autowired
-    private NotificacionService notificacionService;
+    private final NotificacionService notificacionService;
 
     @GetMapping
     public ResponseEntity<?> obtenerNoLeidas() {

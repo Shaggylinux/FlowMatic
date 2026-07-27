@@ -11,7 +11,7 @@ import com.back.shared.ExcelService;
 import com.back.notificaciones.NotificacionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,36 +22,25 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/calendario")
+@RequiredArgsConstructor
 public class CalendarioController {
 
     private static final Logger logger = LoggerFactory.getLogger(CalendarioController.class);
 
-    @Autowired
-    private EventoService eventoService;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private RRHHRepository rrhhRepository;
-
-    @Autowired
-    private NotificacionService notificacionService;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private ExcelService excelService;
+    private final EventoService eventoService;
+    private final UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final RRHHRepository rrhhRepository;
+    private final NotificacionService notificacionService;
+    private final EmailService emailService;
+    private final ExcelService excelService;
 
     @GetMapping
     public String verCalendario(Model model, Principal principal) {
@@ -128,31 +117,39 @@ public class CalendarioController {
             String bgColor, borderColor, textColor;
             switch (estadoEvento) {
                 case "CONFIRMADO" -> {
-                    bgColor = "#DCFCE7"; borderColor = "#22C55E"; textColor = "#166534";
+                    bgColor = "#DCFCE7";
+                    borderColor = "#22C55E";
+                    textColor = "#166534";
                 }
                 case "REPROGRAMADO" -> {
-                    bgColor = "#FFEDD5"; borderColor = "#F97316"; textColor = "#9A3412";
+                    bgColor = "#FFEDD5";
+                    borderColor = "#F97316";
+                    textColor = "#9A3412";
                 }
                 case "CANCELADO" -> {
-                    bgColor = "#FEE2E2"; borderColor = "#EF4444"; textColor = "#991B1B";
+                    bgColor = "#FEE2E2";
+                    borderColor = "#EF4444";
+                    textColor = "#991B1B";
                 }
                 default -> {
-                    bgColor = "#FEF9C3"; borderColor = "#EAB308"; textColor = "#854D0E";
+                    bgColor = "#FEF9C3";
+                    borderColor = "#EAB308";
+                    textColor = "#854D0E";
                 }
             }
 
             return new EventoCalendarioDTO(
-                e.getId(),
-                e.getCandidatoNombre() + " — " + e.getHora().toString(),
-                e.getFecha().toString() + "T" + e.getHora().toString(),
-                bgColor, borderColor, textColor,
-                props
-            );
+                    e.getId(),
+                    e.getCandidatoNombre() + " — " + e.getHora().toString(),
+                    e.getFecha().toString() + "T" + e.getHora().toString(),
+                    bgColor, borderColor, textColor,
+                    props);
         }).toList();
     }
 
     private Usuario obtenerUsuario(Principal principal) {
-        if (principal == null) return null;
+        if (principal == null)
+            return null;
         return usuarioRepository.findByEmail(principal.getName()).orElse(null);
     }
 
@@ -181,13 +178,15 @@ public class CalendarioController {
         }
 
         try {
-            Evento evento = eventoService.crearEvento(candidatoId, fecha, hora, tipo, lugar, vacante, modalidad, entrevistador, observaciones, estado, rrhh.getId());
+            Evento evento = eventoService.crearEvento(candidatoId, fecha, hora, tipo, lugar, vacante, modalidad,
+                    entrevistador, observaciones, estado, rrhh.getId());
             response.put("success", true);
             response.put("eventoId", evento.getId());
 
             try {
                 Candidato candidato = candidatoRepository.findById(candidatoId).orElse(null);
-                String candidatoNombre = candidato != null ? candidato.getUsername() + " " + candidato.getApellido() : "Candidato";
+                String candidatoNombre = candidato != null ? candidato.getUsername() + " " + candidato.getApellido()
+                        : "Candidato";
                 String rrhhNombre = rrhh.getEmail();
                 RRHH rrhhProfile = rrhhRepository.findById(rrhh.getId()).orElse(null);
                 if (rrhhProfile != null) {
@@ -196,8 +195,9 @@ public class CalendarioController {
                 emailService.enviarEmailEntrevista(rrhh.getEmail(), rrhhNombre, evento, candidatoNombre);
 
                 notificacionService.crear("ENTREVISTA",
-                    "Entrevista agendada: " + candidatoNombre + " — " + (tipo != null ? tipo : "Entrevista") + " el " + fecha.toString(),
-                    candidatoId, candidatoNombre, "/calendario");
+                        "Entrevista agendada: " + candidatoNombre + " — " + (tipo != null ? tipo : "Entrevista")
+                                + " el " + fecha.toString(),
+                        candidatoId, candidatoNombre, "/calendario");
             } catch (Exception emailEx) {
                 logger.warn("No se pudo enviar el email de confirmaci\u00f3n: {}", emailEx.getMessage());
             }
@@ -233,15 +233,17 @@ public class CalendarioController {
         }
 
         try {
-            eventoService.actualizarEvento(id, fecha, hora, tipo, lugar, vacante, modalidad, entrevistador, observaciones);
+            eventoService.actualizarEvento(id, fecha, hora, tipo, lugar, vacante, modalidad, entrevistador,
+                    observaciones);
             response.put("success", true);
 
             try {
                 Evento evento = eventoService.buscarPorId(id);
                 if (evento != null) {
                     notificacionService.crear("ENTREVISTA",
-                        "Entrevista reprogramada: " + evento.getCandidatoNombre() + " \u2014 " + (tipo != null ? tipo : "Entrevista") + " el " + fecha.toString(),
-                        evento.getCandidatoId(), evento.getCandidatoNombre(), "/calendario");
+                            "Entrevista reprogramada: " + evento.getCandidatoNombre() + " \u2014 "
+                                    + (tipo != null ? tipo : "Entrevista") + " el " + fecha.toString(),
+                            evento.getCandidatoId(), evento.getCandidatoNombre(), "/calendario");
                 }
             } catch (Exception notifEx) {
                 logger.warn("No se pudo enviar notificaci\u00f3n de reprogramaci\u00f3n: {}", notifEx.getMessage());
@@ -299,24 +301,20 @@ public class CalendarioController {
             Evento ev = eventoService.actualizarEstado(id, estado);
             response.put("success", true);
             response.put("evento", Map.of(
-                "id", ev.getId(),
-                "estado", ev.getEstado()
-            ));
+                    "id", ev.getId(),
+                    "estado", ev.getEstado()));
 
             if ("ROLE_CANDIDATO".equals(user.getRol())) {
                 try {
                     String candidatoNombre = ev.getCandidatoNombre() != null ? ev.getCandidatoNombre() : "Candidato";
-                    String asunto = "El candidato " + candidatoNombre + " ha " +
-                        ("CONFIRMADO".equals(estado) ? "confirmado" : "solicitado cambios en") +
-                        " su entrevista";
                     String mensaje = "El candidato " + candidatoNombre +
-                        " ha actualizado el estado de la entrevista del " + ev.getFecha() +
-                        " a las " + ev.getHora() + " a \"" + estado + "\".";
+                            " ha actualizado el estado de la entrevista del " + ev.getFecha() +
+                            " a las " + ev.getHora() + " a \"" + estado + "\".";
 
                     if (ev.getRrhhId() != null) {
                         usuarioRepository.findById(ev.getRrhhId()).ifPresent(rrhh -> {
                             notificacionService.crear("ENTREVISTA", mensaje,
-                                ev.getCandidatoId(), candidatoNombre, "/calendario");
+                                    ev.getCandidatoId(), candidatoNombre, "/calendario");
                         });
                     }
                 } catch (Exception notifEx) {
@@ -412,8 +410,10 @@ public class CalendarioController {
             candidatoId = user.getId();
         }
 
-        if (start == null) start = LocalDate.now().withDayOfMonth(1);
-        if (end == null) end = start.withDayOfMonth(start.lengthOfMonth());
+        if (start == null)
+            start = LocalDate.now().withDayOfMonth(1);
+        if (end == null)
+            end = start.withDayOfMonth(start.lengthOfMonth());
 
         List<Evento> eventos = eventoService.obtenerEventosFiltrados(start, end, candidatoId, estado, rrhhId);
 

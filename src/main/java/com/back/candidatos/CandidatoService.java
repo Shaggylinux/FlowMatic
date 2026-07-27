@@ -1,7 +1,7 @@
 package com.back.candidatos;
 
 import com.back.auth.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,14 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CandidatoService {
 
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final UsuarioRepository usuarioRepository;
 
     private static final List<String> ESTADOS_EN_PROCESO = Arrays.asList(
         "Disponible", "En proceso", "Entrevista", "Pendiente", "Registrado"
@@ -80,48 +80,6 @@ public class CandidatoService {
         return candidatoRepository.findFiltrados(searchVal, cargoVal, estadoVal, expMin, ciudadVal, pageable);
     }
 
-    public int calcularMatchScore(Candidato candidato) {
-        int score = 0;
-
-        if (candidato.getCargo() != null && !candidato.getCargo().isBlank()) score += 5;
-        if (candidato.getCiudad() != null && !candidato.getCiudad().isBlank()) score += 5;
-        if (candidato.getTelefono() != null && !candidato.getTelefono().isBlank()) score += 5;
-
-        if (candidato.getExperiencia() != null && candidato.getExperiencia() > 0) {
-            if (candidato.getExperiencia() >= 5) score += 20;
-            else if (candidato.getExperiencia() >= 2) score += 15;
-            else score += 10;
-        }
-
-        if (candidato.getTecnologias() != null && !candidato.getTecnologias().isBlank()) {
-            String[] tecs = candidato.getTecnologias().split(",");
-            if (tecs.length >= 5) score += 30;
-            else if (tecs.length >= 3) score += 20;
-            else score += 15;
-        }
-
-        if (candidato.getIdiomas() != null && !candidato.getIdiomas().isBlank()) {
-            String[] langs = candidato.getIdiomas().split(",");
-            if (langs.length >= 2) score += 15;
-            else score += 10;
-        }
-
-        if (candidato.getDisponibilidad() != null && !candidato.getDisponibilidad().isBlank()) {
-            String disp = candidato.getDisponibilidad().toLowerCase();
-            if (disp.contains("inmediata")) score += 15;
-            else if (disp.contains("semana") || disp.contains("d\u00eda")) score += 10;
-            else score += 5;
-        }
-
-        return Math.min(score, 100);
-    }
-
-    public String getMatchLabel(int score) {
-        if (score >= 80) return "Excelente perfil";
-        if (score >= 60) return "Buena coincidencia";
-        if (score >= 40) return "Perfil en desarrollo";
-        return "Perfil b\u00e1sico";
-    }
 
     public List<String> getCargos() {
         return candidatoRepository.findDistinctCargos();

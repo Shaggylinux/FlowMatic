@@ -5,40 +5,33 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.back.candidatos.Candidato;
-import com.back.candidatos.CandidatoRepository;
+import com.back.admin.ConfiguracionService;
 import com.back.admin.RRHH;
 import com.back.admin.RRHHRepository;
-import com.back.admin.ConfiguracionService;
-import com.back.drive.FilesServices;
+import com.back.candidatos.Candidato;
+import com.back.candidatos.CandidatoRepository;
+import com.back.auth.event.UsuarioRegistradoEvent;
 import com.back.shared.EmailService;
+import org.springframework.context.ApplicationEventPublisher;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private RRHHRepository rrhhRepository;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private ConfiguracionService configuracionService;
-
-    @Autowired
-    private FilesServices filesServices;
+    private final UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final RRHHRepository rrhhRepository;
+    private final EmailService emailService;
+    private final ConfiguracionService configuracionService;
+    private final ApplicationEventPublisher eventPublisher;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -69,15 +62,8 @@ public class UsuarioService {
         usuario.setFechaCreacionToken(LocalDateTime.now());
         usuario = usuarioRepository.save(usuario);
 
-        if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
-            Candidato candidato = new Candidato();
-            candidato.setId(usuario.getId());
-            candidato.setUsername(username);
-            candidato.setApellido(apellido);
-            candidatoRepository.save(candidato);
-
-            filesServices.crearCarpetaCandidato(usuario.getEmail());
-        }
+        eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
+            usuario.getEmail(), usuario.getRol(), username, apellido));
 
         if ("ROLE_RRHH".equals(usuario.getRol())) {
             RRHH rrhh = new RRHH();

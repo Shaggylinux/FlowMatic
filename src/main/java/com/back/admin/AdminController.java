@@ -1,6 +1,5 @@
 package com.back.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,16 +10,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
+import com.back.admin.dto.ActividadRecienteDTO;
+import com.back.admin.dto.UsuarioResumenDTO;
 import com.back.auth.Usuario;
-import com.back.candidatos.Candidato;
 import com.back.auth.UsuarioRepository;
+import com.back.auth.UsuarioService;
+import com.back.candidatos.Candidato;
 import com.back.candidatos.CandidatoRepository;
 import com.back.calendario.EventoRepository;
 import com.back.shared.ExcelService;
-import com.back.auth.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,39 +34,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private RRHHRepository rrhhRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private ExcelService excelService;
-
-    @Autowired
-    private EventoRepository eventoRepository;
-
-    @Autowired
-    private AuditoriaService auditoriaService;
-
-    @Autowired
-    private ConfiguracionService configuracionService;
+    private final UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final RRHHRepository rrhhRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UsuarioService usuarioService;
+    private final ExcelService excelService;
+    private final EventoRepository eventoRepository;
+    private final AuditoriaService auditoriaService;
+    private final ConfiguracionService configuracionService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model,
@@ -76,7 +62,6 @@ public class AdminController {
         long totalBloqueados = 0;
         long totalCandidatos = usuarioRepository.countByRol("ROLE_CANDIDATO");
         long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
-
         long entrevistasHoy = eventoRepository.countByFecha(LocalDate.now());
 
         List<Map<String, Object>> actividadReciente = buildActividadReciente();
@@ -215,18 +200,9 @@ public class AdminController {
         long totalCandidatos = usuarioRepository.countByRol("ROLE_CANDIDATO");
         long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
 
-        List<Map<String, Object>> usuariosData = usuariosPage.getContent().stream().map(u -> {
-            Map<String, Object> m = new HashMap<>();
-            String nombre = obtenerNombreUsuario(u.getId(), u.getRol());
-            String[] parts = nombre.split(" ", 2);
-            m.put("id", u.getId());
-            m.put("username", parts.length > 0 ? parts[0] : "");
-            m.put("apellido", parts.length > 1 ? parts[1] : "");
-            m.put("email", u.getEmail());
-            m.put("rol", u.getRol());
-            m.put("activo", u.isActivo());
-            return m;
-        }).collect(Collectors.toList());
+        List<UsuarioResumenDTO> usuariosData = usuariosPage.getContent().stream()
+                .map(u -> mapToUsuarioResumen(u))
+                .collect(Collectors.toList());
 
         model.addAttribute("usuarios", usuariosData);
         model.addAttribute("currentPage", page);
@@ -245,6 +221,20 @@ public class AdminController {
         model.addAttribute("rol", rol);
 
         return "admin";
+    }
+
+    private UsuarioResumenDTO mapToUsuarioResumen(Usuario u) {
+        String nombre = obtenerNombreUsuario(u.getId(), u.getRol());
+        String[] parts = nombre.split(" ", 2);
+        return new UsuarioResumenDTO(
+            u.getId(),
+            parts.length > 0 ? parts[0] : "",
+            parts.length > 1 ? parts[1] : "",
+            u.getEmail(),
+            u.getRol(),
+            u.isActivo(),
+            "Reci\u00e9n"
+        );
     }
 
     private List<PageItem> getPageItems(int current, int total) {
@@ -524,19 +514,6 @@ public class AdminController {
                 .map(r -> r.getUsername() + " " + r.getApellido()).orElse("RRHH");
             case "ROLE_ADMINISTRADOR" -> "Administrador";
             default -> "Usuario";
-        };
-    }
-
-    private String obtenerIniciales(Long userId, String rol) {
-        if (rol == null) return "US";
-        return switch (rol) {
-            case "ROLE_CANDIDATO" -> candidatoRepository.findById(userId)
-                .map(c -> (c.getUsername().charAt(0) + "" + c.getApellido().charAt(0)).toUpperCase())
-                .orElse("CA");
-            case "ROLE_RRHH" -> rrhhRepository.findById(userId)
-                .map(r -> (r.getUsername().charAt(0) + "" + r.getApellido().charAt(0)).toUpperCase())
-                .orElse("RH");
-            default -> "US";
         };
     }
 }

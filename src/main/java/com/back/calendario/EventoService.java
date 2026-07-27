@@ -2,7 +2,7 @@ package com.back.calendario;
 
 import com.back.candidatos.Candidato;
 import com.back.candidatos.CandidatoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -10,41 +10,24 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class EventoService {
 
-    @Autowired
-    private EventoRepository eventoRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
+    private final EventoRepository eventoRepository;
+    private final CandidatoRepository candidatoRepository;
 
     public Evento crearEvento(Long candidatoId, LocalDate fecha, LocalTime hora,
                               String tipo, String lugar, String vacante,
                               String modalidad, String entrevistador,
                               String observaciones, String estado, Long rrhhId) {
 
-        if (fecha.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha no puede ser anterior a hoy");
-        }
-        if (fecha.equals(LocalDate.now()) && hora.isBefore(LocalTime.now().withSecond(0).withNano(0))) {
-            throw new IllegalArgumentException("La hora seleccionada ya pasó");
-        }
-
-        if (hora.isBefore(LocalTime.of(7, 0)) || hora.isAfter(LocalTime.of(19, 0))) {
-            throw new IllegalArgumentException("La hora debe estar entre 07:00 y 19:00");
-        }
+        EventoValidator.validate(fecha, hora, lugar, observaciones);
 
         if (eventoRepository.existsByCandidatoIdAndFechaAndHora(candidatoId, fecha, hora)) {
             throw new IllegalArgumentException("El candidato ya tiene una entrevista en esa fecha y hora");
-        }
-
-        if (lugar != null && lugar.length() > 200) {
-            throw new IllegalArgumentException("El lugar no puede tener más de 200 caracteres");
-        }
-
-        if (observaciones != null && observaciones.length() > 500) {
-            throw new IllegalArgumentException("Las observaciones no pueden tener más de 500 caracteres");
         }
 
         Candidato candidato = candidatoRepository.findById(candidatoId)
@@ -103,21 +86,7 @@ public class EventoService {
         Evento evento = eventoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
 
-        if (fecha.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha no puede ser anterior a hoy");
-        }
-        if (fecha.equals(LocalDate.now()) && hora.isBefore(LocalTime.now().withSecond(0).withNano(0))) {
-            throw new IllegalArgumentException("La hora seleccionada ya pas\u00f3");
-        }
-        if (hora.isBefore(LocalTime.of(7, 0)) || hora.isAfter(LocalTime.of(19, 0))) {
-            throw new IllegalArgumentException("La hora debe estar entre 07:00 y 19:00");
-        }
-        if (lugar != null && lugar.length() > 200) {
-            throw new IllegalArgumentException("El lugar no puede tener m\u00e1s de 200 caracteres");
-        }
-        if (observaciones != null && observaciones.length() > 500) {
-            throw new IllegalArgumentException("Las observaciones no pueden tener m\u00e1s de 500 caracteres");
-        }
+        EventoValidator.validate(fecha, hora, lugar, observaciones);
 
         if (eventoRepository.existsByCandidatoIdAndFechaAndHora(evento.getCandidatoId(), fecha, hora)) {
             Evento existente = eventoRepository
@@ -143,9 +112,7 @@ public class EventoService {
     public Evento actualizarObservaciones(Long id, String observaciones) {
         Evento evento = eventoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
-        if (observaciones != null && observaciones.length() > 500) {
-            throw new IllegalArgumentException("Las observaciones no pueden tener m\u00e1s de 500 caracteres");
-        }
+        EventoValidator.validateObservaciones(observaciones);
         evento.setObservaciones(observaciones);
         return eventoRepository.save(evento);
     }

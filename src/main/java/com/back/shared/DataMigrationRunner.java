@@ -7,7 +7,7 @@ import com.back.candidatos.CandidatoRepository;
 import com.back.admin.RRHHRepository;
 import com.back.admin.AdministradorRepository;
 import com.back.auth.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -16,23 +16,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class DataMigrationRunner implements CommandLineRunner {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private RRHHRepository rrhhRepository;
-
-    @Autowired
-    private AdministradorRepository administradorRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final JdbcTemplate jdbcTemplate;
+    private final CandidatoRepository candidatoRepository;
+    private final RRHHRepository rrhhRepository;
+    private final AdministradorRepository administradorRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public void run(String... args) {

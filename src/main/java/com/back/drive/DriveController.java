@@ -1,6 +1,6 @@
 package com.back.drive;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,43 +17,24 @@ import com.back.shared.Sanitizer;
 import org.springframework.ui.Model;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.*;
 import java.util.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/drive")
+@RequiredArgsConstructor
 public class DriveController {
 
     private final String ROOT_DIR = "superfolder/";
 
-    @Autowired
-    private ArchivosRepository filesRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private FilesServices filesServices;
-
-    @Autowired
-    private NotificacionService notificacionService;
-
-    @jakarta.annotation.PostConstruct
-    public void init() {
-        try {
-            Path rutaRaiz = Paths.get(ROOT_DIR);
-            if (!Files.exists(rutaRaiz)) {
-                Files.createDirectories(rutaRaiz);
-            }
-        } catch (IOException e) {
-            System.err.println("Error: No se pudo crear la carpeta ra\u00edz: " + e.getMessage());
-        }
-    }
+    private final ArchivosRepository filesRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final FilesServices filesServices;
+    private final NotificacionService notificacionService;
 
     @GetMapping
     public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder,
@@ -144,16 +125,9 @@ public class DriveController {
         folder = Sanitizer.sanitizePath(folder);
         String rutaSinSuper = Sanitizer.sanitizePath(nombre);
         if (rutaSinSuper.isEmpty()) return "redirect:/drive";
-        String rutaCarpeta = ROOT_DIR + (folder.isEmpty() ? "" : folder + "/") + rutaSinSuper + "/";
 
         try {
-            Files.createDirectories(Paths.get(rutaCarpeta));
-            Archivos carpeta = new Archivos();
-            carpeta.setNombre(rutaSinSuper);
-            carpeta.setUbicacion(rutaCarpeta);
-            carpeta.setEsCarpeta(true);
-            carpeta.setPropietario(email);
-            filesRepository.save(carpeta);
+            filesServices.crearCarpetaDrive(rutaSinSuper, folder, email);
         } catch (IOException e) {
             model.addAttribute("error", "No se pudo crear la carpeta: " + e.getMessage());
             return "redirect:/drive";
@@ -179,16 +153,7 @@ public class DriveController {
         }
 
         try {
-            String rutaDestino = ROOT_DIR + (folder.isEmpty() ? "" : folder + "/") + filename;
-            Path rutaCompleta = Paths.get(rutaDestino);
-            Files.createDirectories(rutaCompleta.getParent());
-            Files.copy(archivo.getInputStream(), rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
-
-            Archivos doc = new Archivos();
-            doc.setNombre(filename);
-            doc.setUbicacion(rutaDestino);
-            doc.setPropietario(email);
-            filesRepository.save(doc);
+            filesServices.subirArchivoDrive(archivo, folder, email, filename);
         } catch (IOException e) {
             return "redirect:/drive?folder=" + folder;
         }
@@ -212,8 +177,7 @@ public class DriveController {
         }
         Archivos archivo = archivoOpt.get();
         try {
-            Path path = Paths.get(archivo.getUbicacion()).normalize();
-            Resource resource = new UrlResource(path.toUri());
+            Resource resource = new UrlResource(filesServices.obtenerRutaArchivo(archivo).toUri());
             if (!resource.exists()) return ResponseEntity.notFound().build();
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + archivo.getNombre() + "\"")
@@ -232,11 +196,8 @@ public class DriveController {
         if (archivoOpt.isEmpty() || email == null) return "redirect:/drive?folder=" + folder;
         Archivos archivo = archivoOpt.get();
         if (!email.equalsIgnoreCase(archivo.getPropietario())) return "redirect:/drive?folder=" + folder;
-        try {
-            Path path = Paths.get(archivo.getUbicacion());
-            Files.deleteIfExists(path);
-        } catch (IOException ignored) {}
-        filesRepository.delete(archivo);
+        
+        filesServices.eliminarArchivo(archivo);
 
         return "redirect:/drive?folder=" + folder;
     }
@@ -283,10 +244,10 @@ public class DriveController {
         }
         Archivos archivo = archivoOpt.get();
         try {
-            Path path = Paths.get(archivo.getUbicacion()).normalize();
+            java.nio.file.Path path = filesServices.obtenerRutaArchivo(archivo);
             Resource resource = new UrlResource(path.toUri());
             if (!resource.exists()) return ResponseEntity.notFound().build();
-            String contentType = Files.probeContentType(path);
+            String contentType = java.nio.file.Files.probeContentType(path);
             if (contentType == null) contentType = "application/octet-stream";
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + archivo.getNombre() + "\"")

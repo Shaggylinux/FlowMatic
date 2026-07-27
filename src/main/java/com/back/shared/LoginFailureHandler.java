@@ -3,20 +3,19 @@ package com.back.shared;
 import com.back.admin.AuditoriaService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    @Autowired
-    private LoginAttemptService loginAttemptService;
-
-    @Autowired
-    private AuditoriaService auditoriaService;
+    private final LoginAttemptService loginAttemptService;
+    private final AuditoriaService auditoriaService;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -24,9 +23,6 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         String email = request.getParameter("email");
         if (email != null) {
             if (loginAttemptService.isBlocked(email)) {
-                auditoriaService.registrar("SEGURIDAD",
-                    "Cuenta bloqueada por m\u00faltiples intentos: " + email,
-                    email, "SEGURIDAD");
                 getRedirectStrategy().sendRedirect(request, response, "/login?bloqueado");
                 return;
             }
