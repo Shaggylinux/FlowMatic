@@ -21,10 +21,11 @@ import com.back.shared.ExcelService;
 import com.back.auth.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import com.back.admin.dto.ActividadRecienteDTO;
+import com.back.admin.dto.UsuarioResumenDTO;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -49,6 +50,9 @@ public class AdminController {
     @Autowired
     private ExcelService excelService;
 
+    @Autowired
+    private AdminService adminService;
+
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         long totalUsuarios = usuarioRepository.count();
@@ -59,8 +63,8 @@ public class AdminController {
         long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
 
         List<Usuario> ultimosUsuarios = usuarioRepository.findTop10ByOrderByIdDesc();
-        List<Map<String, Object>> actividadReciente = buildActividadReciente(ultimosUsuarios);
-        List<Map<String, Object>> ultimosUsuariosData = buildUltimosUsuariosData(ultimosUsuarios);
+        List<ActividadRecienteDTO> actividadReciente = adminService.buildActividadReciente(ultimosUsuarios);
+        List<UsuarioResumenDTO> ultimosUsuariosData = adminService.buildUltimosUsuariosData(ultimosUsuarios);
 
         model.addAttribute("totalUsuarios", totalUsuarios);
         model.addAttribute("totalActivos", totalActivos);
@@ -73,44 +77,6 @@ public class AdminController {
         model.addAttribute("viewMode", "dashboard");
 
         return "admin";
-    }
-
-    private List<Map<String, Object>> buildActividadReciente(List<Usuario> usuarios) {
-        List<Map<String, Object>> actividades = new ArrayList<>();
-        String[] colores = { "#0D9488", "#0EA5E9", "#8B5CF6", "#F59E0B", "#EF4444" };
-        int idx = 0;
-        for (Usuario u : usuarios) {
-            Map<String, Object> act = new HashMap<>();
-            String nombre = obtenerNombreUsuario(u.getId(), u.getRol());
-            String iniciales = obtenerIniciales(u.getId(), u.getRol());
-            act.put("titulo", "Nuevo usuario registrado");
-            act.put("usuario", nombre);
-            act.put("fecha", "Reci\u00e9n registrado");
-            act.put("tipo", u.getRol().replace("ROLE_", ""));
-            act.put("iniciales", iniciales);
-            act.put("colorAvatar", colores[idx % colores.length]);
-            actividades.add(act);
-            idx++;
-        }
-        return actividades;
-    }
-
-    private List<Map<String, Object>> buildUltimosUsuariosData(List<Usuario> usuarios) {
-        List<Map<String, Object>> lista = new ArrayList<>();
-        for (Usuario u : usuarios) {
-            Map<String, Object> map = new HashMap<>();
-            String nombre = obtenerNombreUsuario(u.getId(), u.getRol());
-            String[] parts = nombre.split(" ", 2);
-            map.put("id", u.getId());
-            map.put("username", parts.length > 0 ? parts[0] : "");
-            map.put("apellido", parts.length > 1 ? parts[1] : "");
-            map.put("email", u.getEmail());
-            map.put("rol", u.getRol());
-            map.put("activo", u.isActivo());
-            map.put("fechaRegistro", "Reci\u00e9n");
-            lista.add(map);
-        }
-        return lista;
     }
 
     @GetMapping
@@ -130,18 +96,9 @@ public class AdminController {
         long totalCandidatos = usuarioRepository.countByRol("ROLE_CANDIDATO");
         long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
 
-        List<Map<String, Object>> usuariosData = usuariosPage.getContent().stream().map(u -> {
-            Map<String, Object> m = new HashMap<>();
-            String nombre = obtenerNombreUsuario(u.getId(), u.getRol());
-            String[] parts = nombre.split(" ", 2);
-            m.put("id", u.getId());
-            m.put("username", parts.length > 0 ? parts[0] : "");
-            m.put("apellido", parts.length > 1 ? parts[1] : "");
-            m.put("email", u.getEmail());
-            m.put("rol", u.getRol());
-            m.put("activo", u.isActivo());
-            return m;
-        }).collect(Collectors.toList());
+        List<UsuarioResumenDTO> usuariosData = usuariosPage.getContent().stream()
+            .map(adminService::mapToUsuarioResumen)
+            .collect(Collectors.toList());
 
         model.addAttribute("usuarios", usuariosData);
         model.addAttribute("currentPage", page);
@@ -253,30 +210,5 @@ public class AdminController {
 
         List<Usuario> listaUsuarios = usuarioRepository.findAll();
         excelService.exportarUsuarios(listaUsuarios, response);
-    }
-
-    private String obtenerNombreUsuario(Long userId, String rol) {
-        if (rol == null) return "Usuario";
-        return switch (rol) {
-            case "ROLE_CANDIDATO" -> candidatoRepository.findById(userId)
-                .map(c -> c.getUsername() + " " + c.getApellido()).orElse("Candidato");
-            case "ROLE_RRHH" -> rrhhRepository.findById(userId)
-                .map(r -> r.getUsername() + " " + r.getApellido()).orElse("RRHH");
-            case "ROLE_ADMINISTRADOR" -> "Administrador";
-            default -> "Usuario";
-        };
-    }
-
-    private String obtenerIniciales(Long userId, String rol) {
-        if (rol == null) return "US";
-        return switch (rol) {
-            case "ROLE_CANDIDATO" -> candidatoRepository.findById(userId)
-                .map(c -> (c.getUsername().charAt(0) + "" + c.getApellido().charAt(0)).toUpperCase())
-                .orElse("CA");
-            case "ROLE_RRHH" -> rrhhRepository.findById(userId)
-                .map(r -> (r.getUsername().charAt(0) + "" + r.getApellido().charAt(0)).toUpperCase())
-                .orElse("RH");
-            default -> "US";
-        };
     }
 }
