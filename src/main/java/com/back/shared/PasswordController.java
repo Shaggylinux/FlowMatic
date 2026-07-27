@@ -24,7 +24,17 @@ public class PasswordController {
     }
 
     @GetMapping("/reset-password")
-    public String mostrarReset(@RequestParam String token, Model model) {
+    public String mostrarReset(@RequestParam(required = false) String token,
+            @RequestParam(required = false) String success,
+            Model model) {
+        if (success != null) {
+            return "reset-password";
+        }
+
+        if (token == null || token.isEmpty()) {
+            return "redirect:/forgot-password?errorToken";
+        }
+
         String estado = usuarioService.validarTokenReset(token);
         if ("EXPIRADO".equals(estado)) {
             return "caduco-reset";
@@ -38,8 +48,8 @@ public class PasswordController {
 
     @PostMapping("/reset-password")
     public String cambiarPassword(@RequestParam String token,
-                                @RequestParam String password,
-                                Model model) {
+            @RequestParam String password,
+            Model model) {
 
         if (password == null || password.trim().length() < 8) {
             model.addAttribute("token", token);
@@ -61,6 +71,6 @@ public class PasswordController {
             return "redirect:/forgot-password?errorToken";
         }
 
-        return "redirect:/reset-password?token=" + token + "&success";
+        return "redirect:/login";
     }
 }
