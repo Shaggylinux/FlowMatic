@@ -15,6 +15,7 @@ import com.back.admin.RRHHRepository;
 import com.back.candidatos.Candidato;
 import com.back.candidatos.CandidatoRepository;
 import com.back.auth.event.UsuarioRegistradoEvent;
+import com.back.drive.FilesServices;
 import com.back.shared.EmailService;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -32,6 +33,9 @@ public class UsuarioService {
     private final EmailService emailService;
     private final ConfiguracionService configuracionService;
     private final ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
