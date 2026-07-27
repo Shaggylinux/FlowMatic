@@ -1,7 +1,7 @@
 package com.back.candidatos;
 
 import com.back.auth.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,14 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CandidatoService {
 
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final UsuarioRepository usuarioRepository;
 
     private static final List<String> ESTADOS_EN_PROCESO = Arrays.asList(
         "Disponible", "En proceso", "Entrevista", "Pendiente", "Registrado"

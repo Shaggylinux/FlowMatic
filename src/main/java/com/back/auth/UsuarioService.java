@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +13,17 @@ import com.back.auth.event.UsuarioRegistradoEvent;
 import com.back.shared.EmailService;
 import org.springframework.context.ApplicationEventPublisher;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private final UsuarioRepository usuarioRepository;
+    private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 

@@ -1,7 +1,7 @@
 package com.back.drive;
 
 import com.back.shared.Sanitizer;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.annotation.PostConstruct;
@@ -14,10 +14,12 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class FilesServices {
-    @Autowired
-    private ArchivosRepository repository;
+    private final ArchivosRepository repository;
 
     private final String rootFolder = "superfolder";
 

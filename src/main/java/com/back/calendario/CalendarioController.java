@@ -11,7 +11,7 @@ import com.back.shared.ExcelService;
 import com.back.notificaciones.NotificacionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,32 +25,22 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/calendario")
+@RequiredArgsConstructor
 public class CalendarioController {
 
     private static final Logger logger = LoggerFactory.getLogger(CalendarioController.class);
 
-    @Autowired
-    private EventoService eventoService;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private RRHHRepository rrhhRepository;
-
-    @Autowired
-    private NotificacionService notificacionService;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private ExcelService excelService;
+    private final EventoService eventoService;
+    private final UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final RRHHRepository rrhhRepository;
+    private final NotificacionService notificacionService;
+    private final EmailService emailService;
+    private final ExcelService excelService;
 
     @GetMapping
     public String verCalendario(Model model, Principal principal) {

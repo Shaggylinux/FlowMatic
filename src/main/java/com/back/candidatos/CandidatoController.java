@@ -13,7 +13,7 @@ import com.back.shared.ExcelService;
 import com.back.drive.FilesServices;
 import com.back.notificaciones.NotificacionService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,42 +28,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/gestion-candidatos")
+@RequiredArgsConstructor
 public class CandidatoController {
 
-    @Autowired
-    private CandidatoService candidatoService;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private EventoService eventoService;
-
-    @Autowired
-    private ArchivosRepository archivosRepository;
-
-    @Autowired
-    private EventoRepository eventoRepository;
-
-    @Autowired
-    private FilesServices filesServices;
-
-    @Autowired
-    private ExcelService excelService;
-
-    @Autowired
-    private CvService cvService;
-
-    @Autowired
-    private NotificacionService notificacionService;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final CandidatoService candidatoService;
+    private final UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final EventoService eventoService;
+    private final ArchivosRepository archivosRepository;
+    private final EventoRepository eventoRepository;
+    private final FilesServices filesServices;
+    private final ExcelService excelService;
+    private final CvService cvService;
+    private final NotificacionService notificacionService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping
     public String mostrarGestion(Model model,

@@ -4,21 +4,21 @@ import com.back.admin.dto.ActividadRecienteDTO;
 import com.back.admin.dto.UsuarioResumenDTO;
 import com.back.auth.Usuario;
 import com.back.candidatos.CandidatoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class AdminService {
 
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private RRHHRepository rrhhRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final RRHHRepository rrhhRepository;
 
     public List<ActividadRecienteDTO> buildActividadReciente(List<Usuario> usuarios) {
         List<ActividadRecienteDTO> actividades = new ArrayList<>();

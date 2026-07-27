@@ -1,6 +1,6 @@
 package com.back.drive;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,26 +21,20 @@ import java.util.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/drive")
+@RequiredArgsConstructor
 public class DriveController {
 
     private final String ROOT_DIR = "superfolder/";
 
-    @Autowired
-    private ArchivosRepository filesRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private FilesServices filesServices;
-
-    @Autowired
-    private NotificacionService notificacionService;
+    private final ArchivosRepository filesRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final FilesServices filesServices;
+    private final NotificacionService notificacionService;
 
     @GetMapping
     public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder,

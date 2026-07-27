@@ -1,6 +1,6 @@
 package com.back.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,31 +27,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
-
-    @Autowired
-    private RRHHRepository rrhhRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private ExcelService excelService;
-
-    @Autowired
-    private AdminService adminService;
+    private final UsuarioRepository usuarioRepository;
+    private final CandidatoRepository candidatoRepository;
+    private final RRHHRepository rrhhRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UsuarioService usuarioService;
+    private final ExcelService excelService;
+    private final AdminService adminService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
@@ -97,8 +86,8 @@ public class AdminController {
         long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
 
         List<UsuarioResumenDTO> usuariosData = usuariosPage.getContent().stream()
-            .map(adminService::mapToUsuarioResumen)
-            .collect(Collectors.toList());
+                .map(adminService::mapToUsuarioResumen)
+                .collect(Collectors.toList());
 
         model.addAttribute("usuarios", usuariosData);
         model.addAttribute("currentPage", page);
@@ -146,8 +135,8 @@ public class AdminController {
 
     @PostMapping("/crear-rrhh")
     public String crearRRHH(@ModelAttribute Usuario nuevoRRHH,
-                            @RequestParam String username,
-                            @RequestParam String apellido) {
+            @RequestParam String username,
+            @RequestParam String apellido) {
         nuevoRRHH.setRol("ROLE_RRHH");
 
         String respuesta = usuarioService.registrarUsuario(nuevoRRHH, username, apellido);

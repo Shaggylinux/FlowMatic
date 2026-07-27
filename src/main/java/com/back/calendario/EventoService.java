@@ -2,7 +2,7 @@ package com.back.calendario;
 
 import com.back.candidatos.Candidato;
 import com.back.candidatos.CandidatoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -10,14 +10,14 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class EventoService {
 
-    @Autowired
-    private EventoRepository eventoRepository;
-
-    @Autowired
-    private CandidatoRepository candidatoRepository;
+    private final EventoRepository eventoRepository;
+    private final CandidatoRepository candidatoRepository;
 
     public Evento crearEvento(Long candidatoId, LocalDate fecha, LocalTime hora,
                               String tipo, String lugar, String vacante,

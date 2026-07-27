@@ -1,16 +1,18 @@
 package com.back.notificaciones;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class NotificacionService {
 
-    @Autowired
-    private NotificacionRepository notificacionRepository;
+    private final NotificacionRepository notificacionRepository;
 
     public Notificacion crear(String tipo, String mensaje, Long candidatoId, String candidatoNombre, String enlace) {
         Notificacion n = new Notificacion();
