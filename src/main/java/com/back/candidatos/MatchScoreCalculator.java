@@ -2,6 +2,10 @@ package com.back.candidatos;
 
 public class MatchScoreCalculator {
 
+    private MatchScoreCalculator() {
+        // Utility class
+    }
+
     public static int calcularMatchScore(Candidato candidato) {
         int score = 0;
 
@@ -31,7 +35,7 @@ public class MatchScoreCalculator {
         if (candidato.getDisponibilidad() != null && !candidato.getDisponibilidad().isBlank()) {
             String disp = candidato.getDisponibilidad().toLowerCase();
             if (disp.contains("inmediata")) score += 15;
-            else if (disp.contains("semana") || disp.contains("d\u00eda")) score += 10;
+            else if (disp.contains("semana") || disp.contains("día")) score += 10;
             else score += 5;
         }
 
@@ -42,6 +46,6 @@ public class MatchScoreCalculator {
         if (score >= 80) return "Excelente perfil";
         if (score >= 60) return "Buena coincidencia";
         if (score >= 40) return "Perfil en desarrollo";
-        return "Perfil b\u00e1sico";
+        return "Perfil básico";
     }
 }

@@ -5,15 +5,19 @@ import java.time.LocalTime;
 
 public class EventoValidator {
 
+    private EventoValidator() {
+        // Utility class
+    }
+
     public static void validate(LocalDate fecha, LocalTime hora, String lugar, String observaciones) {
+        if (fecha == null || hora == null) {
+            throw new IllegalArgumentException("La fecha y la hora son obligatorias");
+        }
         if (fecha.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha no puede ser anterior a hoy");
         }
         if (fecha.equals(LocalDate.now()) && hora.isBefore(LocalTime.now().withSecond(0).withNano(0))) {
             throw new IllegalArgumentException("La hora seleccionada ya pasó");
-        }
-        if (hora.isBefore(LocalTime.of(7, 0)) || hora.isAfter(LocalTime.of(19, 0))) {
-            throw new IllegalArgumentException("La hora debe estar entre 07:00 y 19:00");
         }
         if (lugar != null && lugar.length() > 200) {
             throw new IllegalArgumentException("El lugar no puede tener más de 200 caracteres");
