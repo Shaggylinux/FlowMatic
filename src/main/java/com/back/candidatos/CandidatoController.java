@@ -149,7 +149,7 @@ public class CandidatoController {
                 c.getEstado() != null ? c.getEstado() : "Registrado",
                 c.getProcesoActual() != null ? c.getProcesoActual() : "",
                 c.getUltimaActualizacion() != null ? c.getUltimaActualizacion().format(fmt) : "",
-                candidatoService.calcularMatchScore(c)
+                MatchScoreCalculator.calcularMatchScore(c)
             );
         }).collect(Collectors.toList());
 
@@ -173,7 +173,7 @@ public class CandidatoController {
         }
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
 
-        int score = candidatoService.calcularMatchScore(candidato);
+        int score = MatchScoreCalculator.calcularMatchScore(candidato);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
 
         return ResponseEntity.ok(new DetalleCandidatoDTO(
@@ -192,7 +192,7 @@ public class CandidatoController {
             candidato.getProcesoActual() != null ? candidato.getProcesoActual() : "",
             candidato.getFotoUrl() != null ? candidato.getFotoUrl() : "",
             score,
-            candidatoService.getMatchLabel(score),
+            MatchScoreCalculator.getMatchLabel(score),
             candidato.getUltimaActualizacion() != null ? candidato.getUltimaActualizacion().format(fmt) : ""
         ));
     }
