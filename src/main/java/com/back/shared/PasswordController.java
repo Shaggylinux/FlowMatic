@@ -37,6 +37,7 @@ public class PasswordController {
         if (token == null || token.isEmpty()) {
             return "redirect:/forgot-password?errorToken";
         }
+
         String estado = usuarioService.validarTokenReset(token);
         if ("EXPIRADO".equals(estado)) {
             return "caduco-reset";
