@@ -32,10 +32,8 @@ public class UsuarioService {
     private final RRHHRepository rrhhRepository;
     private final EmailService emailService;
     private final ConfiguracionService configuracionService;
+    private final FilesServices filesServices;
     private final ApplicationEventPublisher eventPublisher;
-
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
