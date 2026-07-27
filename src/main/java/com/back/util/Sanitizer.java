@@ -1,4 +1,4 @@
-package com.back.shared;
+package com.back.util;
 
 public class Sanitizer {
 

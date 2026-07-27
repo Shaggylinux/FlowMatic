@@ -1,4 +1,4 @@
-package com.back.shared;
+package com.back.seguridad;
 
 import com.back.admin.AuditoriaService;
 import jakarta.servlet.http.HttpServletRequest;

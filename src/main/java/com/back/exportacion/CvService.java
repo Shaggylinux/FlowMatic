@@ -1,4 +1,4 @@
-package com.back.shared;
+package com.back.exportacion;
 
 import com.back.candidatos.Candidato;
 import jakarta.servlet.http.HttpServletResponse;

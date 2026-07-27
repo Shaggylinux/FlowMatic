@@ -1,6 +1,6 @@
 package com.back.drive;
 
-import com.back.shared.Sanitizer;
+import com.back.util.Sanitizer;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

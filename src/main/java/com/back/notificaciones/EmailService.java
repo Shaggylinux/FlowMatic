@@ -1,4 +1,4 @@
-package com.back.shared;
+package com.back.notificaciones;
 
 import com.back.calendario.Evento;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.back.shared;
+package com.back.seguridad;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

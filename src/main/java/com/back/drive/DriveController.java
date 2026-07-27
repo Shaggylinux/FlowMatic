@@ -13,7 +13,7 @@ import org.springframework.core.io.Resource;
 import com.back.auth.UsuarioRepository;
 import com.back.candidatos.CandidatoRepository;
 import com.back.notificaciones.NotificacionService;
-import com.back.shared.Sanitizer;
+import com.back.util.Sanitizer;
 import org.springframework.ui.Model;
 import java.io.IOException;
 import java.net.MalformedURLException;

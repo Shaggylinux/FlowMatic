@@ -22,7 +22,7 @@ import com.back.auth.UsuarioService;
 import com.back.candidatos.Candidato;
 import com.back.candidatos.CandidatoRepository;
 import com.back.calendario.EventoRepository;
-import com.back.shared.ExcelService;
+import com.back.exportacion.ExcelService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.back.shared;
+package com.back.auth;
 
 import com.back.admin.ConfiguracionService;
 import com.back.auth.UsuarioService;

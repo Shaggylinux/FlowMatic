@@ -1,4 +1,4 @@
-package com.back.shared;
+package com.back.bootstrap;
 
 import com.back.candidatos.Candidato;
 import com.back.admin.RRHH;

@@ -16,7 +16,7 @@ import com.back.candidatos.Candidato;
 import com.back.candidatos.CandidatoRepository;
 import com.back.auth.event.UsuarioRegistradoEvent;
 import com.back.drive.FilesServices;
-import com.back.shared.EmailService;
+import com.back.notificaciones.EmailService;
 import org.springframework.context.ApplicationEventPublisher;
 
 import lombok.RequiredArgsConstructor;

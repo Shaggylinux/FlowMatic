@@ -1,4 +1,4 @@
-package com.back.shared;
+package com.back.seguridad;
 
 import com.back.admin.ConfiguracionService;
 import org.springframework.beans.factory.annotation.Autowired;

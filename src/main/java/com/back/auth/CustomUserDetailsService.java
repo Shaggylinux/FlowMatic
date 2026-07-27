@@ -1,6 +1,6 @@
 package com.back.auth;
 
-import com.back.shared.LoginAttemptService;
+import com.back.seguridad.LoginAttemptService;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
