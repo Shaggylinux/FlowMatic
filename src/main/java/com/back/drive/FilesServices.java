@@ -1,13 +1,16 @@
 package com.back.drive;
 
+import com.back.shared.Sanitizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.back.shared.Sanitizer;
+import jakarta.annotation.PostConstruct;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,6 +20,18 @@ public class FilesServices {
     private ArchivosRepository repository;
 
     private final String rootFolder = "superfolder";
+
+    @PostConstruct
+    public void init() {
+        try {
+            Path rutaRaiz = Paths.get(rootFolder);
+            if (!Files.exists(rutaRaiz)) {
+                Files.createDirectories(rutaRaiz);
+            }
+        } catch (IOException e) {
+            System.err.println("Error: No se pudo crear la carpeta ra\u00edz: " + e.getMessage());
+        }
+    }
 
     public void guardarArchivoPorEtapa(MultipartFile file, String emailPropietario, String etapa) throws IOException {
         String filename = file.getOriginalFilename();
@@ -85,5 +100,40 @@ public class FilesServices {
         doc.setTipoDocumento(tipoDocumento != null ? tipoDocumento : "Otro");
         doc.setEtapa("Candidatos");
         return repository.save(doc);
+    }
+
+    public void crearCarpetaDrive(String nombre, String folder, String email) throws IOException {
+        String rutaCarpeta = rootFolder + "/" + (folder.isEmpty() ? "" : folder + "/") + nombre + "/";
+        Files.createDirectories(Paths.get(rutaCarpeta));
+        Archivos carpeta = new Archivos();
+        carpeta.setNombre(nombre);
+        carpeta.setUbicacion(rutaCarpeta);
+        carpeta.setEsCarpeta(true);
+        carpeta.setPropietario(email);
+        repository.save(carpeta);
+    }
+
+    public void subirArchivoDrive(MultipartFile archivo, String folder, String email, String filename) throws IOException {
+        String rutaDestino = rootFolder + "/" + (folder.isEmpty() ? "" : folder + "/") + filename;
+        Path rutaCompleta = Paths.get(rutaDestino);
+        Files.createDirectories(rutaCompleta.getParent());
+        Files.copy(archivo.getInputStream(), rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
+
+        Archivos doc = new Archivos();
+        doc.setNombre(filename);
+        doc.setUbicacion(rutaDestino);
+        doc.setPropietario(email);
+        repository.save(doc);
+    }
+
+    public void eliminarArchivo(Archivos archivo) {
+        try {
+            Files.deleteIfExists(Paths.get(archivo.getUbicacion()));
+        } catch (IOException ignored) {}
+        repository.delete(archivo);
+    }
+
+    public Path obtenerRutaArchivo(Archivos archivo) {
+        return Paths.get(archivo.getUbicacion()).normalize();
     }
 }
