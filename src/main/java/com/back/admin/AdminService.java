@@ -4,7 +4,7 @@ import com.back.admin.dto.ActividadRecienteDTO;
 import com.back.admin.dto.UsuarioResumenDTO;
 import com.back.auth.Usuario;
 import com.back.candidatos.CandidatoRepository;
-
+import com.back.admin.RRHHRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -29,10 +29,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import com.back.admin.dto.ActividadRecienteDTO;
+import com.back.admin.dto.UsuarioResumenDTO;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -49,6 +49,9 @@ public class AdminController {
     private final EventoRepository eventoRepository;
     private final AuditoriaService auditoriaService;
     private final ConfiguracionService configuracionService;
+
+    @Autowired
+    private AdminService adminService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model,
@@ -167,7 +170,6 @@ public class AdminController {
         }
         return partes[0].substring(0, Math.min(2, partes[0].length())).toUpperCase();
     }
-
     @GetMapping
     public String panelAdmin(Model model,
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -201,8 +203,8 @@ public class AdminController {
         long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
 
         List<UsuarioResumenDTO> usuariosData = usuariosPage.getContent().stream()
-                .map(u -> mapToUsuarioResumen(u))
-                .collect(Collectors.toList());
+            .map(adminService::mapToUsuarioResumen)
+            .collect(Collectors.toList());
 
         model.addAttribute("usuarios", usuariosData);
         model.addAttribute("currentPage", page);
