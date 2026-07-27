@@ -1,0 +1,182 @@
+.cfg-section {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.cfg-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.cfg-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0F172A;
+  margin-bottom: 14px;
+}
+
+.cfg-section-header svg {
+  color: #0D9488;
+  flex-shrink: 0;
+}
+
+.cfg-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #FAFBFC;
+  border: 1px solid #F1F5F9;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.cfg-field:last-child {
+  margin-bottom: 0;
+}
+
+.cfg-field-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748B;
+}
+
+.cfg-field-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0F172A;
+}
+
+.cfg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cfg-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cfg-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cfg-form-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #475569;
+  letter-spacing: 0.01em;
+}
+
+.cfg-form-input {
+  padding: 9px 12px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: var(--fm-font);
+  color: #0F172A;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.cfg-form-input:focus {
+  border-color: #0D9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.08);
+}
+
+.cfg-form-input::placeholder {
+  color: #94A3B8;
+}
+
+.cfg-btn {
+  align-self: flex-start;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0D9488, #14B8A6);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--fm-font);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cfg-btn:hover {
+  background: linear-gradient(135deg, #0F766E, #0D9488);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+  transform: translateY(-1px);
+}
+
+.cfg-placeholder {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: #94A3B8;
+  font-style: italic;
+}
+
+.cfg-settings {
+  display: flex;
+  flex-direction: column;
+}
+
+.cfg-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cfg-loader {
+  padding: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #94A3B8;
+}
+
+.cfg-toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  animation: cfg-fade-in 0.25s ease;
+}
+
+.cfg-toast-ok {
+  background: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+}
+
+.cfg-toast-error {
+  background: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+@keyframes cfg-fade-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 500px) {
+  .cfg-form-row {
+    grid-template-columns: 1fr;
+  }
+}

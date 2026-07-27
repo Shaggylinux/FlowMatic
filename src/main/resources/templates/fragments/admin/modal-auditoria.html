@@ -1,0 +1,45 @@
+<div
+    class="modal fade"
+    id="modalAuditoria"
+    tabindex="-1"
+    aria-hidden="true"
+    th:fragment="modalAuditoria">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <div>
+                    <h4 class="modal-title">Auditor&iacute;a de seguridad</h4>
+                    <p class="modal-subtitle">Eventos de seguridad del sistema</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" style="padding:0;">
+                <div class="aud-summary" id="audSummary">
+                    <span class="aud-badge-total" id="audTotalBadge">0 eventos de seguridad</span>
+                </div>
+                <div class="aud-list" id="auditoriaList"></div>
+                <div class="aud-empty" id="auditoriaEmpty" style="display:none;">
+                    No hay eventos de seguridad registrados
+                </div>
+                <div class="aud-loader" id="auditoriaLoader" style="display:none;">
+                    <div class="aud-spinner"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer" id="auditoriaFooter">
+                <button type="button" class="btn btn-light" id="audBtnPrev" onclick="cargarAuditoria(audPage - 1)" disabled>
+                    &larr; Anterior
+                </button>
+                <span class="aud-pag-info" id="audPagInfo"></span>
+                <button type="button" class="btn btn-light" id="audBtnNext" onclick="cargarAuditoria(audPage + 1)">
+                    Siguiente &rarr;
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

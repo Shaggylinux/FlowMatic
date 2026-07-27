@@ -7,9 +7,9 @@ public record LoginAttemptInfo(int attempts, LocalDateTime blockedUntil) {
         return blockedUntil != null && LocalDateTime.now().isBefore(blockedUntil);
     }
 
-    public LoginAttemptInfo increment() {
+    public LoginAttemptInfo increment(int maxAttempts, long blockMinutes) {
         int next = attempts + 1;
-        if (next >= 5) return new LoginAttemptInfo(0, LocalDateTime.now().plusMinutes(15));
+        if (next >= maxAttempts) return new LoginAttemptInfo(0, LocalDateTime.now().plusMinutes(blockMinutes));
         return new LoginAttemptInfo(next, null);
     }
 

@@ -1,0 +1,87 @@
+<div
+    class="modal fade"
+    id="modalConfiguracion"
+    tabindex="-1"
+    aria-hidden="true"
+    th:fragment="modalConfiguracion">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <div>
+                    <h4 class="modal-title">Configuraci&oacute;n</h4>
+                    <p class="modal-subtitle">Administrador y sistema</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Administrador -->
+                <div class="cfg-section">
+                    <div class="cfg-section-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        <span>Administrador</span>
+                    </div>
+                    <div class="cfg-field">
+                        <span class="cfg-field-label">Correo electr&oacute;nico</span>
+                        <span class="cfg-field-value" th:text="${adminEmail}">admin@sistema.com</span>
+                    </div>
+                    <div class="cfg-field">
+                        <span class="cfg-field-label">Rol</span>
+                        <span class="cfg-field-value">Administrador</span>
+                    </div>
+                </div>
+
+                <!-- Cambiar contraseña -->
+                <div class="cfg-section">
+                    <div class="cfg-section-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span>Cambiar contrase&ntilde;a</span>
+                    </div>
+                    <form th:action="@{/admin/cambiar-clave}" method="post" class="cfg-form">
+                        <div class="cfg-form-group">
+                            <label class="cfg-form-label">Contrase&ntilde;a actual</label>
+                            <input type="password" name="claveActual" class="cfg-form-input" required minlength="8">
+                        </div>
+                        <div class="cfg-form-row">
+                            <div class="cfg-form-group">
+                                <label class="cfg-form-label">Nueva contrase&ntilde;a</label>
+                                <input type="password" name="nuevaClave" class="cfg-form-input" required minlength="8" placeholder="M&iacute;nimo 8 caracteres">
+                            </div>
+                            <div class="cfg-form-group">
+                                <label class="cfg-form-label">Confirmar contrase&ntilde;a</label>
+                                <input type="password" name="confirmarClave" class="cfg-form-input" required minlength="8">
+                            </div>
+                        </div>
+                        <button type="submit" class="cfg-btn">Actualizar contrase&ntilde;a</button>
+                    </form>
+                </div>
+
+                <!-- Configuración del sistema (cargada dinámicamente) -->
+                <div class="cfg-section" id="cfgSystemSection">
+                    <div class="cfg-section-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        <span>Preferencias del sistema</span>
+                    </div>
+                    <div class="cfg-settings" id="cfgSettingsList">
+                        <div class="cfg-loader">Cargando configuraci&oacute;n...</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,468 @@
+/* ================================================
+   DASHBOARD ADMIN — ESTILOS PROFESIONALES
+   Sigue la misma identidad visual que gestion-candidatos.css y calendario.css.
+   ================================================ */
+
+.gs-page {
+    background: var(--fm-bg);
+    min-height: calc(100vh - var(--fm-topbar-height));
+    padding-bottom: 24px;
+}
+
+/* ── STAT DIFF ──────────────────────────────── */
+
+.gs-stat-diff {
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.gs-stat-diff.up    { color: #16A34A; }
+.gs-stat-diff.down  { color: #DC2626; }
+.gs-stat-diff.neutral { color: #94A3B8; }
+
+/* ── STAT CARDS (KPI) ──────────────────────── */
+
+.gs-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.gs-stat-card {
+  background: var(--fm-surface);
+  border-radius: var(--fm-radius-lg);
+  border: 1px solid var(--fm-border);
+  border-top: 3px solid var(--fm-border);
+  box-shadow: var(--fm-shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.gs-stat-card:hover {
+  box-shadow: var(--fm-shadow-md);
+  transform: translateY(-2px);
+}
+
+.gs-stat-card:nth-child(1) { border-top-color: #0D9488; }
+.gs-stat-card:nth-child(2) { border-top-color: #0EA5E9; }
+.gs-stat-card:nth-child(3) { border-top-color: #F97316; }
+.gs-stat-card:nth-child(4) { border-top-color: #16A34A; }
+
+.gs-stat-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 18px 16px;
+  gap: 3px;
+}
+
+.gs-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+.gs-stat-icon-turq   { background: #F0FDFA; color: #0D9488; }
+.gs-stat-icon-blue   { background: #ECFEFF; color: #0EA5E9; }
+.gs-stat-icon-orang  { background: #FFF7ED; color: #F97316; }
+.gs-stat-icon-green  { background: #F0FDF4; color: #16A34A; }
+
+.gs-stat-number {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1;
+}
+
+.gs-stat-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fm-text-muted);
+  margin: 2px 0 0;
+}
+
+/* ── TWO COLUMN LAYOUT ─────────────────────── */
+
+.gs-two-col {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* ── PANEL CARD ────────────────────────────── */
+
+.gs-panel {
+    background: var(--fm-surface);
+    border-radius: var(--fm-radius-lg);
+    border: 1px solid var(--fm-border);
+    box-shadow: var(--fm-shadow-sm);
+    overflow: hidden;
+}
+
+.gs-panel-header {
+    padding: 14px 20px 12px;
+    border-bottom: 1px solid var(--fm-border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gs-panel-header h3 {
+    font-size: var(--fm-size-body);
+    font-weight: 500;
+    color: var(--fm-text);
+    margin: 0;
+}
+
+.gs-panel-body {
+    padding: 8px 0;
+}
+
+/* ── TIMELINE ──────────────────────────────── */
+
+.gs-timeline {
+    padding: 0;
+}
+
+.gs-timeline-track {
+    position: relative;
+    padding: 8px 0;
+}
+
+.gs-timeline-track::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 16px;
+    bottom: 16px;
+    width: 2px;
+    background: #E2E8F0;
+    border-radius: 1px;
+}
+
+.gs-timeline-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 20px;
+    cursor: default;
+}
+
+.gs-timeline-marker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+    z-index: 1;
+    border: 2px solid var(--fm-surface);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+.gs-timeline-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.gs-timeline-text {
+    font-size: var(--fm-size-small);
+    font-weight: 500;
+    color: var(--fm-text);
+    line-height: 1.3;
+}
+
+.gs-timeline-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+    vertical-align: middle;
+    margin-right: 6px;
+    color: #ffffff;
+}
+
+.gs-timeline-item:nth-child(1) .gs-timeline-badge { background: #0D9488; }
+.gs-timeline-item:nth-child(2) .gs-timeline-badge { background: #0EA5E9; }
+.gs-timeline-item:nth-child(3) .gs-timeline-badge { background: #F59E0B; }
+.gs-timeline-item:nth-child(4) .gs-timeline-badge { background: #EF4444; }
+.gs-timeline-item:nth-child(5) .gs-timeline-badge { background: #8B5CF6; }
+
+.gs-timeline-time {
+    font-size: var(--fm-size-caption);
+    color: var(--fm-text-muted);
+    margin-top: 1px;
+}
+
+.gs-timeline-footer {
+    padding: 10px 20px 12px;
+    border-top: 1px solid var(--fm-border);
+    text-align: right;
+}
+
+.gs-link-arrow {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fm-brand);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+.gs-link-arrow:hover {
+    color: var(--fm-brand-hover);
+    text-decoration: underline;
+}
+
+/* ── SYSTEM ALERTS (mini-tarjetas) ──────────── */
+
+.gs-alerts-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px;
+    gap: 0;
+}
+
+.gs-alert-mini {
+    padding: 10px 14px;
+}
+
+.gs-alert-mini + .gs-alert-mini {
+    border-top: 1px solid #F1F5F9;
+}
+
+.gs-alert-mini-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.gs-alert-mini-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.gs-alert-mini-dot-green  { background: #22C55E; }
+.gs-alert-mini-dot-yellow { background: #F59E0B; }
+.gs-alert-mini-dot-red    { background: #EF4444; }
+
+.gs-alert-mini-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0F172A;
+}
+
+.gs-alert-mini-desc {
+    font-size: 12px;
+    color: #64748B;
+    margin-left: 20px;
+    display: block;
+}
+
+.gs-alert-mini-desc-warn {
+    color: #D97706;
+    font-weight: 600;
+}
+
+/* ── BOTTOM ROW (donut + actions) ──────────── */
+
+.gs-bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 0;
+}
+
+.gs-donut-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.gs-donut-panel .gs-panel-header h3 {
+    font-size: 14px;
+}
+
+/* ── DONUT SECTION (compacto) ──────────────── */
+
+.gs-donut-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 12px 20px;
+    flex: 1;
+}
+
+.gs-donut-container {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gs-donut-svg {
+    width: 100px;
+    height: 100px;
+    transform: rotate(-90deg);
+}
+
+.gs-donut-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.gs-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gs-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.gs-legend-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gs-legend-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fm-text);
+}
+
+.gs-legend-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fm-text);
+}
+
+.gs-legend-pct {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--fm-text-muted);
+    margin-left: 6px;
+}
+
+/* ── QUICK ACTIONS ─────────────────────────── */
+
+.gs-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 14px 18px;
+}
+
+.gs-quick-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--fm-radius-md);
+    border: 1px solid var(--fm-border);
+    background: var(--fm-surface);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    text-decoration: none;
+    color: var(--fm-text);
+}
+
+.gs-quick-card:hover {
+    box-shadow: var(--fm-shadow-md);
+    border-color: var(--fm-brand);
+}
+
+.gs-quick-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: #F0FDFA;
+    color: var(--fm-brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.gs-quick-card:hover .gs-quick-icon {
+    background: var(--fm-brand-light);
+}
+
+.gs-quick-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.gs-quick-label {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.gs-quick-sub {
+    font-size: 11px;
+    color: var(--fm-text-muted);
+    line-height: 1.2;
+}
+
+.gs-quick-arrow {
+    flex-shrink: 0;
+    color: #CBD5E1;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.gs-quick-card:hover .gs-quick-arrow {
+    color: var(--fm-brand);
+    transform: translateX(2px);
+}
+
+/* ── RESPONSIVE ────────────────────────────── */
+
+@media (max-width: 1100px) {
+    .gs-stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .gs-two-col { grid-template-columns: 1fr; }
+    .gs-bottom-row { grid-template-columns: 1fr; }
+    .gs-page { padding-bottom: 24px; }
+}
+
+@media (max-width: 700px) {
+    .gs-stats-grid { grid-template-columns: 1fr; }
+    .gs-donut-section { flex-direction: column; align-items: center; }
+    .gs-quick-grid { grid-template-columns: 1fr; }
+    .gs-panel-header { padding: 14px 16px; }
+    .gs-timeline-content { padding: 10px 14px 10px 0; }
+    .gs-alerts-grid { grid-template-columns: 1fr; padding: 12px 16px; }
+    .gs-alert-mini { padding: 10px 12px; }
+    .gs-timeline-footer { padding: 10px 16px; }
+    .gs-timeline-footer .gs-link-arrow { font-size: 12px; }
+}
+
+@media (max-width: 480px) {
+    .gs-stat-card { padding: 14px; }
+    .gs-stat-number { font-size: 26px; }
+    .gs-stat-icon { width: 40px; height: 40px; }
+    .gs-timeline-item { padding: 8px 0; }
+    .gs-quick-card { padding: 10px 12px; }
+    .gs-panel { border-radius: 12px; }
+}

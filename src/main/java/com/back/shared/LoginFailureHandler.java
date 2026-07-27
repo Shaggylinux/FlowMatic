@@ -1,5 +1,6 @@
 package com.back.shared;
 
+import com.back.admin.AuditoriaService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +15,25 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Autowired
     private LoginAttemptService loginAttemptService;
 
+    @Autowired
+    private AuditoriaService auditoriaService;
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         String email = request.getParameter("email");
         if (email != null) {
             if (loginAttemptService.isBlocked(email)) {
+                auditoriaService.registrar("SEGURIDAD",
+                    "Cuenta bloqueada por m\u00faltiples intentos: " + email,
+                    email, "SEGURIDAD");
                 getRedirectStrategy().sendRedirect(request, response, "/login?bloqueado");
                 return;
             }
             loginAttemptService.recordFailed(email);
+            auditoriaService.registrar("SEGURIDAD",
+                "Intento de inicio de sesi\u00f3n fallido: " + email,
+                email, "SEGURIDAD");
         }
         getRedirectStrategy().sendRedirect(request, response, "/login?error");
     }

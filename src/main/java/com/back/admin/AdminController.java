@@ -17,15 +17,21 @@ import com.back.auth.Usuario;
 import com.back.candidatos.Candidato;
 import com.back.auth.UsuarioRepository;
 import com.back.candidatos.CandidatoRepository;
+import com.back.calendario.EventoRepository;
 import com.back.shared.ExcelService;
 import com.back.auth.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Controller
 @RequestMapping("/admin")
@@ -49,76 +55,155 @@ public class AdminController {
     @Autowired
     private ExcelService excelService;
 
+    @Autowired
+    private EventoRepository eventoRepository;
+
+    @Autowired
+    private AuditoriaService auditoriaService;
+
+    @Autowired
+    private ConfiguracionService configuracionService;
+
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
+    public String dashboard(Model model,
+            @RequestParam(name = "clave_ok", required = false) String claveOk,
+            @RequestParam(name = "clave_error", required = false) String claveError,
+            @RequestParam(name = "config_ok", required = false) String configOk) {
         long totalUsuarios = usuarioRepository.count();
-        long totalActivos = usuarioRepository.countByActivoTrue();
-        long totalPendientes = usuarioRepository.countByActivoFalse();
         long totalRRHH = usuarioRepository.countByRol("ROLE_RRHH");
+        long totalActivos = usuarioRepository.countByRolAndActivo("ROLE_RRHH", true);
+        long totalPendientes = usuarioRepository.countByRolAndActivo("ROLE_RRHH", false);
+        long totalBloqueados = 0;
         long totalCandidatos = usuarioRepository.countByRol("ROLE_CANDIDATO");
         long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
 
-        List<Usuario> ultimosUsuarios = usuarioRepository.findTop10ByOrderByIdDesc();
-        List<Map<String, Object>> actividadReciente = buildActividadReciente(ultimosUsuarios);
-        List<Map<String, Object>> ultimosUsuariosData = buildUltimosUsuariosData(ultimosUsuarios);
+        long entrevistasHoy = eventoRepository.countByFecha(LocalDate.now());
+
+        List<Map<String, Object>> actividadReciente = buildActividadReciente();
+        List<Map<String, Object>> distribucionRoles = buildDistribucionRoles(totalAdmins, totalRRHH, totalCandidatos);
+
+        long sumaRRHH = totalActivos + totalPendientes;
+        String rrhhDiff = totalUsuarios > 0
+            ? "+" + (totalRRHH * 100 / totalUsuarios) + "% este mes" : "0%";
+        String activosDiff = sumaRRHH > 0
+            ? "+" + (totalActivos * 100 / sumaRRHH) + "% activos" : "0%";
+        String pendientesDiff = totalPendientes > 0
+            ? totalPendientes + " pendientes" : "0 pendientes";
+        String bloqueadosDiff = "0 bloqueados";
 
         model.addAttribute("totalUsuarios", totalUsuarios);
+        model.addAttribute("totalRRHH", totalRRHH);
         model.addAttribute("totalActivos", totalActivos);
         model.addAttribute("totalPendientes", totalPendientes);
-        model.addAttribute("totalRRHH", totalRRHH);
+        model.addAttribute("totalBloqueados", totalBloqueados);
         model.addAttribute("totalCandidatos", totalCandidatos);
         model.addAttribute("totalAdmins", totalAdmins);
+        model.addAttribute("entrevistasHoy", entrevistasHoy);
+        model.addAttribute("rrhhDiff", rrhhDiff);
+        model.addAttribute("activosDiff", activosDiff);
+        model.addAttribute("pendientesDiff", pendientesDiff);
+        model.addAttribute("bloqueadosDiff", bloqueadosDiff);
         model.addAttribute("actividadReciente", actividadReciente);
-        model.addAttribute("ultimosUsuarios", ultimosUsuariosData);
+        model.addAttribute("distribucionRoles", distribucionRoles);
         model.addAttribute("viewMode", "dashboard");
+        model.addAttribute("claveOk", claveOk != null);
+        model.addAttribute("claveError", claveError != null);
+        model.addAttribute("adminEmail",
+            SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("configOk", configOk != null);
 
         return "admin";
     }
 
-    private List<Map<String, Object>> buildActividadReciente(List<Usuario> usuarios) {
+    private List<Map<String, Object>> buildDistribucionRoles(long admins, long rrhh, long candidatos) {
+        long total = admins + rrhh + candidatos;
+        List<Map<String, Object>> lista = new ArrayList<>();
+        if (total == 0) return lista;
+
+        double circumference = 314.16;
+        double accumulated = 0;
+
+        String[][] roles = {
+            { "Administradores", String.valueOf(admins), "#0D9488" },
+            { "RRHH",            String.valueOf(rrhh),   "#16A34A" },
+            { "Candidatos",      String.valueOf(candidatos), "#0EA5E9" }
+        };
+        for (String[] r : roles) {
+            long count = Long.parseLong(r[1]);
+            if (count == 0) continue;
+            Map<String, Object> m = new HashMap<>();
+            m.put("label", r[0]);
+            m.put("count", count);
+            m.put("color", r[2]);
+            m.put("pct", Math.round((double) count / total * 100));
+            m.put("offset", Math.round(accumulated * 10.0) / 10.0);
+            m.put("dashArray", Math.round((double) count / total * circumference * 10.0) / 10.0);
+            accumulated += (double) count / total * circumference;
+            lista.add(m);
+        }
+        return lista;
+    }
+
+    private List<Map<String, Object>> buildActividadReciente() {
+        List<Auditoria> recientes = auditoriaService.obtenerRecientes(5);
         List<Map<String, Object>> actividades = new ArrayList<>();
         String[] colores = { "#0D9488", "#0EA5E9", "#8B5CF6", "#F59E0B", "#EF4444" };
-        int idx = 0;
-        for (Usuario u : usuarios) {
+        for (int i = 0; i < recientes.size(); i++) {
+            Auditoria a = recientes.get(i);
             Map<String, Object> act = new HashMap<>();
-            String nombre = obtenerNombreUsuario(u.getId(), u.getRol());
-            String iniciales = obtenerIniciales(u.getId(), u.getRol());
-            act.put("titulo", "Nuevo usuario registrado");
-            act.put("usuario", nombre);
-            act.put("fecha", "Reci\u00e9n registrado");
-            act.put("tipo", u.getRol().replace("ROLE_", ""));
-            act.put("iniciales", iniciales);
-            act.put("colorAvatar", colores[idx % colores.length]);
+            act.put("badge", a.getAccion());
+            act.put("titulo", a.getDescripcion());
+            act.put("usuario", a.getRealizadoPor() != null ? a.getRealizadoPor() : "Sistema");
+            act.put("fecha", formatearFecha(a.getFecha()));
+            act.put("tipo", a.getTipo());
+            act.put("iniciales", obtenerInicialesDesdeNombre(a.getRealizadoPor()));
+            act.put("colorAvatar", colores[i % colores.length]);
             actividades.add(act);
-            idx++;
         }
         return actividades;
     }
 
-    private List<Map<String, Object>> buildUltimosUsuariosData(List<Usuario> usuarios) {
-        List<Map<String, Object>> lista = new ArrayList<>();
-        for (Usuario u : usuarios) {
-            Map<String, Object> map = new HashMap<>();
-            String nombre = obtenerNombreUsuario(u.getId(), u.getRol());
-            String[] parts = nombre.split(" ", 2);
-            map.put("id", u.getId());
-            map.put("username", parts.length > 0 ? parts[0] : "");
-            map.put("apellido", parts.length > 1 ? parts[1] : "");
-            map.put("email", u.getEmail());
-            map.put("rol", u.getRol());
-            map.put("activo", u.isActivo());
-            map.put("fechaRegistro", "Reci\u00e9n");
-            lista.add(map);
+    private String formatearFecha(LocalDateTime fecha) {
+        long minutos = ChronoUnit.MINUTES.between(fecha, LocalDateTime.now());
+        if (minutos < 1) return "Ahora";
+        if (minutos < 60) return "Hace " + minutos + " minuto(s)";
+        long horas = ChronoUnit.HOURS.between(fecha, LocalDateTime.now());
+        if (horas < 24) return "Hace " + horas + " hora(s)";
+        long dias = ChronoUnit.DAYS.between(fecha, LocalDateTime.now());
+        if (dias < 7) return "Hace " + dias + " d\u00eda(s)";
+        return java.time.format.DateTimeFormatter.ofPattern("d MMM, HH:mm").format(fecha);
+    }
+
+    private String obtenerInicialesDesdeNombre(String nombre) {
+        if (nombre == null || nombre.isBlank()) return "S";
+        String[] partes = nombre.trim().split("\\s+");
+        if (partes.length >= 2) {
+            return (partes[0].charAt(0) + "" + partes[1].charAt(0)).toUpperCase();
         }
-        return lista;
+        return partes[0].substring(0, Math.min(2, partes[0].length())).toUpperCase();
     }
 
     @GetMapping
     public String panelAdmin(Model model,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "buscar", required = false) String buscar,
+            @RequestParam(name = "rol", required = false) String rol) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Usuario> usuariosPage = usuarioRepository.findAll(pageable);
+        Page<Usuario> usuariosPage;
+
+        boolean hasBuscar = buscar != null && !buscar.trim().isEmpty();
+        boolean hasRol = rol != null && !rol.trim().isEmpty();
+
+        if (hasBuscar && hasRol) {
+            usuariosPage = usuarioRepository.findByRolAndEmailContainingIgnoreCase(rol, buscar.trim(), pageable);
+        } else if (hasBuscar) {
+            usuariosPage = usuarioRepository.findByEmailContainingIgnoreCase(buscar.trim(), pageable);
+        } else if (hasRol) {
+            usuariosPage = usuarioRepository.findByRol(rol, pageable);
+        } else {
+            usuariosPage = usuarioRepository.findAll(pageable);
+        }
 
         long totalItems = usuariosPage.getTotalElements();
         int totalPages = usuariosPage.getTotalPages();
@@ -156,6 +241,8 @@ public class AdminController {
         model.addAttribute("totalCandidatos", totalCandidatos);
         model.addAttribute("totalAdmins", totalAdmins);
         model.addAttribute("viewMode", "usuarios");
+        model.addAttribute("buscar", buscar);
+        model.addAttribute("rol", rol);
 
         return "admin";
     }
@@ -190,14 +277,23 @@ public class AdminController {
     @PostMapping("/crear-rrhh")
     public String crearRRHH(@ModelAttribute Usuario nuevoRRHH,
                             @RequestParam String username,
-                            @RequestParam String apellido) {
+                            @RequestParam String apellido,
+                            @RequestParam(required = false) String telefono) {
         nuevoRRHH.setRol("ROLE_RRHH");
 
-        String respuesta = usuarioService.registrarUsuario(nuevoRRHH, username, apellido);
+        String respuesta = usuarioService.registrarUsuario(nuevoRRHH, username, apellido, telefono);
 
         if ("DUPLICADO".equals(respuesta)) {
             return "redirect:/admin?error=duplicado";
         }
+
+        if ("CLAVE_CORTA".equals(respuesta)) {
+            return "redirect:/admin?error=clave_corta";
+        }
+
+        auditoriaService.registrar("CREACI\u00d3N",
+            "Se cre\u00f3 el usuario RRHH " + username + " " + apellido,
+            "Administrador", "USUARIO");
         return "redirect:/admin?pendiente";
     }
 
@@ -205,12 +301,18 @@ public class AdminController {
     public String eliminarUsuario(@PathVariable Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if (usuario != null) {
+            String nombre = obtenerNombreUsuario(usuario.getId(), usuario.getRol());
+            String email = usuario.getEmail();
             if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
                 candidatoRepository.deleteById(id);
             } else if ("ROLE_RRHH".equals(usuario.getRol())) {
                 rrhhRepository.deleteById(id);
             }
             usuarioRepository.delete(usuario);
+
+            auditoriaService.registrar("ELIMINACI\u00d3N",
+                "Se elimin\u00f3 el usuario " + nombre + " (" + email + ")",
+                "Administrador", "SEGURIDAD");
         }
         return "redirect:/admin";
     }
@@ -224,6 +326,7 @@ public class AdminController {
         Usuario usuarioBD = usuarioRepository.findById(datosEditados.getId()).orElse(null);
 
         if (usuarioBD != null) {
+            String emailAnterior = usuarioBD.getEmail();
             usuarioBD.setEmail(datosEditados.getEmail());
 
             if (nuevaClave != null && !nuevaClave.trim().isEmpty()) {
@@ -240,6 +343,14 @@ public class AdminController {
                     rrhhRepository.save(rrhh);
                 }
             }
+
+            String nombreEditado = obtenerNombreUsuario(usuarioBD.getId(), usuarioBD.getRol());
+            String cambios = !emailAnterior.equals(datosEditados.getEmail())
+                ? " (email: " + emailAnterior + " \u2192 " + datosEditados.getEmail() + ")"
+                : "";
+            auditoriaService.registrar("EDICI\u00d3N",
+                "Se edit\u00f3 el perfil de " + nombreEditado + cambios,
+                "Administrador", "USUARIO");
         }
         return "redirect:/admin?editado";
     }
@@ -253,6 +364,155 @@ public class AdminController {
 
         List<Usuario> listaUsuarios = usuarioRepository.findAll();
         excelService.exportarUsuarios(listaUsuarios, response);
+
+        auditoriaService.registrar("EXPORTACI\u00d3N",
+            "Se export\u00f3 la lista de usuarios a Excel", "Administrador", "SISTEMA");
+    }
+
+    @GetMapping("/reportes/exportar")
+    public void exportarReporte(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=reporte_sistema.xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        Map<String, Object> metricas = new HashMap<>();
+        metricas.put("totalUsuarios", usuarioRepository.count());
+        metricas.put("totalRRHH", usuarioRepository.countByRol("ROLE_RRHH"));
+        metricas.put("totalActivos", usuarioRepository.countByRolAndActivo("ROLE_RRHH", true));
+        metricas.put("totalPendientes", usuarioRepository.countByRolAndActivo("ROLE_RRHH", false));
+        metricas.put("totalCandidatos", usuarioRepository.countByRol("ROLE_CANDIDATO"));
+        metricas.put("totalAdmins", usuarioRepository.countByRol("ROLE_ADMINISTRADOR"));
+
+        excelService.exportarReporte(metricas, response);
+
+        auditoriaService.registrar("EXPORTACI\u00d3N",
+            "Se export\u00f3 el reporte del sistema", "Administrador", "SISTEMA");
+    }
+
+    @GetMapping("/actividad")
+    @ResponseBody
+    public Map<String, Object> obtenerActividad(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size) {
+        org.springframework.data.domain.Page<Auditoria> pagina = auditoriaService.obtenerPaginado(page, size);
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (Auditoria a : pagina.getContent()) {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", a.getId());
+            m.put("accion", a.getAccion());
+            m.put("descripcion", a.getDescripcion());
+            m.put("realizadoPor", a.getRealizadoPor());
+            m.put("tipo", a.getTipo());
+            m.put("fecha", a.getFecha() != null ? a.getFecha().toString() : null);
+            items.add(m);
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("actividades", items);
+        result.put("total", pagina.getTotalElements());
+        result.put("page", pagina.getNumber());
+        result.put("size", pagina.getSize());
+        result.put("totalPages", pagina.getTotalPages());
+        return result;
+    }
+
+    @GetMapping("/auditoria")
+    @ResponseBody
+    public Map<String, Object> obtenerAuditoria(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size) {
+        org.springframework.data.domain.Page<Auditoria> pagina = auditoriaService.obtenerPorTipo("SEGURIDAD", page, size);
+        long totalSeguridad = auditoriaService.contarPorTipo("SEGURIDAD");
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (Auditoria a : pagina.getContent()) {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", a.getId());
+            m.put("accion", a.getAccion());
+            m.put("descripcion", a.getDescripcion());
+            m.put("realizadoPor", a.getRealizadoPor());
+            m.put("fecha", a.getFecha() != null ? a.getFecha().toString() : null);
+            items.add(m);
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("eventos", items);
+        result.put("total", pagina.getTotalElements());
+        result.put("totalSeguridad", totalSeguridad);
+        result.put("page", pagina.getNumber());
+        result.put("size", pagina.getSize());
+        result.put("totalPages", pagina.getTotalPages());
+        return result;
+    }
+
+    @GetMapping("/configuraciones")
+    @ResponseBody
+    public List<Map<String, String>> obtenerConfiguraciones() {
+        List<Configuracion> configs = configuracionService.obtenerTodas();
+
+        Map<String, String> defaults = new HashMap<>();
+        defaults.put("password.min.length", "8");
+        defaults.put("login.max.attempts", "5");
+        defaults.put("login.block.minutes", "15");
+        defaults.put("app.name", "Flowmatic");
+        defaults.put("app.support.email", "malacruz132@gmail.com");
+        defaults.put("password.reset.expiry.minutes", "15");
+
+        List<Map<String, String>> result = new ArrayList<>();
+        for (var entry : defaults.entrySet()) {
+            Map<String, String> m = new HashMap<>();
+            m.put("clave", entry.getKey());
+            m.put("valor", configuracionService.getValor(entry.getKey(), entry.getValue()));
+            m.put("defecto", entry.getValue());
+            result.add(m);
+        }
+        return result;
+    }
+
+    @PostMapping("/configuraciones")
+    public String guardarConfiguraciones(@RequestParam Map<String, String> todas) {
+        Map<String, String> configs = new HashMap<>();
+        for (var entry : todas.entrySet()) {
+            if (entry.getKey().startsWith("cfg_")) {
+                String clave = entry.getKey().substring(4);
+                configs.put(clave, entry.getValue());
+            }
+        }
+        configuracionService.guardarTodas(configs);
+        auditoriaService.registrar("EDICI\u00d3N",
+            "Se actualizaron las configuraciones del sistema", "Administrador", "SISTEMA");
+        return "redirect:/admin/dashboard?config_ok";
+    }
+
+    @PostMapping("/cambiar-clave")
+    public String cambiarClave(@RequestParam String claveActual,
+                               @RequestParam String nuevaClave,
+                               @RequestParam String confirmarClave) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+
+        if (usuario == null) {
+            return "redirect:/admin/dashboard?clave_error";
+        }
+
+        if (!passwordEncoder.matches(claveActual, usuario.getClave())) {
+            return "redirect:/admin/dashboard?clave_error";
+        }
+
+        if (!nuevaClave.equals(confirmarClave)) {
+            return "redirect:/admin/dashboard?clave_error";
+        }
+
+        int minLength = Integer.parseInt(configuracionService.getValor("password.min.length", "8"));
+        if (nuevaClave.trim().length() < minLength) {
+            return "redirect:/admin/dashboard?clave_error";
+        }
+
+        usuario.setClave(passwordEncoder.encode(nuevaClave));
+        usuarioRepository.save(usuario);
+
+        auditoriaService.registrar("EDICI\u00d3N",
+            "El administrador cambi\u00f3 su contrase\u00f1a", email, "SEGURIDAD");
+
+        return "redirect:/admin/dashboard?clave_ok";
     }
 
     private String obtenerNombreUsuario(Long userId, String rol) {

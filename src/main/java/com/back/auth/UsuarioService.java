@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.back.candidatos.Candidato;
 import com.back.candidatos.CandidatoRepository;
+import com.back.admin.RRHH;
+import com.back.admin.RRHHRepository;
+import com.back.admin.ConfiguracionService;
 import com.back.drive.FilesServices;
 import com.back.shared.EmailService;
 
@@ -26,20 +29,32 @@ public class UsuarioService {
     private CandidatoRepository candidatoRepository;
 
     @Autowired
+    private RRHHRepository rrhhRepository;
+
+    @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private ConfiguracionService configuracionService;
 
     @Autowired
     private FilesServices filesServices;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public String registrarUsuario(Usuario usuario, String username, String apellido) {
+    public String registrarUsuario(Usuario usuario, String username, String apellido, String telefono) {
 
         logger.info("Iniciando registro de usuario: {}", usuario.getEmail());
 
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             logger.warn("Correo duplicado: {}", usuario.getEmail());
             return "DUPLICADO";
+        }
+
+        int minLength = Integer.parseInt(configuracionService.getValor("password.min.length", "8"));
+        if (usuario.getClave() == null || usuario.getClave().trim().length() < minLength) {
+            logger.warn("Contrase\u00f1a demasiado corta: {}", usuario.getEmail());
+            return "CLAVE_CORTA";
         }
 
         usuario.setClave(encoder.encode(usuario.getClave()));
@@ -62,6 +77,17 @@ public class UsuarioService {
             candidatoRepository.save(candidato);
 
             filesServices.crearCarpetaCandidato(usuario.getEmail());
+        }
+
+        if ("ROLE_RRHH".equals(usuario.getRol())) {
+            RRHH rrhh = new RRHH();
+            rrhh.setId(usuario.getId());
+            rrhh.setUsername(username);
+            rrhh.setApellido(apellido);
+            if (telefono != null && !telefono.trim().isEmpty()) {
+                rrhh.setTelefono(telefono);
+            }
+            rrhhRepository.save(rrhh);
         }
 
         logger.info("Intentando enviar email de verificaci\u00f3n a: {}", usuario.getEmail());
@@ -142,7 +168,8 @@ public class UsuarioService {
         Usuario usuario = optional.get();
         if (usuario.getFechaCreacionToken() != null) {
             long minutos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).toMinutes();
-            if (minutos > 15) return "EXPIRADO";
+            long expiry = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
+            if (minutos > expiry) return "EXPIRADO";
         }
         return "VALIDA";
     }
@@ -158,7 +185,8 @@ public class UsuarioService {
 
         if (usuario.getFechaCreacionToken() != null) {
             long minutos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).toMinutes();
-            if (minutos > 15) {
+            long expiry = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
+            if (minutos > expiry) {
                 usuario.setTokenactivacion(null);
                 usuarioRepository.save(usuario);
                 return false;
@@ -179,6 +207,11 @@ public class UsuarioService {
                     .map(c -> c.getUsername() + " " + c.getApellido())
                     .orElse("Usuario");
         }
-        return "Usuario";
+        if ("ROLE_RRHH".equals(usuario.getRol())) {
+            return rrhhRepository.findById(usuario.getId())
+                    .map(r -> r.getUsername() + " " + r.getApellido())
+                    .orElse("RRHH");
+        }
+        return "Administrador";
     }
 }

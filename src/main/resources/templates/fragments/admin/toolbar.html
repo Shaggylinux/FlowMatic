@@ -1,19 +1,22 @@
 <div class="admin-toolbar" th:fragment="toolbar">
   <!-- Lado izquierdo -->
   <div class="admin-toolbar-left">
-    <form class="admin-search">
+    <form class="admin-search" th:action="@{/admin}" method="get">
       <input
         type="text"
         name="buscar"
-        placeholder="Buscar por ID o nombre..."
+        placeholder="Buscar por email..."
         class="admin-search-input"
+        th:value="${buscar}"
       />
+      <input type="hidden" name="page" value="0" />
+      <input type="hidden" name="size" th:value="${pageSize ?: 10}" />
     </form>
 
-    <select class="admin-filter">
+    <select class="admin-filter" data-base="/admin" onchange="filtrarRol(this)">
       <option value="">Todos los roles</option>
-      <option value="ROLE_ADMIN">Administrador</option>
-      <option value="ROLE_RRHH">RRHH</option>
+      <option value="ROLE_ADMINISTRADOR" th:selected="${rol == 'ROLE_ADMINISTRADOR'}">Administrador</option>
+      <option value="ROLE_RRHH" th:selected="${rol == 'ROLE_RRHH'}">RRHH</option>
     </select>
   </div>
 

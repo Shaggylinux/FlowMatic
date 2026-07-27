@@ -1,65 +1,41 @@
-<header class="admin-header" th:fragment="header">
-
-    <div class="admin-header-container">
-
-        <!-- Parte superior -->
-        <div class="admin-header-top">
-
-            <div class="admin-header-breadcrumb">
-                <span>RRHH</span>
-                <span>/</span>
-                <span>ADMINISTRACIÓN</span>
-            </div>
-
-            <div class="admin-header-user">
-
-                <div class="admin-user-avatar">
-                    AF
-                </div>
-
-                <div class="admin-user-info">
-                    <span class="admin-user-name">Andrés Felipe</span>
-                    <span class="admin-user-role">Administrador</span>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Parte inferior -->
-        <div class="admin-header-bottom">
-
-            <div class="admin-header-info">
-
-                <h1>Administración de Recursos Humanos</h1>
-
-                <p>
-                    Gestiona empleados, roles y permisos del sistema.
-                </p>
-
-            </div>
-
-            <div class="admin-header-actions">
-
-                <a th:href="@{/admin/exportar}" class="btn btn-export"> 
-                    <!-- SVG -->
-                    Exportar Excel
-                </a>
-
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalNuevoRRHH">
-
-                    Nuevo RRHH
-
-                </button>
-
-            </div>
-
-        </div>
-
+<header class="fm-topbar" style="background:transparent;position:static;padding:8px 0;margin-bottom:24px;" th:fragment="header">
+    <div>
+        <p class="fm-topbar-title">Dashboard Administrativo</p>
+        <p class="fm-topbar-sub">Resumen general del sistema Flowmatic</p>
     </div>
-
+    <div style="display:flex; align-items:center; gap:8px;">
+        <div style="position:relative;">
+            <button class="gc-bell-btn" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="gc-bell-dot" id="gc-notif-badge">0</span>
+            </button>
+            <div class="gc-notif-panel" id="gc-notif-panel">
+                <div class="gc-notif-header">
+                    <span>Notificaciones</span>
+                    <button class="gc-notif-leer-todas" onclick="marcarTodasNotificaciones()">Leer todas</button>
+                </div>
+                <div class="gc-notif-list"></div>
+            </div>
+        </div>
+        <a th:href="@{/admin/exportar}" class="gc-topbar-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Exportar
+        </a>
+        <button type="button" class="gc-topbar-btn gc-topbar-btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoRRHH">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+            Nuevo RRHH
+        </button>
+    </div>
 </header>

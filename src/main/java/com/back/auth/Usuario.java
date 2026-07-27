@@ -3,7 +3,6 @@ package com.back.auth;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -22,7 +21,6 @@ public class Usuario {
     private String email;
 
     @NotBlank(message = "La contrase\u00f1a es obligatoria")
-    @Size(min = 8, message = "La contrase\u00f1a debe tener m\u00ednimo 8 caracteres")
     @Column(nullable = false)
     private String clave;
 

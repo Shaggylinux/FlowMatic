@@ -1,7 +1,7 @@
 package com.back.registro;
 
+import com.back.admin.ConfiguracionService;
 import com.back.auth.Usuario;
-import com.back.candidatos.Candidato;
 import com.back.auth.UsuarioService;
 import jakarta.validation.Valid;
 
@@ -20,6 +20,9 @@ public class RegistroController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private ConfiguracionService configuracionService;
 
     @GetMapping
     public String mostrarFormulario(Model model) {
@@ -43,10 +46,15 @@ public class RegistroController {
     usuario.setClave(registro.getClave());
     usuario.setRol("ROLE_CANDIDATO");
 
-    String respuesta = usuarioService.registrarUsuario(usuario, registro.getUsername(), registro.getApellido());
+    String respuesta = usuarioService.registrarUsuario(usuario, registro.getUsername(), registro.getApellido(), null);
 
     if ("DUPLICADO".equals(respuesta)) {
         model.addAttribute("errorDuplicado", true);
+        return "registro-candidato";
+    }
+
+    if ("CLAVE_CORTA".equals(respuesta)) {
+        model.addAttribute("errorClaveCorta", true);
         return "registro-candidato";
     }
 
@@ -74,8 +82,9 @@ public class RegistroController {
         }
 
         long minutos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).toMinutes();
+        long expiry = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
 
-        if (minutos > 15) {
+        if (minutos > expiry) {
             model.addAttribute("enlaceExpirado", true);
             model.addAttribute("token", token);
             return "caduco";
@@ -123,10 +132,14 @@ public class RegistroController {
         usuario.setClave(registro.getClave());
         usuario.setRol("ROLE_CANDIDATO");
 
-        String respuesta = usuarioService.registrarUsuario(usuario, registro.getUsername(), registro.getApellido());
+        String respuesta = usuarioService.registrarUsuario(usuario, registro.getUsername(), registro.getApellido(), null);
 
         if ("DUPLICADO".equals(respuesta)) {
             return ResponseEntity.status(409).body("El usuario ya existe");
+        }
+
+        if ("CLAVE_CORTA".equals(respuesta)) {
+            return ResponseEntity.badRequest().body("La contrase\u00f1a debe tener m\u00ednimo 8 caracteres");
         }
 
     return ResponseEntity.ok().build();

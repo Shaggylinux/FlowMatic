@@ -16,12 +16,16 @@
     <link rel="stylesheet" th:href="@{/css/tokens.css}" />
     <link rel="stylesheet" th:href="@{/css/base.css}" />
     <link rel="stylesheet" th:href="@{/css/admin.css}" />
-    <!-- <link rel="stylesheet" th:href="@{/css/admin/admin.css}" /> -->
     <link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/dashboard.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/cards.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/toolbar.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/table.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/modal.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/actividad.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/reportes.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/auditoria.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/configuracion.css}" />
 
     <script
       defer
@@ -40,21 +44,24 @@
 
       <div class="admin-main">
         <div class="admin-content">
-          <div th:replace="~{fragments/admin/header :: header}"></div>
-          <div th:replace="~{fragments/admin/cards :: cards}"></div>
-          <div th:replace="~{fragments/admin/toolbar :: toolbar}"></div>
-          <div
-            th:if="${viewMode == 'usuarios'}"
-            th:replace="~{fragments/admin/table :: table}"
-          ></div>
-          
+          <div th:if="${viewMode == 'dashboard'}">
+            <div th:replace="~{fragments/admin/header :: header}"></div>
+            <div th:replace="~{fragments/admin/dashboard-content :: dashboardContent}"></div>
+          </div>
+          <div th:if="${viewMode == 'usuarios'}">
+            <div th:replace="~{fragments/admin/header :: header}"></div>
+            <div th:replace="~{fragments/admin/toolbar :: toolbar}"></div>
+            <div th:replace="~{fragments/admin/table :: table}"></div>
+          </div>
         </div>
       </div>
     </div>
 
     <div th:replace="~{fragments/admin/modal-rrhh :: modalRRHH}"></div>
-          <div
-            th:replace="~{fragments/admin/modal-editar :: modalEditar}"
-          ></div>
+    <div th:replace="~{fragments/admin/modal-editar :: modalEditar}"></div>
+    <div th:replace="~{fragments/admin/modal-actividad :: modalActividad}"></div>
+    <div th:replace="~{fragments/admin/modal-reportes :: modalReportes}"></div>
+    <div th:replace="~{fragments/admin/modal-auditoria :: modalAuditoria}"></div>
+    <div th:replace="~{fragments/admin/modal-configuracion :: modalConfiguracion}"></div>
   </body>
 </html>

@@ -2,7 +2,6 @@ package com.back.registro;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -19,7 +18,6 @@ public class RegistroRequest {
     private String email;
 
     @NotBlank(message = "La contrase\u00f1a es obligatoria")
-    @Size(min = 8, message = "La contrase\u00f1a debe tener m\u00ednimo 8 caracteres")
     private String clave;
 
     private String cargo;

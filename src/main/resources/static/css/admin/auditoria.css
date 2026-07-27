@@ -1,0 +1,116 @@
+.aud-summary {
+  padding: 16px 28px 8px;
+}
+
+.aud-badge-total {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: #FEF2F2;
+  color: #DC2626;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.aud-list {
+  padding: 4px 0 8px;
+}
+
+.aud-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 28px;
+  border-bottom: 1px solid #F8FAFC;
+  transition: background 0.15s ease;
+}
+
+.aud-item:hover {
+  background: #FAFBFC;
+}
+
+.aud-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  background: #FEF2F2;
+  color: #DC2626;
+}
+
+.aud-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.aud-desc {
+  font-size: 13px;
+  color: #1E293B;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.aud-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #94A3B8;
+}
+
+.aud-meta-user {
+  font-weight: 500;
+  color: #64748B;
+}
+
+.aud-meta-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #CBD5E1;
+}
+
+.aud-empty {
+  padding: 48px 28px;
+  text-align: center;
+  font-size: 13px;
+  color: #94A3B8;
+}
+
+.aud-loader {
+  padding: 48px 28px;
+  display: flex;
+  justify-content: center;
+}
+
+.aud-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #FECACA;
+  border-top-color: #DC2626;
+  border-radius: 50%;
+  animation: aud-spin 0.6s linear infinite;
+}
+
+@keyframes aud-spin {
+  to { transform: rotate(360deg); }
+}
+
+.aud-pag-info {
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 500;
+}
+
+#auditoriaFooter .btn-light {
+  padding: 6px 16px;
+  font-size: 12px;
+}

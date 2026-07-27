@@ -22,7 +22,7 @@
 
 .admin-content {
   flex: 1;
-  padding: 28px 32px;
+  padding: 0 32px 28px;
   overflow-y: auto;
 }
 

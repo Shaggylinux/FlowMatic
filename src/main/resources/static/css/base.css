@@ -743,6 +743,47 @@ body {
   border-radius: var(--fm-radius-full);
 }
 
+@media (max-width: 768px) {
+  .fm-sidebar {
+    width: 56px;
+    overflow: hidden;
+  }
+  .fm-sidebar-header {
+    padding: 16px 10px;
+    justify-content: center;
+  }
+  .fm-sidebar-header span:last-child { display: none; }
+  .fm-sidebar-section-label { display: none; }
+  .fm-nav-link {
+    justify-content: center;
+    padding: 10px 8px;
+    font-size: 0;
+    gap: 0;
+  }
+  .fm-nav-link svg {
+    width: 20px;
+    height: 20px;
+  }
+  .fm-sidebar-footer {
+    padding: 12px 8px;
+  }
+  .fm-sidebar-footer .btn span { display: none; }
+  .fm-sidebar-footer .btn svg { margin: 0; }
+  .admin-main .admin-content {
+    padding: 0 16px 20px;
+  }
+  .admin-main .admin-content .gs-page {
+    padding-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fm-sidebar { display: none; }
+  .admin-main .admin-content {
+    padding: 0 12px 16px;
+  }
+}
+
 /* ── 11. TOPBAR DEL DASHBOARD ───────────────── */
 
 .fm-topbar {

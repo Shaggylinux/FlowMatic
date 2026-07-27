@@ -1,0 +1,42 @@
+<div
+    class="modal fade"
+    id="modalActividad"
+    tabindex="-1"
+    aria-hidden="true"
+    th:fragment="modalActividad">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <div>
+                    <h4 class="modal-title">Toda la actividad</h4>
+                    <p class="modal-subtitle">Historial completo de acciones en el sistema</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" style="padding:0;">
+                <div class="act-list" id="actividadList"></div>
+                <div class="act-empty" id="actividadEmpty" style="display:none;">
+                    No hay actividad registrada
+                </div>
+                <div class="act-loader" id="actividadLoader" style="display:none;">
+                    <div class="act-spinner"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer" id="actividadFooter">
+                <button type="button" class="btn btn-light" id="actBtnPrev" onclick="cargarActividad(actPage - 1)" disabled>
+                    &larr; Anterior
+                </button>
+                <span class="act-pag-info" id="actPagInfo"></span>
+                <button type="button" class="btn btn-light" id="actBtnNext" onclick="cargarActividad(actPage + 1)">
+                    Siguiente &rarr;
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

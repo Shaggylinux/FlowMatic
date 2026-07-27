@@ -6,130 +6,71 @@
     th:fragment="modalRRHH">
 
     <div class="modal-dialog modal-lg modal-dialog-centered">
-
         <div class="modal-content">
 
             <!-- Header -->
-
             <div class="modal-header">
                 <div>
-                    <h4 class="modal-title">
-                        Nuevo usuario
-                    </h4>
-                    <p class="modal-subtitle">
-                        Completa los datos para registrar un nuevo colaborador.
-                    </p>
+                    <h4 class="modal-title">Nuevo usuario</h4>
+                    <p class="modal-subtitle">Completa los datos para registrar un nuevo colaborador.</p>
                 </div>
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <!-- Body -->
+            <!-- Form -->
+            <form th:action="@{/admin/crear-rrhh}" method="post">
 
-            <div class="modal-body">
-            <form th:action="@{/admin/crear-rrhh}" method="post" id="formNuevoRRHH">
+                <div class="modal-body">
+                    <div class="admin-modal-grid">
 
-            <div class="admin-modal-grid">
-            <!-- Nombre -->
-            <div class="form-group">
-                <label class="form-label">
-                    Nombre
-                </label>
-                <input
-                    type="text"
-                    name="username"
-                    class="form-input"
-                    required
-                    minlength="2"
-                    maxlength="50"
-                    pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
-                    placeholder="Nombre">
-            </div>
-            <!-- Apellido -->
-            <div class="form-group">
-                <label class="form-label">
-                    Apellido
-                </label>
-                <input
-                    type="text"
-                    name="apellido"
-                    class="form-input"
-                    required
-                    minlength="2"
-                    maxlength="50"
-                    pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
-                    placeholder="Apellido">
-            </div>
-            <!-- Correo -->
-            <div class="form-group">
+                        <!-- Nombre -->
+                        <div class="form-group">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" name="username" class="form-input" required
+                                   minlength="2" maxlength="50"
+                                   pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" placeholder="Nombre">
+                        </div>
 
-                <label class="form-label">
-                    Correo electrónico
-                </label>
+                        <!-- Apellido -->
+                        <div class="form-group">
+                            <label class="form-label">Apellido</label>
+                            <input type="text" name="apellido" class="form-input" required
+                                   minlength="2" maxlength="50"
+                                   pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" placeholder="Apellido">
+                        </div>
 
-                <input
-                    type="email"
-                    name="email"
-                    class="form-input"
-                    required
-                    maxlength="100"
-                    placeholder="correo@empresa.com">
+                        <!-- Correo -->
+                        <div class="form-group">
+                            <label class="form-label">Correo electr&oacute;nico</label>
+                            <input type="email" name="email" class="form-input" required
+                                   maxlength="100" placeholder="correo@empresa.com">
+                        </div>
 
-            </div>
+                        <!-- Contraseña -->
+                        <div class="form-group">
+                            <label class="form-label">Contrase&ntilde;a</label>
+                            <input type="password" name="clave" class="form-input" required
+                                   minlength="8" maxlength="100" placeholder="M&iacute;nimo 8 caracteres">
+                        </div>
 
-            <!-- Contraseña -->
-            <div class="form-group">
+                        <!-- Teléfono -->
+                        <div class="form-group">
+                            <label class="form-label">Tel&eacute;fono</label>
+                            <input type="tel" name="telefono" class="form-input" maxlength="20"
+                                   placeholder="+57 300 123 4567">
+                        </div>
 
-                <label class="form-label">
-                    Contraseña
-                </label>
+                    </div>
+                </div>
 
-                <input
-                    type="password"
-                    name="clave"
-                    class="form-input"
-                    required
-                    minlength="8"
-                    maxlength="100"
-                    placeholder="Mínimo 8 caracteres">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear usuario</button>
+                </div>
 
-            </div>
+            </form>
 
         </div>
-
-    </form>
-
-</div>
-
-            <!-- Footer -->
-
-            <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn btn-light"
-                    data-bs-dismiss="modal">
-
-                    Cancelar
-
-                </button>
-
-                <button
-    type="submit"
-    form="formNuevoRRHH"
-    class="btn btn-primary">
-
-    Crear usuario
-
-</button>
-
-            </div>
-
-        </div>
-
     </div>
 
 </div>

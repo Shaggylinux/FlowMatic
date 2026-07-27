@@ -1,5 +1,6 @@
 package com.back.shared;
 
+import com.back.admin.ConfiguracionService;
 import com.back.auth.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,9 @@ public class PasswordController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private ConfiguracionService configuracionService;
 
     @GetMapping("/forgot-password")
     public String mostrarFormulario() {
@@ -41,7 +45,8 @@ public class PasswordController {
                                 @RequestParam String password,
                                 Model model) {
 
-        if (password == null || password.trim().length() < 8) {
+        int minLength = Integer.parseInt(configuracionService.getValor("password.min.length", "8"));
+        if (password == null || password.trim().length() < minLength) {
             model.addAttribute("token", token);
             model.addAttribute("errorPassword", true);
             return "reset-password";

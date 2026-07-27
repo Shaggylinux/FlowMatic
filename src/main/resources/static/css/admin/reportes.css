@@ -1,0 +1,113 @@
+.rp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.rp-card {
+  background: #ffffff;
+  border: 1px solid #F1F5F9;
+  border-radius: 10px;
+  padding: 16px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rp-card:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.rp-card:nth-child(1) { border-top: 4px solid #0D9488; }
+.rp-card:nth-child(2) { border-top: 4px solid #0EA5E9; }
+.rp-card:nth-child(3) { border-top: 4px solid #F59E0B; }
+.rp-card:nth-child(4) { border-top: 4px solid #16A34A; }
+.rp-card:nth-child(5) { border-top: 4px solid #8B5CF6; }
+.rp-card:nth-child(6) { border-top: 4px solid #EF4444; }
+
+.rp-card-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.rp-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748B;
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rp-divider {
+  height: 1px;
+  background: #E2E8F0;
+  margin: 20px 0;
+}
+
+.rp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rp-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1E293B;
+  background: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rp-btn:hover {
+  border-color: #0D9488;
+  background: #F0FDFA;
+  color: #0D9488;
+  box-shadow: 0 2px 8px rgba(13,148,136,0.1);
+}
+
+.rp-btn svg {
+  flex-shrink: 0;
+  color: #64748B;
+  transition: color 0.15s ease;
+}
+
+.rp-btn:hover svg {
+  color: #0D9488;
+}
+
+.rp-btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rp-btn-disabled:hover {
+  border-color: #E2E8F0;
+  background: #fff;
+  color: #1E293B;
+  box-shadow: none;
+}
+
+.rp-btn-disabled:hover svg {
+  color: #64748B;
+}
+
+@media (max-width: 500px) {
+  .rp-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

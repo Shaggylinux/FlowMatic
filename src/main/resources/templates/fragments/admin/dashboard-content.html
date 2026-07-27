@@ -1,0 +1,273 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="dashboardContent" class="gs-page">
+
+    <div th:if="${claveOk}" class="cfg-toast cfg-toast-ok">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Contrase&ntilde;a actualizada correctamente
+    </div>
+    <div th:if="${claveError}" class="cfg-toast cfg-toast-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        Error al actualizar la contrase&ntilde;a. Verifica los datos e intenta de nuevo.
+    </div>
+    <div th:if="${configOk}" class="cfg-toast cfg-toast-ok">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Configuraci&oacute;n guardada correctamente
+    </div>
+
+    <!-- ── SECCIÓN 1: KPI CARDS ──────────────── -->
+    <div class="gs-stats-grid">
+        <div class="gs-stat-card">
+            <div class="gs-stat-inner">
+                <div class="gs-stat-icon gs-stat-icon-turq">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <h2 class="gs-stat-number" th:text="${totalRRHH}">0</h2>
+                <p class="gs-stat-label">Usuarios RRHH</p>
+                <p class="gs-stat-diff up" th:if="${rrhhDiff != null}" th:text="${rrhhDiff}">+0%</p>
+            </div>
+        </div>
+        <div class="gs-stat-card">
+            <div class="gs-stat-inner">
+                <div class="gs-stat-icon gs-stat-icon-blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <h2 class="gs-stat-number" th:text="${totalActivos}">0</h2>
+                <p class="gs-stat-label">Usuarios activos</p>
+                <p class="gs-stat-diff up" th:if="${activosDiff != null}" th:text="${activosDiff}">+0%</p>
+            </div>
+        </div>
+        <div class="gs-stat-card">
+            <div class="gs-stat-inner">
+                <div class="gs-stat-icon gs-stat-icon-orang">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <h2 class="gs-stat-number" th:text="${totalPendientes}">0</h2>
+                <p class="gs-stat-label">Pendientes</p>
+                <p class="gs-stat-diff neutral" th:if="${pendientesDiff != null}" th:text="${pendientesDiff}">0%</p>
+            </div>
+        </div>
+        <div class="gs-stat-card">
+            <div class="gs-stat-inner">
+                <div class="gs-stat-icon gs-stat-icon-green">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <line x1="18" y1="8" x2="18" y2="14"/>
+                        <line x1="15" y1="11" x2="21" y2="11"/>
+                    </svg>
+                </div>
+                <h2 class="gs-stat-number" th:text="${totalBloqueados}">0</h2>
+                <p class="gs-stat-label">Bloqueados</p>
+                <p class="gs-stat-diff neutral" th:if="${bloqueadosDiff != null}" th:text="${bloqueadosDiff}">0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── SECCIÓN 2: DOS COLUMNAS ────────────── -->
+    <div class="gs-two-col">
+
+        <!-- Actividad Reciente -->
+        <div class="gs-panel">
+            <div class="gs-panel-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+                <h3>Actividad reciente</h3>
+            </div>
+            <div class="gs-timeline">
+                <th:block th:if="${not #lists.isEmpty(actividadReciente)}">
+                    <div class="gs-timeline-track">
+                        <th:block th:each="act : ${actividadReciente}">
+                            <div class="gs-timeline-item">
+                                <div class="gs-timeline-marker" th:style="'background:' + ${act.colorAvatar}"></div>
+                                <div class="gs-timeline-content">
+                                    <div class="gs-timeline-text">
+                                        <span class="gs-timeline-badge" th:text="${act.badge}">CREACI&Oacute;N</span>
+                                        <span th:text="${act.titulo}">Acci&oacute;n</span>
+                                    </div>
+                                    <div class="gs-timeline-time" th:text="${act.fecha}">Fecha</div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </th:block>
+                <div th:if="${#lists.isEmpty(actividadReciente)}" style="padding: 24px; text-align: center; color: var(--fm-text-muted); font-size: 14px;">
+                    No hay actividad reciente
+                </div>
+            </div>
+            <div class="gs-timeline-footer">
+                <a href="#" class="gs-link-arrow" data-bs-toggle="modal" data-bs-target="#modalActividad">Ver toda la actividad &rarr;</a>
+            </div>
+        </div>
+
+        <!-- Estado del Sistema (mini tarjetas) -->
+        <div class="gs-panel">
+            <div class="gs-panel-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <h3>Estado del sistema</h3>
+            </div>
+            <div class="gs-alerts-grid">
+                <div class="gs-alert-mini">
+                    <div class="gs-alert-mini-header">
+                        <span class="gs-alert-mini-dot gs-alert-mini-dot-green"></span>
+                        <span class="gs-alert-mini-title">Sistema operativo</span>
+                    </div>
+                    <span class="gs-alert-mini-desc">Sin errores</span>
+                </div>
+                <div class="gs-alert-mini">
+                    <div class="gs-alert-mini-header">
+                        <span class="gs-alert-mini-dot gs-alert-mini-dot-green"></span>
+                        <span class="gs-alert-mini-title">Backups</span>
+                    </div>
+                    <span class="gs-alert-mini-desc">Correctos</span>
+                </div>
+                <div class="gs-alert-mini">
+                    <div class="gs-alert-mini-header">
+                        <span class="gs-alert-mini-dot gs-alert-mini-dot-green"></span>
+                        <span class="gs-alert-mini-title">Seguridad</span>
+                    </div>
+                    <span class="gs-alert-mini-desc" th:if="${totalBloqueados == 0}">Sin bloqueos</span>
+                    <span class="gs-alert-mini-desc gs-alert-mini-desc-warn" th:if="${totalBloqueados > 0}" th:text="${totalBloqueados + ' bloqueo(s)'}">Sin bloqueos</span>
+                </div>
+                <div class="gs-alert-mini">
+                    <div class="gs-alert-mini-header">
+                        <span class="gs-alert-mini-dot gs-alert-mini-dot-yellow" th:if="${totalPendientes > 0}"></span>
+                        <span class="gs-alert-mini-dot gs-alert-mini-dot-green" th:if="${totalPendientes == 0}"></span>
+                        <span class="gs-alert-mini-title">Activaciones</span>
+                    </div>
+                    <span class="gs-alert-mini-desc gs-alert-mini-desc-warn" th:if="${totalPendientes > 0}" th:text="${totalPendientes + ' pendiente(s)'}">2 pendientes</span>
+                    <span class="gs-alert-mini-desc" th:if="${totalPendientes == 0}">Sin pendientes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── SECCIÓN 3: DISTRIBUCIÓN + ACCIONES ─── -->
+    <div class="gs-bottom-row">
+
+        <!-- Distribución de usuarios (donut compacto) -->
+        <div class="gs-panel gs-donut-panel">
+            <div class="gs-panel-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <h3>Distribuci&oacute;n de usuarios</h3>
+            </div>
+            <div class="gs-donut-section">
+                <div class="gs-donut-container">
+                    <svg class="gs-donut-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="#F1F5F9" stroke-width="18"/>
+                        <circle th:each="r : ${distribucionRoles}"
+                            cx="60" cy="60" r="50" fill="none"
+                            th:stroke="${r.color}"
+                            stroke-width="18"
+                            th:stroke-dasharray="${r.dashArray + ' ' + 314.16}"
+                            th:stroke-dashoffset="${r.offset}"
+                            stroke-linecap="round"
+                            style="transition: stroke-dasharray 0.5s ease;"
+                        />
+                    </svg>
+                </div>
+                <div class="gs-donut-legend">
+                    <th:block th:each="r : ${distribucionRoles}">
+                        <div class="gs-legend-item">
+                            <span class="gs-legend-dot" th:style="'background:' + ${r.color}"></span>
+                            <div class="gs-legend-info">
+                                <span class="gs-legend-label" th:text="${r.label}">Rol</span>
+                                <div>
+                                    <span class="gs-legend-value" th:text="${r.count}">0</span>
+                                    <span class="gs-legend-pct" th:text="${r.pct + '%'}">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                    <div th:if="${#lists.isEmpty(distribucionRoles)}" style="color: var(--fm-text-muted); font-size: 14px;">
+                        No hay usuarios registrados
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="gs-panel">
+            <div class="gs-panel-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="16"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                </svg>
+                <h3>Acciones r&aacute;pidas</h3>
+            </div>
+            <div class="gs-quick-grid">
+                <a class="gs-quick-card" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalReportes">
+                    <div class="gs-quick-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                    </div>
+                    <div class="gs-quick-info">
+                        <span class="gs-quick-label">Reportes</span>
+                        <span class="gs-quick-sub">Ver estad&iacute;sticas del sistema</span>
+                    </div>
+                    <svg class="gs-quick-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 4l4 4-4 4"/>
+                    </svg>
+                </a>
+                <a class="gs-quick-card" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalAuditoria">
+                    <div class="gs-quick-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                        </svg>
+                    </div>
+                    <div class="gs-quick-info">
+                        <span class="gs-quick-label">Auditor&iacute;a</span>
+                        <span class="gs-quick-sub">Registro de actividad</span>
+                    </div>
+                    <svg class="gs-quick-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 4l4 4-4 4"/>
+                    </svg>
+                </a>
+                <a class="gs-quick-card" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalConfiguracion">
+                    <div class="gs-quick-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                    </div>
+                    <div class="gs-quick-info">
+                        <span class="gs-quick-label">Configuraci&oacute;n</span>
+                        <span class="gs-quick-sub">Sistema</span>
+                    </div>
+                    <svg class="gs-quick-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 4l4 4-4 4"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

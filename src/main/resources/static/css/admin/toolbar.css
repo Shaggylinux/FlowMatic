@@ -67,3 +67,27 @@
 
     font-size:14px;
 }
+
+@media (max-width: 768px) {
+  .admin-toolbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .admin-toolbar-left {
+    flex-direction: column;
+    width: 100%;
+  }
+  .admin-search-input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .admin-filter {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .admin-toolbar-right {
+    width: 100%;
+    justify-content: center;
+  }
+}
