@@ -1,6 +1,6 @@
 package com.back.auth;
 
-import com.back.admin.ConfiguracionService;
+import com.back.shared.api.ConfiguracionApi;
 import com.back.auth.UsuarioService;
 
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class PasswordController {
 
     private final UsuarioService usuarioService;
-    private final ConfiguracionService configuracionService;
+    private final ConfiguracionApi configuracionService;
 
     @GetMapping("/forgot-password")
     public String mostrarFormulario() {

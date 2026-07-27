@@ -1,7 +1,7 @@
 package com.back.registro;
 
-import com.back.auth.Usuario;
-import com.back.auth.UsuarioService;
+import com.back.shared.api.AuthApi;
+import com.back.shared.dto.RegistroUsuarioDTO;
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RegistroRRHHController {
 
-    private final UsuarioService usuarioService;
+    private final AuthApi authApi;
 
     @GetMapping
     public String mostrarFormulario(Model model) {
@@ -34,12 +34,15 @@ public class RegistroRRHHController {
             return "registro-rrhh";
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setEmail(registro.getEmail());
-        usuario.setClave(registro.getClave());
-        usuario.setRol("ROLE_RRHH");
+        RegistroUsuarioDTO dto = RegistroUsuarioDTO.builder()
+            .email(registro.getEmail())
+            .clave(registro.getClave())
+            .rol("ROLE_RRHH")
+            .username(registro.getUsername())
+            .apellido(registro.getApellido())
+            .build();
 
-        String respuesta = usuarioService.registrarUsuario(usuario, registro.getUsername(), registro.getApellido(), null);
+        String respuesta = authApi.registrarUsuario(dto);
 
         if ("DUPLICADO".equals(respuesta)) {
             model.addAttribute("errorDuplicado", true);

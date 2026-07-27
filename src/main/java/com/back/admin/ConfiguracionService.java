@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.back.shared.api.ConfiguracionApi;
+
 @Service
-public class ConfiguracionService {
+public class ConfiguracionService implements ConfiguracionApi {
 
     @Autowired
     private ConfiguracionRepository configuracionRepository;

@@ -1,6 +1,7 @@
 package com.back.registro;
 
 import com.back.admin.ConfiguracionService;
+import com.back.shared.dto.RegistroUsuarioDTO;
 import com.back.auth.Usuario;
 import com.back.auth.UsuarioService;
 import jakarta.validation.Valid;
@@ -41,12 +42,15 @@ public class RegistroController {
         return "registro-candidato";
     }
 
-    Usuario usuario = new Usuario();
-    usuario.setEmail(registro.getEmail());
-    usuario.setClave(registro.getClave());
-    usuario.setRol("ROLE_CANDIDATO");
+    RegistroUsuarioDTO dto = RegistroUsuarioDTO.builder()
+        .email(registro.getEmail())
+        .clave(registro.getClave())
+        .rol("ROLE_CANDIDATO")
+        .username(registro.getUsername())
+        .apellido(registro.getApellido())
+        .build();
 
-    String respuesta = usuarioService.registrarUsuario(usuario, registro.getUsername(), registro.getApellido(), null);
+    String respuesta = usuarioService.registrarUsuario(dto);
 
     if ("DUPLICADO".equals(respuesta)) {
         model.addAttribute("errorDuplicado", true);
@@ -127,12 +131,15 @@ public class RegistroController {
             return ResponseEntity.badRequest().body("Datos inv\u00e1lidos");
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setEmail(registro.getEmail());
-        usuario.setClave(registro.getClave());
-        usuario.setRol("ROLE_CANDIDATO");
+        RegistroUsuarioDTO dto = RegistroUsuarioDTO.builder()
+            .email(registro.getEmail())
+            .clave(registro.getClave())
+            .rol("ROLE_CANDIDATO")
+            .username(registro.getUsername())
+            .apellido(registro.getApellido())
+            .build();
 
-        String respuesta = usuarioService.registrarUsuario(usuario, registro.getUsername(), registro.getApellido(), null);
+        String respuesta = usuarioService.registrarUsuario(dto);
 
         if ("DUPLICADO".equals(respuesta)) {
             return ResponseEntity.status(409).body("El usuario ya existe");

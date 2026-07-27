@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import com.back.admin.dto.ActividadRecienteDTO;
 import com.back.admin.dto.UsuarioResumenDTO;
+import com.back.shared.dto.RegistroUsuarioDTO;
 import com.back.auth.Usuario;
 import com.back.auth.UsuarioRepository;
 import com.back.auth.UsuarioService;
@@ -271,7 +272,16 @@ public class AdminController {
                             @RequestParam(required = false) String telefono) {
         nuevoRRHH.setRol("ROLE_RRHH");
 
-        String respuesta = usuarioService.registrarUsuario(nuevoRRHH, username, apellido, telefono);
+        RegistroUsuarioDTO dto = RegistroUsuarioDTO.builder()
+            .email(nuevoRRHH.getEmail())
+            .clave(nuevoRRHH.getClave())
+            .rol("ROLE_RRHH")
+            .username(username)
+            .apellido(apellido)
+            .telefono(telefono)
+            .build();
+
+        String respuesta = usuarioService.registrarUsuario(dto);
 
         if ("DUPLICADO".equals(respuesta)) {
             return "redirect:/admin?error=duplicado";

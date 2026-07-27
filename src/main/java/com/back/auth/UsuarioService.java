@@ -9,27 +9,38 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.back.admin.ConfiguracionService;
+import com.back.auth.event.PasswordResetSolicitadoEvent;
 import com.back.auth.event.UsuarioRegistradoEvent;
-import com.back.notificaciones.EmailService;
+import com.back.shared.api.AuthApi;
+import com.back.shared.api.ConfiguracionApi;
+import com.back.shared.dto.RegistroUsuarioDTO;
 import org.springframework.context.ApplicationEventPublisher;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UsuarioService {
+public class UsuarioService implements AuthApi {
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
     private final UsuarioRepository usuarioRepository;
-    private final EmailService emailService;
-    private final ConfiguracionService configuracionService;
+
+    private final ConfiguracionApi configuracionService;
     private final ApplicationEventPublisher eventPublisher;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public String registrarUsuario(Usuario usuario, String username, String apellido, String telefono) {
+    @Override
+    public String registrarUsuario(RegistroUsuarioDTO dto) {
+        Usuario usuario = new Usuario();
+        usuario.setEmail(dto.getEmail());
+        usuario.setClave(dto.getClave());
+        usuario.setRol(dto.getRol());
+        
+        String username = dto.getUsername();
+        String apellido = dto.getApellido();
+        String telefono = dto.getTelefono();
 
         logger.info("Iniciando registro de usuario: {}", usuario.getEmail());
 
@@ -57,20 +68,7 @@ public class UsuarioService {
         usuario = usuarioRepository.save(usuario);
 
         eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
-            usuario.getEmail(), usuario.getRol(), username, apellido, telefono));
-
-        logger.info("Intentando enviar email de verificaci\u00f3n a: {}", usuario.getEmail());
-
-        boolean emailSent = emailService.enviarEmailVerificacion(
-                usuario.getEmail(),
-                username,
-                token);
-
-        if (emailSent) {
-            logger.info("Email enviado correctamente");
-        } else {
-            logger.warn("Email no pudo ser enviado, pero el usuario se registr\u00f3");
-        }
+            usuario.getEmail(), usuario.getRol(), username, apellido, telefono, token));
 
         return "EXITOSO";
     }
@@ -93,7 +91,8 @@ public class UsuarioService {
             usuarioRepository.save(usuario);
 
             String nombre = obtenerNombreOApellido(usuario);
-            emailService.enviarEmailVerificacion(usuario.getEmail(), nombre, nuevoToken);
+            eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
+                usuario.getEmail(), usuario.getRol(), nombre, null, null, nuevoToken));
         }
     }
 
@@ -132,7 +131,7 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
 
         String nombre = obtenerNombreOApellido(usuario);
-        emailService.enviarEmailRecuperacion(email, nombre, token);
+        eventPublisher.publishEvent(new PasswordResetSolicitadoEvent(this, email, nombre, token));
     }
 
     public String validarTokenReset(String token) {

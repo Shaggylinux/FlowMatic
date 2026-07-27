@@ -38,6 +38,13 @@ class ArchitectureTest {
                     .should().dependOnClassesThat()
                     .resideInAnyPackage("com.back.calendario..");
 
+    @ArchTest
+    static final ArchRule auth_should_not_depend_on_admin_or_notificaciones =
+            noClasses()
+                    .that().resideInAnyPackage("com.back.auth..")
+                    .should().dependOnClassesThat()
+                    .resideInAnyPackage("com.back.admin..", "com.back.notificaciones..");
+
     // ── Module isolation: services/repositories in calendario ────
     // EventoService no debe depender del modelo candidatos (Mejora 3)
     // Controllers pueden usar servicios de otros modulos
