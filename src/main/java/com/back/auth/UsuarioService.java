@@ -10,12 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.back.admin.ConfiguracionService;
-import com.back.admin.RRHH;
-import com.back.admin.RRHHRepository;
-import com.back.candidatos.Candidato;
-import com.back.candidatos.CandidatoRepository;
 import com.back.auth.event.UsuarioRegistradoEvent;
-import com.back.drive.FilesServices;
 import com.back.notificaciones.EmailService;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -28,11 +23,8 @@ public class UsuarioService {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
     private final UsuarioRepository usuarioRepository;
-    private final CandidatoRepository candidatoRepository;
-    private final RRHHRepository rrhhRepository;
     private final EmailService emailService;
     private final ConfiguracionService configuracionService;
-    private final FilesServices filesServices;
     private final ApplicationEventPublisher eventPublisher;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -65,18 +57,7 @@ public class UsuarioService {
         usuario = usuarioRepository.save(usuario);
 
         eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
-            usuario.getEmail(), usuario.getRol(), username, apellido));
-
-        if ("ROLE_RRHH".equals(usuario.getRol())) {
-            RRHH rrhh = new RRHH();
-            rrhh.setId(usuario.getId());
-            rrhh.setUsername(username);
-            rrhh.setApellido(apellido);
-            if (telefono != null && !telefono.trim().isEmpty()) {
-                rrhh.setTelefono(telefono);
-            }
-            rrhhRepository.save(rrhh);
-        }
+            usuario.getEmail(), usuario.getRol(), username, apellido, telefono));
 
         logger.info("Intentando enviar email de verificaci\u00f3n a: {}", usuario.getEmail());
 
@@ -190,16 +171,10 @@ public class UsuarioService {
     }
 
     private String obtenerNombreOApellido(Usuario usuario) {
-        if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
-            return candidatoRepository.findById(usuario.getId())
-                    .map(c -> c.getUsername() + " " + c.getApellido())
-                    .orElse("Usuario");
+        String email = usuario.getEmail();
+        if (email != null && email.contains("@")) {
+            return email.substring(0, email.indexOf("@"));
         }
-        if ("ROLE_RRHH".equals(usuario.getRol())) {
-            return rrhhRepository.findById(usuario.getId())
-                    .map(r -> r.getUsername() + " " + r.getApellido())
-                    .orElse("RRHH");
-        }
-        return "Administrador";
+        return "Usuario";
     }
 }

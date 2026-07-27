@@ -10,13 +10,15 @@ public class UsuarioRegistradoEvent extends ApplicationEvent {
     private final String rol;
     private final String username;
     private final String apellido;
+    private final String telefono;
 
-    public UsuarioRegistradoEvent(Object source, Long usuarioId, String email, String rol, String username, String apellido) {
+    public UsuarioRegistradoEvent(Object source, Long usuarioId, String email, String rol, String username, String apellido, String telefono) {
         super(source);
         this.usuarioId = usuarioId;
         this.email = email;
         this.rol = rol;
         this.username = username;
         this.apellido = apellido;
+        this.telefono = telefono;
     }
 }
