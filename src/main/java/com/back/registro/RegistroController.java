@@ -81,14 +81,6 @@ public class RegistroController {
         Usuario usuario = usuarioService.buscarPorToken(token);
 
         if (usuario == null) {
-            model.addAttribute("tokenInvalido", true);
-            return "activacion";
-        }
-
-        long minutos = java.time.Duration.between(usuario.getFechaCreacionToken(), LocalDateTime.now()).toMinutes();
-        long expiry = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
-
-        if (minutos > expiry) {
             model.addAttribute("enlaceExpirado", true);
             model.addAttribute("token", token);
             return "caduco";

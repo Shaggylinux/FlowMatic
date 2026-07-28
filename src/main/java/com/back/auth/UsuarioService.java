@@ -27,6 +27,7 @@ public class UsuarioService implements AuthApi {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
     private final UsuarioRepository usuarioRepository;
+    private final TokenRepository tokenRepository;
 
     private final ConfiguracionApi configuracionService;
     private final ApplicationEventPublisher eventPublisher;
@@ -63,57 +64,69 @@ public class UsuarioService implements AuthApi {
             usuario.setRol("ROLE_CANDIDATO");
         }
 
-        String token = UUID.randomUUID().toString();
-        usuario.setTokenActivacion(token);
         usuario.setActivo(false);
-        usuario.setFechaCreacionToken(LocalDateTime.now());
         usuario = usuarioRepository.save(usuario);
 
+        String tokenUuid = UUID.randomUUID().toString();
+        Token tokenObj = new Token(tokenUuid, usuario.getId(), "ACTIVACION", 86400L); // 24 horas
+        tokenRepository.save(tokenObj);
+
         eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
-            usuario.getEmail(), usuario.getRol(), username, apellido, telefono, token));
+            usuario.getEmail(), usuario.getRol(), username, apellido, telefono, tokenUuid));
     }
 
     public Usuario buscarPorToken(String token) {
-        return usuarioRepository.findByTokenActivacion(token).orElse(null);
+        Token t = tokenRepository.findById(token).orElse(null);
+        if (t != null && "ACTIVACION".equals(t.getTipo())) {
+            return usuarioRepository.findById(t.getUsuarioId()).orElse(null);
+        }
+        return null;
     }
 
     public Usuario buscarPorTokenReset(String token) {
-        return usuarioRepository.findByTokenResetPassword(token).orElse(null);
+        Token t = tokenRepository.findById(token).orElse(null);
+        if (t != null && "RESET_PASSWORD".equals(t.getTipo())) {
+            return usuarioRepository.findById(t.getUsuarioId()).orElse(null);
+        }
+        return null;
     }
 
     public void regenerarYReenviarToken(String tokenViejo) {
-        Usuario usuario = usuarioRepository.findByTokenActivacion(tokenViejo).orElse(null);
+        Token t = tokenRepository.findById(tokenViejo).orElse(null);
+        if (t != null && "ACTIVACION".equals(t.getTipo())) {
+            Usuario usuario = usuarioRepository.findById(t.getUsuarioId()).orElse(null);
+            if (usuario != null) {
+                tokenRepository.delete(t);
+                
+                String nuevoToken = UUID.randomUUID().toString();
+                Token newTokenObj = new Token(nuevoToken, usuario.getId(), "ACTIVACION", 86400L);
+                tokenRepository.save(newTokenObj);
 
-        if (usuario != null) {
-            String nuevoToken = UUID.randomUUID().toString();
-            usuario.setTokenActivacion(nuevoToken);
-            usuario.setFechaCreacionToken(LocalDateTime.now());
-            usuarioRepository.save(usuario);
-
-            String nombre = obtenerNombreOApellido(usuario);
-            eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
-                usuario.getEmail(), usuario.getRol(), nombre, null, null, nuevoToken));
+                String nombre = obtenerNombreOApellido(usuario);
+                eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
+                    usuario.getEmail(), usuario.getRol(), nombre, null, null, nuevoToken));
+            }
         }
     }
 
     public boolean activarCuenta(String token) {
         logger.info("Buscando token de activaci\u00f3n: {}", token);
 
-        var optional = usuarioRepository.findByTokenActivacion(token);
-
-        if (optional.isEmpty()) {
+        Token t = tokenRepository.findById(token).orElse(null);
+        if (t == null || !"ACTIVACION".equals(t.getTipo())) {
             logger.warn("Token no encontrado o inv\u00e1lido");
             return false;
         }
 
-        Usuario usuario = optional.get();
-        usuario.setActivo(true);
-        usuario.setTokenActivacion(null);
-        usuarioRepository.save(usuario);
-
-        logger.info("Cuenta activada para: {}", usuario.getEmail());
-
-        return true;
+        Usuario usuario = usuarioRepository.findById(t.getUsuarioId()).orElse(null);
+        if (usuario != null) {
+            usuario.setActivo(true);
+            usuarioRepository.save(usuario);
+            tokenRepository.delete(t);
+            logger.info("Cuenta activada para: {}", usuario.getEmail());
+            return true;
+        }
+        return false;
     }
 
     public void generarTokenRecuperacion(String email) {
@@ -125,52 +138,39 @@ public class UsuarioService implements AuthApi {
 
         Usuario usuario = optional.get();
 
-        String token = UUID.randomUUID().toString();
-        usuario.setTokenResetPassword(token);
-        usuario.setFechaCreacionTokenReset(LocalDateTime.now());
-        usuarioRepository.save(usuario);
+        String tokenUuid = UUID.randomUUID().toString();
+        long expiryMinutes = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
+        Token tokenObj = new Token(tokenUuid, usuario.getId(), "RESET_PASSWORD", expiryMinutes * 60);
+        tokenRepository.save(tokenObj);
 
         String nombre = obtenerNombreOApellido(usuario);
-        eventPublisher.publishEvent(new PasswordResetSolicitadoEvent(this, email, nombre, token));
+        eventPublisher.publishEvent(new PasswordResetSolicitadoEvent(this, email, nombre, tokenUuid));
     }
 
     public String validarTokenReset(String token) {
-        var optional = usuarioRepository.findByTokenResetPassword(token);
-        if (optional.isEmpty()) return "INVALIDO";
-        Usuario usuario = optional.get();
-        if (usuario.getFechaCreacionTokenReset() != null) {
-            long minutos = java.time.Duration.between(usuario.getFechaCreacionTokenReset(), LocalDateTime.now()).toMinutes();
-            long expiry = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
-            if (minutos > expiry) return "EXPIRADO";
+        Token t = tokenRepository.findById(token).orElse(null);
+        if (t == null || !"RESET_PASSWORD".equals(t.getTipo())) {
+            return "INVALIDO";
         }
+        // Si el token existe en Redis, es v\u00e1lido (expira autom\u00e1ticamente por TTL)
         return "VALIDA";
     }
 
-public boolean cambiarPassword(String token, String nuevaPassword) {
-        var optional = usuarioRepository.findByTokenResetPassword(token);
-
-        if (optional.isEmpty()) {
+    public boolean cambiarPassword(String token, String nuevaPassword) {
+        Token t = tokenRepository.findById(token).orElse(null);
+        if (t == null || !"RESET_PASSWORD".equals(t.getTipo())) {
             return false;
         }
 
-        Usuario usuario = optional.get();
-
-        if (usuario.getFechaCreacionTokenReset() != null) {
-            long minutos = java.time.Duration.between(usuario.getFechaCreacionTokenReset(), LocalDateTime.now()).toMinutes();
-            long expiry = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
-            if (minutos > expiry) {
-                usuario.setTokenResetPassword(null);
-                usuarioRepository.save(usuario);
-                return false;
-            }
+        Usuario usuario = usuarioRepository.findById(t.getUsuarioId()).orElse(null);
+        if (usuario != null) {
+            usuario.setClave(encoder.encode(nuevaPassword));
+            usuarioRepository.save(usuario);
+            tokenRepository.delete(t);
+            return true;
         }
-
-        usuario.setClave(encoder.encode(nuevaPassword));
-        usuario.setTokenResetPassword(null);
-
-        usuarioRepository.save(usuario);
-
-        return true;
+        
+        return false;
     }
 
     private String obtenerNombreOApellido(Usuario usuario) {

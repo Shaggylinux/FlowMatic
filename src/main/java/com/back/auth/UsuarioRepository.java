@@ -10,8 +10,7 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByEmail(String email);
-    Optional<Usuario> findByTokenActivacion(String token);
-    Optional<Usuario> findByTokenResetPassword(String token);
+
     List<Usuario> findByRol(String rol);
     List<Usuario> findTop10ByOrderByIdDesc();
     long countByRol(String rol);

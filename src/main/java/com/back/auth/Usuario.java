@@ -30,15 +30,4 @@ public class Usuario {
     @Column(nullable = false)
     private boolean activo = false;
 
-    @Column(unique = true, name = "token_activacion")
-    private String tokenActivacion;
-
-    @Column(name = "fecha_creacion_token")
-    private LocalDateTime fechaCreacionToken;
-
-    @Column(unique = true, name = "token_reset_password")
-    private String tokenResetPassword;
-
-    @Column(name = "fecha_creacion_token_reset")
-    private LocalDateTime fechaCreacionTokenReset;
 }
