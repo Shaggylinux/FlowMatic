@@ -22,19 +22,19 @@ public class RRHHRegistrationListener {
     @Async
     @EventListener
     public void onUsuarioRegistrado(UsuarioRegistradoEvent event) {
-        if ("ROLE_RRHH".equals(event.getRol())) {
-            logger.info("Procesando post-registro para RRHH: {}", event.getEmail());
+        if ("ROLE_RRHH".equals(event.rol())) {
+            logger.info("Procesando post-registro para RRHH: {}", event.email());
 
             RRHH rrhh = new RRHH();
-            rrhh.setId(event.getUsuarioId());
-            rrhh.setUsername(event.getUsername());
-            rrhh.setApellido(event.getApellido());
-            if (event.getTelefono() != null && !event.getTelefono().trim().isEmpty()) {
-                rrhh.setTelefono(event.getTelefono());
+            rrhh.setId(event.usuarioId());
+            rrhh.setUsername(event.username());
+            rrhh.setApellido(event.apellido());
+            if (event.telefono() != null && !event.telefono().trim().isEmpty()) {
+                rrhh.setTelefono(event.telefono());
             }
             rrhhRepository.save(rrhh);
 
-            logger.info("Perfil RRHH creado para: {}", event.getEmail());
+            logger.info("Perfil RRHH creado para: {}", event.email());
         }
     }
 }

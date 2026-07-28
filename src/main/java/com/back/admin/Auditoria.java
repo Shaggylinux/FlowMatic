@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "actividades")
+@Table(name = "actividades", schema = "admin")
 public class Auditoria {
 
     @Id

@@ -15,17 +15,17 @@ public class EmailEventListener {
 
     @ApplicationModuleListener
     public void handleUsuarioRegistrado(UsuarioRegistradoEvent event) {
-        if (event.getTokenActivacion() != null) {
-            String nombre = event.getUsername();
+        if (event.tokenActivacion() != null) {
+            String nombre = event.username();
             if (nombre == null || nombre.isEmpty()) {
-                nombre = event.getEmail().substring(0, event.getEmail().indexOf("@"));
+                nombre = event.email().substring(0, event.email().indexOf("@"));
             }
-            emailService.enviarEmailVerificacion(event.getEmail(), nombre, event.getTokenActivacion());
+            emailService.enviarEmailVerificacion(event.email(), nombre, event.tokenActivacion());
         }
     }
 
     @ApplicationModuleListener
     public void handlePasswordResetSolicitado(PasswordResetSolicitadoEvent event) {
-        emailService.enviarEmailRecuperacion(event.getEmail(), event.getNombre(), event.getTokenReset());
+        emailService.enviarEmailRecuperacion(event.email(), event.nombre(), event.tokenReset());
     }
 }

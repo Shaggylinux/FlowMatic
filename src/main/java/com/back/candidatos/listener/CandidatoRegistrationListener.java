@@ -25,17 +25,17 @@ public class CandidatoRegistrationListener {
     @Async
     @EventListener
     public void onUsuarioRegistrado(UsuarioRegistradoEvent event) {
-        if ("ROLE_CANDIDATO".equals(event.getRol())) {
-            logger.info("Procesando post-registro para candidato: {}", event.getEmail());
+        if ("ROLE_CANDIDATO".equals(event.rol())) {
+            logger.info("Procesando post-registro para candidato: {}", event.email());
 
             Candidato candidato = new Candidato();
-            candidato.setId(event.getUsuarioId());
-            candidato.setUsername(event.getUsername());
-            candidato.setApellido(event.getApellido());
+            candidato.setId(event.usuarioId());
+            candidato.setUsername(event.username());
+            candidato.setApellido(event.apellido());
             candidatoRepository.save(candidato);
 
-            filesServices.crearCarpetaCandidato(event.getEmail());
-            logger.info("Perfil y carpeta creados para: {}", event.getEmail());
+            filesServices.crearCarpetaCandidato(event.email());
+            logger.info("Perfil y carpeta creados para: {}", event.email());
         }
     }
 }

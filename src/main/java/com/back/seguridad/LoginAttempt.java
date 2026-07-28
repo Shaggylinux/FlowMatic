@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "login_attempts")
+@Table(name = "login_attempts", schema = "seguridad")
 @NoArgsConstructor
 public class LoginAttempt {
 

@@ -1,5 +1,7 @@
 package com.back.shared.event;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.context.ApplicationEvent;
 
 public class AuditoriaEvent extends ApplicationEvent {
@@ -8,7 +10,13 @@ public class AuditoriaEvent extends ApplicationEvent {
     private final String usuarioEmail;
     private final String ip;
 
-    public AuditoriaEvent(Object source, String modulo, String accion, String usuarioEmail, String ip) {
+    @JsonCreator
+    public AuditoriaEvent(
+            @JsonProperty("source") Object source,
+            @JsonProperty("modulo") String modulo,
+            @JsonProperty("accion") String accion,
+            @JsonProperty("usuarioEmail") String usuarioEmail,
+            @JsonProperty("ip") String ip) {
         super(source);
         this.modulo = modulo;
         this.accion = accion;

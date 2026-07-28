@@ -35,6 +35,7 @@ public class UsuarioService implements AuthApi {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public void registrarUsuario(RegistroUsuarioDTO dto) {
         Usuario usuario = new Usuario();
         usuario.setEmail(dto.getEmail());
@@ -71,7 +72,7 @@ public class UsuarioService implements AuthApi {
         Token tokenObj = new Token(tokenUuid, usuario.getId(), "ACTIVACION", 86400L); // 24 horas
         tokenRepository.save(tokenObj);
 
-        eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
+        eventPublisher.publishEvent(new UsuarioRegistradoEvent(usuario.getId(),
             usuario.getEmail(), usuario.getRol(), username, apellido, telefono, tokenUuid));
     }
 
@@ -91,6 +92,7 @@ public class UsuarioService implements AuthApi {
         return null;
     }
 
+    @org.springframework.transaction.annotation.Transactional
     public void regenerarYReenviarToken(String tokenViejo) {
         Token t = tokenRepository.findById(tokenViejo).orElse(null);
         if (t != null && "ACTIVACION".equals(t.getTipo())) {
@@ -103,7 +105,7 @@ public class UsuarioService implements AuthApi {
                 tokenRepository.save(newTokenObj);
 
                 String nombre = obtenerNombreOApellido(usuario);
-                eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
+                eventPublisher.publishEvent(new UsuarioRegistradoEvent(usuario.getId(),
                     usuario.getEmail(), usuario.getRol(), nombre, null, null, nuevoToken));
             }
         }
@@ -129,6 +131,7 @@ public class UsuarioService implements AuthApi {
         return false;
     }
 
+    @org.springframework.transaction.annotation.Transactional
     public void generarTokenRecuperacion(String email) {
         var optional = usuarioRepository.findByEmail(email);
 
@@ -144,7 +147,7 @@ public class UsuarioService implements AuthApi {
         tokenRepository.save(tokenObj);
 
         String nombre = obtenerNombreOApellido(usuario);
-        eventPublisher.publishEvent(new PasswordResetSolicitadoEvent(this, email, nombre, tokenUuid));
+        eventPublisher.publishEvent(new PasswordResetSolicitadoEvent(email, nombre, tokenUuid));
     }
 
     public String validarTokenReset(String token) {

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "historial")
+@Table(name = "historial", schema = "shared")
 public class HistorialEstado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
