@@ -2,16 +2,14 @@ package com.back.candidatos;
 
 import com.back.auth.Usuario;
 import com.back.drive.Archivos;
-import com.back.calendario.Evento;
 import com.back.auth.UsuarioRepository;
 import com.back.drive.ArchivosRepository;
-import com.back.calendario.EventoCandidatoDTO;
-import com.back.calendario.EventoRepository;
 import com.back.exportacion.CvService;
 import com.back.shared.dto.CvDataDTO;
-import com.back.calendario.EventoService;
+import com.back.shared.event.CandidatoEliminadoEvent;
 import com.back.exportacion.ExcelService;
 import com.back.drive.FilesServices;
+import org.springframework.context.ApplicationEventPublisher;
 import com.back.notificaciones.NotificacionService;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -39,10 +37,9 @@ public class CandidatoController {
     private final CandidatoService candidatoService;
     private final UsuarioRepository usuarioRepository;
     private final CandidatoRepository candidatoRepository;
-    private final EventoService eventoService;
     private final ArchivosRepository archivosRepository;
-    private final EventoRepository eventoRepository;
     private final FilesServices filesServices;
+    private final ApplicationEventPublisher eventPublisher;
     private final ExcelService excelService;
     private final CvService cvService;
     private final NotificacionService notificacionService;
@@ -279,7 +276,7 @@ public class CandidatoController {
                 archivosRepository.delete(doc);
             }
         }
-        eventoRepository.deleteByCandidatoId(id);
+        eventPublisher.publishEvent(new CandidatoEliminadoEvent(id));
         candidatoRepository.delete(candidato);
         if (usuario != null) {
             usuarioRepository.delete(usuario);
@@ -333,39 +330,6 @@ public class CandidatoController {
         }
     }
 
-    @GetMapping("/{id}/eventos")
-    @ResponseBody
-    public ResponseEntity<?> eventosCandidato(@PathVariable Long id) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        if (usuario == null)
-            return ResponseEntity.notFound().build();
-        List<Evento> eventos = eventoRepository.findByCandidatoIdOrderByFechaDescHoraDesc(id);
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
-        List<EventoCandidatoDTO> list = eventos.stream().map(e -> {
-            String tipo = e.getTipo();
-            String color;
-            if (tipo == null)
-                color = "#6366F1";
-            else
-                switch (tipo) {
-                    case "Entrevista RRHH" -> color = "#0EA5E9";
-                    case "Entrevista Técnica" -> color = "#8B5CF6";
-                    case "Reunión" -> color = "#F59E0B";
-                    default -> color = "#6366F1";
-                }
-            return new EventoCandidatoDTO(
-                    e.getId(),
-                    tipo != null ? tipo : "Entrevista",
-                    e.getFecha() != null ? e.getFecha().format(fmt) : "",
-                    e.getHora() != null ? e.getHora().toString() : "",
-                    e.getEstado() != null ? e.getEstado() : "",
-                    tipo != null ? tipo : "",
-                    e.getLugar() != null ? e.getLugar() : "",
-                    e.getObservaciones() != null ? e.getObservaciones() : "",
-                    color);
-        }).collect(Collectors.toList());
-        return ResponseEntity.ok(list);
-    }
 
     @GetMapping("/{id}/cv")
     public void descargarCV(@PathVariable Long id, HttpServletResponse response) throws IOException {

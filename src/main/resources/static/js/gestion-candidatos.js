@@ -572,7 +572,7 @@ function subirDocumento(id, file) {
 
 function cargarEventos(id) {
   const list = $('#gc-timeline');
-  fetch(`/gestion-candidatos/${id}/eventos`, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+  fetch(`/calendario/candidato/${id}/eventos`, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
     .then(r => r.json())
     .then(eventos => {
       if (!eventos || eventos.length === 0) {

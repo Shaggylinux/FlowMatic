@@ -1,16 +1,19 @@
 package com.back.calendario;
 
 import com.back.auth.Usuario;
-import com.back.admin.RRHH;
 import com.back.auth.UsuarioRepository;
 import com.back.candidatos.CandidatoService;
-import com.back.admin.RRHHRepository;
-import com.back.notificaciones.EmailService;
 import com.back.exportacion.ExcelService;
-import com.back.notificaciones.NotificacionService;
 import com.back.shared.dto.EntrevistaEmailDTO;
+import com.back.shared.event.EntrevistaAgendadaEvent;
+import com.back.shared.event.EntrevistaNotificacionEvent;
+import org.springframework.http.ResponseEntity;
+import java.util.stream.Collectors;
+import org.springframework.context.ApplicationEventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -35,11 +38,10 @@ public class CalendarioController {
     private static final Logger logger = LoggerFactory.getLogger(CalendarioController.class);
 
     private final EventoService eventoService;
+    private final EventoRepository eventoRepository;
     private final UsuarioRepository usuarioRepository;
     private final CandidatoService candidatoService;
-    private final RRHHRepository rrhhRepository;
-    private final NotificacionService notificacionService;
-    private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
     private final ExcelService excelService;
 
     @GetMapping
@@ -185,20 +187,12 @@ public class CalendarioController {
             response.put("eventoId", evento.getId());
 
             try {
-                String rrhhNombre = rrhh.getEmail();
-                RRHH rrhhProfile = rrhhRepository.findById(rrhh.getId()).orElse(null);
-                if (rrhhProfile != null) {
-                    rrhhNombre = rrhhProfile.getUsername() + " " + rrhhProfile.getApellido();
-                }
                 EntrevistaEmailDTO eventoDto = new EntrevistaEmailDTO(evento.getFecha(), evento.getHora(), evento.getTipo(), evento.getLugar(), evento.getObservaciones());
-                emailService.enviarEmailEntrevista(rrhh.getEmail(), rrhhNombre, eventoDto, candidatoNombre);
-
-                notificacionService.crear("ENTREVISTA",
-                        "Entrevista agendada: " + candidatoNombre + " — " + (tipo != null ? tipo : "Entrevista")
-                                + " el " + fecha.toString(),
-                        candidatoId, candidatoNombre, "/calendario");
+                eventPublisher.publishEvent(new EntrevistaAgendadaEvent(
+                        evento.getId(), candidatoId, candidatoNombre, rrhh.getId(), rrhh.getEmail(), eventoDto,
+                        tipo != null ? tipo : "Entrevista", fecha.toString()));
             } catch (Exception emailEx) {
-                logger.warn("No se pudo enviar el email de confirmaci\u00f3n: {}", emailEx.getMessage());
+                logger.warn("No se pudo publicar el evento de entrevista agendada: {}", emailEx.getMessage());
             }
         } catch (Exception e) {
             response.put("success", false);
@@ -239,13 +233,14 @@ public class CalendarioController {
             try {
                 Evento evento = eventoService.buscarPorId(id);
                 if (evento != null) {
-                    notificacionService.crear("ENTREVISTA",
+                    eventPublisher.publishEvent(new EntrevistaNotificacionEvent(
+                            evento.getCandidatoId(), evento.getCandidatoNombre(), "REPROGRAMACION",
                             "Entrevista reprogramada: " + evento.getCandidatoNombre() + " \u2014 "
-                                    + (tipo != null ? tipo : "Entrevista") + " el " + fecha.toString(),
-                            evento.getCandidatoId(), evento.getCandidatoNombre(), "/calendario");
+                                    + (tipo != null ? tipo : "Entrevista") + " el " + fecha.toString()
+                    ));
                 }
             } catch (Exception notifEx) {
-                logger.warn("No se pudo enviar notificaci\u00f3n de reprogramaci\u00f3n: {}", notifEx.getMessage());
+                logger.warn("No se pudo publicar notificaci\u00f3n de reprogramaci\u00f3n: {}", notifEx.getMessage());
             }
         } catch (Exception e) {
             response.put("success", false);
@@ -311,10 +306,9 @@ public class CalendarioController {
                             " a las " + ev.getHora() + " a \"" + estado + "\".";
 
                     if (ev.getRrhhId() != null) {
-                        usuarioRepository.findById(ev.getRrhhId()).ifPresent(rrhh -> {
-                            notificacionService.crear("ENTREVISTA", mensaje,
-                                    ev.getCandidatoId(), candidatoNombre, "/calendario");
-                        });
+                        eventPublisher.publishEvent(new EntrevistaNotificacionEvent(
+                            ev.getCandidatoId(), candidatoNombre, "ESTADO_CAMBIADO", mensaje
+                        ));
                     }
                 } catch (Exception notifEx) {
                     logger.warn("No se pudo notificar a RRHH: {}", notifEx.getMessage());
@@ -433,5 +427,39 @@ public class CalendarioController {
                 e.getEstado() != null ? e.getEstado() : ""
             }).toList();
         excelService.exportarDatos("Entrevistas", cabeceras, datos, response);
+    }
+
+    @GetMapping("/candidato/{id}/eventos")
+    @ResponseBody
+    public ResponseEntity<?> eventosCandidato(@PathVariable Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null)
+            return ResponseEntity.notFound().build();
+        List<Evento> eventos = eventoRepository.findByCandidatoIdOrderByFechaDescHoraDesc(id);
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
+        List<EventoCandidatoDTO> list = eventos.stream().map(e -> {
+            String tipo = e.getTipo();
+            String color;
+            if (tipo == null)
+                color = "#6366F1";
+            else
+                switch (tipo) {
+                    case "Entrevista RRHH" -> color = "#0EA5E9";
+                    case "Entrevista Técnica" -> color = "#8B5CF6";
+                    case "Reunión" -> color = "#F59E0B";
+                    default -> color = "#6366F1";
+                }
+            return new EventoCandidatoDTO(
+                    e.getId(),
+                    tipo != null ? tipo : "Entrevista",
+                    e.getFecha() != null ? e.getFecha().format(fmt) : "",
+                    e.getHora() != null ? e.getHora().toString() : "",
+                    e.getEstado() != null ? e.getEstado() : "",
+                    tipo != null ? tipo : "",
+                    e.getLugar() != null ? e.getLugar() : "",
+                    e.getObservaciones() != null ? e.getObservaciones() : "",
+                    color);
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(list);
     }
 }

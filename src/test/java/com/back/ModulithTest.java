@@ -11,12 +11,7 @@ class ModulithTest {
     @Test
     void verifyArchitecture() {
         // Verifica que la arquitectura modular esté limpia y no tenga dependencias cíclicas
-        // NOTA: Se comenta temporalmente.
-        // Ciclos resueltos: 'exportacion', 'drive', 'notificaciones'.
-        // Nuevos ciclos de negocio detectados por resolver:
-        // 1. admin <-> calendario
-        // 2. candidatos <-> calendario
-        // modules.verify();
+        modules.verify();
     }
 
     @Test

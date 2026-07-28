@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.context.event.EventListener;
+import com.back.shared.event.CandidatoEliminadoEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -150,5 +152,10 @@ public class EventoService {
 
     public void eliminarEvento(Long id) {
         eventoRepository.deleteById(id);
+    }
+
+    @EventListener
+    public void onCandidatoEliminado(CandidatoEliminadoEvent event) {
+        eventoRepository.deleteByCandidatoId(event.candidatoId());
     }
 }
