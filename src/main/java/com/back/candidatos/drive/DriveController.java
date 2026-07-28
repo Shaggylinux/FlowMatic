@@ -1,4 +1,4 @@
-package com.back.drive;
+package com.back.candidatos.drive;
 
 
 import org.springframework.core.io.UrlResource;
@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.back.auth.Usuario;
 import com.back.candidatos.Candidato;
+import com.back.drive.Archivos;
+import com.back.drive.ArchivosRepository;
+import com.back.drive.FilesServices;
 import org.springframework.http.HttpHeaders;
 import org.springframework.core.io.Resource;
 import com.back.auth.UsuarioRepository;
