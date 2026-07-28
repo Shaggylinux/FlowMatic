@@ -1,6 +1,6 @@
 package com.back.seguridad;
 
-import com.back.admin.ConfiguracionService;
+import com.back.shared.api.ConfiguracionApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,12 +9,11 @@ import java.time.LocalDateTime;
 @Service
 public class LoginAttemptService {
 
-    @Autowired
-    private ConfiguracionService configuracionService;
+    private final ConfiguracionApi configuracionService;
 
     private final LoginAttemptRepository loginAttemptRepository;
 
-    public LoginAttemptService(ConfiguracionService configuracionService, LoginAttemptRepository loginAttemptRepository) {
+    public LoginAttemptService(ConfiguracionApi configuracionService, LoginAttemptRepository loginAttemptRepository) {
         this.configuracionService = configuracionService;
         this.loginAttemptRepository = loginAttemptRepository;
     }

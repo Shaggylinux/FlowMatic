@@ -1,6 +1,7 @@
 package com.back.seguridad;
 
-import com.back.admin.AuditoriaService;
+import org.springframework.context.ApplicationEventPublisher;
+import com.back.shared.event.AuditoriaEvent;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -15,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     private final LoginAttemptService loginAttemptService;
-    private final AuditoriaService auditoriaService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -27,9 +28,9 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                 return;
             }
             loginAttemptService.recordFailed(email);
-            auditoriaService.registrar("SEGURIDAD",
+            eventPublisher.publishEvent(new AuditoriaEvent(this, "SEGURIDAD",
                 "Intento de inicio de sesi\u00f3n fallido: " + email,
-                email, "SEGURIDAD");
+                email, "SEGURIDAD"));
         }
         getRedirectStrategy().sendRedirect(request, response, "/login?error");
     }

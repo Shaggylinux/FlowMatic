@@ -4,8 +4,7 @@ import com.back.auth.event.PasswordResetSolicitadoEvent;
 import com.back.auth.event.UsuarioRegistradoEvent;
 import com.back.notificaciones.EmailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,8 +13,7 @@ public class EmailEventListener {
 
     private final EmailService emailService;
 
-    @Async
-    @EventListener
+    @ApplicationModuleListener
     public void handleUsuarioRegistrado(UsuarioRegistradoEvent event) {
         if (event.getTokenActivacion() != null) {
             String nombre = event.getUsername();
@@ -26,8 +24,7 @@ public class EmailEventListener {
         }
     }
 
-    @Async
-    @EventListener
+    @ApplicationModuleListener
     public void handlePasswordResetSolicitado(PasswordResetSolicitadoEvent event) {
         emailService.enviarEmailRecuperacion(event.getEmail(), event.getNombre(), event.getTokenReset());
     }

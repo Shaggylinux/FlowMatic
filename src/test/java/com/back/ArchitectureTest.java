@@ -69,8 +69,7 @@ class ArchitectureTest {
                             "java..",
                             "jakarta..",
                             "lombok..",
-                            "org.springframework.data..",
-                            "org.slf4j.."
+                            "org.springframework.."
                     );
 
     // ── Module isolation: seguridad ──────────────────────────────
@@ -90,7 +89,8 @@ class ArchitectureTest {
                             "org.springframework..",
                             "lombok..",
                             "org.slf4j..",
-                            "com.fasterxml.jackson.."
+                            "com.fasterxml.jackson..",
+                            "com.back.shared.."
                     );
 
     // ── Naming conventions ───────────────────────────────────────
