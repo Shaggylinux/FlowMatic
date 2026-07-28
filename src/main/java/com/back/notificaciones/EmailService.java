@@ -1,6 +1,6 @@
 package com.back.notificaciones;
 
-import com.back.calendario.Evento;
+import com.back.shared.dto.EntrevistaEmailDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,7 +95,7 @@ public class EmailService {
         }
     }
 
-    public boolean enviarEmailEntrevista(String destinatario, String nombreRRHH, Evento evento, String candidatoNombre) {
+    public boolean enviarEmailEntrevista(String destinatario, String nombreRRHH, EntrevistaEmailDTO evento, String candidatoNombre) {
         try {
             logger.info("📧 Preparando email de confirmación de entrevista para: {}", destinatario);
 
@@ -104,11 +104,11 @@ public class EmailService {
             Context context = new Context();
             context.setVariable("nombreRRHH", nombreRRHH);
             context.setVariable("candidatoNombre", candidatoNombre);
-            context.setVariable("fecha", evento.getFecha() != null ? evento.getFecha().toString() : "");
-            context.setVariable("hora", evento.getHora() != null ? evento.getHora().toString() : "");
-            context.setVariable("tipo", evento.getTipo() != null ? evento.getTipo() : "ENTREVISTA_INICIAL");
-            context.setVariable("lugar", evento.getLugar());
-            context.setVariable("observaciones", evento.getObservaciones());
+            context.setVariable("fecha", evento.fecha() != null ? evento.fecha().toString() : "");
+            context.setVariable("hora", evento.hora() != null ? evento.hora().toString() : "");
+            context.setVariable("tipo", evento.tipo() != null ? evento.tipo() : "ENTREVISTA_INICIAL");
+            context.setVariable("lugar", evento.lugar());
+            context.setVariable("observaciones", evento.observaciones());
 
             String mensaje = templateEngine.process("emails/email-entrevista", context);
 

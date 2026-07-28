@@ -8,6 +8,7 @@ import com.back.admin.RRHHRepository;
 import com.back.notificaciones.EmailService;
 import com.back.exportacion.ExcelService;
 import com.back.notificaciones.NotificacionService;
+import com.back.shared.dto.EntrevistaEmailDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -189,7 +190,8 @@ public class CalendarioController {
                 if (rrhhProfile != null) {
                     rrhhNombre = rrhhProfile.getUsername() + " " + rrhhProfile.getApellido();
                 }
-                emailService.enviarEmailEntrevista(rrhh.getEmail(), rrhhNombre, evento, candidatoNombre);
+                EntrevistaEmailDTO eventoDto = new EntrevistaEmailDTO(evento.getFecha(), evento.getHora(), evento.getTipo(), evento.getLugar(), evento.getObservaciones());
+                emailService.enviarEmailEntrevista(rrhh.getEmail(), rrhhNombre, eventoDto, candidatoNombre);
 
                 notificacionService.crear("ENTREVISTA",
                         "Entrevista agendada: " + candidatoNombre + " — " + (tipo != null ? tipo : "Entrevista")
