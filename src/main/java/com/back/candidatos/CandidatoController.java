@@ -8,6 +8,7 @@ import com.back.drive.ArchivosRepository;
 import com.back.calendario.EventoCandidatoDTO;
 import com.back.calendario.EventoRepository;
 import com.back.exportacion.CvService;
+import com.back.shared.dto.CvDataDTO;
 import com.back.calendario.EventoService;
 import com.back.exportacion.ExcelService;
 import com.back.drive.FilesServices;
@@ -375,7 +376,19 @@ public class CandidatoController {
         }
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         String email = usuario != null ? usuario.getEmail() : "";
-        cvService.generarCv(candidato, email, response);
+        CvDataDTO cvData = new CvDataDTO(
+            candidato.getUsername(),
+            candidato.getApellido(),
+            email,
+            candidato.getTelefono(),
+            candidato.getCiudad(),
+            candidato.getCargo(),
+            candidato.getExperiencia() != null ? candidato.getExperiencia() : 0,
+            candidato.getTecnologias(),
+            candidato.getIdiomas(),
+            candidato.getDisponibilidad()
+        );
+        cvService.generarCv(cvData, response);
     }
 
     @GetMapping("/export")
@@ -386,6 +399,23 @@ public class CandidatoController {
         response.setHeader("Content-Disposition", "attachment; filename=candidatos_reporte.xlsx");
 
         List<Candidato> candidatos = candidatoService.listarCandidatosSinPaginar(search, estado);
-        excelService.exportarCandidatos(candidatos, response);
+        String[] cabeceras = {"ID", "Nombre", "Apellido", "Email", "Tel\u00e9fono", "Cargo", "Ciudad", "Experiencia", "Disponibilidad", "Tecnolog\u00edas", "Idiomas", "Estado", "Proceso"};
+        List<Object[]> datos = candidatos.stream()
+            .map(c -> new Object[]{
+                c.getId(),
+                c.getUsername() != null ? c.getUsername() : "",
+                c.getApellido() != null ? c.getApellido() : "",
+                "",
+                c.getTelefono() != null ? c.getTelefono() : "",
+                c.getCargo() != null ? c.getCargo() : "",
+                c.getCiudad() != null ? c.getCiudad() : "",
+                c.getExperiencia() != null ? c.getExperiencia() : 0,
+                c.getDisponibilidad() != null ? c.getDisponibilidad() : "",
+                c.getTecnologias() != null ? c.getTecnologias() : "",
+                c.getIdiomas() != null ? c.getIdiomas() : "",
+                c.getEstado() != null ? c.getEstado() : "Registrado",
+                c.getProcesoActual() != null ? c.getProcesoActual() : ""
+            }).toList();
+        excelService.exportarDatos("Candidatos", cabeceras, datos, response);
     }
 }

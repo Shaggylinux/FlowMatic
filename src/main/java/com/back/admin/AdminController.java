@@ -363,7 +363,11 @@ public class AdminController {
         response.setHeader(headerKey, headerValue);
 
         List<Usuario> listaUsuarios = usuarioRepository.findAll();
-        excelService.exportarUsuarios(listaUsuarios, response);
+        String[] cabeceras = {"ID", "Email", "Rol", "Activo"};
+        List<Object[]> datos = listaUsuarios.stream()
+            .map(u -> new Object[]{u.getId(), u.getEmail(), u.getRol(), u.isActivo()})
+            .toList();
+        excelService.exportarDatos("Usuarios", cabeceras, datos, response);
 
         auditoriaService.registrar("EXPORTACI\u00d3N",
             "Se export\u00f3 la lista de usuarios a Excel", "Administrador", "SISTEMA");

@@ -11,8 +11,9 @@ class ModulithTest {
     @Test
     void verifyArchitecture() {
         // Verifica que la arquitectura modular esté limpia y no tenga dependencias cíclicas
-        // NOTA: Se comenta temporalmente porque Modulith ha detectado un ciclo arquitectónico real:
-        // candidatos -> exportacion -> candidatos. (Se resolverá en una refactorización posterior)
+        // NOTA: Se comenta temporalmente. El ciclo de 'exportacion' fue resuelto, pero Modulith
+        // ha detectado un SEGUNDO ciclo: candidatos -> drive -> candidatos.
+        // (Se requiere refactorizar DriveController y CandidatoController).
         // modules.verify();
     }
 

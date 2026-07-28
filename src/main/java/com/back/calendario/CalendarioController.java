@@ -417,6 +417,19 @@ public class CalendarioController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=entrevistas.xlsx");
 
-        excelService.exportarEventos(eventos, response);
+        String[] cabeceras = {"Fecha", "Hora", "Candidato", "Vacante", "Tipo", "Modalidad", "Ubicaci\u00f3n", "Entrevistador", "Estado"};
+        List<Object[]> datos = eventos.stream()
+            .map(e -> new Object[]{
+                e.getFecha() != null ? e.getFecha().toString() : "",
+                e.getHora() != null ? e.getHora().toString() : "",
+                e.getCandidatoNombre() != null ? e.getCandidatoNombre() : "",
+                e.getVacante() != null ? e.getVacante() : "",
+                e.getTipo() != null ? e.getTipo() : "",
+                e.getModalidad() != null ? e.getModalidad() : "",
+                e.getLugar() != null ? e.getLugar() : "",
+                e.getEntrevistador() != null ? e.getEntrevistador() : "",
+                e.getEstado() != null ? e.getEstado() : ""
+            }).toList();
+        excelService.exportarDatos("Entrevistas", cabeceras, datos, response);
     }
 }

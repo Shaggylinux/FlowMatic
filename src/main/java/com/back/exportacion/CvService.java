@@ -1,6 +1,6 @@
 package com.back.exportacion;
 
-import com.back.candidatos.Candidato;
+import com.back.shared.dto.CvDataDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -13,11 +13,11 @@ import java.io.IOException;
 @Service
 public class CvService {
 
-    public void generarCv(Candidato candidato, String email, HttpServletResponse response) throws IOException {
+    public void generarCv(CvDataDTO cvData, HttpServletResponse response) throws IOException {
         XWPFDocument doc = new XWPFDocument();
 
-        String nombre = candidato.getUsername() != null ? candidato.getUsername() : "";
-        String apellido = candidato.getApellido() != null ? candidato.getApellido() : "";
+        String nombre = cvData.nombre() != null ? cvData.nombre() : "";
+        String apellido = cvData.apellido() != null ? cvData.apellido() : "";
 
         XWPFParagraph title = doc.createParagraph();
         title.setAlignment(ParagraphAlignment.CENTER);
@@ -30,34 +30,33 @@ public class CvService {
         titleRun.setColor("0D9488");
 
         addSection(doc, "Contacto");
-        addLine(doc, "Email: " + (email != null ? email : "\u2014"));
-        if (candidato.getTelefono() != null && !candidato.getTelefono().isBlank())
-            addLine(doc, "Tel\u00e9fono: " + candidato.getTelefono());
-        if (candidato.getCiudad() != null && !candidato.getCiudad().isBlank())
-            addLine(doc, "Ubicaci\u00f3n: " + candidato.getCiudad());
+        addLine(doc, "Email: " + (cvData.email() != null ? cvData.email() : "\u2014"));
+        if (cvData.telefono() != null && !cvData.telefono().isBlank())
+            addLine(doc, "Tel\u00e9fono: " + cvData.telefono());
+        if (cvData.ciudad() != null && !cvData.ciudad().isBlank())
+            addLine(doc, "Ubicaci\u00f3n: " + cvData.ciudad());
 
         addSection(doc, "Perfil Profesional");
-        if (candidato.getCargo() != null && !candidato.getCargo().isBlank())
-            addLine(doc, "Cargo deseado: " + candidato.getCargo());
-        int exp = candidato.getExperiencia() != null ? candidato.getExperiencia() : 0;
-        addLine(doc, "Experiencia: " + exp + " a\u00f1os");
+        if (cvData.cargo() != null && !cvData.cargo().isBlank())
+            addLine(doc, "Cargo deseado: " + cvData.cargo());
+        addLine(doc, "Experiencia: " + cvData.experiencia() + " a\u00f1os");
 
-        if (candidato.getTecnologias() != null && !candidato.getTecnologias().isBlank()) {
+        if (cvData.tecnologias() != null && !cvData.tecnologias().isBlank()) {
             addSection(doc, "Habilidades T\u00e9cnicas");
-            for (String tech : candidato.getTecnologias().split(",")) {
+            for (String tech : cvData.tecnologias().split(",")) {
                 String t = tech.trim();
                 if (!t.isEmpty()) addBullet(doc, t);
             }
         }
 
-        if (candidato.getIdiomas() != null && !candidato.getIdiomas().isBlank()) {
+        if (cvData.idiomas() != null && !cvData.idiomas().isBlank()) {
             addSection(doc, "Idiomas");
-            addLine(doc, candidato.getIdiomas());
+            addLine(doc, cvData.idiomas());
         }
 
-        if (candidato.getDisponibilidad() != null && !candidato.getDisponibilidad().isBlank()) {
+        if (cvData.disponibilidad() != null && !cvData.disponibilidad().isBlank()) {
             addSection(doc, "Disponibilidad");
-            addLine(doc, candidato.getDisponibilidad());
+            addLine(doc, cvData.disponibilidad());
         }
 
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
