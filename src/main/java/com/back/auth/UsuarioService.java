@@ -14,6 +14,8 @@ import com.back.auth.event.UsuarioRegistradoEvent;
 import com.back.shared.api.AuthApi;
 import com.back.shared.api.ConfiguracionApi;
 import com.back.shared.dto.RegistroUsuarioDTO;
+import com.back.shared.exception.ClaveCortaException;
+import com.back.shared.exception.UsuarioDuplicadoException;
 import org.springframework.context.ApplicationEventPublisher;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +34,7 @@ public class UsuarioService implements AuthApi {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
-    public String registrarUsuario(RegistroUsuarioDTO dto) {
+    public void registrarUsuario(RegistroUsuarioDTO dto) {
         Usuario usuario = new Usuario();
         usuario.setEmail(dto.getEmail());
         usuario.setClave(dto.getClave());
@@ -46,13 +48,13 @@ public class UsuarioService implements AuthApi {
 
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             logger.warn("Correo duplicado: {}", usuario.getEmail());
-            return "DUPLICADO";
+            throw new UsuarioDuplicadoException("El email ya est\u00e1 registrado");
         }
 
         int minLength = Integer.parseInt(configuracionService.getValor("password.min.length", "8"));
         if (usuario.getClave() == null || usuario.getClave().trim().length() < minLength) {
             logger.warn("Contrase\u00f1a demasiado corta: {}", usuario.getEmail());
-            return "CLAVE_CORTA";
+            throw new ClaveCortaException("La contrase\u00f1a es muy corta");
         }
 
         usuario.setClave(encoder.encode(usuario.getClave()));
@@ -69,8 +71,6 @@ public class UsuarioService implements AuthApi {
 
         eventPublisher.publishEvent(new UsuarioRegistradoEvent(this, usuario.getId(),
             usuario.getEmail(), usuario.getRol(), username, apellido, telefono, token));
-
-        return "EXITOSO";
     }
 
     public Usuario buscarPorToken(String token) {

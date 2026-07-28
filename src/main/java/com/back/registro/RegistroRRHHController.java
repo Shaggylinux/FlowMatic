@@ -1,5 +1,7 @@
 package com.back.registro;
 
+import com.back.shared.exception.ClaveCortaException;
+import com.back.shared.exception.UsuarioDuplicadoException;
 import com.back.shared.api.AuthApi;
 import com.back.shared.dto.RegistroUsuarioDTO;
 import jakarta.validation.Valid;
@@ -42,14 +44,12 @@ public class RegistroRRHHController {
             .apellido(registro.getApellido())
             .build();
 
-        String respuesta = authApi.registrarUsuario(dto);
-
-        if ("DUPLICADO".equals(respuesta)) {
+        try {
+            authApi.registrarUsuario(dto);
+        } catch (UsuarioDuplicadoException e) {
             model.addAttribute("errorDuplicado", true);
             return "registro-rrhh";
-        }
-
-        if ("CLAVE_CORTA".equals(respuesta)) {
+        } catch (ClaveCortaException e) {
             model.addAttribute("errorClaveCorta", true);
             return "registro-rrhh";
         }

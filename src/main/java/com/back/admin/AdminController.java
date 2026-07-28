@@ -16,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import com.back.admin.dto.ActividadRecienteDTO;
 import com.back.admin.dto.UsuarioResumenDTO;
+import com.back.shared.exception.ClaveCortaException;
+import com.back.shared.exception.UsuarioDuplicadoException;
 import com.back.shared.dto.RegistroUsuarioDTO;
 import com.back.auth.Usuario;
 import com.back.auth.UsuarioRepository;
@@ -281,13 +283,11 @@ public class AdminController {
             .telefono(telefono)
             .build();
 
-        String respuesta = usuarioService.registrarUsuario(dto);
-
-        if ("DUPLICADO".equals(respuesta)) {
+        try {
+            usuarioService.registrarUsuario(dto);
+        } catch (UsuarioDuplicadoException e) {
             return "redirect:/admin?error=duplicado";
-        }
-
-        if ("CLAVE_CORTA".equals(respuesta)) {
+        } catch (ClaveCortaException e) {
             return "redirect:/admin?error=clave_corta";
         }
 

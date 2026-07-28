@@ -1,5 +1,7 @@
 package com.back.registro;
 
+import com.back.shared.exception.ClaveCortaException;
+import com.back.shared.exception.UsuarioDuplicadoException;
 import com.back.admin.ConfiguracionService;
 import com.back.shared.dto.RegistroUsuarioDTO;
 import com.back.auth.Usuario;
@@ -50,14 +52,12 @@ public class RegistroController {
         .apellido(registro.getApellido())
         .build();
 
-    String respuesta = usuarioService.registrarUsuario(dto);
-
-    if ("DUPLICADO".equals(respuesta)) {
+    try {
+        usuarioService.registrarUsuario(dto);
+    } catch (UsuarioDuplicadoException e) {
         model.addAttribute("errorDuplicado", true);
         return "registro-candidato";
-    }
-
-    if ("CLAVE_CORTA".equals(respuesta)) {
+    } catch (ClaveCortaException e) {
         model.addAttribute("errorClaveCorta", true);
         return "registro-candidato";
     }
@@ -139,13 +139,11 @@ public class RegistroController {
             .apellido(registro.getApellido())
             .build();
 
-        String respuesta = usuarioService.registrarUsuario(dto);
-
-        if ("DUPLICADO".equals(respuesta)) {
+        try {
+            usuarioService.registrarUsuario(dto);
+        } catch (UsuarioDuplicadoException e) {
             return ResponseEntity.status(409).body("El usuario ya existe");
-        }
-
-        if ("CLAVE_CORTA".equals(respuesta)) {
+        } catch (ClaveCortaException e) {
             return ResponseEntity.badRequest().body("La contrase\u00f1a debe tener m\u00ednimo 8 caracteres");
         }
 
