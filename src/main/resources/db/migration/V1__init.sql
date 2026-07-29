@@ -7,7 +7,7 @@ CREATE SCHEMA IF NOT EXISTS calendario;
 CREATE SCHEMA IF NOT EXISTS notificaciones;
 CREATE SCHEMA IF NOT EXISTS seguridad;
 
-CREATE TABLE auth.usuarios (
+CREATE TABLE IF NOT EXISTS auth.usuarios (
     id serial PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     clave VARCHAR(255) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE auth.usuarios (
     activo BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE drive.archivos (
+CREATE TABLE IF NOT EXISTS drive.archivos (
     id serial PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
     ubicacion TEXT,
@@ -26,7 +26,7 @@ CREATE TABLE drive.archivos (
     tipo_documento VARCHAR(255)
 );
 
-CREATE TABLE shared.historial (
+CREATE TABLE IF NOT EXISTS shared.historial (
     id serial PRIMARY KEY,
     fecha VARCHAR(100),
     estado_anterior TEXT,
@@ -34,7 +34,7 @@ CREATE TABLE shared.historial (
     responsable TEXT
 );
 
-CREATE TABLE admin.actividades (
+CREATE TABLE IF NOT EXISTS admin.actividades (
     id serial PRIMARY KEY,
     accion VARCHAR(255),
     detalle TEXT,
@@ -44,13 +44,13 @@ CREATE TABLE admin.actividades (
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE admin.configuraciones (
+CREATE TABLE IF NOT EXISTS admin.configuraciones (
     id serial PRIMARY KEY,
     clave VARCHAR(255) NOT NULL UNIQUE,
     valor TEXT NOT NULL
 );
 
-CREATE TABLE admin.rrhh (
+CREATE TABLE IF NOT EXISTS admin.rrhh (
     id bigint PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     apellido VARCHAR(255),
@@ -58,13 +58,13 @@ CREATE TABLE admin.rrhh (
     foto_url TEXT
 );
 
-CREATE TABLE admin.administradores (
+CREATE TABLE IF NOT EXISTS admin.administradores (
     id bigint PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     apellido VARCHAR(255)
 );
 
-CREATE TABLE candidatos.candidatos (
+CREATE TABLE IF NOT EXISTS candidatos.candidatos (
     id bigint PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     apellido VARCHAR(255),
@@ -81,7 +81,7 @@ CREATE TABLE candidatos.candidatos (
     ultima_actualizacion TIMESTAMP
 );
 
-CREATE TABLE calendario.eventos (
+CREATE TABLE IF NOT EXISTS calendario.eventos (
     id serial PRIMARY KEY,
     titulo VARCHAR(255),
     descripcion TEXT,
@@ -93,7 +93,7 @@ CREATE TABLE calendario.eventos (
     estado VARCHAR(50)
 );
 
-CREATE TABLE notificaciones.notificaciones (
+CREATE TABLE IF NOT EXISTS notificaciones.notificaciones (
     id serial PRIMARY KEY,
     tipo VARCHAR(50),
     mensaje TEXT,
@@ -104,15 +104,17 @@ CREATE TABLE notificaciones.notificaciones (
     nombre_relacionado VARCHAR(255)
 );
 
-CREATE TABLE seguridad.login_attempts (
+CREATE TABLE IF NOT EXISTS seguridad.login_attempts (
     id serial PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     attempts INTEGER NOT NULL DEFAULT 0,
     blocked_until TIMESTAMP
 );
 
-insert into auth.usuarios(email, clave, rol, activo)
-values ('admin@flowmatic.com', '$2a$10$JDYXxiV.Df.cj29mk19f3uUmiABNGiyHiidc8BMqSUd1hL49SvrwG', 'ROLE_ADMINISTRADOR', true);
+INSERT INTO auth.usuarios(email, clave, rol, activo)
+SELECT 'admin@flowmatic.com', '$2a$10$JDYXxiV.Df.cj29mk19f3uUmiABNGiyHiidc8BMqSUd1hL49SvrwG', 'ROLE_ADMINISTRADOR', true
+WHERE NOT EXISTS (SELECT 1 FROM auth.usuarios WHERE email = 'admin@flowmatic.com');
 
-insert into admin.administradores(id, username, apellido)
-values (1, 'Admin', 'FlowMatic');
+INSERT INTO admin.administradores(id, username, apellido)
+SELECT 1, 'Admin', 'FlowMatic'
+WHERE NOT EXISTS (SELECT 1 FROM admin.administradores WHERE id = 1);
