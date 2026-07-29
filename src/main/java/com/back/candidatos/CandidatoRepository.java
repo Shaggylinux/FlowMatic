@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
 
-    @Query(value = "SELECT * FROM candidatos " +
+    @Query(value = "SELECT * FROM candidatos.candidatos " +
            "WHERE (cast(:search as text) IS NULL OR LOWER(username) LIKE LOWER(cast(:search as text)) " +
            "OR LOWER(apellido) LIKE LOWER(cast(:search as text))) " +
            "AND (cast(:cargo as text) IS NULL OR LOWER(cargo) LIKE LOWER(cast(:cargo as text))) " +
@@ -19,7 +19,7 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
            "AND (:experienciaMin IS NULL OR experiencia >= :experienciaMin) " +
            "AND (cast(:ciudad as text) IS NULL OR LOWER(ciudad) LIKE LOWER(cast(:ciudad as text))) " +
            "ORDER BY ultima_actualizacion DESC NULLS LAST",
-           countQuery = "SELECT count(*) FROM candidatos " +
+           countQuery = "SELECT count(*) FROM candidatos.candidatos " +
            "WHERE (cast(:search as text) IS NULL OR LOWER(username) LIKE LOWER(cast(:search as text)) " +
            "OR LOWER(apellido) LIKE LOWER(cast(:search as text))) " +
            "AND (cast(:cargo as text) IS NULL OR LOWER(cargo) LIKE LOWER(cast(:cargo as text))) " +
@@ -35,7 +35,7 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
             @Param("ciudad") String ciudad,
             Pageable pageable);
 
-    @Query(value = "SELECT * FROM candidatos " +
+    @Query(value = "SELECT * FROM candidatos.candidatos " +
            "WHERE (cast(:search as text) IS NULL OR LOWER(username) LIKE LOWER(cast(:search as text)) " +
            "OR LOWER(apellido) LIKE LOWER(cast(:search as text))) " +
            "AND (cast(:estado as text) IS NULL OR estado = cast(:estado as text)) " +

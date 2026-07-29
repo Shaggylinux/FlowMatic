@@ -45,7 +45,7 @@ public class DataMigrationRunner implements CommandLineRunner {
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(
             "SELECT id, username, apellido, telefono, estado, cargo, ciudad, " +
             "tecnologias, idiomas, experiencia, disponibilidad, proceso_actual, " +
-            "foto_url, ultima_actualizacion FROM usuarios WHERE rol = 'ROLE_CANDIDATO'"
+            "foto_url, ultima_actualizacion FROM auth.usuarios WHERE rol = 'ROLE_CANDIDATO'"
         );
         if (rows.isEmpty()) return;
 
@@ -75,7 +75,7 @@ public class DataMigrationRunner implements CommandLineRunner {
     private void migrateRRHH() {
         if (rrhhRepository.count() > 0) return;
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(
-            "SELECT id, username, apellido, telefono, foto_url FROM usuarios WHERE rol = 'ROLE_RRHH'"
+            "SELECT id, username, apellido, telefono, foto_url FROM auth.usuarios WHERE rol = 'ROLE_RRHH'"
         );
         if (rows.isEmpty()) return;
 
@@ -94,7 +94,7 @@ public class DataMigrationRunner implements CommandLineRunner {
     private void migrateAdministradores() {
         if (administradorRepository.count() > 0) return;
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(
-            "SELECT id, username, apellido FROM usuarios WHERE rol = 'ROLE_ADMINISTRADOR'"
+            "SELECT id, username, apellido FROM auth.usuarios WHERE rol = 'ROLE_ADMINISTRADOR'"
         );
         if (rows.isEmpty()) return;
 
@@ -111,7 +111,7 @@ public class DataMigrationRunner implements CommandLineRunner {
     private void dropOldColumns() {
         try {
             jdbcTemplate.execute("""
-                ALTER TABLE usuarios
+                ALTER TABLE auth.usuarios
                   DROP COLUMN IF EXISTS username,
                   DROP COLUMN IF EXISTS apellido,
                   DROP COLUMN IF EXISTS telefono,

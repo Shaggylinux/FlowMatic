@@ -87,6 +87,8 @@ public class CandidatoController {
 
         model.addAttribute("selectedId", selectedId);
 
+        model.addAttribute("carpetas", Collections.emptyList());
+
         return "gestion-candidatos";
     }
 
