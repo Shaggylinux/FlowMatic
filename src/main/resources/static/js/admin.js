@@ -46,18 +46,6 @@ function filtrarRol(select) {
   if (select.value) qs += '&rol=' + encodeURIComponent(select.value);
   window.location.href = base + qs;
 }
-}
-
-function pfIrAPagina(input){
-    var p = parseInt(input.value);
-    var max = parseInt(input.getAttribute("data-max"));
-    if(!isNaN(p) && p>=1 && p<=max){
-        var base = input.getAttribute("data-base");
-        var size = input.getAttribute("data-size");
-        window.location.href =
-            base + "?page=" + (p-1) + "&size=" + size;
-    }
-}
 
 /* ── NOTIFICATIONS ──────────────────────────── */
 

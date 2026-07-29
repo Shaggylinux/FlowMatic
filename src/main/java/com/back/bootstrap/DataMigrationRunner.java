@@ -30,6 +30,9 @@ public class DataMigrationRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        if (!oldColumnsExisten()) {
+            return;
+        }
         try {
             migrateCandidatos();
             migrateRRHH();
@@ -38,6 +41,16 @@ public class DataMigrationRunner implements CommandLineRunner {
             System.out.println("[Migration] No se pudo migrar (probablemente ya migrado): " + e.getMessage());
         }
         dropOldColumns();
+    }
+
+    private boolean oldColumnsExisten() {
+        try {
+            jdbcTemplate.queryForObject(
+                "SELECT username FROM auth.usuarios LIMIT 1", String.class);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private void migrateCandidatos() {

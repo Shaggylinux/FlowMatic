@@ -2,6 +2,8 @@ package com.back.bootstrap;
 
 import com.back.auth.Usuario;
 import com.back.candidatos.Candidato;
+import com.back.admin.Administrador;
+import com.back.admin.AdministradorRepository;
 import com.back.admin.RRHH;
 import com.back.auth.UsuarioRepository;
 import com.back.candidatos.CandidatoRepository;
@@ -26,6 +28,7 @@ public class SeedController {
     private final UsuarioRepository usuarioRepository;
     private final CandidatoRepository candidatoRepository;
     private final RRHHRepository rrhhRepository;
+    private final AdministradorRepository administradorRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final FilesServices filesServices;
 
@@ -61,7 +64,14 @@ public class SeedController {
             adm.setClave(passwordEncoder.encode("Admin1234"));
             adm.setRol("ROLE_ADMINISTRADOR");
             adm.setActivo(true);
-            usuarioRepository.save(adm);
+            adm = usuarioRepository.save(adm);
+
+            Administrador a = new Administrador();
+            a.setId(adm.getId());
+            a.setUsername("Admin");
+            a.setApellido("Sistema");
+            administradorRepository.save(a);
+
             Map<String, Object> m = new LinkedHashMap<>();
             m.put("type", "admin");
             m.put("email", "admin@sistema.com");

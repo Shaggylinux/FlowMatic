@@ -342,6 +342,13 @@ public class AdminController {
                     rrhh.setApellido(apellido);
                     rrhhRepository.save(rrhh);
                 }
+            } else if ("ROLE_CANDIDATO".equals(usuarioBD.getRol())) {
+                Candidato candidato = candidatoRepository.findById(usuarioBD.getId()).orElse(null);
+                if (candidato != null) {
+                    candidato.setUsername(username);
+                    candidato.setApellido(apellido);
+                    candidatoRepository.save(candidato);
+                }
             }
 
             String nombreEditado = obtenerNombreUsuario(usuarioBD.getId(), usuarioBD.getRol());
