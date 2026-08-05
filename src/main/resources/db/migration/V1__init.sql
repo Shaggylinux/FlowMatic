@@ -8,26 +8,26 @@ CREATE SCHEMA IF NOT EXISTS notificaciones;
 CREATE SCHEMA IF NOT EXISTS seguridad;
 
 CREATE TABLE IF NOT EXISTS auth.usuarios (
-    id serial PRIMARY KEY,
+    id bigserial PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     clave VARCHAR(255) NOT NULL,
     rol VARCHAR(50) NOT NULL,
-    activo BOOLEAN DEFAULT FALSE
+    activo BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS drive.archivos (
-    id serial PRIMARY KEY,
+    id bigserial PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
     ubicacion TEXT,
     propietario TEXT,
     destinario TEXT,
-    es_carpeta BOOLEAN,
+    es_carpeta BOOLEAN NOT NULL DEFAULT FALSE,
     etapa VARCHAR(255),
     tipo_documento VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS shared.historial (
-    id serial PRIMARY KEY,
+    id bigserial PRIMARY KEY,
     fecha VARCHAR(100),
     estado_anterior TEXT,
     estado_nuevo TEXT,
@@ -35,25 +35,23 @@ CREATE TABLE IF NOT EXISTS shared.historial (
 );
 
 CREATE TABLE IF NOT EXISTS admin.actividades (
-    id serial PRIMARY KEY,
-    accion VARCHAR(255),
-    detalle TEXT,
-    usuario_email VARCHAR(255),
-    ip VARCHAR(50),
-    tipo VARCHAR(50),
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id bigserial PRIMARY KEY,
+    accion VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(500) NOT NULL,
+    realizado_por VARCHAR(100),
+    tipo VARCHAR(50) NOT NULL,
+    fecha TIMESTAMP NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS admin.configuraciones (
-    id serial PRIMARY KEY,
-    clave VARCHAR(255) NOT NULL UNIQUE,
-    valor TEXT NOT NULL
+    clave VARCHAR(100) PRIMARY KEY,
+    valor VARCHAR(500)
 );
 
 CREATE TABLE IF NOT EXISTS admin.rrhh (
     id bigint PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    apellido VARCHAR(255),
+    apellido VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
     foto_url TEXT
 );
@@ -61,13 +59,13 @@ CREATE TABLE IF NOT EXISTS admin.rrhh (
 CREATE TABLE IF NOT EXISTS admin.administradores (
     id bigint PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    apellido VARCHAR(255)
+    apellido VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS candidatos.candidatos (
     id bigint PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    apellido VARCHAR(255),
+    apellido VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
     estado VARCHAR(50),
     cargo VARCHAR(255),
@@ -82,30 +80,34 @@ CREATE TABLE IF NOT EXISTS candidatos.candidatos (
 );
 
 CREATE TABLE IF NOT EXISTS calendario.eventos (
-    id serial PRIMARY KEY,
-    titulo VARCHAR(255),
-    descripcion TEXT,
-    fecha DATE,
-    hora TIME,
+    id bigserial PRIMARY KEY,
+    candidato_id bigint NOT NULL,
+    candidato_nombre VARCHAR(255) NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
     tipo VARCHAR(50),
-    candidato_id bigint,
-    rrhh_id bigint,
-    estado VARCHAR(50)
+    estado VARCHAR(50),
+    lugar VARCHAR(255),
+    vacante VARCHAR(255),
+    modalidad VARCHAR(50),
+    entrevistador VARCHAR(255),
+    observaciones TEXT,
+    rrhh_id bigint NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS notificaciones.notificaciones (
-    id serial PRIMARY KEY,
-    tipo VARCHAR(50),
-    mensaje TEXT,
-    usuario_id bigint,
-    leido BOOLEAN DEFAULT FALSE,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    enlace TEXT,
-    nombre_relacionado VARCHAR(255)
+    id bigserial PRIMARY KEY,
+    tipo VARCHAR(50) NOT NULL,
+    mensaje VARCHAR(500) NOT NULL,
+    candidato_id bigint,
+    candidato_nombre VARCHAR(255),
+    fecha TIMESTAMP NOT NULL,
+    leida BOOLEAN NOT NULL DEFAULT FALSE,
+    enlace TEXT
 );
 
 CREATE TABLE IF NOT EXISTS seguridad.login_attempts (
-    id serial PRIMARY KEY,
+    id bigserial PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     attempts INTEGER NOT NULL DEFAULT 0,
     blocked_until TIMESTAMP

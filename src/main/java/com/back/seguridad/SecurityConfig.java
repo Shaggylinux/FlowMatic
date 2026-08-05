@@ -34,7 +34,8 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/api/seed"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/forgot-password",
-                                "/reset-password", "/js/**", "/home", "/", "/api/seed", "/videos/**")
+                                "/reset-password", "/js/**", "/home", "/", "/api/seed", "/videos/**",
+                                "/actuator/health")
                         .permitAll()
                         .requestMatchers("/candidato/**").hasRole("CANDIDATO")
                         .requestMatchers("/calendario/**").hasAnyRole("RRHH", "CANDIDATO")

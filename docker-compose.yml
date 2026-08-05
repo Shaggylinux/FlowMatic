@@ -21,6 +21,11 @@ services:
     container_name: flowmatic-redis
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   app:
     build: .
@@ -31,11 +36,26 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/gestion
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 12345
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-}
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:8080}
+    volumes:
+      - superfolder:/app/superfolder
     depends_on:
       db:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
 
 volumes:
   pgdata:
+  superfolder:
