@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS seguridad.login_attempts (
 );
 
 INSERT INTO auth.usuarios(email, clave, rol, activo)
-SELECT 'admin@flowmatic.com', '$2a$10$JDYXxiV.Df.cj29mk19f3uUmiABNGiyHiidc8BMqSUd1hL49SvrwG', 'ROLE_ADMINISTRADOR', true
+SELECT 'admin@flowmatic.com', '$2a$10$Sx38iLXa152avD8kynpgaetFpibsdg5oRa5bgJ/CziBvrCwtgfq1.', 'ROLE_ADMINISTRADOR', true
 WHERE NOT EXISTS (SELECT 1 FROM auth.usuarios WHERE email = 'admin@flowmatic.com');
 
 INSERT INTO admin.administradores(id, username, apellido)
