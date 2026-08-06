@@ -191,22 +191,21 @@ public class AdminController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "buscar", required = false) String buscar,
-            @RequestParam(name = "rol", required = false) String rol) {
+            @RequestParam(name = "estado", required = false) String estado) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Usuario> usuariosPage;
 
         boolean hasBuscar = buscar != null && !buscar.trim().isEmpty();
-        boolean hasRol = rol != null && !rol.trim().isEmpty();
+        boolean hasEstado = estado != null && !estado.trim().isEmpty();
 
-        if (hasBuscar && hasRol) {
+        String rol = "ROLE_RRHH"; // Sólo listamos RRHH
+
+        if (hasBuscar) {
             usuariosPage = usuarioRepository.findByRolAndEmailContainingIgnoreCase(rol, buscar.trim(), pageable);
-        } else if (hasBuscar) {
-            usuariosPage = usuarioRepository.findByEmailContainingIgnoreCase(buscar.trim(), pageable);
-        } else if (hasRol) {
-            usuariosPage = usuarioRepository.findByRol(rol, pageable);
         } else {
-            usuariosPage = usuarioRepository.findAll(pageable);
+            usuariosPage = usuarioRepository.findByRol(rol, pageable);
         }
+        // TODO: Filtrado por nombre y documento requiere query custom, por ahora usamos el email
 
         long totalItems = usuariosPage.getTotalElements();
         int totalPages = usuariosPage.getTotalPages();
@@ -215,11 +214,12 @@ public class AdminController {
 
         long totalUsuarios = usuarioRepository.count();
         long totalRRHH = usuarioRepository.countByRol("ROLE_RRHH");
-        long totalCandidatos = usuarioRepository.countByRol("ROLE_CANDIDATO");
-        long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
+        long totalActivos = usuarioRepository.countByRolAndActivo("ROLE_RRHH", true);
+        long totalPendientes = usuarioRepository.countByRolAndActivo("ROLE_RRHH", false);
+        long totalBloqueados = 0; 
 
-        List<UsuarioResumenDTO> usuariosData = usuariosPage.getContent().stream()
-                .map(adminService::mapToUsuarioResumen)
+        List<com.back.admin.dto.UsuarioRRHHDTO> usuariosData = usuariosPage.getContent().stream()
+                .map(this::mapToUsuarioRRHH)
                 .collect(Collectors.toList());
 
         model.addAttribute("usuarios", usuariosData);
@@ -232,27 +232,36 @@ public class AdminController {
         model.addAttribute("pageItems", getPageItems(page, totalPages));
         model.addAttribute("totalUsuarios", totalUsuarios);
         model.addAttribute("totalRRHH", totalRRHH);
-        model.addAttribute("totalCandidatos", totalCandidatos);
-        model.addAttribute("totalAdmins", totalAdmins);
+        model.addAttribute("totalActivos", totalActivos);
+        model.addAttribute("totalPendientes", totalPendientes);
+        model.addAttribute("totalBloqueados", totalBloqueados);
         model.addAttribute("viewMode", "usuarios");
         model.addAttribute("buscar", buscar);
-        model.addAttribute("rol", rol);
+        model.addAttribute("estado", estado);
 
         return "admin";
     }
 
-    private UsuarioResumenDTO mapToUsuarioResumen(Usuario u) {
-        String nombre = obtenerNombreUsuario(u.getId(), u.getRol());
-        String[] parts = nombre.split(" ", 2);
-        return new UsuarioResumenDTO(
-            u.getId(),
-            parts.length > 0 ? parts[0] : "",
-            parts.length > 1 ? parts[1] : "",
-            u.getEmail(),
-            u.getRol(),
-            u.isActivo(),
-            "Reci\u00e9n"
-        );
+    private com.back.admin.dto.UsuarioRRHHDTO mapToUsuarioRRHH(Usuario u) {
+        com.back.admin.dto.UsuarioRRHHDTO dto = new com.back.admin.dto.UsuarioRRHHDTO();
+        dto.setId(u.getId());
+        dto.setEmail(u.getEmail());
+        dto.setRol(u.getRol());
+        dto.setActivo(u.isActivo());
+        dto.setEstado(u.isActivo() ? "Activo" : "Pendiente");
+
+        RRHH rrhhInfo = rrhhRepository.findById(u.getId()).orElse(null);
+        if (rrhhInfo != null) {
+            dto.setNombre(rrhhInfo.getUsername());
+            dto.setApellido(rrhhInfo.getApellido());
+            dto.setDocumento(rrhhInfo.getDocumento());
+            dto.setCargo(rrhhInfo.getCargo());
+            dto.setUltimoAcceso(rrhhInfo.getUltimoAcceso());
+        } else {
+            dto.setNombre("Desconocido");
+            dto.setApellido("");
+        }
+        return dto;
     }
 
     private List<PageItem> getPageItems(int current, int total) {

@@ -26,6 +26,8 @@
     <link rel="stylesheet" th:href="@{/css/admin/reportes.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/auditoria.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/configuracion.css}" />
+    <!-- Reutilizamos estilos de candidatos para RRHH -->
+    <link rel="stylesheet" th:href="@{/css/gestion-candidatos.css}" />
 
     <script
       defer
@@ -48,10 +50,8 @@
             <div th:replace="~{fragments/admin/header :: header}"></div>
             <div th:replace="~{fragments/admin/dashboard-content :: dashboardContent}"></div>
           </div>
-          <div th:if="${viewMode == 'usuarios'}">
-            <div th:replace="~{fragments/admin/header :: header}"></div>
-            <div th:replace="~{fragments/admin/toolbar :: toolbar}"></div>
-            <div th:replace="~{fragments/admin/table :: table}"></div>
+          <div th:if="${viewMode == 'usuarios'}" class="drive-content" style="padding: 0; padding-bottom:0;">
+            <div th:replace="~{fragments/admin/rrhh-content :: rrhhContent}"></div>
           </div>
         </div>
       </div>
