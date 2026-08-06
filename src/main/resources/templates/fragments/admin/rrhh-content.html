@@ -1,112 +1,173 @@
-<div th:fragment="rrhhContent">
-    <header class="fm-topbar">
-      <div>
-        <p class="fm-topbar-title">Usuarios RRHH</p>
-        <p class="fm-topbar-sub">Administración del personal de Recursos Humanos</p>
+<div th:fragment="rrhhContent" class="gs-page">
+    <header class="fm-topbar" style="background:transparent;position:static;padding:8px 0;margin-bottom:24px;">
+      <div style="display:flex; align-items:center; gap: 12px;">
+        <button type="button" id="fm-mobile-menu-btn" class="d-md-none" style="display:flex; align-items:center; justify-content:center; padding:6px; background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:var(--fm-radius-md); color:var(--fm-text); cursor:pointer;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+        <div>
+            <p class="fm-topbar-title">Usuarios RRHH</p>
+            <p class="fm-topbar-sub d-none d-sm-block">Administración del personal de Recursos Humanos</p>
+        </div>
       </div>
       <div style="display:flex; align-items:center; gap:8px;">
-        <button class="gc-bell-btn" title="Notificaciones">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        </button>
-        <button type="button" class="gc-topbar-btn" title="Exportar" th:onclick="|window.location.href='@{/admin/exportar}'|">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Exportar
-        </button>
-        <button type="button" class="gc-topbar-btn gc-topbar-btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoRRHH">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Nuevo RRHH
+        <div style="position:relative;">
+            <button class="gc-bell-btn" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="gc-bell-dot" id="gc-notif-badge">0</span>
+            </button>
+            <div class="gc-notif-panel" id="gc-notif-panel">
+                <div class="gc-notif-header">
+                    <span>Notificaciones</span>
+                    <button class="gc-notif-leer-todas" onclick="marcarTodasNotificaciones()">Leer todas</button>
+                </div>
+                <div class="gc-notif-list"></div>
+            </div>
+        </div>
+        <a th:href="@{/admin/exportar(buscar=${buscar}, estado=${estado})}" class="gc-topbar-btn" title="Exportar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span class="d-none d-sm-inline">Exportar</span>
+        </a>
+        <button type="button" class="gc-topbar-btn gc-topbar-btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoRRHH" title="Nuevo RRHH">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+            <span class="d-none d-sm-inline">Nuevo RRHH</span>
         </button>
       </div>
     </header>
 
-    <div class="gc-page">
+    <div>
       <!-- 4 KPIs -->
-      <div class="gc-stats-grid">
-        <div class="gc-stat-card">
-          <div class="gc-stat-inner">
-            <div class="gc-stat-icon gc-stat-icon-brand">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <div class="gs-stats-grid">
+        <!-- Usuarios RRHH -->
+        <div class="gs-stat-card">
+          <div class="gs-stat-inner">
+            <div class="gs-stat-icon gs-stat-icon-turq">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
             </div>
-            <div class="gc-stat-info">
-              <p class="gc-stat-number" th:text="${totalRRHH}">0</p>
-              <p class="gc-stat-label">Usuarios RRHH</p>
-            </div>
+            <h2 class="gs-stat-number" th:text="${totalRRHH}">0</h2>
+            <p class="gs-stat-label">Usuarios RRHH</p>
+            <p class="gs-stat-diff up">+12% este mes</p>
           </div>
         </div>
-        <div class="gc-stat-card">
-          <div class="gc-stat-inner">
-            <div class="gc-stat-icon gc-stat-icon-success">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        
+        <!-- Usuarios activos -->
+        <div class="gs-stat-card">
+          <div class="gs-stat-inner">
+            <div class="gs-stat-icon gs-stat-icon-blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
             </div>
-            <div class="gc-stat-info">
-              <p class="gc-stat-number" th:text="${totalActivos}">0</p>
-              <p class="gc-stat-label">Activos</p>
-            </div>
+            <h2 class="gs-stat-number" th:text="${totalActivos}">0</h2>
+            <p class="gs-stat-label">Activos</p>
+            <p class="gs-stat-diff up">+8% este mes</p>
           </div>
         </div>
-        <div class="gc-stat-card">
-          <div class="gc-stat-inner">
-            <div class="gc-stat-icon gc-stat-icon-warning">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+
+        <!-- Pendientes -->
+        <div class="gs-stat-card">
+          <div class="gs-stat-inner">
+            <div class="gs-stat-icon gs-stat-icon-orange">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
             </div>
-            <div class="gc-stat-info">
-              <p class="gc-stat-number" th:text="${totalPendientes}">0</p>
-              <p class="gc-stat-label">Pendientes</p>
-            </div>
+            <h2 class="gs-stat-number" th:text="${totalPendientes}">0</h2>
+            <p class="gs-stat-label">Pendientes</p>
+            <p class="gs-stat-diff up">+2% este mes</p>
           </div>
         </div>
-        <div class="gc-stat-card">
-          <div class="gc-stat-inner">
-            <div class="gc-stat-icon" style="background: #FEF2F2; color: #EF4444;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+
+        <!-- Bloqueados -->
+        <div class="gs-stat-card">
+          <div class="gs-stat-inner">
+            <div class="gs-stat-icon gs-stat-icon-red">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/>
+              </svg>
             </div>
-            <div class="gc-stat-info">
-              <p class="gc-stat-number" th:text="${totalBloqueados}">0</p>
-              <p class="gc-stat-label">Bloqueados</p>
-            </div>
+            <h2 class="gs-stat-number" th:text="${totalBloqueados}">0</h2>
+            <p class="gs-stat-label">Bloqueados</p>
+            <p class="gs-stat-diff down">-1% este mes</p>
           </div>
         </div>
       </div>
 
-      <!-- Filtros -->
-      <div class="gc-filters">
+      <div class="gc-filters" style="padding-left: 0; padding-right: 0;">
         <form class="gc-filters-row" th:action="@{/admin}" method="get">
-          <div class="gc-filter-search">
+          <div class="gc-filter-search" style="flex: 2;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fm-text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input type="text" name="buscar" th:value="${buscar}" placeholder="Buscar por nombre, correo o documento..." class="gc-filter-input">
           </div>
-          <select name="estado" class="gc-filter-select" onchange="this.form.submit()">
-            <option value="">Todos los estados</option>
-            <option value="Activo" th:selected="${estado == 'Activo'}">Activos</option>
-            <option value="Pendiente" th:selected="${estado == 'Pendiente'}">Pendientes</option>
-          </select>
-          <button type="submit" class="gc-funnel-btn" title="Filtrar">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
-          </button>
-          <a th:href="@{/admin}" class="btn btn-ghost btn-sm">Limpiar</a>
+          
+          <div style="display:flex; gap: 12px; flex: 3;">
+            <div class="gc-filter-group" style="flex:1;">
+                <label style="font-size:11px; color:var(--fm-text-muted); margin-bottom:4px; display:block;">Rol</label>
+                <select name="rol" class="gc-filter-select" onchange="this.form.submit()" style="width:100%;">
+                <option value="">Todos</option>
+                <option value="ROLE_RRHH" selected>RRHH</option>
+                </select>
+            </div>
+            <div class="gc-filter-group" style="flex:1;">
+                <label style="font-size:11px; color:var(--fm-text-muted); margin-bottom:4px; display:block;">Estado</label>
+                <select name="estado" class="gc-filter-select" onchange="this.form.submit()" style="width:100%;">
+                <option value="">Todos</option>
+                <option value="Activo" th:selected="${estado == 'Activo'}">Activo</option>
+                <option value="Pendiente" th:selected="${estado == 'Pendiente'}">Pendiente</option>
+                <option value="Bloqueado" th:selected="${estado == 'Bloqueado'}">Bloqueado</option>
+                </select>
+            </div>
+            <div class="gc-filter-group" style="flex:1;">
+                <label style="font-size:11px; color:var(--fm-text-muted); margin-bottom:4px; display:block;">Fecha</label>
+                <select name="fecha" class="gc-filter-select" onchange="this.form.submit()" style="width:100%;">
+                <option value="">Todas</option>
+                </select>
+            </div>
+          </div>
+          
+          <div style="display:flex; gap: 12px; align-items:flex-end;">
+            <button type="submit" class="gc-funnel-btn" title="Filtrar" style="height: 40px; margin-bottom: 2px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            </button>
+            <a th:href="@{/admin}" class="btn btn-ghost btn-sm" style="height: 40px; margin-bottom: 2px; display:flex; align-items:center;">Limpiar</a>
+          </div>
         </form>
       </div>
 
       <!-- Main Grid (Tabla + Drawer) -->
-      <div class="gc-main-grid">
+      <div class="gc-main-grid" style="padding-left: 0; padding-right: 0;">
         <div class="gc-table-area">
           <div class="gc-table-wrapper">
             <table class="gc-table">
               <thead>
                 <tr>
                   <th style="width:44px;"></th>
-                  <th>Nombre</th>
-                  <th>Correo</th>
-                  <th>Documento</th>
-                  <th>Cargo</th>
-                  <th>Estado</th>
-                  <th>Último acceso</th>
-                  <th style="width:80px;">Acciones</th>
+                  <th>USUARIO</th>
+                  <th>CORREO</th>
+                  <th>DOCUMENTO</th>
+                  <th>CARGO</th>
+                  <th>ROL</th>
+                  <th>ESTADO</th>
+                  <th>ÚLTIMO ACCESO</th>
+                  <th>ACCIONES</th>
                 </tr>
               </thead>
               <tbody>
                 <tr th:if="${#lists.isEmpty(usuarios)}">
-                  <td colspan="8">
+                  <td colspan="9">
                     <div class="gc-table-empty">
                       <p style="font-weight:500;">No hay usuarios RRHH registrados.</p>
                     </div>
@@ -114,38 +175,55 @@
                 </tr>
                 <tr th:each="u : ${usuarios}" class="gc-row-clickable" th:onclick="'abrirDrawerRRHH(' + ${u.id} + ')'">
                   <td>
-                    <div class="gc-table-avatar">
+                    <div class="gc-avatar" th:classappend="${'avatar-' + (#strings.substring(u.nombre ?: u.email, 0, 1).toUpperCase())}">
                       <span th:text="${#strings.substring(u.nombre ?: u.email, 0, 1).toUpperCase()}"></span>
                     </div>
                   </td>
                   <td>
                     <div class="gc-user-info">
-                      <p class="gc-user-name" th:text="${(u.nombre ?: '') + ' ' + (u.apellido ?: '')}"></p>
+                      <p class="gc-user-name" style="font-weight:600; font-size:14px; color:#0F172A;" th:text="${(u.nombre ?: '') + ' ' + (u.apellido ?: '')}"></p>
+                      <p style="font-size:12px; color:var(--fm-text-muted);" th:text="${u.email}"></p>
                     </div>
                   </td>
                   <td>
-                    <p class="gc-text-truncate" style="max-width:180px;" th:text="${u.email}"></p>
+                    <p style="color:#475569;" th:text="${u.email}"></p>
                   </td>
                   <td>
-                    <p th:text="${u.documento ?: '-'}"></p>
+                    <p style="color:#475569;" th:text="${u.documento ?: '-'}"></p>
                   </td>
                   <td>
-                    <p th:text="${u.cargo ?: 'Recursos Humanos'}"></p>
+                    <p style="color:#475569; max-width:140px; line-height:1.2;" th:text="${u.cargo ?: '-'}"></p>
                   </td>
                   <td>
-                    <span class="gc-badge" th:classappend="${u.activo} ? 'gc-badge-success' : 'gc-badge-warning'" th:text="${u.estado}"></span>
+                    <span style="display:inline-block; padding: 4px 10px; font-size:11px; font-weight:600; border-radius:100px; color:#6366F1; background:#EEF2FF;">RRHH</span>
                   </td>
                   <td>
-                    <p th:text="${u.ultimoAcceso != null ? #temporals.format(u.ultimoAcceso, 'dd MMM yyyy') : '-'}"></p>
+                    <span class="gc-badge" 
+                          th:classappend="${u.estado == 'Activo' ? 'gc-badge-success' : (u.estado == 'Bloqueado' ? 'gc-badge-danger' : 'gc-badge-warning')}" 
+                          th:text="${u.estado}"></span>
                   </td>
                   <td>
-                    <div class="gc-row-actions">
-                      <button class="gc-btn-icon" title="Editar" th:onclick="'event.stopPropagation(); editarRRHH(' + ${u.id} + ')'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    <p style="color:#475569;" th:text="${u.ultimoAcceso != null ? #temporals.format(u.ultimoAcceso, 'dd MMM yyyy, hh:mm a') : '-'}"></p>
+                  </td>
+                  <td>
+                    <div class="gc-row-actions" style="gap: 4px; display:flex; justify-content:flex-end;">
+                      <button class="gc-action-btn" data-tooltip="Ver" th:onclick="'event.stopPropagation(); abrirDrawerRRHH(' + ${u.id} + ')'">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                       </button>
-                      <button class="gc-btn-icon" title="Opciones" th:onclick="'event.stopPropagation(); openOptionsRRHH(' + ${u.id} + ')'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                      <button class="gc-action-btn" data-tooltip="Editar" th:onclick="'event.stopPropagation(); editarRRHH(' + ${u.id} + ')'">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                       </button>
+                      <div class="gc-action-more" style="position:relative;">
+                          <button class="gc-action-btn" data-tooltip="Opciones" th:onclick="'event.stopPropagation(); toggleOptions(this)'">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                          </button>
+                          <div class="gc-dropdown-menu">
+                            <button type="button" th:onclick="'event.stopPropagation(); toggleBloqueoRRHH(' + ${u.id} + ')'" style="color: #EF4444;" th:if="${!u.bloqueado}">Bloquear Acceso</button>
+                            <button type="button" th:onclick="'event.stopPropagation(); toggleBloqueoRRHH(' + ${u.id} + ')'" style="color: #10B981;" th:if="${u.bloqueado}">Desbloquear Acceso</button>
+                            <div class="gc-dropdown-divider"></div>
+                            <button type="button" th:onclick="'event.stopPropagation(); eliminarRRHH(' + ${u.id} + ')'">Eliminar</button>
+                          </div>
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -167,9 +245,69 @@
         </div>
 
         <aside class="gc-drawer" id="drawerRRHH">
-            <!-- Contenido dinámico del drawer aquí -->
+            <div class="gc-drawer-header" style="padding: 24px; border-bottom: 1px solid var(--fm-border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--fm-surface); z-index: 10;">
+                <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #0F172A;">Detalle del Usuario</h3>
+                <button type="button" class="gc-btn-icon" onclick="cerrarDrawerRRHH()" style="border: none; background: none; cursor: pointer; color: #64748B;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="gc-drawer-body" id="drawerRRHHContent" style="padding: 24px;">
+                <div class="gc-drawer-empty" style="text-align: center; color: #94A3B8; padding: 40px 0;">
+                    Cargando...
+                </div>
+            </div>
         </aside>
       </div>
+    </div>
 
+    <!-- Modal Edición RRHH -->
+    <div class="modal fade" id="modalEditarRRHH" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+          <div class="modal-header" style="border-bottom: 1px solid #F1F5F9; padding: 20px 24px;">
+            <h5 class="modal-title" id="modalRRHHTitle" style="font-weight: 600; font-size: 16px;">Editar RRHH</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="padding: 16px;">
+            <form id="formRRHH">
+              <input type="hidden" id="rrhhId" name="id">
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Nombre</label>
+                  <input type="text" class="form-control" id="rrhhNombre" name="nombre" required style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Apellido</label>
+                  <input type="text" class="form-control" id="rrhhApellido" name="apellido" required style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Correo Electrónico</label>
+                  <input type="email" class="form-control" id="rrhhEmail" name="email" required style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Contraseña <span id="pwdHint" style="font-size:10px; color:#94A3B8;">(déjalo vacío)</span></label>
+                  <input type="password" class="form-control" id="rrhhClave" name="clave" style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="Mínimo 8">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Teléfono</label>
+                  <input type="tel" class="form-control" id="rrhhTelefono" name="telefono" style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="+57 300 123">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Documento</label>
+                  <input type="text" class="form-control" id="rrhhDocumento" name="documento" style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Cargo</label>
+                  <input type="text" class="form-control" id="rrhhCargo" name="cargo" required style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer" style="border-top: 1px solid #F1F5F9; padding: 12px 16px; display: flex; justify-content: flex-end; gap: 8px;">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal" style="border-radius: 6px; font-size: 12px; padding: 6px 12px;">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="guardarRRHH()" style="border-radius: 8px; font-size: 13px; padding: 8px 16px; background: var(--fm-brand); border: none;">Guardar Usuario</button>
+          </div>
+        </div>
+      </div>
     </div>
 </div>

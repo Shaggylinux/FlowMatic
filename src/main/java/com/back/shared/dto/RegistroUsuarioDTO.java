@@ -12,4 +12,6 @@ public class RegistroUsuarioDTO {
     private String clave;
     private String telefono;
     private String rol;
+    private String documento;
+    private String cargo;
 }

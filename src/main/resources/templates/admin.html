@@ -50,7 +50,7 @@
             <div th:replace="~{fragments/admin/header :: header}"></div>
             <div th:replace="~{fragments/admin/dashboard-content :: dashboardContent}"></div>
           </div>
-          <div th:if="${viewMode == 'usuarios'}" class="drive-content" style="padding: 0; padding-bottom:0;">
+          <div th:if="${viewMode == 'usuarios'}">
             <div th:replace="~{fragments/admin/rrhh-content :: rrhhContent}"></div>
           </div>
         </div>
@@ -63,5 +63,7 @@
     <div th:replace="~{fragments/admin/modal-reportes :: modalReportes}"></div>
     <div th:replace="~{fragments/admin/modal-auditoria :: modalAuditoria}"></div>
     <div th:replace="~{fragments/admin/modal-configuracion :: modalConfiguracion}"></div>
+    
+    <script th:src="@{/js/admin/rrhh.js}"></script>
   </body>
 </html>

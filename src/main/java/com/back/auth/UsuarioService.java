@@ -73,7 +73,7 @@ public class UsuarioService implements AuthApi {
         tokenRepository.save(tokenObj);
 
         eventPublisher.publishEvent(new UsuarioRegistradoEvent(usuario.getId(),
-            usuario.getEmail(), usuario.getRol(), username, apellido, telefono, tokenUuid));
+            usuario.getEmail(), usuario.getRol(), username, apellido, telefono, dto.getDocumento(), dto.getCargo(), tokenUuid));
     }
 
     public Usuario buscarPorToken(String token) {
@@ -106,7 +106,7 @@ public class UsuarioService implements AuthApi {
 
                 String nombre = obtenerNombreOApellido(usuario);
                 eventPublisher.publishEvent(new UsuarioRegistradoEvent(usuario.getId(),
-                    usuario.getEmail(), usuario.getRol(), nombre, null, null, nuevoToken));
+                    usuario.getEmail(), usuario.getRol(), nombre, null, null, null, null, nuevoToken));
             }
         }
     }

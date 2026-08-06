@@ -7,5 +7,7 @@ public record UsuarioRegistradoEvent(
     String username,
     String apellido,
     String telefono,
+    String documento,
+    String cargo,
     String tokenActivacion
 ) {}

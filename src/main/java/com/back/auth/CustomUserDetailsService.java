@@ -30,6 +30,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Credenciales invalidas");
         }
 
+        if (usuario.isBloqueado()) {
+            throw new UsernameNotFoundException("Cuenta bloqueada por un administrador");
+        }
+
     return User.builder()
             .username(usuario.getEmail())
             .password(usuario.getClave())

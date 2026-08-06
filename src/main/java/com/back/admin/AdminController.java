@@ -61,9 +61,9 @@ public class AdminController {
             @RequestParam(name = "config_ok", required = false) String configOk) {
         long totalUsuarios = usuarioRepository.count();
         long totalRRHH = usuarioRepository.countByRol("ROLE_RRHH");
-        long totalActivos = usuarioRepository.countByRolAndActivo("ROLE_RRHH", true);
-        long totalPendientes = usuarioRepository.countByRolAndActivo("ROLE_RRHH", false);
-        long totalBloqueados = 0;
+        long totalBloqueados = usuarioRepository.countByRolAndBloqueado("ROLE_RRHH", true);
+        long totalActivos = usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", true, false);
+        long totalPendientes = usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", false, false);
         long totalCandidatos = usuarioRepository.countByRol("ROLE_CANDIDATO");
         long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
         long entrevistasHoy = eventoRepository.countByFecha(LocalDate.now());
@@ -195,17 +195,12 @@ public class AdminController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Usuario> usuariosPage;
 
-        boolean hasBuscar = buscar != null && !buscar.trim().isEmpty();
-        boolean hasEstado = estado != null && !estado.trim().isEmpty();
-
-        String rol = "ROLE_RRHH"; // Sólo listamos RRHH
-
-        if (hasBuscar) {
-            usuariosPage = usuarioRepository.findByRolAndEmailContainingIgnoreCase(rol, buscar.trim(), pageable);
-        } else {
-            usuariosPage = usuarioRepository.findByRol(rol, pageable);
-        }
-        // TODO: Filtrado por nombre y documento requiere query custom, por ahora usamos el email
+        // Query multicriterio: busca en email, nombre, apellido y documento; filtra por estado
+        usuariosPage = usuarioRepository.buscarRRHH(
+            (buscar != null && !buscar.isBlank()) ? buscar.trim() : null,
+            (estado != null && !estado.isBlank()) ? estado.trim() : null,
+            pageable
+        );
 
         long totalItems = usuariosPage.getTotalElements();
         int totalPages = usuariosPage.getTotalPages();
@@ -214,9 +209,9 @@ public class AdminController {
 
         long totalUsuarios = usuarioRepository.count();
         long totalRRHH = usuarioRepository.countByRol("ROLE_RRHH");
-        long totalActivos = usuarioRepository.countByRolAndActivo("ROLE_RRHH", true);
-        long totalPendientes = usuarioRepository.countByRolAndActivo("ROLE_RRHH", false);
-        long totalBloqueados = 0; 
+        long totalBloqueados = usuarioRepository.countByRolAndBloqueado("ROLE_RRHH", true);
+        long totalActivos = usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", true, false);
+        long totalPendientes = usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", false, false);
 
         List<com.back.admin.dto.UsuarioRRHHDTO> usuariosData = usuariosPage.getContent().stream()
                 .map(this::mapToUsuarioRRHH)
@@ -248,7 +243,13 @@ public class AdminController {
         dto.setEmail(u.getEmail());
         dto.setRol(u.getRol());
         dto.setActivo(u.isActivo());
-        dto.setEstado(u.isActivo() ? "Activo" : "Pendiente");
+        dto.setBloqueado(u.isBloqueado());
+        
+        if (u.isBloqueado()) {
+            dto.setEstado("Bloqueado");
+        } else {
+            dto.setEstado(u.isActivo() ? "Activo" : "Pendiente");
+        }
 
         RRHH rrhhInfo = rrhhRepository.findById(u.getId()).orElse(null);
         if (rrhhInfo != null) {
@@ -295,7 +296,9 @@ public class AdminController {
     public String crearRRHH(@ModelAttribute Usuario nuevoRRHH,
                             @RequestParam String username,
                             @RequestParam String apellido,
-                            @RequestParam(required = false) String telefono) {
+                            @RequestParam(required = false) String telefono,
+                            @RequestParam(required = false) String documento,
+                            @RequestParam(required = false) String cargo) {
         nuevoRRHH.setRol("ROLE_RRHH");
 
         RegistroUsuarioDTO dto = RegistroUsuarioDTO.builder()
@@ -305,6 +308,8 @@ public class AdminController {
             .username(username)
             .apellido(apellido)
             .telefono(telefono)
+            .documento(documento)
+            .cargo(cargo)
             .build();
 
         try {
@@ -387,39 +392,51 @@ public class AdminController {
     }
 
     @GetMapping("/exportar")
-    public void exportarAExcel(HttpServletResponse response) throws IOException {
+    public void exportarAExcel(HttpServletResponse response,
+                               @RequestParam(name = "buscar",  required = false) String buscar,
+                               @RequestParam(name = "estado",  required = false) String estado) throws IOException {
         response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=usuarios_reporte.xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List<Usuario> listaUsuarios = usuarioRepository.findAll();
-        String[] cabeceras = {"ID", "Username", "Apellido", "Email", "Rol", "Estado", "Etapa"};
+        // Usa los mismos filtros que la vista para exportar solo lo que el admin ve
+        List<Usuario> listaUsuarios = (buscar != null && !buscar.isBlank()) || (estado != null && !estado.isBlank())
+            ? usuarioRepository.buscarRRHHSinPaginacion(
+                (buscar != null && !buscar.isBlank()) ? buscar.trim() : null,
+                (estado != null && !estado.isBlank()) ? estado.trim() : null)
+            : usuarioRepository.findAll();
+
+        String[] cabeceras = {"ID", "Nombre", "Apellido", "Email", "Documento", "Cargo", "Rol", "Estado"};
         List<Object[]> datos = listaUsuarios.stream().map(u -> {
             String username = "";
             String apellido = "";
-            String etapa = "N/A";
-            String estado = u.isActivo() ? "Activo" : "Pendiente";
-            
+            String documento = "";
+            String cargo = "";
+            String estadoUsuario;
+            if (u.isBloqueado()) estadoUsuario = "Bloqueado";
+            else estadoUsuario = u.isActivo() ? "Activo" : "Pendiente";
+
             if ("ROLE_CANDIDATO".equals(u.getRol())) {
                 com.back.candidatos.Candidato c = candidatoRepository.findById(u.getId()).orElse(null);
                 if (c != null) {
-                    username = c.getUsername() != null ? c.getUsername() : "";
-                    apellido = c.getApellido() != null ? c.getApellido() : "";
-                    etapa = c.getProcesoActual() != null ? c.getProcesoActual() : "N/A";
+                    username  = c.getUsername()  != null ? c.getUsername()  : "";
+                    apellido  = c.getApellido()  != null ? c.getApellido()  : "";
                 }
             } else if ("ROLE_RRHH".equals(u.getRol())) {
                 RRHH r = rrhhRepository.findById(u.getId()).orElse(null);
                 if (r != null) {
-                    username = r.getUsername() != null ? r.getUsername() : "";
-                    apellido = r.getApellido() != null ? r.getApellido() : "";
+                    username  = r.getUsername()  != null ? r.getUsername()  : "";
+                    apellido  = r.getApellido()  != null ? r.getApellido()  : "";
+                    documento = r.getDocumento() != null ? r.getDocumento() : "";
+                    cargo     = r.getCargo()     != null ? r.getCargo()     : "";
                 }
             } else if ("ROLE_ADMINISTRADOR".equals(u.getRol())) {
                 username = "Administrador";
             }
-            return new Object[]{u.getId(), username, apellido, u.getEmail(), u.getRol(), estado, etapa};
+            return new Object[]{u.getId(), username, apellido, u.getEmail(), documento, cargo, u.getRol(), estadoUsuario};
         }).toList();
-        excelService.exportarDatos("Usuarios", cabeceras, datos, response);
+        excelService.exportarDatos("Usuarios RRHH", cabeceras, datos, response);
 
         auditoriaService.registrar("EXPORTACI\u00d3N",
             "Se export\u00f3 la lista de usuarios a Excel", "Administrador", "SISTEMA");
@@ -435,8 +452,9 @@ public class AdminController {
         Map<String, Object> metricas = new HashMap<>();
         metricas.put("totalUsuarios", usuarioRepository.count());
         metricas.put("totalRRHH", usuarioRepository.countByRol("ROLE_RRHH"));
-        metricas.put("totalActivos", usuarioRepository.countByRolAndActivo("ROLE_RRHH", true));
-        metricas.put("totalPendientes", usuarioRepository.countByRolAndActivo("ROLE_RRHH", false));
+        metricas.put("totalActivos", usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", true, false));
+        metricas.put("totalPendientes", usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", false, false));
+        metricas.put("totalBloqueados", usuarioRepository.countByRolAndBloqueado("ROLE_RRHH", true));
         metricas.put("totalCandidatos", usuarioRepository.countByRol("ROLE_CANDIDATO"));
         metricas.put("totalAdmins", usuarioRepository.countByRol("ROLE_ADMINISTRADOR"));
 

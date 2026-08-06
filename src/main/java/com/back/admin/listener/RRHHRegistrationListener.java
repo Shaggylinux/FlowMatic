@@ -32,6 +32,12 @@ public class RRHHRegistrationListener {
             if (event.telefono() != null && !event.telefono().trim().isEmpty()) {
                 rrhh.setTelefono(event.telefono());
             }
+            if (event.documento() != null && !event.documento().trim().isEmpty()) {
+                rrhh.setDocumento(event.documento());
+            }
+            if (event.cargo() != null && !event.cargo().trim().isEmpty()) {
+                rrhh.setCargo(event.cargo());
+            }
             rrhhRepository.save(rrhh);
 
             logger.info("Perfil RRHH creado para: {}", event.email());
