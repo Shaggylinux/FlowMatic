@@ -151,7 +151,10 @@
       <div class="gc-main-grid" style="padding-left: 0; padding-right: 0;">
         <div class="gc-table-area">
           <div class="gc-table-wrapper">
-            <table class="gc-table">
+            <table class="gc-table" style="vertical-align: middle;">
+              <style>
+                .gc-table td, .gc-table th { vertical-align: middle; }
+              </style>
               <thead>
                 <tr>
                   <th style="width:44px;"></th>
@@ -159,7 +162,6 @@
                   <th>CORREO</th>
                   <th>DOCUMENTO</th>
                   <th>CARGO</th>
-                  <th>ROL</th>
                   <th>ESTADO</th>
                   <th>ÚLTIMO ACCESO</th>
                   <th>ACCIONES</th>
@@ -167,7 +169,7 @@
               </thead>
               <tbody>
                 <tr th:if="${#lists.isEmpty(usuarios)}">
-                  <td colspan="9">
+                  <td colspan="8">
                     <div class="gc-table-empty">
                       <p style="font-weight:500;">No hay usuarios RRHH registrados.</p>
                     </div>
@@ -180,33 +182,29 @@
                     </div>
                   </td>
                   <td>
-                    <div class="gc-user-info">
-                      <p class="gc-user-name" style="font-weight:600; font-size:14px; color:#0F172A;" th:text="${(u.nombre ?: '') + ' ' + (u.apellido ?: '')}"></p>
-                      <p style="font-size:12px; color:var(--fm-text-muted);" th:text="${u.email}"></p>
-                    </div>
+                    <span class="gc-user-name" style="display:block; margin:0;" th:text="${(u.nombre ?: '') + ' ' + (u.apellido ?: '')}"></span>
                   </td>
                   <td>
-                    <p style="color:#475569;" th:text="${u.email}"></p>
+                    <span class="gc-cell-muted" style="display:block; margin:0;" th:text="${u.email}"></span>
                   </td>
                   <td>
-                    <p style="color:#475569;" th:text="${u.documento ?: '-'}"></p>
+                    <span class="gc-cell-muted" style="display:block; margin:0;" th:text="${u.documento ?: '-'}"></span>
                   </td>
                   <td>
-                    <p style="color:#475569; max-width:140px; line-height:1.2;" th:text="${u.cargo ?: '-'}"></p>
-                  </td>
-                  <td>
-                    <span style="display:inline-block; padding: 4px 10px; font-size:11px; font-weight:600; border-radius:100px; color:#6366F1; background:#EEF2FF;">RRHH</span>
+                    <span class="gc-cell-muted" style="display:block; margin:0; max-width:140px; line-height:1.4;" th:text="${u.cargo ?: '-'}"></span>
                   </td>
                   <td>
                     <span class="gc-badge" 
-                          th:classappend="${u.estado == 'Activo' ? 'gc-badge-success' : (u.estado == 'Bloqueado' ? 'gc-badge-danger' : 'gc-badge-warning')}" 
+                          th:style="${u.estado == 'Activo'    ? 'background:#DCFCE7; color:#166534;' :
+                                     u.estado == 'Bloqueado'  ? 'background:#FEE2E2; color:#991B1B;' :
+                                                                'background:#FEF9C3; color:#854D0E;'}"
                           th:text="${u.estado}"></span>
                   </td>
                   <td>
-                    <p style="color:#475569;" th:text="${u.ultimoAcceso != null ? #temporals.format(u.ultimoAcceso, 'dd MMM yyyy, hh:mm a') : '-'}"></p>
+                    <span class="gc-cell-muted" style="display:block; margin:0;" th:text="${u.ultimoAcceso != null ? #temporals.format(u.ultimoAcceso, 'dd MMM yyyy, hh:mm a') : '-'}"></span>
                   </td>
                   <td>
-                    <div class="gc-row-actions" style="gap: 4px; display:flex; justify-content:flex-end;">
+                    <div class="gc-row-actions" style="gap:4px; display:flex; align-items:center; justify-content:flex-end;">
                       <button class="gc-action-btn" data-tooltip="Ver" th:onclick="'event.stopPropagation(); abrirDrawerRRHH(' + ${u.id} + ')'">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                       </button>
@@ -214,15 +212,15 @@
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                       </button>
                       <div class="gc-action-more" style="position:relative;">
-                          <button class="gc-action-btn" data-tooltip="Opciones" th:onclick="'event.stopPropagation(); toggleOptions(this)'">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                          </button>
-                          <div class="gc-dropdown-menu">
-                            <button type="button" th:onclick="'event.stopPropagation(); toggleBloqueoRRHH(' + ${u.id} + ')'" style="color: #EF4444;" th:if="${!u.bloqueado}">Bloquear Acceso</button>
-                            <button type="button" th:onclick="'event.stopPropagation(); toggleBloqueoRRHH(' + ${u.id} + ')'" style="color: #10B981;" th:if="${u.bloqueado}">Desbloquear Acceso</button>
-                            <div class="gc-dropdown-divider"></div>
-                            <button type="button" th:onclick="'event.stopPropagation(); eliminarRRHH(' + ${u.id} + ')'">Eliminar</button>
-                          </div>
+                        <button class="gc-action-btn" data-tooltip="Opciones" th:onclick="'event.stopPropagation(); toggleOptions(this)'">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                        </button>
+                        <div class="gc-dropdown-menu">
+                          <button type="button" th:onclick="'event.stopPropagation(); toggleBloqueoRRHH(' + ${u.id} + ')'" style="color:#EF4444;" th:if="${!u.bloqueado}">Bloquear Acceso</button>
+                          <button type="button" th:onclick="'event.stopPropagation(); toggleBloqueoRRHH(' + ${u.id} + ')'" style="color:#10B981;" th:if="${u.bloqueado}">Desbloquear Acceso</button>
+                          <div class="gc-dropdown-divider"></div>
+                          <button type="button" th:onclick="'event.stopPropagation(); eliminarRRHH(' + ${u.id} + ')'">Eliminar</button>
+                        </div>
                       </div>
                     </div>
                   </td>
