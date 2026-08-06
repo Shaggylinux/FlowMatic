@@ -41,8 +41,8 @@
           <td>
             <span
               class="badge"
-              th:classappend="${u.estado == 'activo' or u.activo} ? 'badge-active' : 'badge-pending'"
-              th:text="${u.estado ?: (u.activo ? 'Activo' : 'Pendiente')}"
+              th:classappend="${u.activo} ? 'badge-active' : 'badge-pending'"
+              th:text="${u.activo ? 'Activo' : 'Pendiente'}"
             >
             </span>
           </td>
