@@ -38,6 +38,10 @@
   .admin-form-row { grid-template-columns: 1fr 1fr; }
 }
 
+@media (max-width: 600px) {
+  .admin-form-row { grid-template-columns: 1fr; }
+}
+
 /* Grid de stat cards */
 .stats-grid {
   display: grid;
@@ -48,6 +52,10 @@
 
 @media (max-width: 900px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .stats-grid { grid-template-columns: 1fr; }
 }
 
 /* ── Overrides Bootstrap 5 para coherencia de marca ── */

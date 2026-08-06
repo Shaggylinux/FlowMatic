@@ -181,10 +181,10 @@
 
 .gs-timeline-badge {
     display: inline-block;
-    padding: 2px 7px;
+    padding: 2px 8px;
     font-size: 9px;
     font-weight: 700;
-    border-radius: 4px;
+    border-radius: 9999px;
     letter-spacing: 0.06em;
     vertical-align: middle;
     margin-right: 6px;
@@ -221,6 +221,26 @@
     text-decoration: underline;
 }
 
+.gs-btn-outline-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    background: #ffffff;
+    border: 1px solid #CBD5E1;
+    border-radius: var(--fm-radius-md);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.gs-btn-outline-mini:hover {
+    color: #0F172A;
+    background: #F8FAFC;
+    border-color: #94A3B8;
+}
+
 /* ── SYSTEM ALERTS (mini-tarjetas) ──────────── */
 
 .gs-alerts-grid {
@@ -232,6 +252,24 @@
 
 .gs-alert-mini {
     padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.gs-alert-mini:hover {
+    background-color: var(--fm-bg);
+}
+
+.gs-alert-mini-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.gs-alert-arrow {
+    flex-shrink: 0;
+    color: #94A3B8;
 }
 
 .gs-alert-mini + .gs-alert-mini {
@@ -366,28 +404,31 @@
 
 .gs-quick-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    padding: 14px 18px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 16px;
 }
 
 .gs-quick-card {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: 12px;
-    padding: 12px 14px;
-    border-radius: var(--fm-radius-md);
+    padding: 24px 14px;
+    border-radius: var(--fm-radius-lg);
     border: 1px solid var(--fm-border);
     background: var(--fm-surface);
     cursor: pointer;
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
     text-decoration: none;
     color: var(--fm-text);
 }
 
 .gs-quick-card:hover {
     box-shadow: var(--fm-shadow-md);
-    border-color: var(--fm-brand);
+    transform: translateY(-2px);
 }
 
 .gs-quick-icon {
@@ -424,17 +465,6 @@
     font-size: 11px;
     color: var(--fm-text-muted);
     line-height: 1.2;
-}
-
-.gs-quick-arrow {
-    flex-shrink: 0;
-    color: #CBD5E1;
-    transition: color 0.15s ease, transform 0.15s ease;
-}
-
-.gs-quick-card:hover .gs-quick-arrow {
-    color: var(--fm-brand);
-    transform: translateX(2px);
 }
 
 /* ── RESPONSIVE ────────────────────────────── */

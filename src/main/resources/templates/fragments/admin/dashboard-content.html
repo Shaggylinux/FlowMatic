@@ -28,9 +28,9 @@
                         <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                     </svg>
                 </div>
-                <h2 class="gs-stat-number" th:text="${totalRRHH}">0</h2>
-                <p class="gs-stat-label">Usuarios RRHH</p>
-                <p class="gs-stat-diff up" th:if="${rrhhDiff != null}" th:text="${rrhhDiff}">+0%</p>
+                <h2 class="gs-stat-number" th:text="${totalUsuarios}">0</h2>
+                <p class="gs-stat-label">Total Usuarios</p>
+                <p class="gs-stat-diff up" th:if="${usuariosDiff != null}" th:text="${usuariosDiff}">+0%</p>
             </div>
         </div>
         <div class="gs-stat-card">
@@ -40,22 +40,9 @@
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                     </svg>
                 </div>
-                <h2 class="gs-stat-number" th:text="${totalActivos}">0</h2>
-                <p class="gs-stat-label">Usuarios activos</p>
+                <h2 class="gs-stat-number" th:text="${rrhhActivos}">0</h2>
+                <p class="gs-stat-label">RRHH Activos</p>
                 <p class="gs-stat-diff up" th:if="${activosDiff != null}" th:text="${activosDiff}">+0%</p>
-            </div>
-        </div>
-        <div class="gs-stat-card">
-            <div class="gs-stat-inner">
-                <div class="gs-stat-icon gs-stat-icon-orang">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                </div>
-                <h2 class="gs-stat-number" th:text="${totalPendientes}">0</h2>
-                <p class="gs-stat-label">Pendientes</p>
-                <p class="gs-stat-diff neutral" th:if="${pendientesDiff != null}" th:text="${pendientesDiff}">0%</p>
             </div>
         </div>
         <div class="gs-stat-card">
@@ -68,9 +55,22 @@
                         <line x1="15" y1="11" x2="21" y2="11"/>
                     </svg>
                 </div>
-                <h2 class="gs-stat-number" th:text="${totalBloqueados}">0</h2>
-                <p class="gs-stat-label">Bloqueados</p>
-                <p class="gs-stat-diff neutral" th:if="${bloqueadosDiff != null}" th:text="${bloqueadosDiff}">0</p>
+                <h2 class="gs-stat-number" th:text="${candidatosRegistrados}">0</h2>
+                <p class="gs-stat-label">Candidatos Registrados</p>
+                <p class="gs-stat-diff up" th:if="${candidatosDiff != null}" th:text="${candidatosDiff}">+0%</p>
+            </div>
+        </div>
+        <div class="gs-stat-card">
+            <div class="gs-stat-inner">
+                <div class="gs-stat-icon gs-stat-icon-orang">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <h2 class="gs-stat-number" th:text="${candidatosPendientes}">0</h2>
+                <p class="gs-stat-label">Candidatos Pendientes</p>
+                <p class="gs-stat-diff neutral" th:if="${pendientesDiff != null}" th:text="${pendientesDiff}">0 pendientes</p>
             </div>
         </div>
     </div>
@@ -80,11 +80,14 @@
 
         <!-- Actividad Reciente -->
         <div class="gs-panel">
-            <div class="gs-panel-header">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                </svg>
-                <h3>Actividad reciente</h3>
+            <div class="gs-panel-header" style="justify-content: space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                    <h3>Actividad reciente</h3>
+                </div>
+                <a href="#" class="gs-btn-outline-mini" data-bs-toggle="modal" data-bs-target="#modalAuditoria">Ver historial &rarr;</a>
             </div>
             <div class="gs-timeline">
                 <th:block th:if="${not #lists.isEmpty(actividadReciente)}">
@@ -107,9 +110,6 @@
                     No hay actividad reciente
                 </div>
             </div>
-            <div class="gs-timeline-footer">
-                <a href="#" class="gs-link-arrow" data-bs-toggle="modal" data-bs-target="#modalActividad">Ver toda la actividad &rarr;</a>
-            </div>
         </div>
 
         <!-- Estado del Sistema (mini tarjetas) -->
@@ -123,37 +123,48 @@
                 <h3>Estado del sistema</h3>
             </div>
             <div class="gs-alerts-grid">
-                <div class="gs-alert-mini">
-                    <div class="gs-alert-mini-header">
-                        <span class="gs-alert-mini-dot gs-alert-mini-dot-green"></span>
-                        <span class="gs-alert-mini-title">Sistema operativo</span>
+                <a href="#" style="text-decoration:none;" class="gs-alert-mini" data-bs-toggle="modal" data-bs-target="#modalConfiguracion">
+                    <div class="gs-alert-mini-content">
+                        <div class="gs-alert-mini-header">
+                            <span class="gs-alert-mini-dot gs-alert-mini-dot-green"></span>
+                            <span class="gs-alert-mini-title">Sistema operativo</span>
+                        </div>
+                        <span class="gs-alert-mini-desc">Sin incidencias</span>
                     </div>
-                    <span class="gs-alert-mini-desc">Sin errores</span>
-                </div>
-                <div class="gs-alert-mini">
-                    <div class="gs-alert-mini-header">
-                        <span class="gs-alert-mini-dot gs-alert-mini-dot-green"></span>
-                        <span class="gs-alert-mini-title">Backups</span>
+                    <svg class="gs-alert-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+                <a href="#" style="text-decoration:none;" class="gs-alert-mini" data-bs-toggle="modal" data-bs-target="#modalConfiguracion">
+                    <div class="gs-alert-mini-content">
+                        <div class="gs-alert-mini-header">
+                            <span class="gs-alert-mini-dot gs-alert-mini-dot-green"></span>
+                            <span class="gs-alert-mini-title">Base de datos</span>
+                        </div>
+                        <span class="gs-alert-mini-desc">Conectada y estable</span>
                     </div>
-                    <span class="gs-alert-mini-desc">Correctos</span>
-                </div>
-                <div class="gs-alert-mini">
-                    <div class="gs-alert-mini-header">
-                        <span class="gs-alert-mini-dot gs-alert-mini-dot-green"></span>
-                        <span class="gs-alert-mini-title">Seguridad</span>
+                    <svg class="gs-alert-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+                <a href="#" style="text-decoration:none;" class="gs-alert-mini" data-bs-toggle="modal" data-bs-target="#modalReportes">
+                    <div class="gs-alert-mini-content">
+                        <div class="gs-alert-mini-header">
+                            <span class="gs-alert-mini-dot gs-alert-mini-dot-green"></span>
+                            <span class="gs-alert-mini-title">Backups</span>
+                        </div>
+                        <span class="gs-alert-mini-desc">Último respaldo: Hoy 02:00 AM</span>
                     </div>
-                    <span class="gs-alert-mini-desc" th:if="${totalBloqueados == 0}">Sin bloqueos</span>
-                    <span class="gs-alert-mini-desc gs-alert-mini-desc-warn" th:if="${totalBloqueados > 0}" th:text="${totalBloqueados + ' bloqueo(s)'}">Sin bloqueos</span>
-                </div>
-                <div class="gs-alert-mini">
-                    <div class="gs-alert-mini-header">
-                        <span class="gs-alert-mini-dot gs-alert-mini-dot-yellow" th:if="${totalPendientes > 0}"></span>
-                        <span class="gs-alert-mini-dot gs-alert-mini-dot-green" th:if="${totalPendientes == 0}"></span>
-                        <span class="gs-alert-mini-title">Activaciones</span>
+                    <svg class="gs-alert-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+                <a href="#" style="text-decoration:none;" class="gs-alert-mini">
+                    <div class="gs-alert-mini-content">
+                        <div class="gs-alert-mini-header">
+                            <span class="gs-alert-mini-dot gs-alert-mini-dot-yellow" th:if="${candidatosPendientes > 0}"></span>
+                            <span class="gs-alert-mini-dot gs-alert-mini-dot-green" th:if="${candidatosPendientes == 0}"></span>
+                            <span class="gs-alert-mini-title">Activaciones</span>
+                        </div>
+                        <span class="gs-alert-mini-desc gs-alert-mini-desc-warn" th:if="${candidatosPendientes > 0}" th:text="${candidatosPendientes + ' usuarios pendientes'}">2 usuarios pendientes</span>
+                        <span class="gs-alert-mini-desc" th:if="${candidatosPendientes == 0}">Sin pendientes</span>
                     </div>
-                    <span class="gs-alert-mini-desc gs-alert-mini-desc-warn" th:if="${totalPendientes > 0}" th:text="${totalPendientes + ' pendiente(s)'}">2 pendientes</span>
-                    <span class="gs-alert-mini-desc" th:if="${totalPendientes == 0}">Sin pendientes</span>
-                </div>
+                    <svg class="gs-alert-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
             </div>
         </div>
     </div>
@@ -218,21 +229,32 @@
                 <h3>Acciones r&aacute;pidas</h3>
             </div>
             <div class="gs-quick-grid">
-                <a class="gs-quick-card" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalReportes">
+                <a class="gs-quick-card" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalNuevoRRHH">
                     <div class="gs-quick-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="20" x2="18" y2="10"/>
-                            <line x1="12" y1="20" x2="12" y2="4"/>
-                            <line x1="6" y1="20" x2="6" y2="14"/>
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <line x1="19" y1="8" x2="19" y2="14"/>
+                            <line x1="22" y1="11" x2="16" y2="11"/>
                         </svg>
                     </div>
                     <div class="gs-quick-info">
-                        <span class="gs-quick-label">Reportes</span>
-                        <span class="gs-quick-sub">Ver estad&iacute;sticas del sistema</span>
+                        <span class="gs-quick-label">Registrar RRHH</span>
+                        <span class="gs-quick-sub">Crear nuevo usuario</span>
                     </div>
-                    <svg class="gs-quick-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M6 4l4 4-4 4"/>
-                    </svg>
+                </a>
+                <a class="gs-quick-card" style="cursor:pointer;" th:href="@{/admin/exportar}">
+                    <div class="gs-quick-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                    </div>
+                    <div class="gs-quick-info">
+                        <span class="gs-quick-label">Exportar usuarios</span>
+                        <span class="gs-quick-sub">Descargar Excel</span>
+                    </div>
                 </a>
                 <a class="gs-quick-card" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalAuditoria">
                     <div class="gs-quick-icon">
@@ -243,11 +265,8 @@
                     </div>
                     <div class="gs-quick-info">
                         <span class="gs-quick-label">Auditor&iacute;a</span>
-                        <span class="gs-quick-sub">Registro de actividad</span>
+                        <span class="gs-quick-sub">Ver registros</span>
                     </div>
-                    <svg class="gs-quick-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M6 4l4 4-4 4"/>
-                    </svg>
                 </a>
                 <a class="gs-quick-card" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#modalConfiguracion">
                     <div class="gs-quick-icon">
@@ -258,11 +277,8 @@
                     </div>
                     <div class="gs-quick-info">
                         <span class="gs-quick-label">Configuraci&oacute;n</span>
-                        <span class="gs-quick-sub">Sistema</span>
+                        <span class="gs-quick-sub">Ajustes del sistema</span>
                     </div>
-                    <svg class="gs-quick-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M6 4l4 4-4 4"/>
-                    </svg>
                 </a>
             </div>
         </div>

@@ -68,6 +68,11 @@ public class AdminController {
         long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
         long entrevistasHoy = eventoRepository.countByFecha(LocalDate.now());
 
+        // Nuevas metricas para KPI (Requisito F-10)
+        long rrhhActivos = totalActivos;
+        long candidatosRegistrados = totalCandidatos;
+        long candidatosPendientes = usuarioRepository.countByRolAndActivo("ROLE_CANDIDATO", false);
+
         List<Map<String, Object>> actividadReciente = buildActividadReciente();
         List<Map<String, Object>> distribucionRoles = buildDistribucionRoles(totalAdmins, totalRRHH, totalCandidatos);
 
@@ -76,9 +81,12 @@ public class AdminController {
             ? "+" + (totalRRHH * 100 / totalUsuarios) + "% este mes" : "0%";
         String activosDiff = sumaRRHH > 0
             ? "+" + (totalActivos * 100 / sumaRRHH) + "% activos" : "0%";
-        String pendientesDiff = totalPendientes > 0
-            ? totalPendientes + " pendientes" : "0 pendientes";
+        String pendientesDiff = candidatosPendientes > 0
+            ? candidatosPendientes + " pendientes" : "0 pendientes";
         String bloqueadosDiff = "0 bloqueados";
+        String usuariosDiff = totalUsuarios > 0 ? "Total" : "0";
+        String candidatosDiff = totalUsuarios > 0
+            ? "+" + (candidatosRegistrados * 100 / totalUsuarios) + "% del total" : "0%";
 
         model.addAttribute("totalUsuarios", totalUsuarios);
         model.addAttribute("totalRRHH", totalRRHH);
@@ -88,10 +96,17 @@ public class AdminController {
         model.addAttribute("totalCandidatos", totalCandidatos);
         model.addAttribute("totalAdmins", totalAdmins);
         model.addAttribute("entrevistasHoy", entrevistasHoy);
+        
+        model.addAttribute("rrhhActivos", rrhhActivos);
+        model.addAttribute("candidatosRegistrados", candidatosRegistrados);
+        model.addAttribute("candidatosPendientes", candidatosPendientes);
+        
         model.addAttribute("rrhhDiff", rrhhDiff);
         model.addAttribute("activosDiff", activosDiff);
         model.addAttribute("pendientesDiff", pendientesDiff);
         model.addAttribute("bloqueadosDiff", bloqueadosDiff);
+        model.addAttribute("usuariosDiff", usuariosDiff);
+        model.addAttribute("candidatosDiff", candidatosDiff);
         model.addAttribute("actividadReciente", actividadReciente);
         model.addAttribute("distribucionRoles", distribucionRoles);
         model.addAttribute("viewMode", "dashboard");
@@ -370,10 +385,31 @@ public class AdminController {
         response.setHeader(headerKey, headerValue);
 
         List<Usuario> listaUsuarios = usuarioRepository.findAll();
-        String[] cabeceras = {"ID", "Email", "Rol", "Activo"};
-        List<Object[]> datos = listaUsuarios.stream()
-            .map(u -> new Object[]{u.getId(), u.getEmail(), u.getRol(), u.isActivo()})
-            .toList();
+        String[] cabeceras = {"ID", "Username", "Apellido", "Email", "Rol", "Estado", "Etapa"};
+        List<Object[]> datos = listaUsuarios.stream().map(u -> {
+            String username = "";
+            String apellido = "";
+            String etapa = "N/A";
+            String estado = u.isActivo() ? "Activo" : "Pendiente";
+            
+            if ("ROLE_CANDIDATO".equals(u.getRol())) {
+                com.back.candidatos.Candidato c = candidatoRepository.findById(u.getId()).orElse(null);
+                if (c != null) {
+                    username = c.getUsername() != null ? c.getUsername() : "";
+                    apellido = c.getApellido() != null ? c.getApellido() : "";
+                    etapa = c.getProcesoActual() != null ? c.getProcesoActual() : "N/A";
+                }
+            } else if ("ROLE_RRHH".equals(u.getRol())) {
+                RRHH r = rrhhRepository.findById(u.getId()).orElse(null);
+                if (r != null) {
+                    username = r.getUsername() != null ? r.getUsername() : "";
+                    apellido = r.getApellido() != null ? r.getApellido() : "";
+                }
+            } else if ("ROLE_ADMINISTRADOR".equals(u.getRol())) {
+                username = "Administrador";
+            }
+            return new Object[]{u.getId(), username, apellido, u.getEmail(), u.getRol(), estado, etapa};
+        }).toList();
         excelService.exportarDatos("Usuarios", cabeceras, datos, response);
 
         auditoriaService.registrar("EXPORTACI\u00d3N",
