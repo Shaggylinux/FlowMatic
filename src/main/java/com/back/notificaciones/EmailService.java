@@ -59,8 +59,7 @@ public class EmailService {
 
         } catch (Exception e) {
             logger.error("Error al enviar email de verificación: {}", e.getMessage());
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("Error al enviar el email de verificación", e);
         }
     }
 
@@ -91,7 +90,7 @@ public class EmailService {
 
         } catch (Exception e) {
             logger.error("Error al enviar email de recuperación: {}", e.getMessage());
-            return false;
+            throw new RuntimeException("Error al enviar el email de recuperación", e);
         }
     }
 
@@ -126,7 +125,7 @@ public class EmailService {
 
         } catch (Exception e) {
             logger.error("Error al enviar email de entrevista: {}", e.getMessage());
-            return false;
+            throw new RuntimeException("Error al enviar el email de entrevista", e);
         }
     }
 }
