@@ -26,8 +26,8 @@ public class EmailService {
     @Value("${server.servlet.context-path:}")
     private String contextPath;
 
-    @Value("${server.port:8080}")
-    private String serverPort;
+    @Value("${app.base.url:http://localhost:8080}")
+    private String appBaseUrl;
 
     @Value("${mail.from:FLOWMATIC <malacruz132@gmail.com>}")
     private String mailFrom;
@@ -36,7 +36,7 @@ public class EmailService {
         try {
             logger.info("📧 Preparando email de verificación para: {}", destinatario);
 
-            String enlaceActivacion = "http://localhost:" + serverPort + "/registro/candidato/activar?token=" + token;
+            String enlaceActivacion = appBaseUrl + "/registro/candidato/activar?token=" + token;
 
             String asunto = "✅ Activa tu cuenta en FLOWMATIC";
             Context context = new Context();
@@ -58,8 +58,7 @@ public class EmailService {
             return true;
 
         } catch (Exception e) {
-            logger.error("Error al enviar email de verificación: {}", e.getMessage());
-            e.printStackTrace();
+            logger.error("Error al enviar email de verificación: {}", e.getMessage(), e);
             return false;
         }
     }
@@ -68,7 +67,7 @@ public class EmailService {
         try {
             logger.info("📧 Preparando email de recuperación para: {}", destinatario);
 
-            String enlace = "http://localhost:" + serverPort + "/reset-password?token=" + token;
+            String enlace = appBaseUrl + "/reset-password?token=" + token;
 
             String asunto = "🔐 Restablece tu contraseña en FLOWMATIC";
             Context context = new Context();
@@ -90,7 +89,7 @@ public class EmailService {
             return true;
 
         } catch (Exception e) {
-            logger.error("Error al enviar email de recuperación: {}", e.getMessage());
+            logger.error("Error al enviar email de recuperación: {}", e.getMessage(), e);
             return false;
         }
     }
