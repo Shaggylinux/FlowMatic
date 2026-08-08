@@ -19,4 +19,9 @@ public class Archivos {
 
     private String etapa;
     private String tipoDocumento;
+    
+    @Column(name = "estado_documento")
+    private String estadoDocumento = "Pendiente";
+    
+    private String observacion;
 }

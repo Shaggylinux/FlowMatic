@@ -11,6 +11,84 @@
   <link rel="stylesheet" th:href="@{/css/base.css}">
   <link rel="stylesheet" th:href="@{/css/drive.css}">
   <link rel="stylesheet" th:href="@{/css/contenedor.css}">
+  
+  <script>
+    window.abrirModalAceptar = function(id) {
+      try {
+        var existing = document.getElementById('dynamicModalAceptar');
+        if (existing) existing.remove();
+
+        var dialog = document.createElement('dialog');
+        dialog.id = 'dynamicModalAceptar';
+        dialog.style.cssText = 'padding:24px; border-radius:12px; border:none; width:90%; max-width:400px; background:#1e293b; color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.5);';
+        
+        var csrfToken = document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '';
+        
+        dialog.innerHTML = `
+          <div style="font-family: 'Inter', sans-serif;">
+            <h3 style="margin:0 0 16px 0; font-size:18px;">Aceptar Documento</h3>
+            <p style="color:#94a3b8; font-size:14px; margin:0 0 24px 0;">¿Estás seguro de que quieres aceptar este documento? El estado pasará a "Aceptado".</p>
+            <form action="/drive/actualizar-estado-archivo" method="post">
+              <input type="hidden" name="_csrf" value="${csrfToken}">
+              <input type="hidden" name="archivoId" value="${id}">
+              <input type="hidden" name="estado" value="Aceptado">
+              <input type="hidden" name="folder" value="${document.querySelector('input[name=folder]') ? document.querySelector('input[name=folder]').value : ''}">
+              
+              <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button" onclick="this.closest('dialog').close()" style="padding:8px 16px; border-radius:6px; background:transparent; color:#cbd5e1; border:1px solid #475569; cursor:pointer;">Cancelar</button>
+                <button type="submit" style="padding:8px 16px; border-radius:6px; background:#16a34a; color:#fff; border:none; cursor:pointer; font-weight:600;">Confirmar</button>
+              </div>
+            </form>
+          </div>
+        `;
+        
+        document.body.appendChild(dialog);
+        dialog.showModal();
+      } catch(e) {
+        alert("Excepción: " + e.message);
+      }
+    };
+
+    window.abrirModalRechazar = function(id) {
+      try {
+        var existing = document.getElementById('dynamicModalRechazo');
+        if (existing) existing.remove();
+
+        var dialog = document.createElement('dialog');
+        dialog.id = 'dynamicModalRechazo';
+        dialog.style.cssText = 'padding:24px; border-radius:12px; border:none; width:90%; max-width:400px; background:#1e293b; color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.5);';
+        
+        var csrfToken = document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '';
+
+        dialog.innerHTML = `
+          <div style="font-family: 'Inter', sans-serif;">
+            <h3 style="margin:0 0 16px 0; font-size:18px;">Rechazar Documento</h3>
+            <form action="/drive/actualizar-estado-archivo" method="post">
+              <input type="hidden" name="_csrf" value="${csrfToken}">
+              <input type="hidden" name="archivoId" value="${id}">
+              <input type="hidden" name="estado" value="Rechazado">
+              <input type="hidden" name="folder" value="${document.querySelector('input[name=folder]') ? document.querySelector('input[name=folder]').value : ''}">
+              
+              <div style="margin-bottom:16px;">
+                <label style="display:block; margin-bottom:8px; font-size:14px; color:#cbd5e1;">Observación / Motivo de rechazo</label>
+                <textarea name="observacion" rows="3" required style="width:100%; box-sizing:border-box; padding:8px; border-radius:6px; background:#0f172a; color:#fff; border:1px solid #334155; font-family:inherit;"></textarea>
+              </div>
+              
+              <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button" onclick="this.closest('dialog').close()" style="padding:8px 16px; border-radius:6px; background:transparent; color:#cbd5e1; border:1px solid #475569; cursor:pointer;">Cancelar</button>
+                <button type="submit" style="padding:8px 16px; border-radius:6px; background:#ef4444; color:#fff; border:none; cursor:pointer; font-weight:600;">Rechazar</button>
+              </div>
+            </form>
+          </div>
+        `;
+        
+        document.body.appendChild(dialog);
+        dialog.showModal();
+      } catch(e) {
+        alert("Excepción: " + e.message);
+      }
+    };
+  </script>
 </head>
 
 <body class="drive-body">
@@ -185,9 +263,22 @@
           <tbody>
             <tr th:each="archivo : ${archivos}">
               <td>
-                <span style="display:flex; align-items:center; gap:8px;">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--fm-brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
-                  <span th:text="${archivo.nombre}"></span>
+                <span style="display:flex; align-items:flex-start; gap:8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--fm-brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 3px;"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                  <div style="display:flex; flex-direction:column; gap:4px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span th:text="${archivo.nombre}"></span>
+                      <span class="badge" 
+                            th:classappend="${archivo.estadoDocumento == 'Aceptado'} ? 'badge-active' : (${archivo.estadoDocumento == 'Rechazado'} ? 'badge-rejected' : 'badge-pending')"
+                            th:text="${archivo.estadoDocumento != null ? archivo.estadoDocumento : 'Pendiente'}"
+                            style="font-size:11px; padding:2px 6px;"></span>
+                    </div>
+                    <div sec:authorize="hasRole('RRHH')" style="font-size:11px; color:var(--fm-text-muted);"
+                         th:text="'Subido por: ' + ${archivo.propietario}"></div>
+                    <div th:if="${archivo.estadoDocumento == 'Rechazado' and archivo.observacion != null}"
+                         style="font-size:12px; color:var(--fm-danger); margin-top:2px;"
+                         th:text="'Motivo: ' + ${archivo.observacion}"></div>
+                  </div>
                 </span>
               </td>
               <td>
@@ -200,6 +291,16 @@
                             style="background:var(--fm-info-bg); color:var(--fm-info-text); border:1px solid transparent;"
                             th:onclick="'prepararCompartir(' + ${archivo.id} + ')'">
                       Compartir
+                    </button>
+                    <button th:if="${archivo.propietario != usuarioActual and archivo.estadoDocumento == 'Pendiente'}" 
+                            type="button" class="btn btn-ghost btn-sm btn-aceptar-doc" style="color:var(--fm-success); border-color:rgba(22, 163, 74, 0.3);"
+                            th:data-id="${archivo.id}" onclick="abrirModalAceptar(this.getAttribute('data-id'))">
+                      Aceptar
+                    </button>
+                    <button th:if="${archivo.propietario != usuarioActual and archivo.estadoDocumento == 'Pendiente'}" 
+                            type="button" class="btn btn-ghost-danger btn-sm btn-rechazar-doc"
+                            th:data-id="${archivo.id}" onclick="abrirModalRechazar(this.getAttribute('data-id'))">
+                      Rechazar
                     </button>
                     <form th:if="${archivo.propietario == usuarioActual}"
                           th:action="@{/drive/eliminar}" method="post"
@@ -292,6 +393,8 @@
   formId='formRegistroModal',
   closeBtnId='closeModal'
 )}"></div>
+
+
 
 <script>
   function solicitarNombreCarpeta() {

@@ -51,10 +51,12 @@ public class DriveController {
         String emailReal = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
 
         Set<Archivos> conjuntoTodo = new HashSet<>();
-        List<Archivos> listaPorUser = filesRepository.buscarArchivosVisiblesPara(emailReal);
-        List<Archivos> listaPorEmail = filesRepository.buscarArchivosVisiblesPara(emailReal);
-        if (listaPorUser != null) conjuntoTodo.addAll(listaPorUser);
-        if (listaPorEmail != null) conjuntoTodo.addAll(listaPorEmail);
+        if (usuarioActual != null && "ROLE_RRHH".equals(usuarioActual.getRol())) {
+            conjuntoTodo.addAll(filesRepository.findAll());
+        } else {
+            List<Archivos> lista = filesRepository.buscarArchivosVisiblesPara(emailReal);
+            if (lista != null) conjuntoTodo.addAll(lista);
+        }
         List<Archivos> todos = new ArrayList<>(conjuntoTodo);
 
         String folderActualURL = folder.replace("\\", "/").replaceAll("^/+|/+$", "").trim();
@@ -259,5 +261,34 @@ public class DriveController {
         } catch (IOException e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @PostMapping("/actualizar-estado-archivo")
+    public String actualizarEstadoArchivo(@RequestParam("archivoId") Long archivoId,
+                                          @RequestParam("estado") String estado,
+                                          @RequestParam(value = "observacion", required = false) String observacion,
+                                          @RequestParam(value = "folder", defaultValue = "") String folder,
+                                          Principal principal) {
+        String email = principal != null ? principal.getName() : null;
+        if (email == null) return "redirect:/drive?folder=" + folder;
+
+        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuarioActual == null || !"ROLE_RRHH".equals(usuarioActual.getRol())) {
+            return "redirect:/drive?folder=" + folder;
+        }
+
+        Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
+        if (archivoOpt.isPresent()) {
+            Archivos archivo = archivoOpt.get();
+            archivo.setEstadoDocumento(estado);
+            if ("Rechazado".equals(estado)) {
+                archivo.setObservacion(observacion);
+            } else {
+                archivo.setObservacion(null);
+            }
+            filesRepository.save(archivo);
+        }
+
+        return "redirect:/drive?folder=" + folder;
     }
 }
