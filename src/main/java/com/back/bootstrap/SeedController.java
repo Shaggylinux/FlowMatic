@@ -116,7 +116,6 @@ public class SeedController {
                 c.setUltimaActualizacion(LocalDateTime.now());
                 candidatoRepository.save(c);
 
-                filesServices.crearCarpetaCandidato(row[2]);
 
                 Map<String, Object> m = new LinkedHashMap<>();
                 m.put("type", "candidato");

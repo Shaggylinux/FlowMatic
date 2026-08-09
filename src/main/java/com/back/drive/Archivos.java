@@ -24,4 +24,8 @@ public class Archivos {
     private String estadoDocumento = "Pendiente";
     
     private String observacion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "candidato_id")
+    private com.back.auth.Usuario candidato;
 }

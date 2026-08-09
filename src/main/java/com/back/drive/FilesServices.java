@@ -68,22 +68,6 @@ public class FilesServices {
         System.out.println("Notificación enviada a: " + nombreDestinatario);
     }
 
-    public void crearCarpetaCandidato(String email) {
-        try {
-            Path dir = Paths.get(rootFolder, "Candidatos", email);
-            if (!Files.exists(dir)) {
-                Files.createDirectories(dir);
-                Archivos carpeta = new Archivos();
-                carpeta.setNombre(email);
-                carpeta.setUbicacion(dir.toString().replace("\\", "/"));
-                carpeta.setEsCarpeta(true);
-                carpeta.setPropietario(email);
-                repository.save(carpeta);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public Archivos guardarDocumento(MultipartFile file, String email, String tipoDocumento) throws IOException {
         String filename = file.getOriginalFilename();
@@ -115,8 +99,29 @@ public class FilesServices {
         repository.save(carpeta);
     }
 
-    public void subirArchivoDrive(MultipartFile archivo, String folder, String email, String filename) throws IOException {
+    public void asegurarCarpetaCandidato(String rutaCarpeta, String nombreCarpeta, String emailPropietario) {
+        try {
+            Path dir = Paths.get(rootFolder, rutaCarpeta);
+            if (!Files.exists(dir)) {
+                Files.createDirectories(dir);
+                // Comprobar si ya existe el registro en DB
+                if (repository.findFoldersByUbicacionStartingWith(dir.toString().replace("\\", "/")).isEmpty()) {
+                    Archivos carpeta = new Archivos();
+                    carpeta.setNombre(nombreCarpeta);
+                    carpeta.setUbicacion(dir.toString().replace("\\", "/"));
+                    carpeta.setEsCarpeta(true);
+                    carpeta.setPropietario(emailPropietario);
+                    repository.save(carpeta);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void subirArchivoDrive(MultipartFile archivo, String folder, String email, String filename, com.back.auth.Usuario candidato) throws IOException {
         String rutaDestino = rootFolder + "/" + (folder.isEmpty() ? "" : folder + "/") + filename;
+        rutaDestino = rutaDestino.replace("//", "/");
         Path rutaCompleta = Paths.get(rutaDestino);
         Files.createDirectories(rutaCompleta.getParent());
         Files.copy(archivo.getInputStream(), rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
@@ -125,6 +130,7 @@ public class FilesServices {
         doc.setNombre(filename);
         doc.setUbicacion(rutaDestino);
         doc.setPropietario(email);
+        doc.setCandidato(candidato);
         repository.save(doc);
     }
 

@@ -34,7 +34,6 @@ public class CandidatoRegistrationListener {
             candidato.setApellido(event.apellido());
             candidatoRepository.save(candidato);
 
-            filesServices.crearCarpetaCandidato(event.email());
             logger.info("Perfil y carpeta creados para: {}", event.email());
         }
     }

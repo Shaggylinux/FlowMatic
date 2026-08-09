@@ -1,6 +1,5 @@
 package com.back.candidatos.drive;
 
-
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -55,7 +54,8 @@ public class DriveController {
             conjuntoTodo.addAll(filesRepository.findAll());
         } else {
             List<Archivos> lista = filesRepository.buscarArchivosVisiblesPara(emailReal);
-            if (lista != null) conjuntoTodo.addAll(lista);
+            if (lista != null)
+                conjuntoTodo.addAll(lista);
         }
         List<Archivos> todos = new ArrayList<>(conjuntoTodo);
 
@@ -65,7 +65,8 @@ public class DriveController {
         List<Archivos> archivosEnEstaCarpeta = todos.stream()
                 .filter(a -> !a.isEsCarpeta())
                 .filter(a -> {
-                    if (refUsuario == null) return false;
+                    if (refUsuario == null)
+                        return false;
                     if ("ROLE_RRHH".equals(refUsuario.getRol())) {
                         String folderEnDB = a.getUbicacion().replace("\\", "/")
                                 .replace(ROOT_DIR.replace("\\", "/"), "")
@@ -96,7 +97,10 @@ public class DriveController {
 
         model.addAttribute("usuarioActualObjeto", usuarioData);
         model.addAttribute("usuarioActual", loginId);
-        model.addAttribute("carpetas", todos.stream().filter(Archivos::isEsCarpeta).toList());
+        model.addAttribute("carpetas", todos.stream()
+                .filter(Archivos::isEsCarpeta)
+                .filter(a -> !a.getNombre().contains("@"))
+                .toList());
         model.addAttribute("archivos", archivosEnEstaCarpeta);
         model.addAttribute("folderActual", folderActualURL);
         List<Candidato> candidatoList = candidatoRepository.findAll();
@@ -117,19 +121,22 @@ public class DriveController {
 
     @PostMapping("/crear-carpeta")
     public String crearCarpeta(@RequestParam("nombre") String nombre,
-                                @RequestParam(value = "folder", defaultValue = "") String folder,
-                                Principal principal, Model model) {
+            @RequestParam(value = "folder", defaultValue = "") String folder,
+            Principal principal, Model model) {
         String loginId = (principal != null) ? principal.getName() : null;
-        if (loginId == null) return "redirect:/login";
+        if (loginId == null)
+            return "redirect:/login";
 
         Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
         String email = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
 
-        if (nombre == null || nombre.trim().isEmpty()) return "redirect:/drive";
+        if (nombre == null || nombre.trim().isEmpty())
+            return "redirect:/drive";
 
         folder = Sanitizer.sanitizePath(folder);
         String rutaSinSuper = Sanitizer.sanitizePath(nombre);
-        if (rutaSinSuper.isEmpty()) return "redirect:/drive";
+        if (rutaSinSuper.isEmpty())
+            return "redirect:/drive";
 
         try {
             filesServices.crearCarpetaDrive(rutaSinSuper, folder, email);
@@ -143,13 +150,34 @@ public class DriveController {
 
     @PostMapping("/subir-archivo")
     public String subirArchivo(@RequestParam("archivo") MultipartFile archivo,
-                                @RequestParam("folder") String folder,
-                                Principal principal) {
+            @RequestParam("folder") String folder,
+            @RequestParam(value = "candidatoId", required = false) Long candidatoId,
+            Principal principal) {
         String loginId = (principal != null) ? principal.getName() : null;
-        if (loginId == null) return "redirect:/login";
+        if (loginId == null)
+            return "redirect:/login";
 
         Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
         String email = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
+
+        Usuario candidatoVinculado = null;
+        if (usuarioActual != null && "ROLE_CANDIDATO".equals(usuarioActual.getRol())) {
+            candidatoVinculado = usuarioActual;
+        } else if (candidatoId != null) {
+            candidatoVinculado = usuarioRepository.findById(candidatoId).orElse(null);
+        }
+
+        if (candidatoVinculado != null) {
+            Candidato candidatoInfo = candidatoRepository.findById(candidatoVinculado.getId()).orElse(null);
+            String nombreCandidato = candidatoInfo != null
+                    ? (candidatoInfo.getUsername() + " "
+                            + (candidatoInfo.getApellido() != null ? candidatoInfo.getApellido() : "")).trim()
+                    : candidatoVinculado.getEmail();
+
+            String candidateFolderPath = "Candidatos/" + nombreCandidato;
+            filesServices.asegurarCarpetaCandidato(candidateFolderPath, nombreCandidato, email);
+            folder = candidateFolderPath;
+        }
 
         folder = Sanitizer.sanitizePath(folder);
         String filename = archivo.getOriginalFilename();
@@ -158,7 +186,7 @@ public class DriveController {
         }
 
         try {
-            filesServices.subirArchivoDrive(archivo, folder, email, filename);
+            filesServices.subirArchivoDrive(archivo, folder, email, filename, candidatoVinculado);
         } catch (IOException e) {
             return "redirect:/drive?folder=" + folder;
         }
@@ -167,14 +195,15 @@ public class DriveController {
     }
 
     private boolean esPropietarioODestinatario(Archivos archivo, String email) {
-        if (email == null) return false;
+        if (email == null)
+            return false;
         return email.equalsIgnoreCase(archivo.getPropietario())
-            || (archivo.getDestinario() != null && email.equalsIgnoreCase(archivo.getDestinario()));
+                || (archivo.getDestinario() != null && email.equalsIgnoreCase(archivo.getDestinario()));
     }
 
     @GetMapping("/descargar")
     public ResponseEntity<Resource> descargarArchivo(@RequestParam("fileId") Long fileId,
-                                                      Principal principal) {
+            Principal principal) {
         String email = principal != null ? principal.getName() : null;
         Optional<Archivos> archivoOpt = filesRepository.findById(fileId);
         if (archivoOpt.isEmpty() || !esPropietarioODestinatario(archivoOpt.get(), email)) {
@@ -183,7 +212,8 @@ public class DriveController {
         Archivos archivo = archivoOpt.get();
         try {
             Resource resource = new UrlResource(filesServices.obtenerRutaArchivo(archivo).toUri());
-            if (!resource.exists()) return ResponseEntity.notFound().build();
+            if (!resource.exists())
+                return ResponseEntity.notFound().build();
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + archivo.getNombre() + "\"")
                     .body(resource);
@@ -194,14 +224,16 @@ public class DriveController {
 
     @PostMapping("/eliminar")
     public String eliminarArchivo(@RequestParam("fileId") Long fileId,
-                                   @RequestParam(value = "folder", defaultValue = "") String folder,
-                                   Principal principal) {
+            @RequestParam(value = "folder", defaultValue = "") String folder,
+            Principal principal) {
         String email = principal != null ? principal.getName() : null;
         Optional<Archivos> archivoOpt = filesRepository.findById(fileId);
-        if (archivoOpt.isEmpty() || email == null) return "redirect:/drive?folder=" + folder;
+        if (archivoOpt.isEmpty() || email == null)
+            return "redirect:/drive?folder=" + folder;
         Archivos archivo = archivoOpt.get();
-        if (!email.equalsIgnoreCase(archivo.getPropietario())) return "redirect:/drive?folder=" + folder;
-        
+        if (!email.equalsIgnoreCase(archivo.getPropietario()))
+            return "redirect:/drive?folder=" + folder;
+
         filesServices.eliminarArchivo(archivo);
 
         return "redirect:/drive?folder=" + folder;
@@ -209,21 +241,24 @@ public class DriveController {
 
     @PostMapping("/compartir")
     public String compartirArchivo(@RequestParam("archivoId") Long archivoId,
-                                    @RequestParam("emailDestinatario") String destinatario,
-                                    Principal principal) {
+            @RequestParam("emailDestinatario") String destinatario,
+            Principal principal) {
         String email = principal != null ? principal.getName() : null;
         Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
-        if (archivoOpt.isEmpty() || email == null) return "redirect:/drive";
-        if (!email.equalsIgnoreCase(archivoOpt.get().getPropietario())) return "redirect:/drive";
+        if (archivoOpt.isEmpty() || email == null)
+            return "redirect:/drive";
+        if (!email.equalsIgnoreCase(archivoOpt.get().getPropietario()))
+            return "redirect:/drive";
         filesServices.compartirArchivo(archivoId, destinatario);
         return "redirect:/drive";
     }
 
     @PostMapping("/actualizar-estado")
     public String actualizarEstado(@RequestParam("usuarioId") Long id,
-                                    @RequestParam("nuevoEstado") String estado) {
+            @RequestParam("nuevoEstado") String estado) {
         Candidato candidato = candidatoRepository.findById(id).orElse(null);
-        if (candidato == null) return "redirect:/drive";
+        if (candidato == null)
+            return "redirect:/drive";
 
         String estadoAnterior = candidato.getEstado();
         candidato.setEstado(estado);
@@ -231,10 +266,11 @@ public class DriveController {
         candidatoRepository.save(candidato);
 
         if (estadoAnterior == null || !estadoAnterior.equals(estado)) {
-            String nombre = candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : "");
+            String nombre = candidato.getUsername() + " "
+                    + (candidato.getApellido() != null ? candidato.getApellido() : "");
             notificacionService.crear("ESTADO",
-                "Estado actualizado: " + nombre + " ahora como \"" + estado + "\"",
-                id, nombre, "/gestion-candidatos");
+                    "Estado actualizado: " + nombre + " ahora como \"" + estado + "\"",
+                    id, nombre, "/gestion-candidatos");
         }
 
         return "redirect:/drive";
@@ -251,9 +287,11 @@ public class DriveController {
         try {
             java.nio.file.Path path = filesServices.obtenerRutaArchivo(archivo);
             Resource resource = new UrlResource(path.toUri());
-            if (!resource.exists()) return ResponseEntity.notFound().build();
+            if (!resource.exists())
+                return ResponseEntity.notFound().build();
             String contentType = java.nio.file.Files.probeContentType(path);
-            if (contentType == null) contentType = "application/octet-stream";
+            if (contentType == null)
+                contentType = "application/octet-stream";
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + archivo.getNombre() + "\"")
                     .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
@@ -265,12 +303,13 @@ public class DriveController {
 
     @PostMapping("/actualizar-estado-archivo")
     public String actualizarEstadoArchivo(@RequestParam("archivoId") Long archivoId,
-                                          @RequestParam("estado") String estado,
-                                          @RequestParam(value = "observacion", required = false) String observacion,
-                                          @RequestParam(value = "folder", defaultValue = "") String folder,
-                                          Principal principal) {
+            @RequestParam("estado") String estado,
+            @RequestParam(value = "observacion", required = false) String observacion,
+            @RequestParam(value = "folder", defaultValue = "") String folder,
+            Principal principal) {
         String email = principal != null ? principal.getName() : null;
-        if (email == null) return "redirect:/drive?folder=" + folder;
+        if (email == null)
+            return "redirect:/drive?folder=" + folder;
 
         Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
         if (usuarioActual == null || !"ROLE_RRHH".equals(usuarioActual.getRol())) {
