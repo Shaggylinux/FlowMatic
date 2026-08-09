@@ -12,14 +12,14 @@
             <p class="fm-topbar-sub d-none d-sm-block">Resumen general del sistema Flowmatic</p>
         </div>
     </div>
-    <div style="display:flex; align-items:center; gap:8px;">
+    <div style="display:flex; align-items:center; gap:16px;">
         <div style="position:relative;">
-            <button class="gc-bell-btn" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <button type="button" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones" style="background:none; border:none; position:relative; cursor:pointer; color:#64748B;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
                     <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
                 </svg>
-                <span class="gc-bell-dot" id="gc-notif-badge">0</span>
+                <span id="gc-notif-badge" style="position:absolute; top:-2px; right:-2px; background:#EF4444; color:#fff; font-size:9px; font-weight:700; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
             </button>
             <div class="gc-notif-panel" id="gc-notif-panel">
                 <div class="gc-notif-header">
@@ -29,16 +29,16 @@
                 <div class="gc-notif-list"></div>
             </div>
         </div>
-        <a th:href="@{/admin/exportar}" class="gc-topbar-btn" title="Exportar">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <a th:href="@{/admin/exportar}" class="gc-topbar-btn" title="Exportar" style="display:flex; align-items:center; gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
             <span class="d-none d-sm-inline">Exportar</span>
         </a>
-        <button type="button" class="gc-topbar-btn gc-topbar-btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoRRHH" title="Nuevo RRHH">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <button type="button" class="gc-topbar-btn gc-topbar-btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoRRHH" title="Nuevo RRHH" style="display:flex; align-items:center; gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
                 <circle cx="9" cy="7" r="4"/>
                 <line x1="19" y1="8" x2="19" y2="14"/>

@@ -1,0 +1,308 @@
+/* ================================================
+   DASHBOARD RRHH — ESTILOS COMPLEMENTARIOS
+   Se basa en admin/dashboard.css y añade específicos.
+   ================================================ */
+
+.dr-page {
+    background: var(--fm-bg);
+    min-height: calc(100vh - var(--fm-topbar-height));
+    padding: 24px 32px;
+}
+
+/* ── 3 COLUMN GRID ── */
+.gs-stats-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* ── PIPELINE & CHART GRID ── */
+.dr-pipeline-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.gs-stat-icon-turq   { background: #F0FDFA; color: #0D9488; }
+.gs-stat-icon-blue   { background: #EFF6FF; color: #3B82F6; }
+.gs-stat-icon-orang  { background: #FFF7ED; color: #F97316; }
+
+/* ── PIPELINE PANEL ── */
+.dr-pipeline-panel {
+    background: #fff;
+    border-radius: var(--fm-radius-lg);
+    border: 1px solid var(--fm-border);
+    box-shadow: var(--fm-shadow-sm);
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dr-pipeline-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.dr-pipeline-header h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0F172A;
+    margin: 0;
+}
+
+.dr-pipeline-stages {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    position: relative;
+}
+
+.dr-pipeline-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.dr-pipeline-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    background: #F1F5F9;
+    color: #64748B;
+}
+
+/* Colores por estado (F-17 / F-19) */
+.stage-registrado .dr-pipeline-icon { background: #F1F5F9; color: #64748B; }
+.stage-en-pruebas .dr-pipeline-icon { background: #FEF9C3; color: #CA8A04; }
+.stage-entrevista .dr-pipeline-icon { background: #DBEAFE; color: #2563EB; }
+.stage-contratado .dr-pipeline-icon { background: #DCFCE7; color: #16A34A; }
+.stage-no-aceptado .dr-pipeline-icon { background: #FEE2E2; color: #DC2626; }
+
+.dr-pipeline-count {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0F172A;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dr-pipeline-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748B;
+    margin-top: 4px;
+}
+
+.dr-pipeline-bar-wrapper {
+    width: 100%;
+    height: 4px;
+    background: #F1F5F9;
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.dr-pipeline-bar {
+    height: 100%;
+    border-radius: 2px;
+}
+
+.stage-registrado .dr-pipeline-bar { background: #94A3B8; }
+.stage-en-pruebas .dr-pipeline-bar { background: #EAB308; }
+.stage-entrevista .dr-pipeline-bar { background: #3B82F6; }
+.stage-contratado .dr-pipeline-bar { background: #22C55E; }
+.stage-no-aceptado .dr-pipeline-bar { background: #EF4444; }
+
+.dr-pipeline-pct {
+    font-size: 11px;
+    font-weight: 500;
+    color: #94A3B8;
+    margin-top: 6px;
+}
+
+.dr-pipeline-total {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px dashed #E2E8F0;
+}
+
+/* ── TWO COLUMN LISTS ── */
+.dr-lists-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.dr-list-panel {
+    background: #fff;
+    border-radius: var(--fm-radius-lg);
+    border: 1px solid var(--fm-border);
+    box-shadow: var(--fm-shadow-sm);
+    display: flex;
+    flex-direction: column;
+}
+
+.dr-list-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--fm-border);
+    font-size: 14px;
+    font-weight: 600;
+    color: #0F172A;
+}
+
+.dr-list-body {
+    padding: 8px 0;
+    flex: 1;
+}
+
+.dr-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #F8FAFC;
+}
+.dr-list-item:last-child {
+    border-bottom: none;
+}
+
+.dr-list-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #F1F5F9;
+    color: #64748B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.dr-list-icon.green { background: #F0FDF4; color: #16A34A; }
+.dr-list-icon.blue { background: #EFF6FF; color: #3B82F6; }
+.dr-list-icon.turq { background: #F0FDFA; color: #0D9488; }
+.dr-list-icon.orang { background: #FFF7ED; color: #F97316; }
+.dr-list-icon.purple { background: #F5F3FF; color: #8B5CF6; }
+
+.dr-list-content {
+    flex: 1;
+    min-width: 0;
+}
+.dr-list-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    line-height: 1.3;
+}
+.dr-list-title strong {
+    color: #0F172A;
+    font-weight: 600;
+}
+.dr-list-time {
+    font-size: 11px;
+    color: #94A3B8;
+    margin-top: 2px;
+}
+
+.dr-list-right {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.dr-list-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--fm-border);
+    text-align: center;
+}
+
+.dr-list-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fm-brand);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.dr-list-link:hover {
+    color: var(--fm-brand-hover);
+    text-decoration: underline;
+}
+
+/* ── EMPTY STATE ── */
+.dr-empty-state {
+    text-align: center;
+    padding: 64px 24px;
+    background: #fff;
+    border-radius: var(--fm-radius-lg);
+    border: 1px solid var(--fm-border);
+}
+.dr-empty-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #F1F5F9;
+    color: #94A3B8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.dr-empty-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0 0 8px;
+}
+.dr-empty-desc {
+    font-size: 14px;
+    color: #64748B;
+    margin: 0 0 24px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+    .gs-stats-grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .dr-pipeline-grid, .dr-lists-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 768px) {
+    .dr-page {
+        padding: 16px;
+    }
+    .gs-stats-grid-3 {
+        grid-template-columns: 1fr;
+    }
+    .dr-pipeline-stages {
+        flex-wrap: wrap;
+    }
+    .dr-pipeline-stage {
+        flex: 1 1 30%;
+        margin-bottom: 16px;
+    }
+}

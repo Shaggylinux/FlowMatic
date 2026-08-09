@@ -6,38 +6,110 @@
 <div th:fragment="modalRegistro(modalId, formId, closeBtnId)"
      th:id="${modalId}"
      class="modal-overlay" style="display:none;" sec:authorize="hasRole('RRHH')">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>Registrar Nuevo Candidato</h3>
-      <button th:id="${closeBtnId}" class="modal-close"
+  <style>
+    .mr-box {
+      background: #ffffff;
+      width: 100%;
+      max-width: 640px;
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+      overflow: hidden;
+      animation: gc-fade-in 0.15s ease;
+      margin: auto;
+    }
+    .mr-header {
+      padding: 22px 28px 16px;
+      border-bottom: 1px solid #E2E8F0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mr-title { margin: 0; font-size: 18px; font-weight: 700; color: #0F172A; }
+    .mr-subtitle { margin: 6px 0 0; color: #64748B; font-size: 14px; }
+    .mr-body { padding: 24px 28px; }
+    .mr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .mr-group {
+      background: #FAFBFC;
+      border: 1px solid #F1F5F9;
+      border-radius: 10px;
+      padding: 10px 14px;
+      transition: all 0.15s ease;
+    }
+    .mr-group:focus-within {
+      border-color: #0D9488;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.08);
+    }
+    .mr-label {
+      display: block; font-size: 11px; font-weight: 600; color: #475569; margin-bottom: 5px; letter-spacing: 0.01em;
+    }
+    .mr-input {
+      width: 100%; padding: 7px 0; border: none; font-size: 13px; font-family: var(--fm-font); color: #0F172A; background: transparent; outline: none;
+    }
+    .mr-input::placeholder { color: #94A3B8; }
+    .mr-footer {
+      padding: 16px 28px 20px;
+      border-top: 1px solid #E2E8F0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .mr-btn-light {
+      display: inline-flex; align-items: center; justify-content: center; padding: 10px 24px; border: 1px solid #E2E8F0; border-radius: 10px; background: #ffffff; color: #475569; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s ease;
+    }
+    .mr-btn-light:hover { background: #F8FAFC; border-color: #CBD5E1; }
+    .mr-btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; padding: 10px 24px; border: none; border-radius: 10px; background: linear-gradient(135deg, #0D9488, #14B8A6); color: #ffffff; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s ease; gap: 8px;
+    }
+    .mr-btn-primary:hover { background: linear-gradient(135deg, #0F766E, #0D9488); box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25); transform: translateY(-1px); }
+    @media (max-width: 600px) { .mr-grid { grid-template-columns: 1fr; } }
+  </style>
+  
+  <div class="mr-box">
+    <div class="mr-header">
+      <div>
+        <h4 class="mr-title">Nuevo candidato</h4>
+        <p class="mr-subtitle">Completa los datos para registrar un nuevo candidato.</p>
+      </div>
+      <button th:id="${closeBtnId}" style="width: 32px; height: 32px; border: none; background: transparent; font-size: 24px; cursor: pointer; color: #94A3B8; display:flex; align-items:center; justify-content:center;"
               th:data-close-target="${modalId}"
               onclick="document.getElementById(this.dataset.closeTarget).style.display='none'"
               aria-label="Cerrar">&times;</button>
     </div>
-    <form th:id="${formId}" style="padding:4px 0;">
-      <div class="gc-field-card">
-        <label class="gc-field-label">Nombre</label>
-        <input type="text" name="username" class="gc-field-input" required>
+    
+    <form th:id="${formId}">
+      <div class="mr-body">
+        <div class="mr-grid">
+          <div class="mr-group">
+            <label class="mr-label">Nombre</label>
+            <input type="text" name="username" class="mr-input" required placeholder="Nombre del candidato">
+          </div>
+          <div class="mr-group">
+            <label class="mr-label">Apellido</label>
+            <input type="text" name="apellido" class="mr-input" required placeholder="Apellido del candidato">
+          </div>
+          <div class="mr-group">
+            <label class="mr-label">Correo electr&oacute;nico</label>
+            <input type="email" name="email" class="mr-input" required placeholder="correo@ejemplo.com">
+          </div>
+          <div class="mr-group">
+            <label class="mr-label">Contrase&ntilde;a</label>
+            <input type="password" name="clave" class="mr-input" required placeholder="M&iacute;nimo 8 caracteres">
+          </div>
+          <input type="hidden" name="rol" value="ROLE_CANDIDATO">
+        </div>
       </div>
-      <div class="gc-field-card">
-        <label class="gc-field-label">Apellido</label>
-        <input type="text" name="apellido" class="gc-field-input" required>
+      
+      <div class="mr-footer">
+        <button type="button" class="mr-btn-light"
+                th:data-close-target="${modalId}"
+                onclick="document.getElementById(this.dataset.closeTarget).style.display='none'">Cancelar</button>
+        <button type="button" class="mr-btn-primary"
+                th:attr="data-modal-id=${modalId}, data-form-id=${formId}"
+                onclick="enviarRegistro(this.dataset.modalId, this.dataset.formId)">
+          Registrar candidato
+        </button>
       </div>
-      <div class="gc-field-card">
-        <label class="gc-field-label">Correo</label>
-        <input type="email" name="email" class="gc-field-input" required>
-      </div>
-      <div class="gc-field-card">
-        <label class="gc-field-label">Contraseña</label>
-        <input type="password" name="clave" class="gc-field-input" required>
-      </div>
-      <input type="hidden" name="rol" value="ROLE_CANDIDATO">
-      <button type="button" class="gc-modal-btn"
-              th:attr="data-modal-id=${modalId}, data-form-id=${formId}"
-              onclick="enviarRegistro(this.dataset.modalId, this.dataset.formId)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-        Registrar
-      </button>
     </form>
   </div>
 </div>

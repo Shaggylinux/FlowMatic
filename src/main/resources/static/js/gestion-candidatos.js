@@ -86,19 +86,15 @@ function getInitials(nombre, apellido) {
 // ── ESTADOS LABEL + BADGE ───────────────────────
 
 const estadoMap = {
-  REGISTRADO:     { label: 'Registrado',    badge: 'registered' },
-  Disponible:     { label: 'Disponible',    badge: 'available' },
-  'En proceso':   { label: 'En Proceso',    badge: 'progress' },
-  Entrevista:     { label: 'Entrevista',    badge: 'interview' },
-  Pendiente:      { label: 'Pendiente',     badge: 'pending' },
-  Seleccionado:   { label: 'Seleccionado',  badge: 'hired' },
-  Contratado:     { label: 'Contratado',    badge: 'hired' },
-  Rechazado:      { label: 'Rechazado',     badge: 'rejected' },
-  Descartado:     { label: 'Descartado',    badge: 'rejected' },
+  'Registrado':     { label: 'Registrado',    badge: 'gris' },
+  'En pruebas':     { label: 'En pruebas',    badge: 'amarillo' },
+  'Entrevista':     { label: 'Entrevista',    badge: 'azul' },
+  'Contratado':     { label: 'Contratado',    badge: 'verde' },
+  'No aceptado':    { label: 'No aceptado',   badge: 'rojo' },
 };
 
 function getEstadoInfo(estado) {
-  return estadoMap[estado] || { label: estado || 'Registrado', badge: 'registered' };
+  return estadoMap[estado] || { label: estado || 'Registrado', badge: 'gris' };
 }
 
 // ── RENDER TABLE ────────────────────────────────
@@ -132,32 +128,39 @@ function renderTable(data) {
         <td><div class="gc-avatar">${ini}</div></td>
         <td>
           <div class="gc-cell-name">
-            <span class="gc-name">${c.nombre} ${c.apellido || ''}</span>
-            <span class="gc-city">${c.ciudad || c.cargo || ''}</span>
+            <span class="gc-name" style="font-weight:600; color:#0F172A;">${c.nombre} ${c.apellido || ''}</span>
+            <span class="gc-city" style="color:#64748B; font-size:12px;">${c.cargo || 'Sin cargo'} • ${c.ciudad || 'Sin ciudad'}</span>
           </div>
         </td>
-        <td class="gc-cell-muted">${c.email}</td>
-        <td class="gc-cell-muted">${c.telefono || '—'}</td>
-        <td><span class="gc-badge gc-badge-${estado.badge}">${estado.label}</span></td>
-        <td class="gc-cell-match"><div class="gc-match-track"><div class="gc-match-fill" style="width:${matchPct}%"></div></div><span class="gc-match-pct">${matchPct}%</span></td>
+        <td><span class="gc-cell-muted" style="color:#475569;">${c.email}<br><small>${c.telefono || ''}</small></span></td>
+        <td onclick="event.stopPropagation()">
+            <select class="gc-filter-select" style="width:130px; font-size:12px; font-weight:600; color:var(--estado-${estado.badge}); background:var(--estado-bg-${estado.badge}); border:none; padding:4px 8px; border-radius:12px; appearance:none; cursor:pointer;" onchange="cambiarEstado(${c.id}, this.value)">
+              <option value="Registrado" ${c.estado === 'Registrado' ? 'selected' : ''}>Registrado</option>
+              <option value="En pruebas" ${c.estado === 'En pruebas' ? 'selected' : ''}>En pruebas</option>
+              <option value="Entrevista" ${c.estado === 'Entrevista' ? 'selected' : ''}>Entrevista</option>
+              <option value="Contratado" ${c.estado === 'Contratado' ? 'selected' : ''}>Contratado</option>
+              <option value="No aceptado" ${c.estado === 'No aceptado' ? 'selected' : ''}>No aceptado</option>
+            </select>
+        </td>
+        <td class="gc-cell-match">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="gc-match-track" style="width:60px; height:6px; background:#E2E8F0; border-radius:4px; overflow:hidden;">
+              <div class="gc-match-fill" style="height:100%; width:${matchPct}%; background:${matchPct >= 80 ? '#22C55E' : matchPct >= 50 ? '#F59E0B' : '#EF4444'};"></div>
+            </div>
+            <span class="gc-match-pct" style="font-size:12px; font-weight:600;">${matchPct}%</span>
+          </div>
+        </td>
         <td>
           <div class="gc-actions">
-            <button class="gc-action-btn" data-tooltip="Ver detalle" onclick="event.stopPropagation();openDrawer(${c.id})">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-            <button class="gc-action-btn" data-tooltip="Ver detalle" onclick="event.stopPropagation();openDrawer(${c.id})">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            </button>
-            <div class="gc-action-more">
-              <button class="gc-action-btn" data-tooltip="Más acciones" onclick="event.stopPropagation();toggleDropdown(this)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-              </button>
-              <div class="gc-dropdown-menu">
-                <button onclick="event.stopPropagation();openDrawer(${c.id})">✕ ${c.nombre} ${c.apellido || ''}</button>
-                <button onclick="event.stopPropagation();cambiarEstado(${c.id},'Disponible')">✕ Marcar Disponible</button>
-                <button onclick="event.stopPropagation();cambiarEstado(${c.id},'En proceso')">✕ Marcar En proceso</button>
-              </div>
-            </div>
+             <button class="gc-action-btn" data-tooltip="Generar CV" onclick="event.stopPropagation();generarCV(${c.id})" style="color:#6366F1;">
+               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+             </button>
+             <button class="gc-action-btn" data-tooltip="Ver detalle" onclick="event.stopPropagation();openDrawer(${c.id})">
+               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+             </button>
+             <button class="gc-action-btn" data-tooltip="Eliminar" onclick="event.stopPropagation();eliminarCandidato(${c.id}, '${c.nombre}')" style="color:#EF4444;">
+               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+             </button>
           </div>
         </td>
       </tr>
@@ -232,10 +235,10 @@ function renderPagination(data) {
 // ── RENDER STATS ───────────────────────────────
 
 function renderStats(stats) {
-  statTotal.textContent = stats.total ?? 0;
-  statNuevos.textContent = stats.nuevos ?? 0;
-  statProceso.textContent = stats.enProceso ?? 0;
-  statContratados.textContent = stats.contratados ?? 0;
+  $('#gc-stat-total').textContent = stats.total ?? 0;
+  $('#gc-stat-documentos').textContent = stats.documentos ?? 0;
+  $('#gc-stat-carpetas').textContent = stats.carpetas ?? 0;
+  $('#gc-stat-entrevistas').textContent = stats.entrevistas ?? 0;
 }
 
 // ── MONTH NAMES ─────────────────────────────
@@ -265,8 +268,7 @@ function renderDrawer(c) {
   const tel = c.telefono || '';
 
   const skills = (c.tecnologias || '').split(',').map(s => s.trim()).filter(Boolean);
-
-  const etapas = ['Postulado','En revisión','Preseleccionado','Entrevista RRHH','Entrevista Técnica','Oferta','Contratado','Descartado'];
+  const etapas = ['Registrado', 'En pruebas', 'Entrevista', 'Contratado', 'No aceptado'];
 
   drawer.innerHTML = `
     <div class="gc-drawer-content">
@@ -739,10 +741,22 @@ function cambiarEstado(id, nuevoEstado) {
     .catch((err) => { console.error(err); alert('Error al cambiar estado: ' + err.message); });
 }
 
-// ── ABRIR CV ────────────────────────────────────
+// ── ABRIR / GENERAR CV ────────────────────────────────────
 
 function abrirPdfCV(id) {
   window.open(`/gestion-candidatos/${id}/cv`, '_blank');
+}
+
+function generarCV(id) {
+  window.open(`/gestion-candidatos/${id}/cv`, '_blank');
+}
+
+function eliminarCandidato(id, nombre) {
+  if(confirm(`¿Estás seguro que deseas eliminar a ${nombre}? Esta acción no se puede deshacer y borrará sus documentos y eventos.`)) {
+    fetch(`/gestion-candidatos/${id}`, { method: 'DELETE', headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.content } })
+      .then(r => { if(r.ok) { alert('Candidato eliminado'); closeDrawer(); loadPage(currentPage); loadStats(); } else throw new Error('Error al eliminar'); })
+      .catch(e => alert(e.message));
+  }
 }
 
 // ── NAVEGACIÓN ──────────────────────────────────
@@ -767,6 +781,9 @@ function loadPage(page) {
   params.set('size', currentSize);
   if (currentSearch) params.set('search', currentSearch);
   if (currentEstado) params.set('estado', currentEstado);
+  if (window.currentCargo) params.set('cargo', window.currentCargo);
+  if (window.currentExp) params.set('experiencia', window.currentExp);
+  if (window.currentCiudad) params.set('ciudad', window.currentCiudad);
 
   tableBody.innerHTML = renderSkeletonRows(currentSize);
 
@@ -796,6 +813,9 @@ function loadStats() {
 function filtrar() {
   currentSearch = $('#gc-search').value.trim();
   currentEstado = $('#gc-estado-filtro').value;
+  window.currentCargo = $('#gc-cargo-filtro').value.trim();
+  window.currentExp = $('#gc-exp-filtro').value.trim();
+  window.currentCiudad = $('#gc-ciudad-filtro').value.trim();
   currentPage = 0;
   loadPage(0);
 }

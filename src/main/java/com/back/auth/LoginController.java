@@ -17,7 +17,11 @@ public class LoginController {
                         .map(r -> r.getAuthority())
                         .toList();
 
-        if (roles.contains("ROLE_CANDIDATO") || roles.contains("ROLE_RRHH")) {
+        if (roles.contains("ROLE_RRHH")) {
+            return "redirect:/dashboard";
+        }
+
+        if (roles.contains("ROLE_CANDIDATO")) {
             return "redirect:/drive";
         }
 

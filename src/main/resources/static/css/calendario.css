@@ -20,18 +20,16 @@
 
 .cal-stat-card {
   background: var(--fm-surface);
-  border-radius: 16px;
-  padding: 20px 22px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-  border: 1px solid #F1F5F9;
+  border-radius: var(--fm-radius-lg);
+  border: 1px solid var(--fm-border);
   border-top: 3px solid var(--fm-border);
-  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--fm-shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .cal-stat-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: var(--fm-shadow-md);
   transform: translateY(-2px);
-  border-color: #E2E8F0;
 }
 
 .cal-stat-card:nth-child(1) { border-top-color: #0D9488; }
@@ -42,50 +40,49 @@
 
 .cal-stat-inner {
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 18px 16px;
+  gap: 3px;
 }
 
 .cal-stat-icon {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.15s ease;
+  margin-bottom: 8px;
 }
 
-.cal-stat-card:hover .cal-stat-icon {
-  transform: scale(1.05);
-}
-
-.cal-stat-icon-turq { background: #ECFEFF; color: #0D9488; }
+.cal-stat-icon-turq { background: #F0FDFA; color: #0D9488; }
 .cal-stat-icon-orang { background: #FFF7ED; color: #EA580C; }
 .cal-stat-icon-green { background: #F0FDF4; color: #16A34A; }
 .cal-stat-icon-purple { background: #F5F3FF; color: #8B5CF6; }
 .cal-stat-icon-red { background: #FEF2F2; color: #EF4444; }
 
 .cal-stat-info {
-  flex: 1;
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cal-stat-number {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 800;
   color: #0F172A;
-  line-height: 1.1;
   margin: 0;
-  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
 .cal-stat-label {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 500;
-  color: #64748B;
-  margin: 4px 0 0;
+  color: var(--fm-text-muted);
+  margin: 2px 0 0;
 }
 
 .cal-stat-diff {
@@ -95,7 +92,7 @@
 }
 
 .cal-stat-diff.up { color: #16A34A; }
-.cal-stat-diff.down { color: #EF4444; }
+.cal-stat-diff.down { color: #DC2626; }
 .cal-stat-diff.neutral { color: #94A3B8; }
 
 /* ── LEGEND ──────────────────────────────────── */

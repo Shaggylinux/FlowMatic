@@ -30,6 +30,10 @@ public class NotificacionService {
         return notificacionRepository.findByLeidaFalseOrderByFechaDesc();
     }
 
+    public List<Notificacion> obtenerActividadReciente() {
+        return notificacionRepository.findTop5ByOrderByFechaDesc();
+    }
+
     public long contarNoLeidas() {
         return notificacionRepository.countByLeidaFalse();
     }

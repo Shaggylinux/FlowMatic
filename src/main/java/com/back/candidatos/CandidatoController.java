@@ -80,7 +80,7 @@ public class CandidatoController {
         model.addAttribute("ciudades", candidatoService.getCiudades());
 
         model.addAttribute("estados", Arrays.asList(
-                "Disponible", "En proceso", "Entrevista", "Pendiente", "Contratado", "Descartado"));
+                "Registrado", "En pruebas", "Entrevista", "Contratado", "No aceptado"));
 
         List<Integer> expOptions = Arrays.asList(1, 2, 3, 5, 10);
         model.addAttribute("experienciaOptions", expOptions);
@@ -288,12 +288,13 @@ public class CandidatoController {
 
     @GetMapping("/stats")
     @ResponseBody
-    public StatsDTO stats() {
-        return new StatsDTO(
-                candidatoService.contarActivos(),
-                candidatoService.contarNuevos(),
-                candidatoService.contarEnProceso(),
-                candidatoService.contarContratables());
+    public Map<String, Object> stats() {
+        return Map.of(
+                "total", candidatoService.contarActivos(),
+                "documentos", archivosRepository.count(),
+                "carpetas", archivosRepository.count() / 3, // Approximate metric if no folder entity
+                "entrevistas", 0
+        );
     }
 
     @GetMapping("/{id}/documentos")

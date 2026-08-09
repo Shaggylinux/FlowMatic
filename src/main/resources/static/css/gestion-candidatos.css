@@ -504,13 +504,28 @@
 }
 .gc-badge:hover { opacity: 0.85; }
 
-.gc-badge-available { background: #DCFCE7; color: #166534; }
-.gc-badge-progress { background: #EFF6FF; color: #1D4ED8; }
-.gc-badge-interview { background: #F3E8FF; color: #7C3AED; }
-.gc-badge-pending { background: #FEF9C3; color: #854D0E; }
-.gc-badge-hired { background: #CCFBF1; color: #0F766E; }
-.gc-badge-rejected { background: #FEE2E2; color: #991B1B; }
-.gc-badge-registered { background: #F1F5F9; color: #475569; }
+:root {
+  --estado-gris: #475569;
+  --estado-bg-gris: #F1F5F9;
+  
+  --estado-amarillo: #B45309;
+  --estado-bg-amarillo: #FEF3C7;
+  
+  --estado-azul: #1D4ED8;
+  --estado-bg-azul: #EFF6FF;
+  
+  --estado-verde: #15803D;
+  --estado-bg-verde: #DCFCE7;
+  
+  --estado-rojo: #B91C1C;
+  --estado-bg-rojo: #FEE2E2;
+}
+
+.gc-badge-gris { background: var(--estado-bg-gris); color: var(--estado-gris); }
+.gc-badge-amarillo { background: var(--estado-bg-amarillo); color: var(--estado-amarillo); }
+.gc-badge-azul { background: var(--estado-bg-azul); color: var(--estado-azul); }
+.gc-badge-verde { background: var(--estado-bg-verde); color: var(--estado-verde); }
+.gc-badge-rojo { background: var(--estado-bg-rojo); color: var(--estado-rojo); }
 
 /* Action buttons con tooltip personalizado */
 .gc-actions {

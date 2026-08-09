@@ -14,6 +14,8 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     List<Evento> findByFechaAfterOrderByFechaAscHoraAsc(LocalDate fecha);
 
+    List<Evento> findTop5ByFechaGreaterThanEqualOrderByFechaAscHoraAsc(LocalDate fecha);
+
     long countByFecha(LocalDate fecha);
 
     long countByEstado(String estado);

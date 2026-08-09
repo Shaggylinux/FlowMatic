@@ -731,8 +731,73 @@ body {
 
 .fm-sidebar-footer {
   margin-top: auto;
-  padding: 16px 20px;
+  padding: 12px 16px;
   border-top: 1px solid var(--fm-sidebar-hover);
+}
+
+.fm-user-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-decoration: none;
+  border: none;
+  background: none;
+  width: 100%;
+}
+
+.fm-user-card:hover {
+  background: var(--fm-sidebar-hover);
+}
+
+.fm-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0D9488, #14B8A6);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.fm-user-info {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.fm-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.fm-user-role {
+  font-size: 11px;
+  color: #94A3B8;
+  line-height: 1.3;
+}
+
+.fm-user-chevron {
+  color: #64748B;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.fm-user-card:hover .fm-user-chevron {
+  color: #CBD5E1;
 }
 
 /* Scrollbar de la lista de carpetas en el sidebar */

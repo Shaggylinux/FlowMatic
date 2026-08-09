@@ -13,6 +13,9 @@ import com.back.drive.FilesServices;
 import org.springframework.http.HttpHeaders;
 import org.springframework.core.io.Resource;
 import com.back.auth.UsuarioRepository;
+import com.back.calendario.EventoRepository;
+import com.back.calendario.Evento;
+import com.back.notificaciones.Notificacion;
 import com.back.candidatos.CandidatoRepository;
 import com.back.notificaciones.NotificacionService;
 import com.back.util.Sanitizer;
@@ -37,6 +40,7 @@ public class DriveController {
     private final CandidatoRepository candidatoRepository;
     private final FilesServices filesServices;
     private final NotificacionService notificacionService;
+    private final EventoRepository eventoRepository;
 
     @GetMapping
     public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder,
@@ -103,18 +107,6 @@ public class DriveController {
                 .toList());
         model.addAttribute("archivos", archivosEnEstaCarpeta);
         model.addAttribute("folderActual", folderActualURL);
-        List<Candidato> candidatoList = candidatoRepository.findAll();
-        List<Map<String, Object>> candidatosConEmail = new ArrayList<>();
-        for (Candidato c : candidatoList) {
-            Map<String, Object> cm = new HashMap<>();
-            cm.put("id", c.getId());
-            cm.put("username", c.getUsername());
-            cm.put("apellido", c.getApellido());
-            cm.put("estado", c.getEstado() != null ? c.getEstado() : "Registrado");
-            usuarioRepository.findById(c.getId()).ifPresent(u -> cm.put("email", u.getEmail()));
-            candidatosConEmail.add(cm);
-        }
-        model.addAttribute("listaCandidatos", candidatosConEmail);
 
         return "drive";
     }

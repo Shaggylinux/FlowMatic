@@ -11,6 +11,8 @@
   <link rel="stylesheet" th:href="@{/css/base.css}">
   <link rel="stylesheet" th:href="@{/css/drive.css}">
   <link rel="stylesheet" th:href="@{/css/contenedor.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/dashboard.css}">
+  <link rel="stylesheet" th:href="@{/css/dashboard-rrhh.css}">
 
   <script>
     window.abrirModalAceptar = function (id) {
@@ -106,13 +108,22 @@
 
       <nav style="padding-top:8px;">
 
-        <a th:href="@{/drive}" class="fm-nav-link active">
+        <a sec:authorize="hasRole('RRHH')" th:href="@{/dashboard}" class="fm-nav-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
             <polyline points="9 22 9 12 15 12 15 22" />
           </svg>
-          Principal
+          Dashboard
+        </a>
+
+        <a th:href="@{/drive}" class="fm-nav-link active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+          </svg>
+          <span sec:authorize="hasRole('RRHH')">Todos los Documentos</span>
+          <span sec:authorize="hasRole('CANDIDATO')">Principal</span>
         </a>
 
         <a th:href="@{/calendario}" class="fm-nav-link">
@@ -189,16 +200,15 @@
 
       </nav>
 
-      <div class="fm-sidebar-footer">
+        <div class="fm-sidebar-footer">
         <form th:action="@{/logout}" method="post">
-          <button type="submit" class="btn btn-logout btn-sm" style="width:100%;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-            Cerrar Sesión
+          <button type="submit" class="fm-user-card">
+            <div class="fm-user-avatar" th:text="${usuarioActual != null ? usuarioActual.substring(0,2).toUpperCase() : 'US'}"></div>
+            <div class="fm-user-info">
+              <div class="fm-user-name" th:text="${usuarioActual}">Usuario</div>
+              <div class="fm-user-role" th:text="${usuarioActualObjeto != null ? usuarioActualObjeto['rol'].replace('ROLE_', '') : 'Usuario'}"></div>
+            </div>
+            <svg class="fm-user-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </form>
       </div>
@@ -215,14 +225,25 @@
 
       <header class="fm-topbar">
         <div>
-          <p class="fm-topbar-title" sec:authorize="hasRole('RRHH')">
-            Archivos en:
-            <span style="color:var(--fm-brand);" th:text="${folderActual.isEmpty() ? 'Raíz' : folderActual}"></span>
-          </p>
+          <p class="fm-topbar-title" sec:authorize="hasRole('RRHH')">Dashboard</p>
+          <p class="fm-topbar-sub" sec:authorize="hasRole('RRHH')" style="font-size:12px; color:var(--fm-text-muted); margin-top:2px;">Resumen general de tus procesos de selección</p>
           <p class="fm-topbar-title" sec:authorize="hasRole('CANDIDATO')">Mis Documentos</p>
         </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="font-size:13px; color:var(--fm-text-muted);" sec:authentication="name"></span>
+        <div style="display:flex; align-items:center; gap:16px;">
+          <button sec:authorize="hasRole('RRHH')" type="button" style="background:none; border:none; position:relative; cursor:pointer; color:#64748B;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span style="position:absolute; top:-2px; right:-2px; background:#EF4444; color:#fff; font-size:9px; font-weight:700; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center;">3</span>
+          </button>
+          
+          <button sec:authorize="hasRole('RRHH')" class="btn btn-ghost btn-sm" style="display:flex; align-items:center; gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Filtros
+          </button>
+          
+          <button sec:authorize="hasRole('RRHH')" class="btn btn-primary btn-sm" onclick="document.getElementById('modalOverlay').style.display='flex'" style="display:flex; align-items:center; gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Registrar candidato
+          </button>
         </div>
       </header>
 
@@ -246,213 +267,8 @@
           </div>
         </div>
 
-        <div sec:authorize="hasRole('RRHH')" class="drive-stats-grid">
-          <div class="stat-card stat-card-brand">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div>
-                <p class="stat-card-number" th:text="${listaCandidatos != null ? listaCandidatos.size() : 0}">0</p>
-                <p class="stat-card-label">Candidatos activos</p>
-              </div>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--fm-text-muted)"
-                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.35;">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-            </div>
-          </div>
-          <div class="stat-card stat-card-info">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div>
-                <p class="stat-card-number" th:text="${archivos != null ? archivos.size() : 0}">0</p>
-                <p class="stat-card-label">Documentos subidos</p>
-              </div>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--fm-text-muted)"
-                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.35;">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-              </svg>
-            </div>
-          </div>
-          <div class="stat-card stat-card-warning">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <div>
-                <p class="stat-card-number" th:text="${carpetas != null ? carpetas.size() : 0}">0</p>
-                <p class="stat-card-label">Carpetas creadas</p>
-              </div>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--fm-text-muted)"
-                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.35;">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-              </svg>
-            </div>
-          </div>
-        </div>
+        <!-- CONTENIDO RRHH DASHBOARD -->
 
-        <div class="drive-section-header">
-          <h3 class="drive-section-title" sec:authorize="hasRole('RRHH')">Archivos</h3>
-          <h3 class="drive-section-title" sec:authorize="hasRole('CANDIDATO')">Mis Documentos</h3>
-
-          <form th:action="@{/drive/subir-archivo}" method="post" enctype="multipart/form-data"
-            style="display:flex; align-items:center; gap:8px;" sec:authorize="hasAnyRole('RRHH','CANDIDATO')">
-            <input type="hidden" name="folder" th:value="${folderActual}">
-
-            <select name="candidatoId" class="form-input" style="width:auto; padding:5px 10px; font-size:13px;"
-              sec:authorize="hasRole('RRHH')">
-              <option value="">(Sin asignar)</option>
-              <option th:each="cand : ${listaCandidatos}" th:value="${cand.id}"
-                th:text="${cand.username + ' ' + (cand.apellido != null ? cand.apellido : '')}"></option>
-            </select>
-
-            <label class="file-upload-label">
-              <input type="file" name="archivo" required style="display:none;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-              </svg>
-              Elegir archivo
-            </label>
-            <button type="submit" class="btn btn-primary btn-sm">Subir</button>
-          </form>
-        </div>
-
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="archivo : ${archivos}">
-                <td>
-                  <span style="display:flex; align-items:flex-start; gap:8px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--fm-brand)"
-                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 3px;">
-                      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-                      <polyline points="13 2 13 9 20 9" />
-                    </svg>
-                    <div style="display:flex; flex-direction:column; gap:4px;">
-                      <div style="display:flex; align-items:center; gap:8px;">
-                        <span th:text="${archivo.nombre}"></span>
-                        <span class="badge"
-                          th:classappend="${archivo.estadoDocumento == 'Aceptado'} ? 'badge-active' : (${archivo.estadoDocumento == 'Rechazado'} ? 'badge-rejected' : 'badge-pending')"
-                          th:text="${archivo.estadoDocumento != null ? archivo.estadoDocumento : 'Pendiente'}"
-                          style="font-size:11px; padding:2px 6px;"></span>
-                      </div>
-                      <div sec:authorize="hasRole('RRHH')" style="font-size:11px; color:var(--fm-text-muted);"
-                        th:text="'Subido por: ' + ${archivo.propietario}"></div>
-                      <div th:if="${archivo.estadoDocumento == 'Rechazado' and archivo.observacion != null}"
-                        style="font-size:12px; color:var(--fm-danger); margin-top:2px;"
-                        th:text="'Motivo: ' + ${archivo.observacion}"></div>
-                    </div>
-                  </span>
-                </td>
-                <td>
-                  <div class="table-actions">
-                    <a th:href="@{/drive/descargar(fileId=${archivo.id})}" class="btn btn-ghost btn-sm">Descargar</a>
-
-                    <div sec:authorize="hasRole('RRHH')" style="display:flex; gap:6px;">
-                      <button type="button" class="btn btn-sm"
-                        style="background:var(--fm-info-bg); color:var(--fm-info-text); border:1px solid transparent;"
-                        th:onclick="'prepararCompartir(' + ${archivo.id} + ')'">
-                        Compartir
-                      </button>
-                      <button th:if="${archivo.propietario != usuarioActual and archivo.estadoDocumento == 'Pendiente'}"
-                        type="button" class="btn btn-ghost btn-sm btn-aceptar-doc"
-                        style="color:var(--fm-success); border-color:rgba(22, 163, 74, 0.3);" th:data-id="${archivo.id}"
-                        onclick="abrirModalAceptar(this.getAttribute('data-id'))">
-                        Aceptar
-                      </button>
-                      <button th:if="${archivo.propietario != usuarioActual and archivo.estadoDocumento == 'Pendiente'}"
-                        type="button" class="btn btn-ghost-danger btn-sm btn-rechazar-doc" th:data-id="${archivo.id}"
-                        onclick="abrirModalRechazar(this.getAttribute('data-id'))">
-                        Rechazar
-                      </button>
-                      <form th:if="${archivo.propietario == usuarioActual}" th:action="@{/drive/eliminar}" method="post"
-                        onsubmit="return confirm('¿Eliminar archivo?');">
-                        <input type="hidden" name="fileId" th:value="${archivo.id}">
-                        <button type="submit" class="btn btn-ghost-danger btn-sm">Eliminar</button>
-                      </form>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr th:if="${archivos.isEmpty()}">
-                <td colspan="2" style="text-align:center; padding:40px; color:var(--fm-text-muted);">
-                  <span sec:authorize="hasRole('RRHH')">Esta carpeta está vacía.</span>
-                  <span sec:authorize="hasRole('CANDIDATO')">Aún no has recibido archivos compartidos.</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div sec:authorize="hasRole('RRHH')" style="margin-top:40px;">
-          <div class="drive-section-header" style="margin-bottom:16px;">
-            <h3 class="drive-section-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-              Gestión de Candidatos
-            </h3>
-          </div>
-
-          <div class="table-container">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Nombre Completo</th>
-                  <th>Correo</th>
-                  <th>Estado</th>
-                  <th>Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="cand : ${listaCandidatos}">
-                  <td th:text="${cand.username + ' ' + cand.apellido}"></td>
-                  <td class="td-muted" th:text="${cand.email}"></td>
-                  <td>
-                    <span class="badge" th:classappend="${cand.estado == 'Contratado'} ? 'badge-selected' :
-                                        (${cand.estado == 'No aceptado'} ? 'badge-rejected' :
-                                        (${cand.estado == 'Entrevista'} ? 'badge-interview' :
-                                        (${cand.estado == 'En pruebas'} ? 'badge-review' :
-                                        'badge-registered')))"
-                      th:text="${cand.estado != null ? cand.estado : 'Registrado'}">
-                    </span>
-                  </td>
-                  <td>
-                    <form th:action="@{/drive/actualizar-estado}" method="post"
-                      style="display:flex; gap:8px; align-items:center;">
-                      <input type="hidden" name="usuarioId" th:value="${cand.id}">
-                      <select name="nuevoEstado" class="form-input"
-                        style="width:auto; padding:5px 10px; font-size:13px;">
-                        <option value="Registrado" th:selected="${cand.estado == 'Registrado'}">Registrado</option>
-                        <option value="En pruebas" th:selected="${cand.estado == 'En pruebas'}">En pruebas</option>
-                        <option value="Entrevista" th:selected="${cand.estado == 'Entrevista'}">Entrevista</option>
-                        <option value="Contratado" th:selected="${cand.estado == 'Contratado'}">Contratado</option>
-                        <option value="No aceptado" th:selected="${cand.estado == 'No aceptado'}">No aceptado</option>
-                      </select>
-                      <button type="submit" class="btn btn-primary btn-sm">Actualizar</button>
-                    </form>
-                  </td>
-                </tr>
-                <tr th:if="${listaCandidatos.isEmpty()}">
-                  <td colspan="4" style="text-align:center; padding:32px; color:var(--fm-text-muted);">
-                    No hay candidatos registrados todavía.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
 
       </div>
     </div>
@@ -471,7 +287,7 @@
 
 
 
-  <script>
+  <script th:inline="javascript">
     function solicitarNombreCarpeta() {
       const nombre = prompt('Ingresa el nombre de la nueva carpeta:');
       if (nombre && nombre.trim()) {

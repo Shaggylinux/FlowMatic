@@ -7,6 +7,7 @@
   <title>Calendario — Flowmatic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/tokens.css}">
   <link rel="stylesheet" th:href="@{/css/base.css}">
   <link rel="stylesheet" th:href="@{/css/drive.css}">
@@ -14,7 +15,6 @@
   <link rel="stylesheet" th:href="@{/css/gestion-candidatos.css}">
   <link rel="stylesheet" th:href="@{/css/calendario.css}">
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="drive-body">
 <div class="drive-layout cal-sidebar-fixed">
@@ -29,9 +29,17 @@
       </a>
     </div>
     <nav style="padding-top:8px;">
-      <a th:href="@{/drive}" class="fm-nav-link">
+      <a sec:authorize="hasRole('RRHH')" th:href="@{/dashboard}" class="fm-nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Dashboard
+      </a>
+      <a sec:authorize="hasRole('CANDIDATO')" th:href="@{/drive}" class="fm-nav-link">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Principal
+      </a>
+      <a sec:authorize="hasRole('RRHH')" th:href="@{/drive}" class="fm-nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Archivos
       </a>
       <span class="fm-sidebar-section-label">Acciones</span>
       <a th:href="@{/calendario}" class="fm-nav-link active">
@@ -67,14 +75,18 @@
         </div>
       </div>
     </nav>
-    <div class="fm-sidebar-footer">
-      <form th:action="@{/logout}" method="post">
-        <button type="submit" class="btn btn-logout btn-sm" style="width:100%;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Cerrar Sesi&oacute;n
-        </button>
-      </form>
-    </div>
+      <div class="fm-sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+          <button type="submit" class="fm-user-card">
+            <div class="fm-user-avatar" th:text="${usuarioActual != null ? usuarioActual.substring(0,2).toUpperCase() : 'US'}"></div>
+            <div class="fm-user-info">
+              <div class="fm-user-name" th:text="${usuarioActual}">Usuario</div>
+              <div class="fm-user-role" th:text="${usuarioActualObjeto != null ? usuarioActualObjeto['rol'].replace('ROLE_', '') : 'Usuario'}"></div>
+            </div>
+            <svg class="fm-user-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </form>
+      </div>
     <form id="formCrearCarpeta" th:action="@{/drive/crear-carpeta}" method="post" style="display:none;" sec:authorize="hasRole('RRHH')">
       <input type="hidden" name="nombre" id="inputNombreCarpeta">
       <input type="hidden" name="folderDestino" th:value="${folderActual != null ? folderActual : ''}">
@@ -87,11 +99,11 @@
         <p class="fm-topbar-title">Calendario de Entrevistas</p>
         <p class="fm-topbar-sub">Agenda y gesti&oacute;n de entrevistas</p>
       </div>
-      <div style="display:flex; align-items:center; gap:8px;">
+      <div style="display:flex; align-items:center; gap:16px;">
         <div style="position:relative;">
-          <button type="button" class="gc-bell-btn" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            <span class="gc-bell-dot" id="gc-notif-badge">0</span>
+          <button type="button" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones" style="background:none; border:none; position:relative; cursor:pointer; color:#64748B;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span id="gc-notif-badge" style="position:absolute; top:-2px; right:-2px; background:#EF4444; color:#fff; font-size:9px; font-weight:700; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
           </button>
           <div class="gc-notif-panel" id="gc-notif-panel">
             <div class="gc-notif-header">
@@ -101,12 +113,12 @@
             <div class="gc-notif-list"></div>
           </div>
         </div>
-        <button sec:authorize="hasRole('RRHH')" type="button" class="gc-topbar-btn" onclick="exportarCalendario()" title="Exportar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <button sec:authorize="hasRole('RRHH')" type="button" class="btn btn-ghost btn-sm" onclick="exportarCalendario()" title="Exportar" style="display:flex; align-items:center; gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Exportar
         </button>
-        <button sec:authorize="hasRole('RRHH')" type="button" class="gc-topbar-btn gc-topbar-btn-primary" onclick="abrirModalCrear()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <button sec:authorize="hasRole('RRHH')" type="button" class="btn btn-primary btn-sm" onclick="abrirModalCrear()" style="display:flex; align-items:center; gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Nueva Entrevista
         </button>
       </div>

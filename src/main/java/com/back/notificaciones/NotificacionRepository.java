@@ -8,5 +8,7 @@ public interface NotificacionRepository extends JpaRepository<Notificacion, Long
 
     List<Notificacion> findByLeidaFalseOrderByFechaDesc();
 
+    List<Notificacion> findTop5ByOrderByFechaDesc();
+
     long countByLeidaFalse();
 }
