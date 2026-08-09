@@ -1,4 +1,24 @@
 <div th:fragment="rrhhContent" class="gs-page">
+    <div th:if="${pendiente}" class="cfg-toast cfg-toast-ok">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Usuario creado. Se envi&oacute; el correo de activaci&oacute;n
+    </div>
+    <div th:if="${errorDuplicado}" class="cfg-toast cfg-toast-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        El correo ya est&aacute; registrado
+    </div>
+    <div th:if="${errorClaveCorta}" class="cfg-toast cfg-toast-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        La contrase&ntilde;a debe tener m&iacute;nimo 8 caracteres
+    </div>
+    <div th:if="${editado}" class="cfg-toast cfg-toast-ok">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Usuario actualizado correctamente
+    </div>
+    <div th:if="${eliminado}" class="cfg-toast cfg-toast-ok">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Usuario eliminado
+    </div>
     <header class="fm-topbar" style="background:transparent;position:static;padding:8px 0;margin-bottom:24px;">
       <div style="display:flex; align-items:center; gap: 12px;">
         <button type="button" id="fm-mobile-menu-btn" class="d-md-none" style="display:flex; align-items:center; justify-content:center; padding:6px; background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:var(--fm-radius-md); color:var(--fm-text); cursor:pointer;">
@@ -115,25 +135,12 @@
           
           <div style="display:flex; gap: 12px; flex: 3;">
             <div class="gc-filter-group" style="flex:1;">
-                <label style="font-size:11px; color:var(--fm-text-muted); margin-bottom:4px; display:block;">Rol</label>
-                <select name="rol" class="gc-filter-select" onchange="this.form.submit()" style="width:100%;">
-                <option value="">Todos</option>
-                <option value="ROLE_RRHH" selected>RRHH</option>
-                </select>
-            </div>
-            <div class="gc-filter-group" style="flex:1;">
                 <label style="font-size:11px; color:var(--fm-text-muted); margin-bottom:4px; display:block;">Estado</label>
                 <select name="estado" class="gc-filter-select" onchange="this.form.submit()" style="width:100%;">
                 <option value="">Todos</option>
                 <option value="Activo" th:selected="${estado == 'Activo'}">Activo</option>
                 <option value="Pendiente" th:selected="${estado == 'Pendiente'}">Pendiente</option>
                 <option value="Bloqueado" th:selected="${estado == 'Bloqueado'}">Bloqueado</option>
-                </select>
-            </div>
-            <div class="gc-filter-group" style="flex:1;">
-                <label style="font-size:11px; color:var(--fm-text-muted); margin-bottom:4px; display:block;">Fecha</label>
-                <select name="fecha" class="gc-filter-select" onchange="this.form.submit()" style="width:100%;">
-                <option value="">Todas</option>
                 </select>
             </div>
           </div>
@@ -309,3 +316,9 @@
       </div>
     </div>
 </div>
+<script>
+  document.querySelectorAll('.cfg-toast').forEach(function (t) {
+    setTimeout(function () { t.style.opacity = '0'; t.style.transition = 'opacity 0.5s'; }, 5000);
+    setTimeout(function () { t.remove(); }, 5500);
+  });
+</script>

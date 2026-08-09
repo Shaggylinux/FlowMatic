@@ -191,7 +191,11 @@ public class AdminController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "buscar", required = false) String buscar,
-            @RequestParam(name = "estado", required = false) String estado) {
+            @RequestParam(name = "estado", required = false) String estado,
+            @RequestParam(name = "pendiente", required = false) String pendiente,
+            @RequestParam(name = "error", required = false) String error,
+            @RequestParam(name = "editado", required = false) String editado,
+            @RequestParam(name = "eliminado", required = false) String eliminado) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Usuario> usuariosPage;
 
@@ -233,6 +237,11 @@ public class AdminController {
         model.addAttribute("viewMode", "usuarios");
         model.addAttribute("buscar", buscar);
         model.addAttribute("estado", estado);
+        model.addAttribute("pendiente", pendiente != null);
+        model.addAttribute("errorDuplicado", "duplicado".equals(error));
+        model.addAttribute("errorClaveCorta", "clave_corta".equals(error));
+        model.addAttribute("editado", editado != null);
+        model.addAttribute("eliminado", eliminado != null);
 
         return "admin";
     }
@@ -343,7 +352,7 @@ public class AdminController {
                 "Se elimin\u00f3 el usuario " + nombre + " (" + email + ")",
                 "Administrador", "SEGURIDAD");
         }
-        return "redirect:/admin";
+        return "redirect:/admin?eliminado";
     }
 
     @PostMapping("/editar")
@@ -407,12 +416,11 @@ public class AdminController {
                 (estado != null && !estado.isBlank()) ? estado.trim() : null)
             : usuarioRepository.findAll();
 
-        String[] cabeceras = {"ID", "Nombre", "Apellido", "Email", "Documento", "Cargo", "Rol", "Estado"};
+        String[] cabeceras = {"ID", "Username", "Apellido", "Email", "Rol", "Estado", "Etapa"};
         List<Object[]> datos = listaUsuarios.stream().map(u -> {
             String username = "";
             String apellido = "";
-            String documento = "";
-            String cargo = "";
+            String etapa = "";
             String estadoUsuario;
             if (u.isBloqueado()) estadoUsuario = "Bloqueado";
             else estadoUsuario = u.isActivo() ? "Activo" : "Pendiente";
@@ -422,21 +430,20 @@ public class AdminController {
                 if (c != null) {
                     username  = c.getUsername()  != null ? c.getUsername()  : "";
                     apellido  = c.getApellido()  != null ? c.getApellido()  : "";
+                    etapa     = c.getEstado()    != null ? c.getEstado()    : "";
                 }
             } else if ("ROLE_RRHH".equals(u.getRol())) {
                 RRHH r = rrhhRepository.findById(u.getId()).orElse(null);
                 if (r != null) {
-                    username  = r.getUsername()  != null ? r.getUsername()  : "";
-                    apellido  = r.getApellido()  != null ? r.getApellido()  : "";
-                    documento = r.getDocumento() != null ? r.getDocumento() : "";
-                    cargo     = r.getCargo()     != null ? r.getCargo()     : "";
+                    username = r.getUsername() != null ? r.getUsername() : "";
+                    apellido = r.getApellido() != null ? r.getApellido() : "";
                 }
             } else if ("ROLE_ADMINISTRADOR".equals(u.getRol())) {
                 username = "Administrador";
             }
-            return new Object[]{u.getId(), username, apellido, u.getEmail(), documento, cargo, u.getRol(), estadoUsuario};
+            return new Object[]{u.getId(), username, apellido, u.getEmail(), u.getRol(), estadoUsuario, etapa};
         }).toList();
-        excelService.exportarDatos("Usuarios RRHH", cabeceras, datos, response);
+        excelService.exportarDatos("Usuarios", cabeceras, datos, response);
 
         auditoriaService.registrar("EXPORTACI\u00d3N",
             "Se export\u00f3 la lista de usuarios a Excel", "Administrador", "SISTEMA");
