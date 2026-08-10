@@ -6,6 +6,7 @@ public record EntrevistaAgendadaEvent(
     Long eventoId,
     Long candidatoId,
     String candidatoNombre,
+    String candidatoEmail,
     Long rrhhId,
     String rrhhEmail,
     EntrevistaEmailDTO eventoDto,

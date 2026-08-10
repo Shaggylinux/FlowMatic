@@ -186,6 +186,9 @@ public class CandidatoController {
         if (estado.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Estado requerido"));
         }
+        if (!CandidatoService.ESTADOS_VALIDOS.contains(estado)) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Estado inválido"));
+        }
         String estadoAnterior = candidato.getEstado();
         candidato.setEstado(estado);
         candidato.setUltimaActualizacion(LocalDateTime.now());
@@ -366,13 +369,15 @@ public class CandidatoController {
         response.setHeader("Content-Disposition", "attachment; filename=candidatos_reporte.xlsx");
 
         List<Candidato> candidatos = candidatoService.listarCandidatosSinPaginar(search, estado);
+        Map<Long, String> emails = usuarioRepository.findAllById(candidatos.stream().map(Candidato::getId).toList())
+                .stream().collect(Collectors.toMap(Usuario::getId, Usuario::getEmail));
         String[] cabeceras = {"ID", "Nombre", "Apellido", "Email", "Tel\u00e9fono", "Cargo", "Ciudad", "Experiencia", "Disponibilidad", "Tecnolog\u00edas", "Idiomas", "Estado", "Proceso"};
         List<Object[]> datos = candidatos.stream()
             .map(c -> new Object[]{
                 c.getId(),
                 c.getUsername() != null ? c.getUsername() : "",
                 c.getApellido() != null ? c.getApellido() : "",
-                "",
+                emails.getOrDefault(c.getId(), ""),
                 c.getTelefono() != null ? c.getTelefono() : "",
                 c.getCargo() != null ? c.getCargo() : "",
                 c.getCiudad() != null ? c.getCiudad() : "",

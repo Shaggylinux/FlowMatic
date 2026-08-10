@@ -9,9 +9,15 @@ public class EventoValidator {
         // Utility class
     }
 
+    private static final LocalTime HORA_MIN = LocalTime.of(7, 0);
+    private static final LocalTime HORA_MAX = LocalTime.of(19, 0);
+
     public static void validate(LocalDate fecha, LocalTime hora, String lugar, String observaciones) {
         if (fecha == null || hora == null) {
             throw new IllegalArgumentException("La fecha y la hora son obligatorias");
+        }
+        if (hora.isBefore(HORA_MIN) || hora.isAfter(HORA_MAX)) {
+            throw new IllegalArgumentException("La hora debe estar entre las 07:00 y las 19:00");
         }
         if (fecha.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha no puede ser anterior a hoy");

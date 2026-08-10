@@ -24,8 +24,12 @@ public class CandidatoService {
     private final CandidatoRepository candidatoRepository;
     private final UsuarioRepository usuarioRepository;
 
+    public static final List<String> ESTADOS_VALIDOS = Arrays.asList(
+        "Registrado", "En pruebas", "Entrevista", "Contratado", "No aceptado"
+    );
+
     private static final List<String> ESTADOS_EN_PROCESO = Arrays.asList(
-        "Disponible", "En proceso", "Entrevista", "Pendiente", "Registrado"
+        "Registrado", "En pruebas", "Entrevista"
     );
 
     public long contarActivos() {

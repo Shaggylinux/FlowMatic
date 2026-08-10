@@ -25,6 +25,18 @@ public class Archivos {
     
     private String observacion;
 
+    @Column(name = "fecha_subida")
+    private java.time.LocalDateTime fechaSubida;
+
+    @Transient
+    private String tamanoFormateado = "--";
+
+    @Transient
+    private String fechaModificacion = "--";
+
+    @Transient
+    private String nombreCandidatoStr = "General";
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidato_id")
     private com.back.auth.Usuario candidato;

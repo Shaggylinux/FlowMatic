@@ -36,6 +36,14 @@ public class EntrevistaEventListener {
 
             emailService.enviarEmailEntrevista(event.rrhhEmail(), rrhhNombre, event.eventoDto(), event.candidatoNombre());
 
+            if (event.candidatoEmail() != null && !event.candidatoEmail().isBlank()) {
+                try {
+                    emailService.enviarEmailEntrevistaCandidato(event.candidatoEmail(), event.candidatoNombre(), event.eventoDto());
+                } catch (Exception candidatoEx) {
+                    logger.warn("No se pudo enviar el email al candidato {}: {}", event.candidatoEmail(), candidatoEx.getMessage());
+                }
+            }
+
             String mensaje = "Entrevista agendada: " + event.candidatoNombre() + " — " + event.tipo() + " el " + event.fechaStr();
             notificacionService.crear("ENTREVISTA", mensaje, event.candidatoId(), event.candidatoNombre(), "/calendario");
             

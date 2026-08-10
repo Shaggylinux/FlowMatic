@@ -13,9 +13,9 @@
 
 .cal-stats-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 16px;
-  padding: 24px 32px 0;
+  padding: 0;
 }
 
 .cal-stat-card {
@@ -37,6 +37,8 @@
 .cal-stat-card:nth-child(3) { border-top-color: #16A34A; }
 .cal-stat-card:nth-child(4) { border-top-color: #8B5CF6; }
 .cal-stat-card:nth-child(5) { border-top-color: #EF4444; }
+.cal-stat-card:nth-child(6) { border-top-color: #0D9488; }
+.cal-stat-card:nth-child(7) { border-top-color: #3B82F6; }
 
 .cal-stat-inner {
   display: flex;

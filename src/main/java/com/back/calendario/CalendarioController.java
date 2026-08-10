@@ -132,6 +132,11 @@ public class CalendarioController {
                     borderColor = "#EF4444";
                     textColor = "#991B1B";
                 }
+                case "REALIZADA" -> {
+                    bgColor = "#F1F5F9";
+                    borderColor = "#94A3B8";
+                    textColor = "#475569";
+                }
                 default -> {
                     bgColor = "#FEF9C3";
                     borderColor = "#EAB308";
@@ -189,7 +194,9 @@ public class CalendarioController {
             try {
                 EntrevistaEmailDTO eventoDto = new EntrevistaEmailDTO(evento.getFecha(), evento.getHora(), evento.getTipo(), evento.getLugar(), evento.getObservaciones());
                 eventPublisher.publishEvent(new EntrevistaAgendadaEvent(
-                        evento.getId(), candidatoId, candidatoNombre, rrhh.getId(), rrhh.getEmail(), eventoDto,
+                        evento.getId(), candidatoId, candidatoNombre,
+                        usuarioRepository.findById(candidatoId).map(Usuario::getEmail).orElse(null),
+                        rrhh.getId(), rrhh.getEmail(), eventoDto,
                         tipo != null ? tipo : "Entrevista", fecha.toString()));
             } catch (Exception emailEx) {
                 logger.warn("No se pudo publicar el evento de entrevista agendada: {}", emailEx.getMessage());

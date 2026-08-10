@@ -134,13 +134,16 @@ function renderTable(data) {
         </td>
         <td><span class="gc-cell-muted" style="color:#475569;">${c.email}<br><small>${c.telefono || ''}</small></span></td>
         <td onclick="event.stopPropagation()">
-            <select class="gc-filter-select" style="width:130px; font-size:12px; font-weight:600; color:var(--estado-${estado.badge}); background:var(--estado-bg-${estado.badge}); border:none; padding:4px 8px; border-radius:12px; appearance:none; cursor:pointer;" onchange="cambiarEstado(${c.id}, this.value)">
-              <option value="Registrado" ${c.estado === 'Registrado' ? 'selected' : ''}>Registrado</option>
-              <option value="En pruebas" ${c.estado === 'En pruebas' ? 'selected' : ''}>En pruebas</option>
-              <option value="Entrevista" ${c.estado === 'Entrevista' ? 'selected' : ''}>Entrevista</option>
-              <option value="Contratado" ${c.estado === 'Contratado' ? 'selected' : ''}>Contratado</option>
-              <option value="No aceptado" ${c.estado === 'No aceptado' ? 'selected' : ''}>No aceptado</option>
-            </select>
+            <span style="position:relative; display:inline-flex; align-items:center;">
+              <select class="gc-filter-select" style="width:130px; font-size:12px; font-weight:600; color:var(--estado-${estado.badge}); background:var(--estado-bg-${estado.badge}); border:none; padding:4px 22px 4px 8px; border-radius:12px; appearance:none; cursor:pointer;" onchange="cambiarEstado(${c.id}, this.value)">
+                <option value="Registrado" ${c.estado === 'Registrado' ? 'selected' : ''}>Registrado</option>
+                <option value="En pruebas" ${c.estado === 'En pruebas' ? 'selected' : ''}>En pruebas</option>
+                <option value="Entrevista" ${c.estado === 'Entrevista' ? 'selected' : ''}>Entrevista</option>
+                <option value="Contratado" ${c.estado === 'Contratado' ? 'selected' : ''}>Contratado</option>
+                <option value="No aceptado" ${c.estado === 'No aceptado' ? 'selected' : ''}>No aceptado</option>
+              </select>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position:absolute; right:7px; pointer-events:none; color:var(--estado-${estado.badge});"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
         </td>
         <td class="gc-cell-match">
           <div style="display:flex; align-items:center; gap:8px;">

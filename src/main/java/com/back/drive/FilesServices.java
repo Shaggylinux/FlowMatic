@@ -12,7 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +24,8 @@ public class FilesServices {
     private final ArchivosRepository repository;
 
     private final String rootFolder = "superfolder";
+
+    private static final ZoneId ZONA = ZoneId.of("America/Bogota");
 
     @PostConstruct
     public void init() {
@@ -54,6 +58,8 @@ public class FilesServices {
         nuevoArchivo.setPropietario(emailPropietario);
         nuevoArchivo.setEtapa(etapa);
         nuevoArchivo.setEsCarpeta(false);
+        nuevoArchivo.setEstadoDocumento("No aplica");
+        nuevoArchivo.setFechaSubida(LocalDateTime.now(ZONA));
 
         repository.save(nuevoArchivo);
     }
@@ -85,6 +91,7 @@ public class FilesServices {
         doc.setEsCarpeta(false);
         doc.setTipoDocumento(tipoDocumento != null ? tipoDocumento : "Otro");
         doc.setEtapa("Candidatos");
+        doc.setFechaSubida(LocalDateTime.now(ZONA));
         return repository.save(doc);
     }
 
@@ -119,7 +126,7 @@ public class FilesServices {
         }
     }
 
-    public void subirArchivoDrive(MultipartFile archivo, String folder, String email, String filename, com.back.auth.Usuario candidato) throws IOException {
+    public Archivos subirArchivoDrive(MultipartFile archivo, String folder, String email, String filename, com.back.auth.Usuario candidato) throws IOException {
         String rutaDestino = rootFolder + "/" + (folder.isEmpty() ? "" : folder + "/") + filename;
         rutaDestino = rutaDestino.replace("//", "/");
         Path rutaCompleta = Paths.get(rutaDestino);
@@ -131,7 +138,8 @@ public class FilesServices {
         doc.setUbicacion(rutaDestino);
         doc.setPropietario(email);
         doc.setCandidato(candidato);
-        repository.save(doc);
+        doc.setFechaSubida(LocalDateTime.now(ZONA));
+        return repository.save(doc);
     }
 
     public void eliminarArchivo(Archivos archivo) {
@@ -143,5 +151,78 @@ public class FilesServices {
 
     public Path obtenerRutaArchivo(Archivos archivo) {
         return Paths.get(archivo.getUbicacion()).normalize();
+    }
+
+    public void eliminarCarpetaRecursiva(String folderPath) throws IOException {
+        String searchPrefix = folderPath;
+        if (!searchPrefix.endsWith("/")) {
+            searchPrefix += "/";
+        }
+        
+        List<Archivos> subFiles = repository.findByUbicacionStartingWith(searchPrefix);
+        List<Archivos> subFolders = repository.findFoldersByUbicacionStartingWith(searchPrefix);
+        
+        repository.deleteAll(subFiles);
+        repository.deleteAll(subFolders);
+        
+        // Find and delete the folder itself (its path might not end with '/')
+        List<Archivos> exactFolder = repository.findFoldersByUbicacionStartingWith(folderPath);
+        for(Archivos a : exactFolder) {
+            if(a.getUbicacion().equals(folderPath) || a.getUbicacion().equals(folderPath + "/")) {
+                repository.delete(a);
+            }
+        }
+        
+        org.springframework.util.FileSystemUtils.deleteRecursively(Paths.get(folderPath));
+    }
+
+    public void renombrarCarpeta(String oldPath, String newName) throws IOException {
+        String normalizedOldPath = oldPath.replace("\\", "/").replaceAll("^/+|/+$", "");
+        
+        // Find the folder object
+        List<Archivos> exactFolder = repository.findFoldersByUbicacionStartingWith(normalizedOldPath);
+        Archivos folderToRename = null;
+        for(Archivos a : exactFolder) {
+            String u = a.getUbicacion().replace("\\", "/").replaceAll("^/+|/+$", "");
+            if(u.equals(normalizedOldPath)) {
+                folderToRename = a;
+                break;
+            }
+        }
+        
+        if (folderToRename == null) return;
+        
+        Path oldPhysicalPath = Paths.get(normalizedOldPath);
+        Path newPhysicalPath = oldPhysicalPath.resolveSibling(newName);
+        
+        String newPathStr = newPhysicalPath.toString().replace("\\", "/");
+        
+        // Rename physically
+        if (Files.exists(oldPhysicalPath)) {
+            Files.move(oldPhysicalPath, newPhysicalPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        
+        // Update the folder itself
+        folderToRename.setNombre(newName);
+        folderToRename.setUbicacion(newPathStr + "/");
+        repository.save(folderToRename);
+        
+        // Update all contents
+        String oldPrefix = normalizedOldPath + "/";
+        String newPrefix = newPathStr + "/";
+        
+        List<Archivos> subFiles = repository.findByUbicacionStartingWith(oldPrefix);
+        for (Archivos f : subFiles) {
+            String current = f.getUbicacion().replace("\\", "/");
+            f.setUbicacion(current.replaceFirst("^" + java.util.regex.Pattern.quote(oldPrefix), java.util.regex.Matcher.quoteReplacement(newPrefix)));
+        }
+        repository.saveAll(subFiles);
+        
+        List<Archivos> subFolders = repository.findFoldersByUbicacionStartingWith(oldPrefix);
+        for (Archivos f : subFolders) {
+            String current = f.getUbicacion().replace("\\", "/");
+            f.setUbicacion(current.replaceFirst("^" + java.util.regex.Pattern.quote(oldPrefix), java.util.regex.Matcher.quoteReplacement(newPrefix)));
+        }
+        repository.saveAll(subFolders);
     }
 }

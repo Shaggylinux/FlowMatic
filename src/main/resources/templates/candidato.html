@@ -14,35 +14,7 @@
 <div class="drive-layout">
 
   <!-- ── SIDEBAR ─────────────────────────────── -->
-  <aside class="fm-sidebar">
-
-    <div class="fm-sidebar-header">
-      <a th:href="@{/}" class="fm-sidebar-logo" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
-        <span th:replace="~{fragments/logo :: logoSidebar}"></span>
-        <span style="color:#ffffff; font-size:16px; font-weight:800; letter-spacing:0.04em;">Flowmatic</span>
-      </a>
-    </div>
-
-    <nav style="padding-top:8px;">
-      <a th:href="@{/drive}" class="fm-nav-link active">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Mis Documentos
-      </a>
-    </nav>
-
-      <div class="fm-sidebar-footer">
-        <form th:action="@{/logout}" method="post">
-          <button type="submit" class="fm-user-card">
-            <div class="fm-user-avatar" th:text="${usuarioActual != null ? usuarioActual.substring(0,2).toUpperCase() : 'US'}"></div>
-            <div class="fm-user-info">
-              <div class="fm-user-name" th:text="${usuarioActual}">Usuario</div>
-              <div class="fm-user-role" th:text="${usuarioActualObjeto != null ? usuarioActualObjeto['rol'].replace('ROLE_', '') : 'Usuario'}"></div>
-            </div>
-            <svg class="fm-user-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </form>
-      </div>
-  </aside>
+  <div th:replace="~{fragments/sidebar-rrhh :: sidebarRRHH('drive')}"></div>
 
   <!-- ── ÁREA PRINCIPAL ──────────────────────── -->
   <div class="drive-main">

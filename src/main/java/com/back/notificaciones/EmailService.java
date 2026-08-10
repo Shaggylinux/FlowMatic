@@ -128,4 +128,38 @@ public class EmailService {
             throw new RuntimeException("Error al enviar el email de entrevista", e);
         }
     }
+
+    public boolean enviarEmailEntrevistaCandidato(String destinatario, String candidatoNombre, EntrevistaEmailDTO evento) {
+        try {
+            logger.info("📧 Preparando email de entrevista para el candidato: {}", destinatario);
+
+            String asunto = "📅 Programación de tu entrevista - " + candidatoNombre;
+
+            Context context = new Context();
+            context.setVariable("candidatoNombre", candidatoNombre);
+            context.setVariable("fecha", evento.fecha() != null ? evento.fecha().toString() : "");
+            context.setVariable("hora", evento.hora() != null ? evento.hora().toString() : "");
+            context.setVariable("tipo", evento.tipo() != null ? evento.tipo() : "ENTREVISTA_INICIAL");
+            context.setVariable("lugar", evento.lugar());
+            context.setVariable("observaciones", evento.observaciones());
+
+            String mensaje = templateEngine.process("emails/email-entrevista-candidato", context);
+
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(destinatario);
+            helper.setSubject(asunto);
+            helper.setText(mensaje, true);
+            helper.setFrom(mailFrom);
+
+            mailSender.send(mimeMessage);
+
+            logger.info("Email de entrevista enviado al candidato: {}", destinatario);
+            return true;
+
+        } catch (Exception e) {
+            logger.error("Error al enviar email de entrevista al candidato: {}", e.getMessage());
+            throw new RuntimeException("Error al enviar el email de entrevista al candidato", e);
+        }
+    }
 }

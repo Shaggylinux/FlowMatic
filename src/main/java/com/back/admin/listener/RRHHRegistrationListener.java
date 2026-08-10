@@ -5,9 +5,10 @@ import com.back.admin.RRHHRepository;
 import com.back.auth.event.UsuarioRegistradoEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +21,7 @@ public class RRHHRegistrationListener {
     private final RRHHRepository rrhhRepository;
 
     @Async
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void onUsuarioRegistrado(UsuarioRegistradoEvent event) {
         if ("ROLE_RRHH".equals(event.rol())) {
             logger.info("Procesando post-registro para RRHH: {}", event.email());

@@ -53,6 +53,13 @@ public class SecurityConfig {
                         .passwordParameter("clave")
                         .successHandler(loginSuccessHandler)
                         .failureHandler(loginFailureHandler)
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID", "XSRF-TOKEN")
                         .permitAll());
         http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 

@@ -1,10 +1,16 @@
 package com.back.candidatos.drive;
 
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import com.back.auth.Usuario;
 import com.back.candidatos.Candidato;
 import com.back.drive.Archivos;
@@ -17,6 +23,7 @@ import com.back.calendario.EventoRepository;
 import com.back.calendario.Evento;
 import com.back.notificaciones.Notificacion;
 import com.back.candidatos.CandidatoRepository;
+import com.back.candidatos.CandidatoService;
 import com.back.notificaciones.NotificacionService;
 import com.back.util.Sanitizer;
 import org.springframework.ui.Model;
@@ -44,10 +51,18 @@ public class DriveController {
 
     @GetMapping
     public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "buscar", required = false) String buscar,
+            @RequestParam(name = "tipo", required = false) String tipo,
+            @RequestParam(name = "estado", required = false) String estado,
+            @RequestParam(name = "error", required = false) String error,
             Principal principal, Model model) {
         String loginId = (principal != null) ? principal.getName() : null;
         if (loginId == null)
             return "redirect:/login";
+
+        model.addAttribute("error", error);
 
         Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
 
@@ -82,6 +97,45 @@ public class DriveController {
                 })
                 .toList();
 
+        List<Archivos> archivosFiltrados = archivosEnEstaCarpeta.stream()
+                .filter(a -> {
+                    if (buscar == null || buscar.isBlank())
+                        return true;
+                    String q = buscar.trim().toLowerCase();
+                    String nombreCandidato = a.getNombreCandidatoStr();
+                    return a.getNombre().toLowerCase().contains(q)
+                            || (nombreCandidato != null && nombreCandidato.toLowerCase().contains(q));
+                })
+                .filter(a -> {
+                    if (tipo == null || tipo.isBlank())
+                        return true;
+                    String ext = a.getNombre().contains(".")
+                            ? a.getNombre().substring(a.getNombre().lastIndexOf('.') + 1).toLowerCase()
+                            : "";
+                    return List.of(tipo.split(",")).contains(ext);
+                })
+                .filter(a -> {
+                    if (estado == null || estado.isBlank())
+                        return true;
+                    return estado.trim().equalsIgnoreCase(a.getEstadoDocumento());
+                })
+                .toList();
+
+        long totalItems = archivosFiltrados.size();
+        int totalPages = (int) Math.max(1, Math.ceil((double) totalItems / Math.max(size, 1)));
+        if (page < 0)
+            page = 0;
+        if (page >= totalPages)
+            page = totalPages - 1;
+        Pageable pageable = PageRequest.of(Math.max(page, 0), Math.max(size, 1));
+        int fromIndex = Math.min(Math.toIntExact(pageable.getOffset()), archivosFiltrados.size());
+        int toIndex = Math.min(fromIndex + pageable.getPageSize(), archivosFiltrados.size());
+        List<Archivos> archivosPagina = archivosFiltrados.subList(fromIndex, toIndex);
+        Page<Archivos> archivosPage = new PageImpl<>(archivosPagina, pageable, totalItems);
+
+        int startItem = totalItems == 0 ? 0 : (int) pageable.getOffset() + 1;
+        int endItem = (int) Math.min(pageable.getOffset() + archivosPagina.size(), totalItems);
+
         Map<String, Object> usuarioData = new HashMap<>();
         if (usuarioActual != null) {
             usuarioData.put("id", usuarioActual.getId());
@@ -95,20 +149,207 @@ public class DriveController {
                     usuarioData.put("username", candidato.getUsername());
                     usuarioData.put("apellido", candidato.getApellido());
                     usuarioData.put("estado", candidato.getEstado() != null ? candidato.getEstado() : "Registrado");
+                } else {
+                    usuarioData.put("username", usuarioActual.getEmail());
+                    usuarioData.put("apellido", "");
+                    usuarioData.put("estado", "Registrado");
                 }
             }
         }
 
-        model.addAttribute("usuarioActualObjeto", usuarioData);
-        model.addAttribute("usuarioActual", loginId);
-        model.addAttribute("carpetas", todos.stream()
+        long totalSizeBytes = 0;
+        int pendingCount = 0;
+        int filesCount = 0;
+        int foldersCount = 0;
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy", new java.util.Locale("es", "ES"));
+        sdf.setTimeZone(java.util.TimeZone.getTimeZone(java.time.ZoneId.of("America/Bogota")));
+
+        for (Archivos a : todos) {
+            if (a.isEsCarpeta()) {
+                foldersCount++;
+                continue;
+            }
+            filesCount++;
+            if ("Pendiente".equalsIgnoreCase(a.getEstadoDocumento())) {
+                pendingCount++;
+            }
+            java.io.File physicalFile = new java.io.File(a.getUbicacion());
+            long lastModified = 0L;
+            if (physicalFile.exists()) {
+                long fileSize = physicalFile.length();
+                totalSizeBytes += fileSize;
+                String sizeStr;
+                if (fileSize < 1024) sizeStr = fileSize + " B";
+                else if (fileSize < 1024 * 1024) sizeStr = (fileSize / 1024) + " KB";
+                else if (fileSize < 1024 * 1024 * 1024) sizeStr = String.format(java.util.Locale.US, "%.1f MB", (double)fileSize / (1024 * 1024));
+                else sizeStr = String.format(java.util.Locale.US, "%.2f GB", (double)fileSize / (1024 * 1024 * 1024));
+                a.setTamanoFormateado(sizeStr);
+                lastModified = physicalFile.lastModified();
+            }
+
+            java.time.ZoneId zona = java.time.ZoneId.of("America/Bogota");
+            java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("hh:mm a", new java.util.Locale("es", "ES"));
+            timeFormat.setTimeZone(java.util.TimeZone.getTimeZone(zona));
+            java.time.LocalDate hoy = java.time.LocalDate.now(zona);
+
+            if (a.getFechaSubida() != null) {
+                java.time.LocalDate fechaLocal = a.getFechaSubida().toLocalDate();
+                java.util.Date cuando = java.util.Date.from(a.getFechaSubida().atZone(zona).toInstant());
+                if (hoy.equals(fechaLocal)) {
+                    a.setFechaModificacion("Hoy, " + timeFormat.format(cuando));
+                } else if (hoy.minusDays(1).equals(fechaLocal)) {
+                    a.setFechaModificacion("Ayer, " + timeFormat.format(cuando));
+                } else {
+                    a.setFechaModificacion(sdf.format(cuando));
+                }
+            } else if (physicalFile.exists()) {
+                java.time.LocalDate fechaLocal = java.time.LocalDate.ofInstant(java.time.Instant.ofEpochMilli(lastModified), zona);
+                if (hoy.equals(fechaLocal)) {
+                    a.setFechaModificacion("Hoy, " + timeFormat.format(new java.util.Date(lastModified)));
+                } else if (hoy.minusDays(1).equals(fechaLocal)) {
+                    a.setFechaModificacion("Ayer, " + timeFormat.format(new java.util.Date(lastModified)));
+                } else {
+                    a.setFechaModificacion(sdf.format(new java.util.Date(lastModified)));
+                }
+            }
+            
+            if (a.getCandidato() != null) {
+                Candidato c = candidatoRepository.findById(a.getCandidato().getId()).orElse(null);
+                if (c != null && c.getUsername() != null) {
+                    a.setNombreCandidatoStr(c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : ""));
+                } else {
+                    a.setNombreCandidatoStr(a.getCandidato().getEmail());
+                }
+            } else {
+                Usuario propietarioUsuario = usuarioRepository.findByEmail(a.getPropietario()).orElse(null);
+                if (propietarioUsuario != null && "ROLE_CANDIDATO".equals(propietarioUsuario.getRol())) {
+                    Candidato c = candidatoRepository.findById(propietarioUsuario.getId()).orElse(null);
+                    if (c != null && c.getUsername() != null) {
+                        a.setNombreCandidatoStr(c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : ""));
+                    } else {
+                        a.setNombreCandidatoStr(propietarioUsuario.getEmail());
+                    }
+                } else {
+                    String folderNombre = extraerCarpetaContenedora(a.getUbicacion());
+                    a.setNombreCandidatoStr(folderNombre != null ? folderNombre : "General");
+                }
+            }
+        }
+        java.io.File superFolderFile = new java.io.File("superfolder");
+        if (!superFolderFile.exists()) {
+            superFolderFile.mkdirs();
+        }
+        long totalDiskBytes = superFolderFile.getTotalSpace();
+        if (totalDiskBytes <= 0) {
+            totalDiskBytes = 5L * 1024 * 1024 * 1024;
+        }
+
+        double gbUsed = (double) totalSizeBytes / (1024 * 1024 * 1024);
+        double pctUsed = Math.min(((double) totalSizeBytes / totalDiskBytes) * 100.0, 100.0);
+
+        List<Archivos> carpetasFlat = todos.stream()
                 .filter(Archivos::isEsCarpeta)
                 .filter(a -> !a.getNombre().contains("@"))
-                .toList());
-        model.addAttribute("archivos", archivosEnEstaCarpeta);
+                .toList();
+
+        Map<String, FolderNode> nodeMap = new HashMap<>();
+        for (Archivos folderObj : carpetasFlat) {
+            String path = folderObj.getUbicacion().replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+            nodeMap.put(path, new FolderNode(folderObj));
+        }
+
+        for (Archivos a : todos) {
+            if (!a.isEsCarpeta()) {
+                String path = a.getUbicacion().replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+                String fileName = a.getNombre();
+                if (path.endsWith(fileName)) {
+                    path = path.substring(0, path.length() - fileName.length()).replaceAll("^/+|/+$", "").trim();
+                }
+                if (nodeMap.containsKey(path)) {
+                    nodeMap.get(path).addFileCount(1);
+                }
+            }
+        }
+
+        List<FolderNode> carpetasTree = new ArrayList<>();
+        for (FolderNode node : nodeMap.values()) {
+            String path = node.getFolder().getUbicacion().replace("\\", "/").replaceAll("^/+|/+$", "").trim();
+            String folderName = node.getFolder().getNombre();
+            String parentPath = "";
+            if (path.endsWith(folderName)) {
+                parentPath = path.substring(0, path.length() - folderName.length()).replaceAll("^/+|/+$", "").trim();
+            }
+            if (!parentPath.isEmpty() && nodeMap.containsKey(parentPath)) {
+                nodeMap.get(parentPath).getChildren().add(node);
+            } else {
+                carpetasTree.add(node);
+            }
+        }
+
+        // Sort children alphabetically recursively
+        sortNodes(carpetasTree);
+
+        model.addAttribute("usuarioActualObjeto", usuarioData);
+        model.addAttribute("usuarioActual", loginId);
+        model.addAttribute("carpetasTree", carpetasTree);
+        model.addAttribute("archivos", archivosPagina);
         model.addAttribute("folderActual", folderActualURL);
+        model.addAttribute("currentPage", archivosPage.getNumber());
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("pageSize", pageable.getPageSize());
+        model.addAttribute("startItem", startItem);
+        model.addAttribute("endItem", endItem);
+        model.addAttribute("buscar", buscar);
+        model.addAttribute("tipo", tipo);
+        model.addAttribute("estado", estado);
+
+        String totalTamanoFormateado;
+        if (totalSizeBytes < 1024) {
+            totalTamanoFormateado = totalSizeBytes + " B";
+        } else if (totalSizeBytes < 1024 * 1024) {
+            totalTamanoFormateado = String.format(java.util.Locale.US, "%.1f KB", (double) totalSizeBytes / 1024);
+        } else if (totalSizeBytes < 1024 * 1024 * 1024) {
+            totalTamanoFormateado = String.format(java.util.Locale.US, "%.1f MB", (double) totalSizeBytes / (1024 * 1024));
+        } else {
+            totalTamanoFormateado = String.format(java.util.Locale.US, "%.2f GB", (double) totalSizeBytes / (1024 * 1024 * 1024));
+        }
+
+        String totalDiscoFormateado;
+        if (totalDiskBytes < 1024 * 1024 * 1024) {
+            totalDiscoFormateado = String.format(java.util.Locale.US, "%.1f MB", (double) totalDiskBytes / (1024 * 1024));
+        } else {
+            totalDiscoFormateado = String.format(java.util.Locale.US, "%.1f GB", (double) totalDiskBytes / (1024 * 1024 * 1024));
+        }
+
+        long freeDiskBytes = superFolderFile.getUsableSpace();
+        String espacioLibreFormateado;
+        if (freeDiskBytes < 1024 * 1024 * 1024) {
+            espacioLibreFormateado = String.format(java.util.Locale.US, "%.1f MB", (double) freeDiskBytes / (1024 * 1024));
+        } else {
+            espacioLibreFormateado = String.format(java.util.Locale.US, "%.1f GB", (double) freeDiskBytes / (1024 * 1024 * 1024));
+        }
+
+        model.addAttribute("totalCarpetas", foldersCount);
+        model.addAttribute("totalArchivos", filesCount);
+        model.addAttribute("totalSizeBytes", totalSizeBytes);
+        model.addAttribute("totalTamanoFormateado", totalTamanoFormateado);
+        model.addAttribute("totalDiscoFormateado", totalDiscoFormateado);
+        model.addAttribute("espacioLibreFormateado", espacioLibreFormateado);
+        model.addAttribute("totalGbUsado", String.format(java.util.Locale.US, "%.2f", gbUsed));
+        model.addAttribute("porcentajeUsado", String.format(java.util.Locale.US, "%.1f", pctUsed));
+        model.addAttribute("pendientesRevision", pendingCount);
 
         return "drive";
+    }
+
+    private void sortNodes(List<FolderNode> nodes) {
+        nodes.sort((n1, n2) -> n1.getFolder().getNombre().compareToIgnoreCase(n2.getFolder().getNombre()));
+        for (FolderNode node : nodes) {
+            if (!node.getChildren().isEmpty()) {
+                sortNodes(node.getChildren());
+            }
+        }
     }
 
     @PostMapping("/crear-carpeta")
@@ -138,6 +379,58 @@ public class DriveController {
         }
         String rutaRelativa = folder.isEmpty() ? rutaSinSuper : folder + "/" + rutaSinSuper;
         return "redirect:/drive?folder=" + rutaRelativa;
+    }
+
+    @PostMapping("/renombrar-carpeta")
+    public String renombrarCarpeta(@RequestParam("oldPath") String oldPath,
+            @RequestParam("newName") String newName) {
+        if (newName == null || newName.trim().isEmpty()) {
+            return "redirect:/drive";
+        }
+        try {
+            filesServices.renombrarCarpeta(oldPath, Sanitizer.sanitizePath(newName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/drive";
+    }
+
+    @PostMapping("/eliminar-carpeta")
+    public String eliminarCarpeta(@RequestParam("folderPath") String folderPath, Principal principal) {
+        String email = (principal != null) ? principal.getName() : null;
+        if (email == null)
+            return "redirect:/login";
+
+        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuarioActual == null)
+            return "redirect:/drive";
+
+        String normalized = folderPath.replace("\\", "/").replaceAll("^/+|/+$", "");
+        Archivos carpetaDb = null;
+        List<Archivos> carpetas = filesRepository.findFoldersByUbicacionStartingWith(normalized);
+        for (Archivos a : carpetas) {
+            String u = a.getUbicacion().replace("\\", "/").replaceAll("^/+|/+$", "");
+            if (u.equals(normalized) || u.equals(normalized + "/")) {
+                carpetaDb = a;
+                break;
+            }
+        }
+
+        if (!"ROLE_RRHH".equals(usuarioActual.getRol())) {
+            boolean esPropietario = carpetaDb != null
+                    && carpetaDb.getPropietario() != null
+                    && email.equalsIgnoreCase(carpetaDb.getPropietario());
+            if (!esPropietario) {
+                return "redirect:/drive";
+            }
+        }
+
+        try {
+            filesServices.eliminarCarpetaRecursiva(folderPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/drive";
     }
 
     @PostMapping("/subir-archivo")
@@ -177,8 +470,17 @@ public class DriveController {
             return "redirect:/drive?folder=" + folder;
         }
 
+        if (archivo.getSize() > 30L * 1024 * 1024) {
+            return "redirect:/drive?folder=" + folder + "&error="
+                    + URLEncoder.encode("El archivo supera el tamaño máximo permitido de 30 MB", StandardCharsets.UTF_8);
+        }
+
         try {
-            filesServices.subirArchivoDrive(archivo, folder, email, filename, candidatoVinculado);
+            Archivos doc = filesServices.subirArchivoDrive(archivo, folder, email, filename, candidatoVinculado);
+            if ("ROLE_RRHH".equals(usuarioActual.getRol())) {
+                doc.setEstadoDocumento("No aplica");
+                filesRepository.save(doc);
+            }
         } catch (IOException e) {
             return "redirect:/drive?folder=" + folder;
         }
@@ -191,6 +493,23 @@ public class DriveController {
             return false;
         return email.equalsIgnoreCase(archivo.getPropietario())
                 || (archivo.getDestinario() != null && email.equalsIgnoreCase(archivo.getDestinario()));
+    }
+
+    private String extraerCarpetaContenedora(String ubicacion) {
+        if (ubicacion == null || ubicacion.isBlank()) {
+            return null;
+        }
+        String path = ubicacion.replace("\\", "/").replace("superfolder/", "").replaceAll("^/+|/+$", "");
+        int lastSlash = path.lastIndexOf('/');
+        if (lastSlash < 0) {
+            return null;
+        }
+        String carpeta = path.substring(0, lastSlash);
+        if (carpeta.isBlank()) {
+            return null;
+        }
+        int parentSlash = carpeta.lastIndexOf('/');
+        return parentSlash >= 0 ? carpeta.substring(parentSlash + 1) : carpeta;
     }
 
     @GetMapping("/descargar")
@@ -250,6 +569,8 @@ public class DriveController {
             @RequestParam("nuevoEstado") String estado) {
         Candidato candidato = candidatoRepository.findById(id).orElse(null);
         if (candidato == null)
+            return "redirect:/drive";
+        if (!CandidatoService.ESTADOS_VALIDOS.contains(estado))
             return "redirect:/drive";
 
         String estadoAnterior = candidato.getEstado();
@@ -311,6 +632,11 @@ public class DriveController {
         Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
         if (archivoOpt.isPresent()) {
             Archivos archivo = archivoOpt.get();
+            boolean esPropietario = archivo.getPropietario() != null && email.equalsIgnoreCase(archivo.getPropietario());
+            boolean noRevisable = "No aplica".equals(archivo.getEstadoDocumento());
+            if (esPropietario || noRevisable) {
+                return "redirect:/drive?folder=" + folder;
+            }
             archivo.setEstadoDocumento(estado);
             if ("Rechazado".equals(estado)) {
                 archivo.setObservacion(observacion);
