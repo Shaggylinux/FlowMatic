@@ -33,6 +33,7 @@ public class CandidatoRegistrationListener {
             candidato.setId(event.usuarioId());
             candidato.setUsername(event.username());
             candidato.setApellido(event.apellido());
+            candidato.setRrhhEmail(event.rrhhEmail());
             candidatoRepository.save(candidato);
 
             String nombreCompleto = (event.username() + " " + (event.apellido() != null ? event.apellido() : "")).trim();

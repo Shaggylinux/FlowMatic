@@ -73,7 +73,7 @@ public class UsuarioService implements AuthApi {
         tokenRepository.save(tokenObj);
 
         eventPublisher.publishEvent(new UsuarioRegistradoEvent(usuario.getId(),
-            usuario.getEmail(), usuario.getRol(), username, apellido, telefono, dto.getDocumento(), dto.getCargo(), tokenUuid));
+            usuario.getEmail(), usuario.getRol(), username, apellido, telefono, dto.getDocumento(), dto.getCargo(), tokenUuid, dto.getRrhhEmail()));
     }
 
     public Usuario buscarPorToken(String token) {

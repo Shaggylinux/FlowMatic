@@ -14,4 +14,5 @@ public class RegistroUsuarioDTO {
     private String rol;
     private String documento;
     private String cargo;
+    private String rrhhEmail;
 }

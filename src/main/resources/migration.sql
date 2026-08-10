@@ -16,6 +16,7 @@ CREATE TABLE candidatos (
     disponibilidad VARCHAR(255),
     proceso_actual VARCHAR(255),
     foto_url VARCHAR(255),
+    rrhh_email VARCHAR(255),
     ultima_actualizacion TIMESTAMP
 );
 

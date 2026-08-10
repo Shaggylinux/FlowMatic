@@ -41,6 +41,9 @@ public class Candidato {
     @Column(name = "foto_url")
     private String fotoUrl;
 
+    @Column(name = "rrhh_email")
+    private String rrhhEmail;
+
     @Column(name = "ultima_actualizacion")
     private LocalDateTime ultimaActualizacion;
 }

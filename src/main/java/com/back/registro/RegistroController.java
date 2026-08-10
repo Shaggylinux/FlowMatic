@@ -38,11 +38,14 @@ public class RegistroController {
         @Valid @ModelAttribute("registro") RegistroRequest registro,
         BindingResult resultado,
         Model model,
-        @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
+        @RequestHeader(value = "X-Requested-With", required = false) String requestedWith,
+        java.security.Principal principal) {
 
     if (resultado.hasErrors()) {
         return "registro-candidato";
     }
+
+    String rrhhEmail = (principal != null) ? principal.getName() : null;
 
     RegistroUsuarioDTO dto = RegistroUsuarioDTO.builder()
         .email(registro.getEmail())
@@ -50,6 +53,7 @@ public class RegistroController {
         .rol("ROLE_CANDIDATO")
         .username(registro.getUsername())
         .apellido(registro.getApellido())
+        .rrhhEmail(rrhhEmail)
         .build();
 
     try {
@@ -118,10 +122,12 @@ public class RegistroController {
 
     @PostMapping("/api")
     @ResponseBody
-    public ResponseEntity<?> registrarDesdeModal(@Valid @RequestBody RegistroRequest registro, BindingResult resultado) {
+    public ResponseEntity<?> registrarDesdeModal(@Valid @RequestBody RegistroRequest registro, BindingResult resultado, java.security.Principal principal) {
         if (resultado.hasErrors()) {
             return ResponseEntity.badRequest().body("Datos inv\u00e1lidos");
         }
+
+        String rrhhEmail = (principal != null) ? principal.getName() : null;
 
         RegistroUsuarioDTO dto = RegistroUsuarioDTO.builder()
             .email(registro.getEmail())
@@ -129,6 +135,7 @@ public class RegistroController {
             .rol("ROLE_CANDIDATO")
             .username(registro.getUsername())
             .apellido(registro.getApellido())
+            .rrhhEmail(rrhhEmail)
             .build();
 
         try {
