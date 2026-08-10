@@ -294,8 +294,8 @@ public class CandidatoController {
     public Map<String, Object> stats() {
         return Map.of(
                 "total", candidatoService.contarActivos(),
-                "documentos", archivosRepository.count(),
-                "carpetas", archivosRepository.count() / 3, // Approximate metric if no folder entity
+                "documentos", archivosRepository.count() - archivosRepository.countFolders(),
+                "carpetas", archivosRepository.countFolders(),
                 "entrevistas", 0
         );
     }

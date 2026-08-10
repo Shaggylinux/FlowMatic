@@ -19,4 +19,7 @@ List<Archivos> findByUbicacionStartingWith(@Param("prefix") String prefix);
 
 @Query("SELECT a FROM Archivos a WHERE a.ubicacion LIKE CONCAT(:prefix, '%') AND a.esCarpeta = true")
 List<Archivos> findFoldersByUbicacionStartingWith(@Param("prefix") String prefix);
+
+@Query("SELECT count(a) FROM Archivos a WHERE a.esCarpeta = true")
+long countFolders();
 }
