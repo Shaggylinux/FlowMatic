@@ -89,6 +89,27 @@
   padding: 20px 24px;
   box-shadow: var(--fm-shadow-sm);
   border-left: 6px solid var(--fm-brand);
+  transition: border-color var(--fm-transition);
+}
+
+.candidate-status-card-inner.border-gris {
+  border-left-color: #64748B;
+}
+
+.candidate-status-card-inner.border-amarillo {
+  border-left-color: #D97706;
+}
+
+.candidate-status-card-inner.border-azul {
+  border-left-color: #2563EB;
+}
+
+.candidate-status-card-inner.border-verde {
+  border-left-color: #16A34A;
+}
+
+.candidate-status-card-inner.border-rojo {
+  border-left-color: #DC2626;
 }
 
 .candidate-status-card-label {
@@ -97,6 +118,77 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--fm-text-muted);
+}
+
+/* Badges de estado del candidato */
+.candidate-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: all 0.2s ease;
+}
+
+.candidate-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Gris - Registrado */
+.candidate-status-badge.status-gris {
+  background-color: var(--fm-badge-registered-bg);
+  color: var(--fm-badge-registered-text);
+  border: 1px solid #CBD5E1;
+}
+.candidate-status-badge.status-gris .candidate-badge-dot {
+  background-color: #64748B;
+}
+
+/* Amarillo - En pruebas */
+.candidate-status-badge.status-amarillo {
+  background-color: var(--fm-badge-review-bg);
+  color: var(--fm-badge-review-text);
+  border: 1px solid #FDE68A;
+}
+.candidate-status-badge.status-amarillo .candidate-badge-dot {
+  background-color: #D97706;
+}
+
+/* Azul - Entrevista */
+.candidate-status-badge.status-azul {
+  background-color: var(--fm-badge-interview-bg);
+  color: var(--fm-badge-interview-text);
+  border: 1px solid #BFDBFE;
+}
+.candidate-status-badge.status-azul .candidate-badge-dot {
+  background-color: #2563EB;
+}
+
+/* Verde - Contratado */
+.candidate-status-badge.status-verde {
+  background-color: var(--fm-badge-selected-bg);
+  color: var(--fm-badge-selected-text);
+  border: 1px solid #BBF7D0;
+}
+.candidate-status-badge.status-verde .candidate-badge-dot {
+  background-color: #16A34A;
+}
+
+/* Rojo - No aceptado */
+.candidate-status-badge.status-rojo {
+  background-color: var(--fm-badge-rejected-bg);
+  color: var(--fm-badge-rejected-text);
+  border: 1px solid #FECACA;
+}
+.candidate-status-badge.status-rojo .candidate-badge-dot {
+  background-color: #DC2626;
 }
 
 /* ── DRIVE STATS ── */
@@ -537,10 +629,22 @@
   background: #F0FDFA;
 }
 
+@media (max-width: 1024px) {
+  .drive-stats-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .dr-pagination {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .drive-stats-grid-4 {
+    grid-template-columns: 1fr;
   }
 }

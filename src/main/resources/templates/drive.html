@@ -19,7 +19,7 @@
         var dialog = document.createElement('dialog');
         dialog.id = 'dynamicModalAceptar';
         dialog.style.cssText = 'padding:24px; border-radius:12px; border:none; width:90%; max-width:400px; background:#1e293b; color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.5);';
-        var csrfToken = document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '';
+        var csrfToken = (window.getCsrfToken && window.getCsrfToken()) || (document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '');
         dialog.innerHTML = `
           <div style="font-family: 'Inter', sans-serif;">
             <h3 style="margin:0 0 16px 0; font-size:18px;">Aprobar Documento</h3>
@@ -50,7 +50,7 @@
         var dialog = document.createElement('dialog');
         dialog.id = 'dynamicModalRechazo';
         dialog.style.cssText = 'padding:24px; border-radius:12px; border:none; width:90%; max-width:400px; background:#1e293b; color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.5);';
-        var csrfToken = document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '';
+        var csrfToken = (window.getCsrfToken && window.getCsrfToken()) || (document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '');
         dialog.innerHTML = `
           <div style="font-family: 'Inter', sans-serif;">
             <h3 style="margin:0 0 16px 0; font-size:18px;">Rechazar Documento</h3>
@@ -89,7 +89,7 @@
       <input type="hidden" name="folder" th:value="${folderActual}">
     </form>
     
-    <form id="formSubirArchivo" th:action="@{/drive/subir-archivo}" method="post" enctype="multipart/form-data" style="display:none;" sec:authorize="hasRole('RRHH')">
+    <form id="formSubirArchivo" th:action="@{/drive/subir-archivo}" method="post" enctype="multipart/form-data" style="display:none;" sec:authorize="hasAnyRole('RRHH', 'CANDIDATO')">
       <input type="file" name="archivo" id="inputArchivoGlobal" onchange="document.getElementById('formSubirArchivo').submit()">
       <input type="hidden" name="folder" th:value="${folderActual}">
     </form>
@@ -121,7 +121,7 @@
             Nueva carpeta
           </button>
           
-          <button sec:authorize="hasRole('RRHH')" type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('inputArchivoGlobal').click()" style="display:flex; align-items:center; gap:6px;">
+          <button sec:authorize="hasAnyRole('RRHH', 'CANDIDATO')" type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('inputArchivoGlobal').click()" style="display:flex; align-items:center; gap:6px;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             Subir archivo
           </button>
@@ -177,14 +177,59 @@
           </div>
         </div>
 
-        <div sec:authorize="hasRole('CANDIDATO')" class="candidate-status-card">
-          <div class="candidate-status-card-inner">
-            <p class="candidate-status-card-label">Mi Estado Actual</p>
-            <div style="display:flex; align-items:center; gap:12px; margin-top:8px;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--fm-brand)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              <h2 style="margin:0; font-size:22px; font-weight:800; color:var(--fm-text);" th:text="${usuarioActualObjeto.estado ?: 'Registrado'}"></h2>
+        <!-- KPIs (Only CANDIDATO) -->
+        <div class="drive-stats-grid-4" sec:authorize="hasRole('CANDIDATO')">
+          <!-- Card 1: Total Archivos Subidos -->
+          <div class="dr-stat-card">
+            <div class="dr-stat-icon blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
             </div>
-            <p style="margin-top:8px; color:var(--fm-text-muted); font-size:13px;">Tu proceso está siendo gestionado por el equipo de Selección.</p>
+            <div class="dr-stat-content">
+              <div class="dr-stat-value" th:text="${totalArchivos ?: 0}">0</div>
+              <div class="dr-stat-label">Archivos subidos</div>
+              <div style="font-size:11px; color:var(--fm-text-muted); margin-top:2px;">En tu expediente personal</div>
+            </div>
+          </div>
+
+          <!-- Card 2: Estado de Documentos -->
+          <div class="dr-stat-card">
+            <div class="dr-stat-icon turq">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="dr-stat-content">
+              <div class="dr-stat-value" style="font-size:17px; font-weight:700; display:flex; align-items:center; gap:6px;">
+                <span style="color:#16A34A;" th:text="${aprobadosCount ?: 0}">0</span> <span style="font-size:12px; color:#64748B; font-weight:500;">Aprobados</span>
+                <span style="color:#CBD5E1;">|</span>
+                <span style="color:#D97706;" th:text="${pendientesRevision ?: 0}">0</span> <span style="font-size:12px; color:#64748B; font-weight:500;">Pendientes</span>
+              </div>
+              <div class="dr-stat-label">Revisión de RRHH</div>
+            </div>
+          </div>
+
+          <!-- Card 3: Almacenamiento Utilizado -->
+          <div class="dr-stat-card">
+            <div class="dr-stat-icon orang">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div class="dr-stat-content">
+              <div class="dr-stat-value" th:text="${totalTamanoFormateado ?: '0 B'}">0 B</div>
+              <div class="dr-stat-label">Espacio utilizado</div>
+              <div style="font-size:11px; color:var(--fm-text-muted); margin-top:2px;">Documentos en tu carpeta</div>
+            </div>
+          </div>
+
+          <!-- Card 4: Mi Estado Actual -->
+          <div class="dr-stat-card candidate-status-card-inner"
+               th:classappend="${usuarioActualObjeto.estado == 'En pruebas' ? 'border-amarillo' : (usuarioActualObjeto.estado == 'Entrevista' ? 'border-azul' : (usuarioActualObjeto.estado == 'Contratado' ? 'border-verde' : (usuarioActualObjeto.estado == 'No aceptado' ? 'border-rojo' : 'border-gris')))}"
+               style="display:flex; flex-direction:column; align-items:flex-start; justify-content:center; padding:14px 18px;">
+            <div class="candidate-status-card-label" style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--fm-text-muted);">Estado en Selección</div>
+            <div style="margin-top:6px; display:flex; align-items:center; justify-content:space-between; width:100%;">
+              <span class="candidate-status-badge"
+                    th:classappend="${usuarioActualObjeto.estado == 'En pruebas' ? 'status-amarillo' : (usuarioActualObjeto.estado == 'Entrevista' ? 'status-azul' : (usuarioActualObjeto.estado == 'Contratado' ? 'status-verde' : (usuarioActualObjeto.estado == 'No aceptado' ? 'status-rojo' : 'status-gris')))}">
+                <span class="candidate-badge-dot"></span>
+                <span th:text="${usuarioActualObjeto.estado ?: 'Registrado'}">Registrado</span>
+              </span>
+            </div>
           </div>
         </div>
 

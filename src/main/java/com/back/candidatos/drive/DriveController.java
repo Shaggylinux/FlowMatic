@@ -30,6 +30,7 @@ import org.springframework.ui.Model;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
@@ -70,7 +71,46 @@ public class DriveController {
 
         Set<Archivos> conjuntoTodo = new HashSet<>();
         if (usuarioActual != null && "ROLE_RRHH".equals(usuarioActual.getRol())) {
-            conjuntoTodo.addAll(filesRepository.findAll());
+            List<Archivos> todosArchivos = filesRepository.findAll();
+            List<Candidato> todosCandidatos = candidatoRepository.findAll();
+
+            Map<Long, String> rrhhByCandId = new HashMap<>();
+            Map<String, String> rrhhByCandEmail = new HashMap<>();
+
+            List<Long> candIds = todosCandidatos.stream().map(Candidato::getId).toList();
+            Map<Long, Usuario> candUsers = usuarioRepository.findAllById(candIds).stream()
+                    .collect(Collectors.toMap(Usuario::getId, u -> u));
+
+            for (Candidato c : todosCandidatos) {
+                if (c.getRrhhEmail() != null && !c.getRrhhEmail().isBlank()) {
+                    rrhhByCandId.put(c.getId(), c.getRrhhEmail().toLowerCase());
+                    Usuario u = candUsers.get(c.getId());
+                    if (u != null && u.getEmail() != null) {
+                        rrhhByCandEmail.put(u.getEmail().toLowerCase(), c.getRrhhEmail().toLowerCase());
+                    }
+                }
+            }
+
+            for (Archivos a : todosArchivos) {
+                String prop = (a.getPropietario() != null) ? a.getPropietario().toLowerCase() : "";
+                String dest = (a.getDestinario() != null) ? a.getDestinario().toLowerCase() : "";
+                String loggedEmailLower = emailReal.toLowerCase();
+
+                String assignedRrhh = null;
+                if (a.getCandidato() != null && rrhhByCandId.containsKey(a.getCandidato().getId())) {
+                    assignedRrhh = rrhhByCandId.get(a.getCandidato().getId());
+                } else if (!prop.isEmpty() && rrhhByCandEmail.containsKey(prop)) {
+                    assignedRrhh = rrhhByCandEmail.get(prop);
+                }
+
+                if (assignedRrhh != null) {
+                    if (assignedRrhh.equals(loggedEmailLower) || prop.equals(loggedEmailLower) || dest.equals(loggedEmailLower)) {
+                        conjuntoTodo.add(a);
+                    }
+                } else {
+                    conjuntoTodo.add(a);
+                }
+            }
         } else {
             List<Archivos> lista = filesRepository.buscarArchivosVisiblesPara(emailReal);
             if (lista != null)
@@ -159,6 +199,8 @@ public class DriveController {
 
         long totalSizeBytes = 0;
         int pendingCount = 0;
+        int approvedCount = 0;
+        int rejectedCount = 0;
         int filesCount = 0;
         int foldersCount = 0;
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy", new java.util.Locale("es", "ES"));
@@ -172,6 +214,10 @@ public class DriveController {
             filesCount++;
             if ("Pendiente".equalsIgnoreCase(a.getEstadoDocumento())) {
                 pendingCount++;
+            } else if ("Aprobado".equalsIgnoreCase(a.getEstadoDocumento())) {
+                approvedCount++;
+            } else if ("Rechazado".equalsIgnoreCase(a.getEstadoDocumento())) {
+                rejectedCount++;
             }
             java.io.File physicalFile = new java.io.File(a.getUbicacion());
             long lastModified = 0L;
@@ -339,6 +385,8 @@ public class DriveController {
         model.addAttribute("totalGbUsado", String.format(java.util.Locale.US, "%.2f", gbUsed));
         model.addAttribute("porcentajeUsado", String.format(java.util.Locale.US, "%.1f", pctUsed));
         model.addAttribute("pendientesRevision", pendingCount);
+        model.addAttribute("aprobadosCount", approvedCount);
+        model.addAttribute("rechazadosCount", rejectedCount);
 
         return "drive";
     }
