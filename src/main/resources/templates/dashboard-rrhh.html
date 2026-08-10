@@ -25,7 +25,7 @@
         dialog.id = 'dynamicModalAceptar';
         dialog.style.cssText = 'padding:24px; border-radius:12px; border:none; width:90%; max-width:400px; background:#1e293b; color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.5);';
 
-        var csrfToken = document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '';
+        var csrfToken = (window.getCsrfToken && window.getCsrfToken()) || (document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '');
 
         dialog.innerHTML = `
           <div style="font-family: 'Inter', sans-serif;">
@@ -61,7 +61,7 @@
         dialog.id = 'dynamicModalRechazo';
         dialog.style.cssText = 'padding:24px; border-radius:12px; border:none; width:90%; max-width:400px; background:#1e293b; color:#fff; box-shadow:0 10px 40px rgba(0,0,0,0.5);';
 
-        var csrfToken = document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '';
+        var csrfToken = (window.getCsrfToken && window.getCsrfToken()) || (document.querySelector('input[name="_csrf"]') ? document.querySelector('input[name="_csrf"]').value : '');
 
         dialog.innerHTML = `
           <div style="font-family: 'Inter', sans-serif;">
