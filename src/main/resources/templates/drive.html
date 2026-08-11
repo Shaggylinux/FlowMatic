@@ -706,12 +706,21 @@
             return;
           }
           list.innerHTML = notifs.slice(0, 10).map(n => `
-            <div style="padding:10px 14px; border-bottom:1px solid #F1F5F9; cursor:pointer; ${n.leida ? '' : 'background:#F0FDFA;'}" onclick="window.location.href='${n.enlace || '#'}'">
-              <div style="font-size:13px; color:#0F172A; font-weight:${n.leida ? '400' : '600'};">${n.mensaje || ''}</div>
-              <div style="font-size:11px; color:#94A3B8; margin-top:2px;">${n.fecha ? new Date(n.fecha).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}</div>
+            <div class="gc-notif-item ${n.leida ? 'gc-notif-leida' : 'gc-notif-no-leida'}" data-id="${n.id}" style="cursor:pointer;" onclick="window.location.href='${n.enlace || '#'}'">
+              <div style="flex:1; padding:9px 12px;">
+                <div style="font-size:13px; color:#0F172A; font-weight:${n.leida ? '400' : '600'};">${n.mensaje || ''}</div>
+                <div style="font-size:11px; color:#94A3B8; margin-top:2px;">${n.fecha ? new Date(n.fecha).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}</div>
+              </div>
+              ${n.leida ? '' : '<button class="gc-notif-marcar" onclick="event.stopPropagation(); marcarNotificacion(' + n.id + ')" title="Marcar como leída">✓</button>'}
             </div>
           `).join('');
         })
+        .catch(() => {});
+    }
+
+    function marcarNotificacion(id) {
+      fetch('/notificaciones/' + id + '/leer', { method: 'POST', credentials: 'same-origin' })
+        .then(() => cargarNotificaciones())
         .catch(() => {});
     }
 

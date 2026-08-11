@@ -39,9 +39,6 @@ public class PasswordController {
         }
 
         String estado = usuarioService.validarTokenReset(token);
-        if ("EXPIRADO".equals(estado)) {
-            return "caduco-reset";
-        }
         if ("INVALIDO".equals(estado)) {
             return "redirect:/forgot-password?errorToken";
         }
@@ -62,9 +59,6 @@ public class PasswordController {
         }
 
         String estado = usuarioService.validarTokenReset(token);
-        if ("EXPIRADO".equals(estado)) {
-            return "caduco-reset";
-        }
         if ("INVALIDO".equals(estado)) {
             return "redirect:/forgot-password?errorToken";
         }

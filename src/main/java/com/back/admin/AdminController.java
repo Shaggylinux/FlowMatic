@@ -107,10 +107,10 @@ public class AdminController {
         model.addAttribute("actividadReciente", actividadReciente);
         model.addAttribute("distribucionRoles", distribucionRoles);
         model.addAttribute("viewMode", "dashboard");
-        model.addAttribute("claveOk", claveOk != null);
-        model.addAttribute("claveError", claveError != null);
         model.addAttribute("adminEmail",
             SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("claveOk", claveOk != null);
+        model.addAttribute("claveError", claveError != null);
         model.addAttribute("configOk", configOk != null);
 
         return "admin";
@@ -190,9 +190,7 @@ public class AdminController {
             @RequestParam(name = "buscar", required = false) String buscar,
             @RequestParam(name = "estado", required = false) String estado,
             @RequestParam(name = "pendiente", required = false) String pendiente,
-            @RequestParam(name = "error", required = false) String error,
-            @RequestParam(name = "editado", required = false) String editado,
-            @RequestParam(name = "eliminado", required = false) String eliminado) {
+            @RequestParam(name = "error", required = false) String error) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Usuario> usuariosPage;
 
@@ -237,8 +235,6 @@ public class AdminController {
         model.addAttribute("pendiente", pendiente != null);
         model.addAttribute("errorDuplicado", "duplicado".equals(error));
         model.addAttribute("errorClaveCorta", "clave_corta".equals(error));
-        model.addAttribute("editado", editado != null);
-        model.addAttribute("eliminado", eliminado != null);
 
         return "admin";
     }

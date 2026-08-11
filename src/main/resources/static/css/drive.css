@@ -592,6 +592,40 @@
   flex-direction: column;
 }
 
+.gc-notif-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.gc-notif-item:hover {
+  background: #F8FAFC;
+}
+
+.gc-notif-no-leida {
+  background: #F0FDFA;
+}
+
+.gc-notif-marcar {
+  margin-right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid #D1D5DB;
+  background: #FFFFFF;
+  color: #0D9488;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.gc-notif-marcar:hover {
+  background: #0D9488;
+  color: #FFFFFF;
+  border-color: #0D9488;
+}
+
 .dr-pagination {
   display: flex;
   align-items: center;

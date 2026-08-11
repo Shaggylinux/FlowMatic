@@ -8,6 +8,8 @@ import com.back.admin.RRHHRepository;
 import com.back.admin.AdministradorRepository;
 import com.back.auth.UsuarioRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class DataMigrationRunner implements CommandLineRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(DataMigrationRunner.class);
 
     private final JdbcTemplate jdbcTemplate;
     private final CandidatoRepository candidatoRepository;
@@ -38,7 +42,7 @@ public class DataMigrationRunner implements CommandLineRunner {
             migrateRRHH();
             migrateAdministradores();
         } catch (Exception e) {
-            System.out.println("[Migration] No se pudo migrar (probablemente ya migrado): " + e.getMessage());
+            log.warn("[Migration] No se pudo migrar (probablemente ya migrado): {}", e.getMessage());
         }
         dropOldColumns();
     }
@@ -82,7 +86,7 @@ public class DataMigrationRunner implements CommandLineRunner {
                 : LocalDateTime.now());
             candidatoRepository.save(c);
         }
-        System.out.println("[Migration] Migrados " + rows.size() + " candidatos");
+        log.info("[Migration] Migrados {} candidatos", rows.size());
     }
 
     private void migrateRRHH() {
@@ -101,7 +105,7 @@ public class DataMigrationRunner implements CommandLineRunner {
             r.setFotoUrl((String) row.get("foto_url"));
             rrhhRepository.save(r);
         }
-        System.out.println("[Migration] Migrados " + rows.size() + " RRHH");
+        log.info("[Migration] Migrados {} RRHH", rows.size());
     }
 
     private void migrateAdministradores() {
@@ -118,7 +122,7 @@ public class DataMigrationRunner implements CommandLineRunner {
             a.setApellido((String) row.get("apellido"));
             administradorRepository.save(a);
         }
-        System.out.println("[Migration] Migrados " + rows.size() + " administradores");
+        log.info("[Migration] Migrados {} administradores", rows.size());
     }
 
     private void dropOldColumns() {
@@ -140,9 +144,9 @@ public class DataMigrationRunner implements CommandLineRunner {
                   DROP COLUMN IF EXISTS foto_url,
                   DROP COLUMN IF EXISTS ultima_actualizacion
             """);
-            System.out.println("[Migration] Columnas viejas eliminadas de usuarios");
+            log.info("[Migration] Columnas viejas eliminadas de usuarios");
         } catch (Exception e) {
-            System.out.println("[Migration] No se pudieron eliminar columnas viejas: " + e.getMessage());
+            log.warn("[Migration] No se pudieron eliminar columnas viejas: {}", e.getMessage());
         }
     }
 

@@ -244,6 +244,12 @@
                     <option value="Extranjera" th:selected="${candidatoNacionalidad == 'Extranjera'}">Extranjera</option>
                   </select>
                 </div>
+
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Ciudad</label>
+                  <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoCiudad) ? candidatoCiudad : 'Sin registrar'}">Ciudad</div>
+                  <input type="text" class="cand-field-input field-edit" id="inputCiudad" th:value="${candidatoCiudad}" style="display:none;" maxlength="100" placeholder="Ej. Medellín">
+                </div>
               </div>
             </div>
 
@@ -668,11 +674,16 @@
       direccion: document.getElementById('inputDireccion').value,
       sobreMi: document.getElementById('textareaSobreMi').value,
       tecnologias: skillsList.join(', '),
+      ciudad: document.getElementById('inputCiudad') ? document.getElementById('inputCiudad').value : '',
+      idiomas: rawIdiomas,
       cargo: document.getElementById('profCargo') ? document.getElementById('profCargo').value : '',
       areaProfesional: document.getElementById('profArea') ? document.getElementById('profArea').value : '',
       pretensionSalarial: document.getElementById('profPretension') ? document.getElementById('profPretension').value : '',
       disponibilidad: document.getElementById('profDisponibilidad') ? document.getElementById('profDisponibilidad').value : '',
-      modalidadTrabajo: document.getElementById('profModalidad') ? document.getElementById('profModalidad').value : ''
+      modalidadTrabajo: document.getElementById('profModalidad') ? document.getElementById('profModalidad').value : '',
+      formacionJson: rawFormacionJson,
+      experienciaJson: rawExperienciaJson,
+      idiomasJson: JSON.stringify([])
     };
 
     fetch('/candidato/perfil/actualizar', {

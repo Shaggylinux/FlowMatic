@@ -115,24 +115,6 @@ public class RegistroController {
         return "caduco";
     }
 
-    @PostMapping("/verificar")
-    public String verificarSms(
-            @RequestParam("token") String token,
-            Model model
-    ){
-        boolean activado = usuarioService.activarCuenta(token);
-
-        if (activado){
-            model.addAttribute("activacionExitosa", true);
-            return "activacion";
-        } else {
-            model.addAttribute("mensajePendiente", true);
-            model.addAttribute("errorVerificacion", true);
-            model.addAttribute("registro", new RegistroRequest());
-            return "registro-candidato";
-        }
-    }
-
     @PostMapping("/api")
     @ResponseBody
     public ResponseEntity<?> registrarDesdeModal(@Valid @RequestBody RegistroRequest registro, BindingResult resultado, java.security.Principal principal) {
