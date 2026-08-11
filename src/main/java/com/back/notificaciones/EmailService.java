@@ -181,6 +181,8 @@ public class EmailService {
             context.setVariable("tipo", evento.tipo() != null ? evento.tipo() : "ENTREVISTA_INICIAL");
             context.setVariable("lugar", evento.lugar());
             context.setVariable("observaciones", evento.observaciones());
+            context.setVariable("modalidad", evento.modalidad());
+            context.setVariable("entrevistador", evento.entrevistador());
 
             String mensaje = templateEngine.process("emails/email-entrevista", context);
 
@@ -215,6 +217,8 @@ public class EmailService {
             context.setVariable("tipo", evento.tipo() != null ? evento.tipo() : "ENTREVISTA_INICIAL");
             context.setVariable("lugar", evento.lugar());
             context.setVariable("observaciones", evento.observaciones());
+            context.setVariable("modalidad", evento.modalidad());
+            context.setVariable("entrevistador", evento.entrevistador());
 
             String mensaje = templateEngine.process("emails/email-entrevista-candidato", context);
 

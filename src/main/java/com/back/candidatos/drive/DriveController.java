@@ -56,12 +56,16 @@ public class DriveController {
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "tab", required = false) String tab,
             @RequestParam(name = "error", required = false) String error,
+            @RequestParam(name = "estadoError", required = false) String estadoError,
+            @RequestParam(name = "compartido", required = false) String compartido,
             Principal principal, Model model) {
         String loginId = (principal != null) ? principal.getName() : null;
         if (loginId == null)
             return "redirect:/login";
 
         model.addAttribute("error", error);
+        model.addAttribute("estadoError", estadoError);
+        model.addAttribute("compartido", compartido);
 
         Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
 
@@ -665,7 +669,7 @@ public class DriveController {
         if (!email.equalsIgnoreCase(archivoOpt.get().getPropietario()))
             return "redirect:/drive";
         filesServices.compartirArchivo(archivoId, destinatario);
-        return "redirect:/drive";
+        return "redirect:/drive?compartido=ok";
     }
 
     @PostMapping("/actualizar-estado")
@@ -744,6 +748,11 @@ public class DriveController {
         }
 
         Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
+        boolean estadoValido = "Aprobado".equals(estado) || "Rechazado".equals(estado);
+        boolean observacionObligatoria = "Rechazado".equals(estado) && (observacion == null || observacion.isBlank());
+        if (!estadoValido || observacionObligatoria) {
+            return "redirect:/drive?folder=" + folder + "&estadoError=" + ("Rechazado".equals(estado) ? "observacion" : "estado");
+        }
         if (archivoOpt.isPresent()) {
             Archivos archivo = archivoOpt.get();
             boolean esPropietario = archivo.getPropietario() != null && email.equalsIgnoreCase(archivo.getPropietario());

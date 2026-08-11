@@ -256,6 +256,10 @@ body {
   background: var(--fm-badge-rejected-bg);
   color: var(--fm-badge-rejected-text);
 }
+.badge-available {
+  background: var(--fm-success-bg);
+  color: var(--fm-success-text);
+}
 
 /* Activo / Pendiente */
 .badge-active {

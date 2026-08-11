@@ -8,5 +8,7 @@ public record EntrevistaEmailDTO(
     LocalTime hora,
     String tipo,
     String lugar,
-    String observaciones
+    String observaciones,
+    String modalidad,
+    String entrevistador
 ) {}

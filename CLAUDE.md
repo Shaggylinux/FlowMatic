@@ -80,7 +80,7 @@ Configured in `SecurityConfig.java`:
 
 Two distinct upload flows both write to `superfolder/` at the project root:
 
-1. **`FilesServices.guardarArchivoPorEtapa()`** — used by RRHH upload flow, organizes as `superfolder/{etapa}/{owner_email}/filename`
+1. **`FilesServices.guardarArchivoPorEtapa()`** — organizes as `superfolder/{etapa}/{owner_email}/filename` (**dead code**, unused; see Non-Obvious Behaviors)
 2. **`DriveController`** — general drive UI, stores as `superfolder/{folderDestino}/filename` (flat, folder chosen by user)
 
 File metadata is persisted in the `archivos` table. Max upload size: 30MB.
@@ -102,7 +102,13 @@ Gmail SMTP (`smtp.gmail.com:587`). The app password and base URL (`http://localh
 - **Calendar KPIs** (`totalHoy`, `totalPendientes`, etc.) are computed only for RRHH/ADMIN; candidates see the calendar without global stats.
 - **Notifications** (`notificaciones` schema) are filtered by `candidatoId` for candidates (sidebar, `/candidato/home`, `/candidato/perfil`, `GET /notificaciones`); RRHH/ADMIN see global ones.
 - **Excel export:** `ExcelService` uses Apache POI to export the user list as XLSX, available at `/admin/exportar`.
-- **`RegistroRRHHController`** at `/registro/rrhh` sets `ROLE_ADMIN` (not `ROLE_RRHH`) — likely a bug; verify before relying on it.
-- **REST registration endpoint:** `POST /registro/candidato/api` accepts JSON and is used for modal-based registration from the drive UI.
+- **`RegistroRRHHController`** at `/registro/rrhh` sets `ROLE_RRHH` (role is correct; the user must still be activated before login).
+- **REST registration endpoint:** `POST /registro/candidato/api` accepts JSON and is used for modal-based registration from the drive UI. Returns 409 with body `"El usuario ya existe"` for duplicates — `fragments/modal-registro.html` shows the response body verbatim in an alert (both for errors and the success message).
+- **Document review states** (`drive.archivos.estado_documento`): `Pendiente` (default), `Aprobado`, `Rechazado`. `POST /drive/actualizar-estado-archivo` accepts **only** `Aprobado`/`Rechazado` and requires an `observacion` when rejecting (otherwise redirects to `/drive?estadoError=observacion|estado`). Only non-owner files can be reviewed (owner or "No aplica" → no-op). Rejection reason is stored in `observacion`; approving clears it.
+- **Calendar PENDIENTE color:** `PENDIENTE` events render **blue** (`#DBEAFE`/`#2563EB`/`#1D4ED8`) in both `CalendarioController.obtenerEventos` (backend DTO) and `calendario.html` `getEstadoInfo`; the legend matches these colors. The state value stays `PENDIENTE` (it is not renamed to `AGENDADA`).
+- **Calendar empty state:** when a fetched range has no events, `calendario.html` shows "No hay entrevistas agendadas para este período" (`#calSinEntrevistas` overlay toggled in the `events` callback).
+- **Entrevista emails** include `modalidad` and `entrevistador` (`EntrevistaEmailDTO` record has both fields; `CalendarioController.crearEvento` passes `evento.getModalidad()`/`getEntrevistador()`; templates `email-entrevista.html` + `email-entrevista-candidato.html` render them conditionally).
+- **Drive flash messages:** `POST /drive/compartir` redirects to `/drive?compartido=ok` (green banner "Archivo compartido correctamente"); the `estadoError` param renders red banners for rejected-state validation failures.
 - **`candidato.html` stepper:** rejection states (`Rechazad`, `No aceptado`, `No seleccionado`, `Descartado`) render as "Proceso finalizado" instead of a misleading percentage (`estadoRechazado` flag from `LoginController`).
 - **Candidate portal:** `/candidato/home` (CandidatoHomeController) and `/candidato/perfil` (PerfilCandidatoController) are mapped under `/candidato/**`; the former lives in the `web` presentation layer (aggregates candidatos + calendario + drive + notificaciones), the latter in `candidatos`.
+- **Dead code:** `FilesServices.guardarArchivoPorEtapa()` (RRHH stage-based upload flow) is unused — all uploads go through `DriveController`. `.badge-available` (green) exists in `base.css` for confirmed-interview badges in `dashboard-rrhh.html`.

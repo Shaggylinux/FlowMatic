@@ -133,6 +133,20 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span th:text="${error}">Error</span>
         </div>
+
+        <div th:if="${estadoError == 'observacion'}" style="background:#FEF2F2; border:1px solid #FECACA; color:#B91C1C; border-radius:8px; padding:12px 16px; margin-bottom:16px; font-size:13px; font-weight:500; display:flex; align-items:center; gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Debes indicar una observación para rechazar el documento.</span>
+        </div>
+        <div th:if="${estadoError == 'estado'}" style="background:#FEF2F2; border:1px solid #FECACA; color:#B91C1C; border-radius:8px; padding:12px 16px; margin-bottom:16px; font-size:13px; font-weight:500; display:flex; align-items:center; gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Estado de documento no válido.</span>
+        </div>
+
+        <div th:if="${compartido == 'ok'}" style="background:#F0FDF4; border:1px solid #BBF7D0; color:#15803D; border-radius:8px; padding:12px 16px; margin-bottom:16px; font-size:13px; font-weight:500; display:flex; align-items:center; gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4z"/></svg>
+          <span>Archivo compartido correctamente</span>
+        </div>
         
         <!-- KPIs (Only RRHH) -->
         <div class="drive-stats-grid-4" sec:authorize="hasRole('RRHH')">
@@ -351,7 +365,7 @@
                 </thead>
                 <tbody id="drTableBody">
                   <tr th:if="${archivos.isEmpty()}" class="dr-empty-row">
-                    <td colspan="7" style="text-align:center; padding:32px; color:var(--fm-text-muted);">No hay archivos en esta ubicación.</td>
+                    <td colspan="7" style="text-align:center; padding:32px; color:var(--fm-text-muted);">Esta carpeta está vacía.</td>
                   </tr>
                   <tr th:each="archivo, iterStat : ${archivos}" class="dr-file-row"
                       th:data-nombre="${archivo.nombre.toLowerCase()}"

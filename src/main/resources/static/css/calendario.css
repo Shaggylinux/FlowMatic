@@ -122,6 +122,20 @@
   flex-shrink: 0;
 }
 
+.cal-empty-message {
+  position: absolute;
+  inset: 40px 16px auto;
+  z-index: 5;
+  text-align: center;
+  padding: 18px;
+  color: #94A3B8;
+  font-size: 13px;
+  background: #FFFFFF;
+  border: 1px dashed #CBD5E1;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
 /* ── MAIN GRID ───────────────────────────────── */
 
 .cal-main-grid {

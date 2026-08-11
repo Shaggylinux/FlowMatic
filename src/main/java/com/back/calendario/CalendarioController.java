@@ -142,9 +142,9 @@ public class CalendarioController {
                     textColor = "#475569";
                 }
                 default -> {
-                    bgColor = "#FEF9C3";
-                    borderColor = "#EAB308";
-                    textColor = "#854D0E";
+                    bgColor = "#DBEAFE";
+                    borderColor = "#2563EB";
+                    textColor = "#1D4ED8";
                 }
             }
 
@@ -196,7 +196,7 @@ public class CalendarioController {
             response.put("eventoId", evento.getId());
 
             try {
-                EntrevistaEmailDTO eventoDto = new EntrevistaEmailDTO(evento.getFecha(), evento.getHora(), evento.getTipo(), evento.getLugar(), evento.getObservaciones());
+                EntrevistaEmailDTO eventoDto = new EntrevistaEmailDTO(evento.getFecha(), evento.getHora(), evento.getTipo(), evento.getLugar(), evento.getObservaciones(), evento.getModalidad(), evento.getEntrevistador());
                 eventPublisher.publishEvent(new EntrevistaAgendadaEvent(
                         evento.getId(), candidatoId, candidatoNombre,
                         usuarioRepository.findById(candidatoId).map(Usuario::getEmail).orElse(null),

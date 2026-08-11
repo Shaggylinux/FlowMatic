@@ -129,9 +129,12 @@
       if (res.ok) {
         modal.style.display = 'none';
         form.reset();
+        alert('Candidato registrado. Se envi\u00f3 un correo de activaci\u00f3n.');
         location.reload();
       } else {
-        alert('Error al registrar candidato');
+        return res.text().then(function(text) {
+          alert(text && text.trim() ? text : 'Error al registrar candidato');
+        });
       }
     }).catch(function() {
       alert('Error de conexión al registrar candidato');
