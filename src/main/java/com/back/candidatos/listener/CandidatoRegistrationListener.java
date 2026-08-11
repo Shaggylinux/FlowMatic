@@ -27,6 +27,10 @@ public class CandidatoRegistrationListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void onUsuarioRegistrado(UsuarioRegistradoEvent event) {
         if ("ROLE_CANDIDATO".equals(event.rol())) {
+            if (candidatoRepository.existsById(event.usuarioId())) {
+                logger.info("Perfil de candidato ya existe, omitiendo: {}", event.email());
+                return;
+            }
             logger.info("Procesando post-registro para candidato: {}", event.email());
 
             Candidato candidato = new Candidato();

@@ -10,6 +10,8 @@ public interface NotificacionRepository extends JpaRepository<Notificacion, Long
 
     List<Notificacion> findByLeidaFalseAndCandidatoIdOrderByFechaDesc(Long candidatoId);
 
+    List<Notificacion> findByLeidaFalseAndCandidatoIdIsNullOrderByFechaDesc();
+
     List<Notificacion> findTop5ByOrderByFechaDesc();
 
     List<Notificacion> findTop5ByCandidatoIdOrderByFechaDesc(Long candidatoId);
@@ -17,4 +19,8 @@ public interface NotificacionRepository extends JpaRepository<Notificacion, Long
     List<Notificacion> findTop5ByCandidatoIdIsNullOrderByFechaDesc();
 
     long countByLeidaFalse();
+
+    long countByLeidaFalseAndCandidatoId(Long candidatoId);
+
+    long countByLeidaFalseAndCandidatoIdIsNull();
 }

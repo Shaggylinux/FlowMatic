@@ -49,15 +49,32 @@ public class NotificacionService {
         return notificacionRepository.countByLeidaFalse();
     }
 
-    public void marcarLeida(Long id) {
+    public long contarNoLeidasPorCandidato(Long candidatoId) {
+        return notificacionRepository.countByLeidaFalseAndCandidatoId(candidatoId);
+    }
+
+    public long contarNoLeidasGlobales() {
+        return notificacionRepository.countByLeidaFalseAndCandidatoIdIsNull();
+    }
+
+    public void marcarLeida(Long id, boolean esCandidato, Long candidatoId) {
         notificacionRepository.findById(id).ifPresent(n -> {
+            if (esCandidato) {
+                if (n.getCandidatoId() == null || !n.getCandidatoId().equals(candidatoId)) {
+                    return;
+                }
+            } else if (n.getCandidatoId() != null) {
+                return;
+            }
             n.setLeida(true);
             notificacionRepository.save(n);
         });
     }
 
-    public void marcarTodasLeidas() {
-        List<Notificacion> noLeidas = notificacionRepository.findByLeidaFalseOrderByFechaDesc();
+    public void marcarTodasLeidas(boolean esCandidato, Long candidatoId) {
+        List<Notificacion> noLeidas = esCandidato
+            ? notificacionRepository.findByLeidaFalseAndCandidatoIdOrderByFechaDesc(candidatoId)
+            : notificacionRepository.findByLeidaFalseAndCandidatoIdIsNullOrderByFechaDesc();
         for (Notificacion n : noLeidas) {
             n.setLeida(true);
             notificacionRepository.save(n);

@@ -102,7 +102,9 @@ public class CandidatoHomeController {
         List<Notificacion> notificaciones = candidatoId != null
                 ? notificacionRepository.findTop5ByCandidatoIdOrderByFechaDesc(candidatoId)
                 : notificacionRepository.findTop5ByOrderByFechaDesc();
-        long notificacionesNoLeidas = notificacionRepository.countByLeidaFalse();
+        long notificacionesNoLeidas = candidatoId != null
+                ? notificacionRepository.countByLeidaFalseAndCandidatoId(candidatoId)
+                : notificacionRepository.countByLeidaFalseAndCandidatoIdIsNull();
 
         // Cálculo de etapa y porcentaje según estado real
         int stepIndex = 1;

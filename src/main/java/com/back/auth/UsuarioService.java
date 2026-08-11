@@ -153,6 +153,10 @@ public class UsuarioService implements AuthApi {
 
         Usuario usuario = optional.get();
 
+        tokenRepository.findByUsuarioId(usuario.getId()).stream()
+                .filter(t -> "RESET_PASSWORD".equals(t.getTipo()))
+                .forEach(tokenRepository::delete);
+
         String tokenUuid = UUID.randomUUID().toString();
         long expiryMinutes = Long.parseLong(configuracionService.getValor("password.reset.expiry.minutes", "15"));
         Token tokenObj = new Token(tokenUuid, usuario.getId(), "RESET_PASSWORD", expiryMinutes * 60);

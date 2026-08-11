@@ -131,7 +131,9 @@ public class PerfilCandidatoController {
         List<Notificacion> notificaciones = candidatoId != null
                 ? notificacionRepository.findTop5ByCandidatoIdOrderByFechaDesc(candidatoId)
                 : notificacionRepository.findTop5ByOrderByFechaDesc();
-        long notificacionesNoLeidas = notificacionRepository.countByLeidaFalse();
+        long notificacionesNoLeidas = candidatoId != null
+                ? notificacionRepository.countByLeidaFalseAndCandidatoId(candidatoId)
+                : notificacionRepository.countByLeidaFalseAndCandidatoIdIsNull();
 
         model.addAttribute("candidatoEmail", email != null ? email : "");
         model.addAttribute("candidatoPrimerNombre", primerNombre);

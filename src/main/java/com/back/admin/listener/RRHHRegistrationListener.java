@@ -24,6 +24,10 @@ public class RRHHRegistrationListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void onUsuarioRegistrado(UsuarioRegistradoEvent event) {
         if ("ROLE_RRHH".equals(event.rol())) {
+            if (rrhhRepository.existsById(event.usuarioId())) {
+                logger.info("Perfil RRHH ya existe, omitiendo: {}", event.email());
+                return;
+            }
             logger.info("Procesando post-registro para RRHH: {}", event.email());
 
             RRHH rrhh = new RRHH();

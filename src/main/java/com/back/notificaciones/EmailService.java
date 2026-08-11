@@ -29,6 +29,9 @@ public class EmailService {
     @Value("${server.servlet.context-path:}")
     private String contextPath;
 
+    @Value("${app.base.url:http://localhost:8080}")
+    private String appBaseUrl;
+
     @Value("${server.port:8080}")
     private String serverPort;
 
@@ -39,7 +42,7 @@ public class EmailService {
         try {
             logger.info("📧 Preparando email de verificación para: {}", destinatario);
 
-            String enlaceActivacion = "http://localhost:" + serverPort + "/registro/candidato/activar?token=" + token;
+            String enlaceActivacion = appBaseUrl + contextPath + "/registro/candidato/activar?token=" + token;
 
             String asunto = "✅ Activa tu cuenta en FLOWMATIC";
             Context context = new Context();
@@ -70,7 +73,7 @@ public class EmailService {
         try {
             logger.info("📧 Preparando email de recuperación para: {}", destinatario);
 
-            String enlace = "http://localhost:" + serverPort + "/reset-password?token=" + token;
+            String enlace = appBaseUrl + contextPath + "/reset-password?token=" + token;
 
             String asunto = "🔐 Restablece tu contraseña en FLOWMATIC";
             Context context = new Context();

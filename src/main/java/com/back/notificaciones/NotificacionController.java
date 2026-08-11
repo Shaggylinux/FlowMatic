@@ -48,14 +48,25 @@ public class NotificacionController {
     }
 
     @PostMapping("/{id}/leer")
-    public ResponseEntity<?> marcarLeida(@PathVariable Long id) {
-        notificacionService.marcarLeida(id);
+    public ResponseEntity<?> marcarLeida(@PathVariable Long id, Principal principal) {
+        Usuario user = usuarioLogueado(principal);
+        boolean esCandidato = user != null && "ROLE_CANDIDATO".equals(user.getRol());
+        notificacionService.marcarLeida(id, esCandidato, user != null ? user.getId() : null);
         return ResponseEntity.ok(Map.of("success", true));
     }
 
     @PostMapping("/leer-todas")
-    public ResponseEntity<?> marcarTodasLeidas() {
-        notificacionService.marcarTodasLeidas();
+    public ResponseEntity<?> marcarTodasLeidas(Principal principal) {
+        Usuario user = usuarioLogueado(principal);
+        boolean esCandidato = user != null && "ROLE_CANDIDATO".equals(user.getRol());
+        notificacionService.marcarTodasLeidas(esCandidato, user != null ? user.getId() : null);
         return ResponseEntity.ok(Map.of("success", true));
+    }
+
+    private Usuario usuarioLogueado(Principal principal) {
+        if (principal == null) {
+            return null;
+        }
+        return usuarioRepository.findByEmail(principal.getName()).orElse(null);
     }
 }
