@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página no encontrada (404) — Flowmatic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body class="page-auth">
+
+<div class="split-container">
+
+  <div class="split-form">
+    <div class="split-form-box">
+
+      <div style="display:flex; justify-content:center; margin-bottom:20px;">
+        <a th:href="@{/}" title="Ir al inicio" class="logo-link">
+          <span th:replace="~{fragments/logo :: logoFull}"></span>
+        </a>
+      </div>
+
+      <div style="text-align:center; margin-bottom:24px;">
+        <div style="width:72px; height:72px; margin:0 auto 16px; border-radius:50%; background:#FEF3C7; color:#D97706; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:800; border:2px solid #FDE68A;">
+          404
+        </div>
+        <h2 style="margin-bottom:8px; color:var(--fm-text-primary); font-size:20px; font-weight:700;">Página no encontrada</h2>
+        <p style="font-size:13.5px; color:var(--fm-text-muted); margin-bottom:6px; line-height:1.5;">
+          La ruta que intentas visitar no existe o ha sido movida.
+        </p>
+        <p style="font-size:12px; color:#94A3B8;">Verifica la URL o regresa al panel principal.</p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <a th:href="@{/}" class="btn btn-primary btn-full" style="justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Volver al inicio
+        </a>
+        <a th:href="@{/login}" class="btn btn-secondary btn-full" style="justify-content:center;">Ir a iniciar sesión</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="split-visual">
+    <div class="split-visual-decor" style="top:-80px; right:-80px; width:160px; height:160px;"></div>
+    <div class="split-visual-decor" style="bottom:-60px; left:-60px; width:120px; height:120px;"></div>
+
+    <div class="split-visual-content">
+      <a th:href="@{/}" title="Ir al inicio" class="logo-link">
+        <span th:replace="~{fragments/logo :: logoFull}"></span>
+      </a>
+      <p class="split-visual-tagline">Gestión de Talento Inteligente</p>
+
+      <ul class="split-visual-bullets">
+        <li>
+          <span class="split-visual-check">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="split-visual-list-text">Navegación segura con roles</span>
+        </li>
+        <li>
+          <span class="split-visual-check">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="split-visual-list-text">Documentos centralizados</span>
+        </li>
+        <li>
+          <span class="split-visual-check">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="split-visual-list-text">Pipeline de candidatos en tiempo real</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script th:src="@{/js/csrf.js}"></script>
+</body>
+</html>
