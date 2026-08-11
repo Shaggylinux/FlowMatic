@@ -59,7 +59,7 @@
     <div class="cal-page">
 
       <!-- KPIs -->
-      <div class="cal-stats-grid">
+      <div class="cal-stats-grid" sec:authorize="hasAnyRole('RRHH','ADMINISTRADOR')">
         <div class="cal-stat-card">
           <div class="cal-stat-inner">
             <div class="cal-stat-icon cal-stat-icon-turq">
@@ -68,7 +68,7 @@
             <div class="cal-stat-info">
               <p class="cal-stat-number" th:text="${totalHoy}">0</p>
               <p class="cal-stat-label">Entrevistas hoy</p>
-              <p class="cal-stat-diff" th:classappend="${difHoy > 0} ? 'up' : (${difHoy < 0} ? 'down' : 'neutral')" th:text="${difHoy >= 0 ? '+' + difHoy : difHoy} + ' vs ayer'">0 vs ayer</p>
+              <p class="cal-stat-diff" th:if="${difHoy != null}" th:classappend="${difHoy > 0} ? 'up' : (${difHoy < 0} ? 'down' : 'neutral')" th:text="${difHoy >= 0 ? '+' + difHoy : difHoy} + ' vs ayer'">0 vs ayer</p>
             </div>
           </div>
         </div>
@@ -1017,7 +1017,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var dropdown = document.getElementById('filterDropdown');
     if (!dropdown) return;
     if (!dropdown.classList.contains('show')) return;
-    if (!dropdown.contains(e.target) && btn && !btn.contains(e.target)) {
+    if (!dropdown.contains(e.target) && !e.target.closest('.fc-filterButton-button')) {
       dropdown.classList.remove('show');
     }
   });

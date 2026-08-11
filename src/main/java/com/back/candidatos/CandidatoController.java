@@ -263,6 +263,7 @@ public class CandidatoController {
 
     @PostMapping("/{id}/eliminar")
     @ResponseBody
+    @org.springframework.transaction.annotation.Transactional
     public ResponseEntity<?> eliminarCandidato(@PathVariable Long id) {
         Candidato candidato = candidatoRepository.findById(id).orElse(null);
         if (candidato == null) {
@@ -270,17 +271,22 @@ public class CandidatoController {
         }
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if (usuario != null) {
-            String email = usuario.getEmail();
-            String prefix = "superfolder/Candidatos/" + email;
-            List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
-            for (Archivos doc : docs) {
-                try {
-                    java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
-                } catch (java.io.IOException ignored) {
+            String nombreCompleto = (candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : "")).trim();
+            List<String> prefijos = List.of(
+                    "superfolder/Candidatos/" + usuario.getEmail(),
+                    "superfolder/Candidatos/" + nombreCompleto);
+            for (String prefix : prefijos) {
+                List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
+                for (Archivos doc : docs) {
+                    try {
+                        java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
+                    } catch (java.io.IOException ignored) {
+                    }
+                    archivosRepository.delete(doc);
                 }
-                archivosRepository.delete(doc);
             }
         }
+        notificacionService.eliminarPorCandidato(id);
         eventPublisher.publishEvent(new CandidatoEliminadoEvent(id));
         candidatoRepository.delete(candidato);
         if (usuario != null) {

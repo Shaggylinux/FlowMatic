@@ -120,13 +120,13 @@ public class CandidatoHomeController {
         } else if (estadoLower.contains("final")) {
             stepIndex = 4;
             porcentaje = 80;
-        } else if (estadoLower.contains("contratado") || estadoLower.contains("aceptado") || estadoLower.contains("realizada")) {
-            stepIndex = 5;
-            porcentaje = 100;
         } else if (estadoLower.contains("rechazad") || estadoLower.contains("no aceptado") || estadoLower.contains("no seleccionado") || estadoLower.contains("descartado")) {
             rechazado = true;
             stepIndex = 0;
             porcentaje = 0;
+        } else if (estadoLower.contains("contratado") || (estadoLower.contains("aceptado") && !estadoLower.contains("no aceptado")) || estadoLower.contains("realizada")) {
+            stepIndex = 5;
+            porcentaje = 100;
         }
 
         model.addAttribute("estadoRechazado", rechazado);

@@ -11,21 +11,25 @@ import java.util.List;
 
 public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
 
-    @Query(value = "SELECT * FROM candidatos.candidatos " +
-           "WHERE (cast(:search as text) IS NULL OR LOWER(username) LIKE LOWER(cast(:search as text)) " +
-           "OR LOWER(apellido) LIKE LOWER(cast(:search as text))) " +
-           "AND (cast(:cargo as text) IS NULL OR LOWER(cargo) LIKE LOWER(cast(:cargo as text))) " +
-           "AND (cast(:estado as text) IS NULL OR estado = cast(:estado as text)) " +
-           "AND (:experienciaMin IS NULL OR experiencia >= :experienciaMin) " +
-           "AND (cast(:ciudad as text) IS NULL OR LOWER(ciudad) LIKE LOWER(cast(:ciudad as text))) " +
-           "ORDER BY ultima_actualizacion DESC NULLS LAST",
-           countQuery = "SELECT count(*) FROM candidatos.candidatos " +
-           "WHERE (cast(:search as text) IS NULL OR LOWER(username) LIKE LOWER(cast(:search as text)) " +
-           "OR LOWER(apellido) LIKE LOWER(cast(:search as text))) " +
-           "AND (cast(:cargo as text) IS NULL OR LOWER(cargo) LIKE LOWER(cast(:cargo as text))) " +
-           "AND (cast(:estado as text) IS NULL OR estado = cast(:estado as text)) " +
-           "AND (:experienciaMin IS NULL OR experiencia >= :experienciaMin) " +
-           "AND (cast(:ciudad as text) IS NULL OR LOWER(ciudad) LIKE LOWER(cast(:ciudad as text)))",
+    @Query(value = "SELECT c.* FROM candidatos.candidatos c " +
+           "JOIN auth.usuarios u ON u.id = c.id " +
+           "WHERE (cast(:search as text) IS NULL OR LOWER(c.username) LIKE LOWER(cast(:search as text)) " +
+           "OR LOWER(c.apellido) LIKE LOWER(cast(:search as text)) " +
+           "OR LOWER(u.email) LIKE LOWER(cast(:search as text))) " +
+           "AND (cast(:cargo as text) IS NULL OR LOWER(c.cargo) LIKE LOWER(cast(:cargo as text))) " +
+           "AND (cast(:estado as text) IS NULL OR c.estado = cast(:estado as text)) " +
+           "AND (:experienciaMin IS NULL OR c.experiencia >= :experienciaMin) " +
+           "AND (cast(:ciudad as text) IS NULL OR LOWER(c.ciudad) LIKE LOWER(cast(:ciudad as text))) " +
+           "ORDER BY c.ultima_actualizacion DESC NULLS LAST",
+           countQuery = "SELECT count(*) FROM candidatos.candidatos c " +
+           "JOIN auth.usuarios u ON u.id = c.id " +
+           "WHERE (cast(:search as text) IS NULL OR LOWER(c.username) LIKE LOWER(cast(:search as text)) " +
+           "OR LOWER(c.apellido) LIKE LOWER(cast(:search as text)) " +
+           "OR LOWER(u.email) LIKE LOWER(cast(:search as text))) " +
+           "AND (cast(:cargo as text) IS NULL OR LOWER(c.cargo) LIKE LOWER(cast(:cargo as text))) " +
+           "AND (cast(:estado as text) IS NULL OR c.estado = cast(:estado as text)) " +
+           "AND (:experienciaMin IS NULL OR c.experiencia >= :experienciaMin) " +
+           "AND (cast(:ciudad as text) IS NULL OR LOWER(c.ciudad) LIKE LOWER(cast(:ciudad as text)))",
            nativeQuery = true)
     Page<Candidato> findFiltrados(
             @Param("search") String search,
@@ -35,11 +39,13 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
             @Param("ciudad") String ciudad,
             Pageable pageable);
 
-    @Query(value = "SELECT * FROM candidatos.candidatos " +
-           "WHERE (cast(:search as text) IS NULL OR LOWER(username) LIKE LOWER(cast(:search as text)) " +
-           "OR LOWER(apellido) LIKE LOWER(cast(:search as text))) " +
-           "AND (cast(:estado as text) IS NULL OR estado = cast(:estado as text)) " +
-           "ORDER BY ultima_actualizacion DESC NULLS LAST",
+    @Query(value = "SELECT c.* FROM candidatos.candidatos c " +
+           "JOIN auth.usuarios u ON u.id = c.id " +
+           "WHERE (cast(:search as text) IS NULL OR LOWER(c.username) LIKE LOWER(cast(:search as text)) " +
+           "OR LOWER(c.apellido) LIKE LOWER(cast(:search as text)) " +
+           "OR LOWER(u.email) LIKE LOWER(cast(:search as text))) " +
+           "AND (cast(:estado as text) IS NULL OR c.estado = cast(:estado as text)) " +
+           "ORDER BY c.ultima_actualizacion DESC NULLS LAST",
            nativeQuery = true)
     List<Candidato> findFiltradosSinPaginar(@Param("search") String search,
                                              @Param("estado") String estado);

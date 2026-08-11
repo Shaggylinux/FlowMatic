@@ -32,12 +32,14 @@ public class AdminRRHHRestController {
         dto.setEmail(u.getEmail());
         dto.setRol(u.getRol());
         dto.setActivo(u.isActivo());
-        dto.setEstado(u.isActivo() ? "Activo" : "Pendiente");
+        dto.setBloqueado(u.isBloqueado());
+        dto.setEstado(u.isBloqueado() ? "Bloqueado" : (u.isActivo() ? "Activo" : "Pendiente"));
 
         RRHH rrhh = rrhhRepository.findById(id).orElse(null);
         if (rrhh != null) {
             dto.setNombre(rrhh.getUsername());
             dto.setApellido(rrhh.getApellido());
+            dto.setTelefono(rrhh.getTelefono());
             dto.setDocumento(rrhh.getDocumento());
             dto.setCargo(rrhh.getCargo());
             dto.setUltimoAcceso(rrhh.getUltimoAcceso());

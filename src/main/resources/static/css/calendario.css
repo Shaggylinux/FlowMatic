@@ -470,8 +470,11 @@
   gap: 6px;
 }
 
-/* Badge reprogramado (naranja) — compatible con GC */
+/* Badges de estado de entrevista — compatible con GC */
 .gc-badge-reprogramado { background: #FFEDD5; color: #9A3412; }
+.gc-badge-available { background: #DCFCE7; color: #15803D; }
+.gc-badge-rejected { background: #FEE2E2; color: #B91C1C; }
+.gc-badge-pending { background: #DBEAFE; color: #1D4ED8; }
 
 /* ── FULLCALENDAR OVERRIDES ─────────────────── */
 

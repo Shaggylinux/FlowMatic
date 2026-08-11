@@ -23,4 +23,6 @@ public interface NotificacionRepository extends JpaRepository<Notificacion, Long
     long countByLeidaFalseAndCandidatoId(Long candidatoId);
 
     long countByLeidaFalseAndCandidatoIdIsNull();
+
+    void deleteByCandidatoId(Long candidatoId);
 }

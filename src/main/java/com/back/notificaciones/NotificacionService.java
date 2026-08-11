@@ -80,4 +80,8 @@ public class NotificacionService {
             notificacionRepository.save(n);
         }
     }
+
+    public void eliminarPorCandidato(Long candidatoId) {
+        notificacionRepository.deleteByCandidatoId(candidatoId);
+    }
 }

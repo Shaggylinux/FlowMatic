@@ -10,8 +10,8 @@ function abrirDrawerRRHH(id) {
     .then(r => r.json())
     .then(data => {
       const ini = data.nombre ? data.nombre.substring(0, 1).toUpperCase() : 'U';
-      const badgeClass = data.activo ? 'gc-badge-success' : 'gc-badge-danger';
-      const status = data.activo ? 'Activo' : 'Bloqueado';
+      const badgeClass = data.bloqueado ? 'gc-badge-danger' : (data.activo ? 'gc-badge-success' : 'gc-badge-danger');
+      const status = data.bloqueado ? 'Bloqueado' : (data.activo ? 'Activo' : 'Pendiente');
 
       content.innerHTML = `
         <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-bottom:32px;">
