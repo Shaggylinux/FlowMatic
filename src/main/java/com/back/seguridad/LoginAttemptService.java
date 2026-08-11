@@ -4,7 +4,7 @@ import com.back.shared.api.ConfiguracionApi;
 import com.back.auth.Usuario;
 import com.back.auth.UsuarioRepository;
 import com.back.shared.event.CuentaBloqueadaEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
