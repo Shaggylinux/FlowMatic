@@ -117,6 +117,11 @@ public class DriveController {
             List<Archivos> lista = filesRepository.buscarArchivosVisiblesPara(emailReal);
             if (lista != null)
                 conjuntoTodo.addAll(lista);
+            if (usuarioActual != null && usuarioActual.getEmail() != null && !usuarioActual.getEmail().equalsIgnoreCase(emailReal)) {
+                List<Archivos> listaAlt = filesRepository.buscarArchivosVisiblesPara(usuarioActual.getEmail());
+                if (listaAlt != null)
+                    conjuntoTodo.addAll(listaAlt);
+            }
         }
         List<Archivos> todos = new ArrayList<>(conjuntoTodo);
 
@@ -171,7 +176,9 @@ public class DriveController {
                         return "Opcional".equalsIgnoreCase(a.getCategoriaCalculada());
                     }
                     if ("compartidos".equalsIgnoreCase(categoria)) {
-                        return a.getDestinario() != null && a.getDestinario().equalsIgnoreCase(emailReal);
+                        if (a.getDestinario() == null) return false;
+                        String d = a.getDestinario().trim();
+                        return d.equalsIgnoreCase(emailReal) || (usuarioActual != null && usuarioActual.getEmail() != null && d.equalsIgnoreCase(usuarioActual.getEmail().trim()));
                     }
                     return true;
                 })
@@ -245,7 +252,7 @@ public class DriveController {
                 requeridosCount++;
             }
 
-            if (a.getDestinario() != null && a.getDestinario().equalsIgnoreCase(emailReal)) {
+            if (a.getDestinario() != null && (a.getDestinario().trim().equalsIgnoreCase(emailReal) || (usuarioActual != null && usuarioActual.getEmail() != null && a.getDestinario().trim().equalsIgnoreCase(usuarioActual.getEmail().trim())))) {
                 compartidosCount++;
             }
 
@@ -599,8 +606,15 @@ public class DriveController {
     private boolean esPropietarioODestinatario(Archivos archivo, String email) {
         if (email == null)
             return false;
-        return email.equalsIgnoreCase(archivo.getPropietario())
-                || (archivo.getDestinario() != null && email.equalsIgnoreCase(archivo.getDestinario()));
+        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuarioActual != null && ("ROLE_RRHH".equals(usuarioActual.getRol()) || "ROLE_ADMINISTRADOR".equals(usuarioActual.getRol()))) {
+            return true;
+        }
+        String emailClean = email.trim();
+        boolean propMatch = archivo.getPropietario() != null && emailClean.equalsIgnoreCase(archivo.getPropietario().trim());
+        boolean destMatch = archivo.getDestinario() != null && emailClean.equalsIgnoreCase(archivo.getDestinario().trim());
+        boolean candMatch = archivo.getCandidato() != null && archivo.getCandidato().getEmail() != null && emailClean.equalsIgnoreCase(archivo.getCandidato().getEmail().trim());
+        return propMatch || destMatch || candMatch;
     }
 
     private String extraerCarpetaContenedora(String ubicacion) {
@@ -666,9 +680,35 @@ public class DriveController {
         Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
         if (archivoOpt.isEmpty() || email == null)
             return "redirect:/drive";
-        if (!email.equalsIgnoreCase(archivoOpt.get().getPropietario()))
+
+        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        boolean esRRHH = usuarioActual != null && ("ROLE_RRHH".equals(usuarioActual.getRol()) || "ROLE_ADMINISTRADOR".equals(usuarioActual.getRol()));
+        boolean esPropietario = email.equalsIgnoreCase(archivoOpt.get().getPropietario());
+
+        if (!esRRHH && !esPropietario)
             return "redirect:/drive";
-        filesServices.compartirArchivo(archivoId, destinatario);
+
+        Archivos archivo = archivoOpt.get();
+        String destClean = destinatario != null ? destinatario.trim() : "";
+        filesServices.compartirArchivo(archivoId, destClean);
+
+        if (!destClean.isBlank()) {
+            Usuario destUser = usuarioRepository.findByEmail(destClean).orElse(null);
+            if (destUser != null) {
+                if (archivo.getCandidato() == null && "ROLE_CANDIDATO".equals(destUser.getRol())) {
+                    archivo.setCandidato(destUser);
+                    filesRepository.save(archivo);
+                }
+                Candidato cand = candidatoRepository.findById(destUser.getId()).orElse(null);
+                String candNombre = cand != null ? (cand.getUsername() + " " + (cand.getApellido() != null ? cand.getApellido() : "")).trim() : destUser.getEmail();
+                try {
+                    notificacionService.crear("DOCUMENTO", "Se ha compartido contigo el archivo: " + archivo.getNombre(), destUser.getId(), candNombre, "/drive");
+                } catch (Exception e) {
+                    // Ignore notification error
+                }
+            }
+        }
+
         return "redirect:/drive?compartido=ok";
     }
 

@@ -68,10 +68,12 @@ public class FilesServices {
         Archivos archivo = repository.findById(archivoId)
             .orElseThrow(() -> new RuntimeException("Archivo no encontrado"));
         
-        archivo.setDestinario(nombreDestinatario);
+        if (nombreDestinatario != null && !nombreDestinatario.isBlank()) {
+            archivo.setDestinario(nombreDestinatario.trim());
+        } else {
+            archivo.setDestinario(null);
+        }
         repository.save(archivo);
-        
-        System.out.println("Notificación enviada a: " + nombreDestinatario);
     }
 
 

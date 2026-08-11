@@ -22,6 +22,12 @@ public interface ArchivosRepository extends JpaRepository<Archivos, Long> {
     @Query("SELECT a FROM Archivos a WHERE a.ubicacion LIKE CONCAT(:prefix, '%') AND a.esCarpeta = true")
     List<Archivos> findFoldersByUbicacionStartingWith(@Param("prefix") String prefix);
 
+    @Query("SELECT a FROM Archivos a WHERE " +
+           "(a.candidato IS NOT NULL AND a.candidato.id = :candidatoId) OR " +
+           "LOWER(a.propietario) = LOWER(:email) OR " +
+           "LOWER(a.destinario) = LOWER(:email)")
+    List<Archivos> findByCandidatoIdOrEmail(@Param("candidatoId") Long candidatoId, @Param("email") String email);
+
     @Query("SELECT count(a) FROM Archivos a WHERE a.esCarpeta = true")
     long countFolders();
 }
