@@ -71,6 +71,8 @@
 .gs-stat-icon-blue   { background: #ECFEFF; color: #0EA5E9; }
 .gs-stat-icon-orang  { background: #FFF7ED; color: #F97316; }
 .gs-stat-icon-green  { background: #F0FDF4; color: #16A34A; }
+.gs-stat-icon-orange { background: #FFF7ED; color: #F97316; }
+.gs-stat-icon-red    { background: #FEF2F2; color: #EF4444; }
 
 .gs-stat-number {
   font-size: 32px;

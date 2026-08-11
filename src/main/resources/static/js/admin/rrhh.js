@@ -84,6 +84,19 @@ document.addEventListener('click', function(e) {
     }
 });
 
+function mostrarToastAdmin(mensaje, ok) {
+  var toast = document.createElement('div');
+  toast.className = ok ? 'cfg-toast cfg-toast-ok' : 'cfg-toast cfg-toast-error';
+  toast.style.position = 'fixed';
+  toast.style.top = '20px';
+  toast.style.right = '20px';
+  toast.style.zIndex = '2000';
+  toast.innerHTML = mensaje;
+  document.body.appendChild(toast);
+  setTimeout(function () { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.5s'; }, 3500);
+  setTimeout(function () { toast.remove(); }, 4000);
+}
+
 function guardarRRHH() {
     const id = document.getElementById('rrhhId').value;
     const data = {
@@ -99,7 +112,6 @@ function guardarRRHH() {
     const method = 'PUT';
     const url = `/admin/api/rrhh/${id}`;
 
-    // Asumimos que el token CSRF está en el meta si lo necesitamos, o lo omitimos para dev si no aplica a API.
     fetch(url, {
         method: method,
         headers: { 'Content-Type': 'application/json' },
@@ -107,22 +119,21 @@ function guardarRRHH() {
     })
     .then(async res => {
         if(res.ok) {
-            window.location.reload();
+            mostrarToastAdmin('Usuario actualizado correctamente', true);
+            setTimeout(function () { window.location.reload(); }, 1200);
         } else {
             const err = await res.text();
-            alert('Error al guardar el usuario: ' + err);
+            try {
+                const body = JSON.parse(err);
+                alert(body.error || body.message || 'Error al guardar el usuario');
+            } catch (e) {
+                alert('Error al guardar el usuario: ' + err);
+            }
         }
     })
     .catch(e => {
         alert('Error de red: ' + e);
     });
-}
-
-function cambiarEstadoRRHH(id) {
-    if(confirm('¿Seguro que deseas cambiar el estado de acceso de este usuario?')) {
-        fetch(`/admin/api/rrhh/${id}/estado`, { method: 'PUT' })
-        .then(r => { if(r.ok) window.location.reload(); });
-    }
 }
 
 function toggleBloqueoRRHH(id) {
@@ -135,6 +146,13 @@ function toggleBloqueoRRHH(id) {
 function eliminarRRHH(id) {
     if(confirm('¿Seguro que deseas ELIMINAR permanentemente a este usuario?')) {
         fetch(`/admin/api/rrhh/${id}`, { method: 'DELETE' })
-        .then(r => { if(r.ok) window.location.reload(); });
+        .then(r => {
+            if(r.ok) {
+                mostrarToastAdmin('Usuario eliminado', true);
+                setTimeout(function () { window.location.reload(); }, 1200);
+            } else {
+                alert('Error al eliminar el usuario');
+            }
+        });
     }
 }

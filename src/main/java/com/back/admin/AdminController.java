@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
-import com.back.admin.dto.ActividadRecienteDTO;
-import com.back.admin.dto.UsuarioResumenDTO;
 import com.back.shared.exception.ClaveCortaException;
 import com.back.shared.exception.UsuarioDuplicadoException;
 import com.back.shared.dto.RegistroUsuarioDTO;
@@ -52,7 +50,6 @@ public class AdminController {
     private final EventoRepository eventoRepository;
     private final AuditoriaService auditoriaService;
     private final ConfiguracionService configuracionService;
-    private final AdminService adminService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model,
@@ -335,71 +332,6 @@ public class AdminController {
         return "redirect:/admin?pendiente";
     }
 
-    @PostMapping("/eliminar/{id}")
-    public String eliminarUsuario(@PathVariable Long id) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        if (usuario != null) {
-            String nombre = obtenerNombreUsuario(usuario.getId(), usuario.getRol());
-            String email = usuario.getEmail();
-            if ("ROLE_CANDIDATO".equals(usuario.getRol())) {
-                candidatoRepository.deleteById(id);
-            } else if ("ROLE_RRHH".equals(usuario.getRol())) {
-                rrhhRepository.deleteById(id);
-            }
-            usuarioRepository.delete(usuario);
-
-            auditoriaService.registrar("ELIMINACI\u00d3N",
-                "Se elimin\u00f3 el usuario " + nombre + " (" + email + ")",
-                "Administrador", "SEGURIDAD");
-        }
-        return "redirect:/admin?eliminado";
-    }
-
-    @PostMapping("/editar")
-    public String editarUsuario(@ModelAttribute Usuario datosEditados,
-            @RequestParam(value = "nuevaClave", required = false) String nuevaClave,
-            @RequestParam String username,
-            @RequestParam String apellido) {
-
-        Usuario usuarioBD = usuarioRepository.findById(datosEditados.getId()).orElse(null);
-
-        if (usuarioBD != null) {
-            String emailAnterior = usuarioBD.getEmail();
-            usuarioBD.setEmail(datosEditados.getEmail());
-
-            if (nuevaClave != null && !nuevaClave.trim().isEmpty()) {
-                String claveEncriptada = passwordEncoder.encode(nuevaClave);
-                usuarioBD.setClave(claveEncriptada);
-            }
-            usuarioRepository.save(usuarioBD);
-
-            if ("ROLE_RRHH".equals(usuarioBD.getRol())) {
-                RRHH rrhh = rrhhRepository.findById(usuarioBD.getId()).orElse(null);
-                if (rrhh != null) {
-                    rrhh.setUsername(username);
-                    rrhh.setApellido(apellido);
-                    rrhhRepository.save(rrhh);
-                }
-            } else if ("ROLE_CANDIDATO".equals(usuarioBD.getRol())) {
-                Candidato candidato = candidatoRepository.findById(usuarioBD.getId()).orElse(null);
-                if (candidato != null) {
-                    candidato.setUsername(username);
-                    candidato.setApellido(apellido);
-                    candidatoRepository.save(candidato);
-                }
-            }
-
-            String nombreEditado = obtenerNombreUsuario(usuarioBD.getId(), usuarioBD.getRol());
-            String cambios = !emailAnterior.equals(datosEditados.getEmail())
-                ? " (email: " + emailAnterior + " \u2192 " + datosEditados.getEmail() + ")"
-                : "";
-            auditoriaService.registrar("EDICI\u00d3N",
-                "Se edit\u00f3 el perfil de " + nombreEditado + cambios,
-                "Administrador", "USUARIO");
-        }
-        return "redirect:/admin?editado";
-    }
-
     @GetMapping("/exportar")
     public void exportarAExcel(HttpServletResponse response,
                                @RequestParam(name = "buscar",  required = false) String buscar,
@@ -594,17 +526,5 @@ public class AdminController {
             "El administrador cambi\u00f3 su contrase\u00f1a", email, "SEGURIDAD");
 
         return "redirect:/admin/dashboard?clave_ok";
-    }
-
-    private String obtenerNombreUsuario(Long userId, String rol) {
-        if (rol == null) return "Usuario";
-        return switch (rol) {
-            case "ROLE_CANDIDATO" -> candidatoRepository.findById(userId)
-                .map(c -> c.getUsername() + " " + c.getApellido()).orElse("Candidato");
-            case "ROLE_RRHH" -> rrhhRepository.findById(userId)
-                .map(r -> r.getUsername() + " " + r.getApellido()).orElse("RRHH");
-            case "ROLE_ADMINISTRADOR" -> "Administrador";
-            default -> "Usuario";
-        };
     }
 }

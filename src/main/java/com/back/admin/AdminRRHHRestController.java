@@ -55,6 +55,21 @@ public class AdminRRHHRestController {
             Usuario u = usuarioRepository.findById(id).orElse(null);
             if (u == null) return ResponseEntity.notFound().build();
 
+            if (request.getEmail() != null && !request.getEmail().equalsIgnoreCase(u.getEmail())) {
+                boolean duplicado = usuarioRepository.findByEmail(request.getEmail())
+                        .map(existente -> !existente.getId().equals(id))
+                        .orElse(false);
+                if (duplicado) {
+                    return ResponseEntity.status(409).body(Map.of("error", "Email duplicado"));
+                }
+            }
+
+            if (request.getClave() != null && !request.getClave().isBlank()
+                    && request.getClave().trim().length() < 8) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "La contraseña debe tener mínimo 8 caracteres"));
+            }
+
             u.setEmail(request.getEmail());
             if (request.getClave() != null && !request.getClave().isBlank()) {
                 u.setClave(passwordEncoder.encode(request.getClave()));
@@ -72,19 +87,8 @@ public class AdminRRHHRestController {
 
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body("Error interno: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error interno al actualizar el usuario"));
         }
-    }
-
-    @PutMapping("/{id}/estado")
-    public ResponseEntity<?> toggleEstado(@PathVariable Long id) {
-        Usuario u = usuarioRepository.findById(id).orElse(null);
-        if (u == null) return ResponseEntity.notFound().build();
-
-        u.setActivo(!u.isActivo());
-        usuarioRepository.save(u);
-        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}/toggle-bloqueo")

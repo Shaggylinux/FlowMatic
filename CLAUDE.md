@@ -39,10 +39,9 @@ src/main/java/com/back/
 ├── model/                   — JPA entities: Usuario, Archivos
 ├── repository/              — Spring Data repos with custom JPQL queries
 └── web/
-    └── SecurityConfig.java
 ```
 
-**Packages (actual):** module-based — `auth`, `candidatos` (incl. `candidatos.drive`), `calendario`, `drive`, `notificaciones`, `admin`, `seguridad`, `registro`, `shared` (events only), `web` (presentation layer: `CandidatoHomeController`, `DashboardController`, `AtributosUsuarioAdvice`). `ArchitectureTest` (ArchUnit) and `ModulithTest` enforce isolation: `auth` must not depend on business modules, `shared` only on java/jakarta/lombok/spring/jackson, and `calendario` services must not use `candidatos` (controllers may cross modules).
+**Packages (actual):** module-based — `auth`, `candidatos` (incl. `candidatos.drive`), `calendario`, `drive`, `notificaciones`, `admin` (incl. `admin.dto`), `seguridad` (SecurityConfig, CustomUserDetailsService), `registro`, `shared` (events only), `web` (presentation layer: `CandidatoHomeController`, `DashboardController`, `AtributosUsuarioAdvice`). `ArchitectureTest` (ArchUnit) and `ModulithTest` enforce isolation: `auth` must not depend on business modules, `shared` only on java/jakarta/lombok/spring/jackson, and `calendario` services must not use `candidatos` (controllers may cross modules).
 
 **Templates:** `src/main/resources/templates/` (Thymeleaf `.html` files)  
 **Static assets:** `src/main/resources/static/` (CSS, JS, videos)  
@@ -50,8 +49,7 @@ src/main/java/com/back/
 
 ## Database
 
-PostgreSQL on `localhost:5432/gestion`. Schema file: `database.sql`.  
-JPA is set to `ddl-auto: update` — it will auto-migrate. Seed data (admin user: `gomez@gmail.com`) is in `database.sql`.
+PostgreSQL on `localhost:5432/gestion` (Docker). Seed admin user: `admin@flowmatic.com` / `admin123*` (GenHash hardcodes `admin123*` — it ignores its args). `database.sql` referenced below no longer exists in the repo; JPA `ddl-auto: update` auto-migrates and the seed is applied by the Docker startup.
 
 Key entities:
 - **Usuario** — users with roles (`CANDIDATO`, `RRHH`, `ADMINISTRADOR`), email-based login, BCrypt password, activation token, and `estado` (recruitment status string set per-candidate via `/drive/actualizar-estado`)
@@ -112,3 +110,6 @@ Gmail SMTP (`smtp.gmail.com:587`). The app password and base URL (`http://localh
 - **`candidato.html` stepper:** rejection states (`Rechazad`, `No aceptado`, `No seleccionado`, `Descartado`) render as "Proceso finalizado" instead of a misleading percentage (`estadoRechazado` flag from `LoginController`).
 - **Candidate portal:** `/candidato/home` (CandidatoHomeController) and `/candidato/perfil` (PerfilCandidatoController) are mapped under `/candidato/**`; the former lives in the `web` presentation layer (aggregates candidatos + calendario + drive + notificaciones), the latter in `candidatos`.
 - **Dead code:** `FilesServices.guardarArchivoPorEtapa()` (RRHH stage-based upload flow) is unused — all uploads go through `DriveController`. `.badge-available` (green) exists in `base.css` for confirmed-interview badges in `dashboard-rrhh.html`.
+- **Admin portal (HU-005/006/007/008):** `/admin/dashboard` shows KPI cards (`Total Usuarios`, `RRHH Activos`, `Candidatos Registrados`, `Candidatos Pendientes`), role donut (empty state "No hay usuarios registrados") and recent-activity timeline (empty state "No hay actividad reciente"). `AdminController.panelAdmin` lists RRHH at 10/page; `pageItems` (record `PageItem(int number, boolean ellipsis)`) drives clickable page numbers + ellipsis in `rrhh-content.html`. `POST /admin/crear-rrhh` redirects `?pendiente` (ok), `?error=duplicado` and `?error=clave_corta`; `rrhh-content.html` renders those as toasts "Usuario creado. Se envió el correo de activación", "Email duplicado", "La contraseña debe tener mínimo 8 caracteres".
+- **Admin REST CRUD:** `GET/PUT/DELETE /admin/api/rrhh/{id}` (live, drawer + edit modal + delete). `PUT` validates duplicate email (409 `{"error":"Email duplicado"}` via `UsuarioRepository.findByEmail`, ignoring self) and clave <8 (400 `{"error":"La contraseña debe tener mínimo 8 caracteres"}`); `DELETE` must remove the `rrhh` row first (FK `fk_rrhh_usuarios` on `admin.rrhh`, NOT `public.rrhh`). `PUT /{id}/estado` + `AdminService` + legacy fragments (`table.html`, `toolbar.html`, `modal-editar.html`, `POST /admin/editar`, `POST /admin/eliminar/{id}`, `admin.js` pagination helpers) were deleted as dead code.
+- **Admin JS/CSS:** `admin.js` (admin.html) drives notifications, actividad/auditoria/configuración modals and the mobile sidebar; `admin/rrhh.js` drives the RRHH drawer/table with `mostrarToastAdmin()` (green/red toasts) and `toggleBloqueoRRHH` (`PUT /{id}/toggle-bloqueo`). i18n: `static/js/i18n.js` holds the admin dictionary (KPIs, table headers, pagination, drawer, toasts) applied via `data-i18n`. Dashboard cards use `gs-stat-icon-orange/red` in `admin/dashboard.css`.

@@ -5,7 +5,7 @@
     </div>
     <div th:if="${errorDuplicado}" class="cfg-toast cfg-toast-error">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-        El correo ya est&aacute; registrado
+        Email duplicado
     </div>
     <div th:if="${errorClaveCorta}" class="cfg-toast cfg-toast-error">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
@@ -236,14 +236,21 @@
             </table>
           </div>
           
-          <!-- Paginación simplificada -->
+          <!-- Paginación -->
           <div class="gc-pagination" th:if="${totalPages > 1}">
             <div class="gc-page-info">
               <p>Mostrando <strong th:text="${startItem}"></strong> a <strong th:text="${endItem}"></strong> de <strong th:text="${totalItems}"></strong></p>
             </div>
             <div class="gc-page-controls">
               <a class="gc-page-btn" th:if="${currentPage > 0}" th:href="@{/admin(page=${currentPage - 1}, size=${pageSize}, buscar=${buscar}, estado=${estado})}">Anterior</a>
-              <span class="gc-page-current" th:text="${currentPage + 1}"></span>
+              <th:block th:each="item : ${pageItems}">
+                <span th:if="${item.ellipsis}" class="gc-page-dots">&hellip;</span>
+                <a th:unless="${item.ellipsis}"
+                   class="gc-page-btn"
+                   th:classappend="${item.number == currentPage} ? ' active'"
+                   th:href="@{/admin(page=${item.number}, size=${pageSize}, buscar=${buscar}, estado=${estado})}"
+                   th:text="${item.number + 1}"></a>
+              </th:block>
               <a class="gc-page-btn" th:if="${currentPage < totalPages - 1}" th:href="@{/admin(page=${currentPage + 1}, size=${pageSize}, buscar=${buscar}, estado=${estado})}">Siguiente</a>
             </div>
           </div>
@@ -291,7 +298,7 @@
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Contraseña <span id="pwdHint" style="font-size:10px; color:#94A3B8;">(déjalo vacío)</span></label>
-                  <input type="password" class="form-control" id="rrhhClave" name="clave" style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="Mínimo 8">
+                  <input type="password" class="form-control" id="rrhhClave" name="clave" minlength="8" style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="Mínimo 8">
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Teléfono</label>

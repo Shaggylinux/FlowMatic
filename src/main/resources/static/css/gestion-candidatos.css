@@ -442,6 +442,40 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
+/* Avatares con color por inicial */
+.avatar-A, .avatar-B, .avatar-C, .avatar-D { background: linear-gradient(135deg, #FCE7F3, #DB2777); }
+.avatar-E, .avatar-F, .avatar-G, .avatar-H { background: linear-gradient(135deg, #E0E7FF, #6366F1); }
+.avatar-I, .avatar-J, .avatar-K, .avatar-L { background: linear-gradient(135deg, #D1FAE5, #059669); }
+.avatar-M, .avatar-N, .avatar-O, .avatar-P { background: linear-gradient(135deg, #FEF3C7, #D97706); }
+.avatar-Q, .avatar-R, .avatar-S, .avatar-T { background: linear-gradient(135deg, #DBEAFE, #2563EB); }
+.avatar-U, .avatar-V, .avatar-W, .avatar-X { background: linear-gradient(135deg, #EDE9FE, #7C3AED); }
+.avatar-Y, .avatar-Z { background: linear-gradient(135deg, #FEE2E2, #DC2626); }
+
+/* Fila clicable */
+.gc-row-clickable {
+  cursor: pointer;
+}
+.gc-row-clickable:hover td {
+  background: #F8FAFC;
+}
+
+/* Grupo de filtros */
+.gc-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Cuerpo del drawer */
+.gc-drawer-body {
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Badges del drawer (éxito / peligro) */
+.gc-badge-success { background: #DCFCE7; color: #166534; }
+.gc-badge-danger { background: #FEE2E2; color: #991B1B; }
+
 /* Match bar */
 .gc-cell-match {
   display: flex;
@@ -657,6 +691,54 @@
   border: 1px solid #F1F5F9;
   box-shadow: 0 1px 2px rgba(0,0,0,0.03);
   flex-wrap: wrap;
+}
+
+.gc-page-info {
+  font-size: 13px;
+  color: #64748B;
+  white-space: nowrap;
+}
+.gc-page-info strong {
+  color: #0F172A;
+}
+
+.gc-page-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.gc-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.gc-page-btn:hover {
+  border-color: var(--fm-brand, #0D9488);
+  color: var(--fm-brand, #0D9488);
+  background: #F0FDFA;
+}
+.gc-page-btn.active {
+  background: var(--fm-brand, #0D9488);
+  border-color: var(--fm-brand, #0D9488);
+  color: #ffffff;
+}
+.gc-page-dots {
+  color: #94A3B8;
+  padding: 0 2px;
+  font-weight: 600;
 }
 
 .gc-pagination-info {
