@@ -5,6 +5,7 @@ import com.back.auth.UsuarioRepository;
 import com.back.candidatos.CandidatoService;
 import com.back.exportacion.ExcelService;
 import com.back.shared.dto.EntrevistaEmailDTO;
+import com.back.shared.event.AccionCandidatoEntrevistaEvent;
 import com.back.shared.event.EntrevistaAgendadaEvent;
 import com.back.shared.event.EntrevistaNotificacionEvent;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,7 @@ public class CalendarioController {
         model.addAttribute("candidatos", candidatoService.getSimpleList());
 
         Usuario user = obtenerUsuario(principal);
+        boolean esRRHH = user != null && ("ROLE_RRHH".equals(user.getRol()) || "ROLE_ADMIN".equals(user.getRol()));
         if (user != null) {
             model.addAttribute("rrhhId", user.getId());
             model.addAttribute("currentUserId", user.getId());
@@ -58,23 +60,25 @@ public class CalendarioController {
         LocalDate hoy = LocalDate.now();
         LocalDate ayer = hoy.minusDays(1);
 
-        long totalHoy = eventoService.contarHoy();
-        long totalPendientes = eventoService.contarPendientes();
-        long totalConfirmadas = eventoService.contarConfirmadas();
-        long totalReprogramadas = eventoService.contarReprogramadas();
-        long totalCanceladas = eventoService.contarCanceladas();
+        if (esRRHH) {
+            long totalHoy = eventoService.contarHoy();
+            long totalPendientes = eventoService.contarPendientes();
+            long totalConfirmadas = eventoService.contarConfirmadas();
+            long totalReprogramadas = eventoService.contarReprogramadas();
+            long totalCanceladas = eventoService.contarCanceladas();
 
-        model.addAttribute("totalHoy", totalHoy);
-        model.addAttribute("totalPendientes", totalPendientes);
-        model.addAttribute("totalConfirmadas", totalConfirmadas);
-        model.addAttribute("totalReprogramadas", totalReprogramadas);
-        model.addAttribute("totalCanceladas", totalCanceladas);
-        model.addAttribute("totalEsteMes", eventoService.contarTotalEsteMes());
-        model.addAttribute("candidatosUnicosEsteMes", eventoService.contarCandidatosUnicosEsteMes());
-
-        model.addAttribute("difHoy", totalHoy - eventoService.contarFecha(ayer));
-
-        model.addAttribute("proximasEntrevistas", eventoService.obtenerProximasEntrevistas(10));
+            model.addAttribute("totalHoy", totalHoy);
+            model.addAttribute("totalPendientes", totalPendientes);
+            model.addAttribute("totalConfirmadas", totalConfirmadas);
+            model.addAttribute("totalReprogramadas", totalReprogramadas);
+            model.addAttribute("totalCanceladas", totalCanceladas);
+            model.addAttribute("totalEsteMes", eventoService.contarTotalEsteMes());
+            model.addAttribute("candidatosUnicosEsteMes", eventoService.contarCandidatosUnicosEsteMes());
+            model.addAttribute("difHoy", totalHoy - eventoService.contarFecha(ayer));
+            model.addAttribute("proximasEntrevistas", eventoService.obtenerProximasEntrevistas(10));
+        } else {
+            model.addAttribute("proximasEntrevistas", eventoService.obtenerProximasEntrevistas(10));
+        }
 
         return "calendario";
     }
@@ -287,7 +291,7 @@ public class CalendarioController {
                 response.put("error", "No autorizado");
                 return response;
             }
-            if (!"CONFIRMADO".equals(estado) && !"CANCELADO".equals(estado) && !"REPROGRAMADO".equals(estado)) {
+            if (!"CONFIRMADO".equals(estado) && !"CANCELADO".equals(estado)) {
                 response.put("success", false);
                 response.put("error", "Solo puedes confirmar o cancelar la entrevista");
                 return response;
@@ -317,10 +321,97 @@ public class CalendarioController {
                             ev.getCandidatoId(), candidatoNombre, "ESTADO_CAMBIADO", mensaje
                         ));
                     }
+
+                    if ("CONFIRMADO".equals(estado)) {
+                        String rrhhEmail = ev.getRrhhId() != null
+                                ? usuarioRepository.findById(ev.getRrhhId()).map(Usuario::getEmail).orElse(null)
+                                : null;
+                        eventPublisher.publishEvent(new AccionCandidatoEntrevistaEvent(
+                            ev.getCandidatoId(), candidatoNombre, "CONFIRMACION",
+                            ev.getFecha(), ev.getHora(), null, null, null,
+                            ev.getRrhhId(), rrhhEmail));
+                    }
                 } catch (Exception notifEx) {
                     logger.warn("No se pudo notificar a RRHH: {}", notifEx.getMessage());
                 }
             }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+
+        return response;
+    }
+
+    @PostMapping("/solicitar-reprogramacion/{id}")
+    @ResponseBody
+    public Map<String, Object> solicitarReprogramacion(
+            @PathVariable Long id,
+            @RequestParam(required = false) String motivo,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate nuevaFecha,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime nuevaHora,
+            Principal principal) {
+
+        Map<String, Object> response = new HashMap<>();
+        Usuario user = obtenerUsuario(principal);
+        if (user == null || !"ROLE_CANDIDATO".equals(user.getRol())) {
+            response.put("success", false);
+            response.put("error", "No autorizado");
+            return response;
+        }
+
+        Evento evento = eventoService.buscarPorId(id);
+        if (evento == null) {
+            response.put("success", false);
+            response.put("error", "Evento no encontrado");
+            return response;
+        }
+        if (!evento.getCandidatoId().equals(user.getId())) {
+            response.put("success", false);
+            response.put("error", "No autorizado");
+            return response;
+        }
+        if (motivo == null || motivo.isBlank()) {
+            response.put("success", false);
+            response.put("error", "El motivo es obligatorio");
+            return response;
+        }
+        if (motivo.length() > 500) {
+            response.put("success", false);
+            response.put("error", "El motivo no puede tener más de 500 caracteres");
+            return response;
+        }
+
+        try {
+            EventoValidator.validate(nuevaFecha, nuevaHora, null, null);
+            if (eventoRepository.existsByCandidatoIdAndFechaAndHora(user.getId(), nuevaFecha, nuevaHora)) {
+                response.put("success", false);
+                response.put("error", "Ya tienes una entrevista en esa fecha y hora");
+                return response;
+            }
+
+            Evento ev = eventoService.actualizarEstado(id, "REPROGRAMADO");
+            String observacionMotivo = "Solicitud de reprogramación: " + motivo.trim();
+            ev.setObservaciones(observacionMotivo);
+            eventoRepository.save(ev);
+
+            String mensaje = "El candidato " + ev.getCandidatoNombre() +
+                    " solicita reprogramar la entrevista del " + ev.getFecha() +
+                    " a las " + ev.getHora() + ". Motivo: " + motivo.trim();
+
+            eventPublisher.publishEvent(new EntrevistaNotificacionEvent(
+                    ev.getCandidatoId(), ev.getCandidatoNombre(), "REPROGRAMACION", mensaje));
+
+            String rrhhEmail = ev.getRrhhId() != null
+                    ? usuarioRepository.findById(ev.getRrhhId()).map(Usuario::getEmail).orElse(null)
+                    : null;
+            eventPublisher.publishEvent(new AccionCandidatoEntrevistaEvent(
+                    ev.getCandidatoId(), ev.getCandidatoNombre(), "REPROGRAMACION",
+                    ev.getFecha(), ev.getHora(), nuevaFecha, nuevaHora, motivo.trim(),
+                    ev.getRrhhId(), rrhhEmail));
+
+            response.put("success", true);
+            response.put("message", "Solicitud enviada. RRHH te contactará con una nueva fecha");
         } catch (Exception e) {
             response.put("success", false);
             response.put("error", e.getMessage());
@@ -438,7 +529,13 @@ public class CalendarioController {
 
     @GetMapping("/candidato/{id}/eventos")
     @ResponseBody
-    public ResponseEntity<?> eventosCandidato(@PathVariable Long id) {
+    public ResponseEntity<?> eventosCandidato(@PathVariable Long id, Principal principal) {
+        Usuario user = obtenerUsuario(principal);
+        if (user == null)
+            return ResponseEntity.status(401).build();
+        boolean esRRHH = "ROLE_RRHH".equals(user.getRol()) || "ROLE_ADMIN".equals(user.getRol());
+        if (!esRRHH && !user.getId().equals(id))
+            return ResponseEntity.status(403).build();
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if (usuario == null)
             return ResponseEntity.notFound().build();

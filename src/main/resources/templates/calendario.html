@@ -266,6 +266,44 @@
   </div>
 </div>
 
+<!-- MODAL SOLICITAR REPROGRAMACIÓN (CANDIDATO) -->
+<div class="cal-modal-overlay" id="modalReprogramar">
+  <div class="cal-modal-card">
+    <div class="cal-modal-header">
+      <div>
+        <h2>Solicitar reprogramación</h2>
+        <p>Indica el motivo y la nueva fecha/hora deseada</p>
+      </div>
+      <button type="button" class="cal-modal-close" onclick="cerrarModalReprogramar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cal-modal-body">
+      <form id="formReprogramar" onsubmit="return false;">
+        <input type="hidden" id="reproEventoId" value="">
+        <div class="cal-modal-field">
+          <label class="cal-modal-label" for="reproMotivo">Motivo de la solicitud <span class="required">*</span></label>
+          <textarea name="motivo" id="reproMotivo" class="cal-modal-input" placeholder="Ej: Tengo una reunión inaplazable a esa hora..." maxlength="500" required></textarea>
+        </div>
+        <div class="cal-modal-row">
+          <div class="cal-modal-field">
+            <label class="cal-modal-label" for="reproFecha">Nueva fecha deseada <span class="required">*</span></label>
+            <input type="date" name="nuevaFecha" id="reproFecha" class="cal-modal-input" required>
+          </div>
+          <div class="cal-modal-field">
+            <label class="cal-modal-label" for="reproHora">Nueva hora deseada <span class="required">*</span></label>
+            <input type="time" name="nuevaHora" id="reproHora" class="cal-modal-input" min="07:00" max="19:00" required>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="cal-modal-footer">
+      <button type="button" class="cal-modal-btn cal-modal-btn-secondary" onclick="cerrarModalReprogramar()">Cancelar</button>
+      <button type="button" class="cal-modal-btn cal-modal-btn-primary" onclick="enviarSolicitudReprogramacion()">Enviar solicitud</button>
+    </div>
+  </div>
+</div>
+
 
 
 <script th:src="@{/js/gestion-candidatos.js}"></script>
@@ -557,11 +595,12 @@ function renderEventDetail(eventoId, detailEl) {
     html += '</div>';
   }
 
-  // Candidate actions: confirm, cancel, leave note
+  // Candidate actions: confirm, cancel, request reprogramming, leave note
   if (!isRRHH && candidatoId) {
     html += '<div class="cal-timeline-detail-divider"></div>';
     html += '<div class="cal-timeline-detail-actions">';
     html += '<button class="cal-timeline-detail-btn" onclick="cambiarEstado(\'' + eventoId + '\',\'CONFIRMADO\')">Confirmar entrevista</button>';
+    html += '<button class="cal-timeline-detail-btn cal-timeline-detail-btn-secondary" onclick="abrirModalReprogramar(\'' + eventoId + '\')">Solicitar reprogramaci&oacute;n</button>';
     html += '<button class="cal-timeline-detail-btn cal-timeline-detail-btn-danger" onclick="cancelarEvento(\'' + eventoId + '\')">Cancelar</button>';
     html += '</div>';
 
@@ -692,6 +731,15 @@ function guardarEntrevista() {
   .catch(function(err) { alert('Error: ' + err.message); });
 }
 
+// ── TOAST ─────────────────────────────────────
+function mostrarToast(mensaje, tipo) {
+  var el = document.createElement('div');
+  el.textContent = mensaje;
+  el.style.cssText = 'position:fixed; top:20px; right:20px; z-index:99999; padding:12px 18px; border-radius:8px; color:#fff; font-size:13px; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,0.15); ' + (tipo === 'error' ? 'background:#EF4444;' : 'background:#0D9488;');
+  document.body.appendChild(el);
+  setTimeout(function() { el.remove(); }, 4000);
+}
+
 // ── EVENT ACTIONS ────────────────────────────
 function cambiarEstado(id, nuevoEstado) {
   if (!id) return;
@@ -706,7 +754,11 @@ function cambiarEstado(id, nuevoEstado) {
   .then(function(data) {
     if (data.success) {
       if (calendarInstance) calendarInstance.refetchEvents();
-      location.reload();
+      if (nuevoEstado === 'CONFIRMADO' && currentUserRol !== 'ROLE_RRHH') {
+        mostrarToast('Asistencia confirmada');
+      } else {
+        location.reload();
+      }
     } else {
       alert('Error: ' + (data.error || 'No se pudo cambiar el estado'));
     }
@@ -721,6 +773,56 @@ function cancelarEvento(eventoId) {
 
 function marcarRealizada(eventoId) {
   cambiarEstado(eventoId, 'REALIZADA');
+}
+
+// ── SOLICITAR REPROGRAMACIÓN (CANDIDATO) ─────
+function abrirModalReprogramar(eventoId) {
+  if (!eventoId) return;
+  document.getElementById('reproEventoId').value = eventoId;
+  document.getElementById('reproMotivo').value = '';
+  document.getElementById('reproFecha').value = '';
+  document.getElementById('reproHora').value = '';
+  document.getElementById('modalReprogramar').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalReprogramar() {
+  document.getElementById('modalReprogramar').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function enviarSolicitudReprogramacion() {
+  var id = document.getElementById('reproEventoId').value;
+  var motivo = document.getElementById('reproMotivo').value.trim();
+  var nuevaFecha = document.getElementById('reproFecha').value;
+  var nuevaHora = document.getElementById('reproHora').value;
+
+  if (!motivo) { alert('El motivo es obligatorio'); return; }
+  if (!nuevaFecha) { alert('La nueva fecha es obligatoria'); return; }
+  if (!nuevaHora) { alert('La nueva hora es obligatoria'); return; }
+
+  var formData = new URLSearchParams();
+  formData.set('motivo', motivo);
+  formData.set('nuevaFecha', nuevaFecha);
+  formData.set('nuevaHora', nuevaHora);
+
+  fetch('/calendario/solicitar-reprogramacion/' + id, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData.toString()
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.success) {
+      cerrarModalReprogramar();
+      mostrarToast('Solicitud enviada. RRHH te contactar\u00e1 con una nueva fecha');
+      if (calendarInstance) calendarInstance.refetchEvents();
+      setTimeout(function() { location.reload(); }, 1200);
+    } else {
+      alert('Error: ' + (data.error || 'No se pudo enviar la solicitud'));
+    }
+  })
+  .catch(function(err) { alert('Error: ' + err.message); });
 }
 
 function reprogramarEvento(eventoId) {

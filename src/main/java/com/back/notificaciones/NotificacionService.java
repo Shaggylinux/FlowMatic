@@ -30,8 +30,19 @@ public class NotificacionService {
         return notificacionRepository.findByLeidaFalseOrderByFechaDesc();
     }
 
+    public List<Notificacion> obtenerNoLeidasPorCandidato(Long candidatoId) {
+        return notificacionRepository.findByLeidaFalseAndCandidatoIdOrderByFechaDesc(candidatoId);
+    }
+
     public List<Notificacion> obtenerActividadReciente() {
         return notificacionRepository.findTop5ByOrderByFechaDesc();
+    }
+
+    public List<Notificacion> obtenerActividadReciente(Long candidatoId) {
+        if (candidatoId == null) {
+            return notificacionRepository.findTop5ByCandidatoIdIsNullOrderByFechaDesc();
+        }
+        return notificacionRepository.findTop5ByCandidatoIdOrderByFechaDesc(candidatoId);
     }
 
     public long contarNoLeidas() {

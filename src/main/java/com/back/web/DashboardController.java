@@ -1,4 +1,4 @@
-package com.back.candidatos.drive;
+package com.back.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

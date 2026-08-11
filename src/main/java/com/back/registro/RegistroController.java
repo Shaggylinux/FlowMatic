@@ -86,7 +86,6 @@ public class RegistroController {
 
         if (usuario == null) {
             model.addAttribute("enlaceExpirado", true);
-            model.addAttribute("token", token);
             return "caduco";
         }
 
@@ -95,11 +94,25 @@ public class RegistroController {
         return "activacion";
     }
 
+    @GetMapping("/reenviar-activacion")
+    public String mostrarReenviarActivacion() {
+        return "caduco";
+    }
+
     @PostMapping("/reenviar-activacion")
-    public String reenviarActivacion(@RequestParam("token") String token, Model model) {
-        usuarioService.regenerarYReenviarToken(token);
-        model.addAttribute("correoReenviado", true);
-        return "home";
+    public String reenviarActivacion(@RequestParam("email") String email, Model model) {
+        String resultado = usuarioService.reenviarActivacionPorEmail(email);
+
+        if ("YA_ACTIVA".equals(resultado)) {
+            return "redirect:/login";
+        }
+
+        if ("NO_REGISTRADO".equals(resultado)) {
+            model.addAttribute("correoNoRegistrado", true);
+        } else {
+            model.addAttribute("correoReenviado", true);
+        }
+        return "caduco";
     }
 
     @PostMapping("/verificar")

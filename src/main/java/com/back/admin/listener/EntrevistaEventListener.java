@@ -4,6 +4,7 @@ import com.back.admin.RRHH;
 import com.back.admin.RRHHRepository;
 import com.back.notificaciones.EmailService;
 import com.back.notificaciones.NotificacionService;
+import com.back.shared.event.AccionCandidatoEntrevistaEvent;
 import com.back.shared.event.EntrevistaAgendadaEvent;
 import com.back.shared.event.EntrevistaNotificacionEvent;
 import org.slf4j.Logger;
@@ -60,6 +61,29 @@ public class EntrevistaEventListener {
             logger.info("Notificación web de entrevista enviada correctamente.");
         } catch (Exception e) {
             logger.warn("No se pudo enviar notificación web de entrevista: {}", e.getMessage());
+        }
+    }
+
+    @EventListener
+    public void onAccionCandidatoEntrevista(AccionCandidatoEntrevistaEvent event) {
+        try {
+            if (event.rrhhEmail() == null || event.rrhhEmail().isBlank()) {
+                logger.warn("No se pudo notificar a RRHH: correo desconocido (rrhhId={})", event.rrhhId());
+                return;
+            }
+            String rrhhNombre = event.rrhhEmail();
+            if (event.rrhhId() != null) {
+                RRHH rrhhProfile = rrhhRepository.findById(event.rrhhId()).orElse(null);
+                if (rrhhProfile != null) {
+                    rrhhNombre = rrhhProfile.getUsername() + " " + (rrhhProfile.getApellido() != null ? rrhhProfile.getApellido() : "");
+                }
+            }
+            emailService.enviarEmailAccionCandidato(event.rrhhEmail(), rrhhNombre, event.accion(),
+                    event.candidatoNombre(), event.fecha(), event.hora(),
+                    event.nuevaFecha(), event.nuevaHora(), event.motivo());
+            logger.info("Email de acción del candidato enviado a RRHH correctamente.");
+        } catch (Exception e) {
+            logger.warn("No se pudo enviar email de acción del candidato a RRHH: {}", e.getMessage());
         }
     }
 }

@@ -93,22 +93,34 @@ public class UsuarioService implements AuthApi {
     }
 
     @org.springframework.transaction.annotation.Transactional
-    public void regenerarYReenviarToken(String tokenViejo) {
-        Token t = tokenRepository.findById(tokenViejo).orElse(null);
-        if (t != null && "ACTIVACION".equals(t.getTipo())) {
-            Usuario usuario = usuarioRepository.findById(t.getUsuarioId()).orElse(null);
-            if (usuario != null) {
-                tokenRepository.delete(t);
-                
-                String nuevoToken = UUID.randomUUID().toString();
-                Token newTokenObj = new Token(nuevoToken, usuario.getId(), "ACTIVACION", 86400L);
-                tokenRepository.save(newTokenObj);
-
-                String nombre = obtenerNombreOApellido(usuario);
-                eventPublisher.publishEvent(new UsuarioRegistradoEvent(usuario.getId(),
-                    usuario.getEmail(), usuario.getRol(), nombre, null, null, null, null, nuevoToken));
-            }
+    public String reenviarActivacionPorEmail(String email) {
+        if (email == null || email.isBlank()) {
+            return "NO_REGISTRADO";
         }
+
+        var optional = usuarioRepository.findByEmail(email.trim());
+        if (optional.isEmpty()) {
+            return "NO_REGISTRADO";
+        }
+
+        Usuario usuario = optional.get();
+        if (usuario.isActivo()) {
+            return "YA_ACTIVA";
+        }
+
+        tokenRepository.findByUsuarioId(usuario.getId()).stream()
+                .filter(t -> "ACTIVACION".equals(t.getTipo()))
+                .forEach(tokenRepository::delete);
+
+        String nuevoToken = UUID.randomUUID().toString();
+        Token newTokenObj = new Token(nuevoToken, usuario.getId(), "ACTIVACION", 86400L);
+        tokenRepository.save(newTokenObj);
+
+        String nombre = obtenerNombreOApellido(usuario);
+        eventPublisher.publishEvent(new UsuarioRegistradoEvent(usuario.getId(),
+            usuario.getEmail(), usuario.getRol(), nombre, null, null, null, null, nuevoToken));
+
+        return "ENVIADO";
     }
 
     public boolean activarCuenta(String token) {

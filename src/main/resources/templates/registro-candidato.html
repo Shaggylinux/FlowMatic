@@ -35,6 +35,9 @@
       <div th:if="${errorDuplicado}" class="alert alert-error">
         Este correo ya está registrado.
       </div>
+      <div th:if="${errorClaveCorta}" class="alert alert-error">
+        La contraseña debe tener mínimo 8 caracteres.
+      </div>
 
       <form th:action="@{/registro/candidato}" th:object="${registro}" method="post" id="formRegistro">
 
@@ -119,6 +122,10 @@
       <p style="text-align:center; margin-top:16px; font-size:13px; color:var(--fm-text-muted);">
         ¿Ya tienes cuenta?
         <a class="fm-link" th:href="@{/login}">Inicia sesión</a>
+      </p>
+      <p style="text-align:center; margin-top:8px; font-size:13px; color:var(--fm-text-muted);">
+        ¿No recibiste el correo de activación?
+        <a class="fm-link" th:href="@{/registro/candidato/reenviar-activacion}">Reenviar enlace</a>
       </p>
 
     </div>

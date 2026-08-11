@@ -139,14 +139,14 @@
               <span class="cand-kpi-label">Etapa del proceso</span>
             </div>
             <div class="cand-kpi-val-row">
-              <span class="cand-kpi-value" th:text="${(stepIndex != null ? stepIndex : 1) + ' de 5'}">1 de 5</span>
-              <span style="font-size: 12px; color: #64748B;">etapas evaluadas</span>
+              <span class="cand-kpi-value" th:text="${estadoRechazado ? 'Proceso finalizado' : (stepIndex != null ? stepIndex : 1) + ' de 5'}">1 de 5</span>
+              <span style="font-size: 12px; color: #64748B;" th:text="${estadoRechazado ? '' : 'etapas evaluadas'}">etapas evaluadas</span>
             </div>
             <div class="cand-progress-bar-bg">
-              <div class="cand-progress-bar-fill" th:style="'width: ' + ${(procesoProgresoPct != null ? procesoProgresoPct : 20)} + '%'"></div>
+              <div class="cand-progress-bar-fill" th:style="'width: ' + ${(estadoRechazado ? 100 : (procesoProgresoPct != null ? procesoProgresoPct : 20))} + '%'"></div>
             </div>
           </div>
-          <p class="cand-kpi-subtext" th:text="${stepIndex != null and stepIndex >= 3 ? '¡Vas a la mitad del proceso!' : 'Etapa ' + (stepIndex != null ? stepIndex : 1) + ' en curso.'}">Avance del proceso</p>
+          <p class="cand-kpi-subtext" th:text="${estadoRechazado ? 'Gracias por participar en el proceso.' : (stepIndex != null and stepIndex >= 3 ? '¡Vas a la mitad del proceso!' : 'Etapa ' + (stepIndex != null ? stepIndex : 1) + ' en curso.')}">Avance del proceso</p>
         </div>
 
         <!-- Card 4: Última actualización -->
@@ -182,7 +182,7 @@
         <div style="position: relative;">
           <!-- Linea conectora de fondo -->
           <div class="cand-stepper-line-bg">
-            <div class="cand-stepper-line-progress" th:style="'width: ' + ${((stepIndex != null ? stepIndex : 1) - 1) * 25} + '%'"></div>
+            <div class="cand-stepper-line-progress" th:style="'width: ' + ${(estadoRechazado ? 0 : ((stepIndex != null ? stepIndex : 1) - 1) * 25)} + '%'"></div>
           </div>
 
           <div class="cand-stepper">
@@ -538,7 +538,8 @@
     <div style="padding: 20px 0; text-align: center; color: #94A3B8; font-size: 13px;" th:if="${proximaEntrevista == null}">
       No tienes entrevistas programadas en tu calendario por el momento.
     </div>
-    <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+    <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 8px;">
+      <a th:if="${proximaEntrevista != null}" th:href="@{/calendario}" class="btn btn-secondary">Solicitar reprogramación</a>
       <button class="btn btn-primary" onclick="cerrarModalEntrevista()">Entendido</button>
     </div>
   </div>

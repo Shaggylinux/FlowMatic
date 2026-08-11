@@ -1,4 +1,4 @@
-package com.back.shared;
+package com.back.web;
 
 import java.util.HashMap;
 import java.util.Map;

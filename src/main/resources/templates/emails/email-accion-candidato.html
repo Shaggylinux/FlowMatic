@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
+            <h1 style="color: white; margin: 0; font-size: 28px;">FLOWMATIC</h1>
+            <p style="color: #e0e0e0; margin: 10px 0 0 0;">Sistema de Gestión de Candidatos</p>
+        </div>
+        <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px;">
+            <h2 style="color: #333;">Hola, <span th:text="${rrhhNombre}">RRHH</span></h2>
+
+            <div th:if="${accion == 'CONFIRMACION'}">
+                <p style="color: #666; line-height: 1.6;">
+                    El candidato <strong th:text="${candidatoNombre}">Candidato</strong>
+                    <strong>ha confirmado su asistencia</strong> a la entrevista programada.
+                </p>
+                <div style="background: #f1f5f9; border-radius: 8px; padding: 16px; margin: 16px 0;">
+                    <p style="margin: 4px 0; color: #333;"><strong>Candidato:</strong> <span th:text="${candidatoNombre}"></span></p>
+                    <p style="margin: 4px 0; color: #333;"><strong>Fecha:</strong> <span th:text="${fecha}"></span></p>
+                    <p style="margin: 4px 0; color: #333;"><strong>Hora:</strong> <span th:text="${hora}"></span></p>
+                </div>
+            </div>
+
+            <div th:if="${accion == 'REPROGRAMACION'}">
+                <p style="color: #666; line-height: 1.6;">
+                    El candidato <strong th:text="${candidatoNombre}">Candidato</strong>
+                    <strong>solicita reprogramar su entrevista</strong>.
+                </p>
+                <div style="background: #f1f5f9; border-radius: 8px; padding: 16px; margin: 16px 0;">
+                    <p style="margin: 4px 0; color: #333;"><strong>Candidato:</strong> <span th:text="${candidatoNombre}"></span></p>
+                    <p style="margin: 4px 0; color: #333;"><strong>Fecha original:</strong> <span th:text="${fecha}"></span></p>
+                    <p style="margin: 4px 0; color: #333;"><strong>Hora original:</strong> <span th:text="${hora}"></span></p>
+                    <p style="margin: 4px 0; color: #333;"><strong>Nueva fecha solicitada:</strong> <span th:text="${nuevaFecha}"></span></p>
+                    <p style="margin: 4px 0; color: #333;"><strong>Nueva hora solicitada:</strong> <span th:text="${nuevaHora}"></span></p>
+                    <p style="margin: 8px 0 0 0; color: #333;"><strong>Motivo:</strong> <span th:text="${motivo}"></span></p>
+                </div>
+            </div>
+
+            <p style="color: #999; font-size: 12px;">Revisa la plataforma para coordinar la nueva fecha con el candidato.</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="color: #666; font-size: 12px;">Saludos cordiales,<br><strong>Equipo de FLOWMATIC</strong></p>
+        </div>
+    </div>
+</body>
+</html>

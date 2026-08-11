@@ -31,6 +31,11 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
             eventPublisher.publishEvent(new AuditoriaEvent(this, "SEGURIDAD",
                 "Intento de inicio de sesi\u00f3n fallido: " + email,
                 email, "SEGURIDAD"));
+            if (loginAttemptService.isBlocked(email)) {
+                loginAttemptService.publicarEventoBloqueo(email);
+                getRedirectStrategy().sendRedirect(request, response, "/login?bloqueado");
+                return;
+            }
         }
         getRedirectStrategy().sendRedirect(request, response, "/login?error");
     }

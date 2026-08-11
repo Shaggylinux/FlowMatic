@@ -4,6 +4,9 @@ import com.back.shared.dto.EntrevistaEmailDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -91,6 +94,76 @@ public class EmailService {
         } catch (Exception e) {
             logger.error("Error al enviar email de recuperación: {}", e.getMessage());
             throw new RuntimeException("Error al enviar el email de recuperación", e);
+        }
+    }
+
+    public boolean enviarEmailBloqueo(String destinatario, String nombre, long minutos) {
+        try {
+            logger.info("📧 Preparando email de bloqueo para: {}", destinatario);
+
+            String asunto = "🔒 Acceso bloqueado temporalmente - FLOWMATIC";
+            Context context = new Context();
+            context.setVariable("nombre", nombre);
+            context.setVariable("minutos", minutos);
+
+            String mensaje = templateEngine.process("emails/email-bloqueo", context);
+
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(destinatario);
+            helper.setSubject(asunto);
+            helper.setText(mensaje, true);
+            helper.setFrom(mailFrom);
+
+            mailSender.send(mimeMessage);
+
+            logger.info("Email de bloqueo enviado a: {}", destinatario);
+            return true;
+
+        } catch (Exception e) {
+            logger.error("Error al enviar email de bloqueo: {}", e.getMessage());
+            throw new RuntimeException("Error al enviar el email de bloqueo", e);
+        }
+    }
+
+    public boolean enviarEmailAccionCandidato(String destinatario, String rrhhNombre,
+                                              String accion, String candidatoNombre,
+                                              LocalDate fecha, LocalTime hora,
+                                              LocalDate nuevaFecha, LocalTime nuevaHora,
+                                              String motivo) {
+        try {
+            logger.info("📧 Preparando email de accion del candidato ({}) para: {}", accion, destinatario);
+
+            String asunto = "🔔 " + candidatoNombre + " - " +
+                    ("CONFIRMACION".equals(accion) ? "confirm\u00f3 su asistencia" : "solicita reprogramar su entrevista");
+
+            Context context = new Context();
+            context.setVariable("rrhhNombre", rrhhNombre);
+            context.setVariable("candidatoNombre", candidatoNombre);
+            context.setVariable("accion", accion);
+            context.setVariable("fecha", fecha != null ? fecha.toString() : "");
+            context.setVariable("hora", hora != null ? hora.toString() : "");
+            context.setVariable("nuevaFecha", nuevaFecha != null ? nuevaFecha.toString() : "");
+            context.setVariable("nuevaHora", nuevaHora != null ? nuevaHora.toString() : "");
+            context.setVariable("motivo", motivo != null ? motivo : "");
+
+            String mensaje = templateEngine.process("emails/email-accion-candidato", context);
+
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(destinatario);
+            helper.setSubject(asunto);
+            helper.setText(mensaje, true);
+            helper.setFrom(mailFrom);
+
+            mailSender.send(mimeMessage);
+
+            logger.info("Email de accion del candidato enviado a: {}", destinatario);
+            return true;
+
+        } catch (Exception e) {
+            logger.error("Error al enviar email de accion del candidato: {}", e.getMessage());
+            throw new RuntimeException("Error al enviar el email de accion del candidato", e);
         }
     }
 

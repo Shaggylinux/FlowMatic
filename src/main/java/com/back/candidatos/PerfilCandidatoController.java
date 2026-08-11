@@ -128,7 +128,9 @@ public class PerfilCandidatoController {
         }
 
         // Consultar notificaciones reales
-        List<Notificacion> notificaciones = notificacionRepository.findTop5ByOrderByFechaDesc();
+        List<Notificacion> notificaciones = candidatoId != null
+                ? notificacionRepository.findTop5ByCandidatoIdOrderByFechaDesc(candidatoId)
+                : notificacionRepository.findTop5ByOrderByFechaDesc();
         long notificacionesNoLeidas = notificacionRepository.countByLeidaFalse();
 
         model.addAttribute("candidatoEmail", email != null ? email : "");

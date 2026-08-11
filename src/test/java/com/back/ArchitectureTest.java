@@ -69,7 +69,8 @@ class ArchitectureTest {
                             "java..",
                             "jakarta..",
                             "lombok..",
-                            "org.springframework.."
+                            "org.springframework..",
+                            "com.fasterxml.jackson.."
                     );
 
     // ── Module isolation: seguridad ──────────────────────────────

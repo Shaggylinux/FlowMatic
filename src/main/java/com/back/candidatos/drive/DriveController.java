@@ -12,16 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import com.back.auth.Usuario;
+import com.back.auth.UsuarioRepository;
 import com.back.candidatos.Candidato;
 import com.back.drive.Archivos;
 import com.back.drive.ArchivosRepository;
 import com.back.drive.FilesServices;
 import org.springframework.http.HttpHeaders;
 import org.springframework.core.io.Resource;
-import com.back.auth.UsuarioRepository;
-import com.back.calendario.EventoRepository;
-import com.back.calendario.Evento;
-import com.back.notificaciones.Notificacion;
 import com.back.candidatos.CandidatoRepository;
 import com.back.candidatos.CandidatoService;
 import com.back.notificaciones.NotificacionService;
@@ -48,7 +45,6 @@ public class DriveController {
     private final CandidatoRepository candidatoRepository;
     private final FilesServices filesServices;
     private final NotificacionService notificacionService;
-    private final EventoRepository eventoRepository;
 
     @GetMapping
     public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder,
@@ -674,7 +670,17 @@ public class DriveController {
 
     @PostMapping("/actualizar-estado")
     public String actualizarEstado(@RequestParam("usuarioId") Long id,
-            @RequestParam("nuevoEstado") String estado) {
+            @RequestParam("nuevoEstado") String estado,
+            Principal principal) {
+        String email = principal != null ? principal.getName() : null;
+        if (email == null) {
+            return "redirect:/drive";
+        }
+        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        if (usuarioActual == null || !"ROLE_RRHH".equals(usuarioActual.getRol())) {
+            return "redirect:/drive";
+        }
+
         Candidato candidato = candidatoRepository.findById(id).orElse(null);
         if (candidato == null)
             return "redirect:/drive";

@@ -3,7 +3,7 @@ package com.back.admin;
 import com.back.admin.dto.UsuarioRRHHDTO;
 import com.back.auth.Usuario;
 import com.back.auth.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +13,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/api/rrhh")
+@RequiredArgsConstructor
 public class AdminRRHHRestController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private RRHHRepository rrhhRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UsuarioRepository usuarioRepository;
+    private final RRHHRepository rrhhRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioRRHHDTO> getUsuarioRRHH(@PathVariable Long id) {

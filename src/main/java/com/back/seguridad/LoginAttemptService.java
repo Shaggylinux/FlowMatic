@@ -1,7 +1,11 @@
 package com.back.seguridad;
 
 import com.back.shared.api.ConfiguracionApi;
+import com.back.auth.Usuario;
+import com.back.auth.UsuarioRepository;
+import com.back.shared.event.CuentaBloqueadaEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -13,9 +17,16 @@ public class LoginAttemptService {
 
     private final LoginAttemptRepository loginAttemptRepository;
 
-    public LoginAttemptService(ConfiguracionApi configuracionService, LoginAttemptRepository loginAttemptRepository) {
+    private final UsuarioRepository usuarioRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
+
+    public LoginAttemptService(ConfiguracionApi configuracionService, LoginAttemptRepository loginAttemptRepository,
+                               UsuarioRepository usuarioRepository, ApplicationEventPublisher eventPublisher) {
         this.configuracionService = configuracionService;
         this.loginAttemptRepository = loginAttemptRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -50,5 +61,20 @@ public class LoginAttemptService {
     @Transactional
     public void reset(String email) {
         loginAttemptRepository.deleteByEmail(email.toLowerCase());
+    }
+
+    @Transactional
+    public void publicarEventoBloqueo(String email) {
+        long blockMinutes = Long.parseLong(configuracionService.getValor("login.block.minutes", "15"));
+        String nombre = "Usuario";
+        java.util.Optional<Usuario> uOpt = usuarioRepository.findByEmail(email.toLowerCase());
+        if (uOpt.isPresent()) {
+            Usuario u = uOpt.get();
+            String correo = u.getEmail();
+            if (correo != null && correo.contains("@")) {
+                nombre = correo.substring(0, correo.indexOf("@"));
+            }
+        }
+        eventPublisher.publishEvent(new CuentaBloqueadaEvent(email, nombre, blockMinutes));
     }
 }
