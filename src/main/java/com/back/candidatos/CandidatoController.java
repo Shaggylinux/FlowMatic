@@ -271,15 +271,29 @@ public class CandidatoController {
         }
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if (usuario != null) {
+            String email = usuario.getEmail();
+            List<Archivos> archivosAsociados = archivosRepository.findByCandidatoIdOrEmail(id, email);
+            for (Archivos doc : archivosAsociados) {
+                try {
+                    if (doc.getUbicacion() != null) {
+                        java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
+                    }
+                } catch (java.io.IOException ignored) {
+                }
+                archivosRepository.delete(doc);
+            }
+
             String nombreCompleto = (candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : "")).trim();
             List<String> prefijos = List.of(
-                    "superfolder/Candidatos/" + usuario.getEmail(),
+                    "superfolder/Candidatos/" + email,
                     "superfolder/Candidatos/" + nombreCompleto);
             for (String prefix : prefijos) {
                 List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
                 for (Archivos doc : docs) {
                     try {
-                        java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
+                        if (doc.getUbicacion() != null) {
+                            java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
+                        }
                     } catch (java.io.IOException ignored) {
                     }
                     archivosRepository.delete(doc);
