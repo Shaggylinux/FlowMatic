@@ -105,7 +105,8 @@
               <p class="cand-kpi-subtext">
                 🕒 <span th:text="${proximaEntrevista.hora}">10:00 AM</span><br>
                 <span th:text="${proximaEntrevista.vacante != null ? proximaEntrevista.vacante : 'Entrevista agendada'}">Entrevista agendada</span><br>
-                Virtual - Google Meet
+                <span th:text="${proximaEntrevista.modalidad != null ? (proximaEntrevista.modalidad == 'VIRTUAL' ? 'Virtual' : 'Presencial') : 'Entrevista'}">Entrevista</span>
+                <span th:if="${proximaEntrevista.lugar != null and !proximaEntrevista.lugar.isBlank()}" th:text="' - ' + ${proximaEntrevista.lugar}"> - Ubicación</span>
               </p>
             </div>
 
@@ -531,15 +532,31 @@
         </div>
         <div style="padding: 12px; background: #F8FAFC; border-radius: 10px; border: 1px solid #E2E8F0;">
           <div style="font-size: 12px; color: #64748B;">Modalidad</div>
-          <div style="font-size: 13px; font-weight: 600; color: #0D9488; margin-top: 2px;">Virtual (Google Meet)</div>
+          <div style="font-size: 13px; font-weight: 600; color: #0D9488; margin-top: 2px;" th:text="${proximaEntrevista.modalidad != null ? (proximaEntrevista.modalidad == 'VIRTUAL' ? 'Virtual' : 'Presencial') : 'Entrevista'}">Virtual</div>
         </div>
+      </div>
+
+      <div style="padding: 12px; background: #F8FAFC; border-radius: 10px; border: 1px solid #E2E8F0;" th:if="${proximaEntrevista.lugar != null and !proximaEntrevista.lugar.isBlank()}">
+        <div style="font-size: 12px; color: #64748B;">Ubicación / Enlace</div>
+        <div style="font-size: 13px; font-weight: 600; color: #0F172A; margin-top: 2px;" th:text="${proximaEntrevista.lugar}">Enlace o ubicación</div>
+      </div>
+
+      <div style="padding: 12px; background: #F8FAFC; border-radius: 10px; border: 1px solid #E2E8F0;" th:if="${proximaEntrevista.entrevistador != null and !proximaEntrevista.entrevistador.isBlank()}">
+        <div style="font-size: 12px; color: #64748B;">Entrevistador</div>
+        <div style="font-size: 13px; font-weight: 600; color: #0F172A; margin-top: 2px;" th:text="${proximaEntrevista.entrevistador}">Entrevistador</div>
+      </div>
+
+      <div style="padding: 12px; background: #F8FAFC; border-radius: 10px; border: 1px solid #E2E8F0;">
+        <div style="font-size: 12px; color: #64748B;">Estado</div>
+        <div style="font-size: 13px; font-weight: 600; color: #0F172A; margin-top: 2px;" th:text="${proximaEntrevista.estado != null ? proximaEntrevista.estado : 'PENDIENTE'}">PENDIENTE</div>
       </div>
     </div>
     <div style="padding: 20px 0; text-align: center; color: #94A3B8; font-size: 13px;" th:if="${proximaEntrevista == null}">
       No tienes entrevistas programadas en tu calendario por el momento.
     </div>
     <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 8px;">
-      <a th:if="${proximaEntrevista != null}" th:href="@{/calendario}" class="btn btn-secondary">Solicitar reprogramación</a>
+      <button th:if="${proximaEntrevista != null and proximaEntrevista.estado != 'CONFIRMADO' and proximaEntrevista.estado != 'CANCELADO' and proximaEntrevista.estado != 'REPROGRAMADO' and proximaEntrevista.estado != 'REALIZADA'}" class="btn btn-primary" th:onclick="'confirmarAsistencia(' + ${proximaEntrevista.id} + ')'">Confirmar asistencia</button>
+      <a th:if="${proximaEntrevista != null and proximaEntrevista.estado != 'REPROGRAMADO' and proximaEntrevista.estado != 'REALIZADA' and proximaEntrevista.estado != 'CANCELADO'}" th:href="@{/calendario}" class="btn btn-secondary">Solicitar reprogramación</a>
       <button class="btn btn-primary" onclick="cerrarModalEntrevista()">Entendido</button>
     </div>
   </div>
@@ -604,6 +621,38 @@
   }
   function cerrarModalEntrevista() {
     document.getElementById('modalEntrevista').classList.remove('active');
+  }
+
+  function mostrarToastCandidato(mensaje, ok) {
+    var toast = document.createElement('div');
+    toast.className = ok ? 'cfg-toast cfg-toast-ok' : 'cfg-toast cfg-toast-error';
+    toast.style.position = 'fixed';
+    toast.style.top = '20px';
+    toast.style.right = '20px';
+    toast.style.zIndex = '5000';
+    toast.textContent = mensaje;
+    document.body.appendChild(toast);
+    setTimeout(function () { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.5s'; }, 3500);
+    setTimeout(function () { toast.remove(); }, 4000);
+  }
+
+  function confirmarAsistencia(id) {
+    if (!confirm('¿Confirmas tu asistencia a esta entrevista?')) return;
+    fetch('/calendario/cambiar-estado/' + id, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'estado=CONFIRMADO'
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (res.success) {
+        mostrarToastCandidato('Asistencia confirmada', true);
+        setTimeout(function () { window.location.reload(); }, 1200);
+      } else {
+        mostrarToastCandidato(res.error || 'No se pudo confirmar la asistencia', false);
+      }
+    })
+    .catch(function() { mostrarToastCandidato('Error de red al confirmar', false); });
   }
 
   function abrirModalHistorial() {

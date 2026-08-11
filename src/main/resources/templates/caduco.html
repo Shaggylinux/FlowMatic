@@ -31,11 +31,18 @@
         Ingresa el correo con el que te registraste para recibir un nuevo enlace de activación.
       </p>
 
+      <div th:if="${enlaceExpirado}" class="alert alert-error" style="margin-bottom:16px;">
+        Enlace Inválido. El enlace de activación es inválido o ya fue utilizado
+      </div>
       <div th:if="${correoReenviado}" class="alert alert-success" style="margin-bottom:16px;">
         Revisa tu correo para activar tu cuenta.
       </div>
       <div th:if="${correoNoRegistrado}" class="alert alert-error" style="margin-bottom:16px;">
         Este correo no está registrado en el sistema
+      </div>
+
+      <div th:if="${enlaceExpirado}" style="margin-bottom:16px;">
+        <a class="btn btn-primary btn-full" th:href="@{/registro/candidato}">Registrarse nuevamente</a>
       </div>
 
       <form th:action="@{/registro/candidato/reenviar-activacion}" method="post" id="formReenviar">
