@@ -20,11 +20,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        if (loginAttemptService.isBlocked(email)) {
+        String emailNormalizado = email != null ? email.trim() : "";
+        if (loginAttemptService.isBlocked(emailNormalizado)) {
             throw new UsernameNotFoundException("Cuenta bloqueada temporalmente");
         }
 
-        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+        Usuario usuario = usuarioRepository.findByEmailIgnoreCase(emailNormalizado).orElse(null);
 
         if (usuario == null || !usuario.isActivo()) {
             throw new UsernameNotFoundException("Credenciales invalidas");
