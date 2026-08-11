@@ -187,6 +187,18 @@ public class CalendarioController {
             return response;
         }
 
+        if (lugar != null && !lugar.isBlank() && !lugar.matches("(?i)^https?://.+$")) {
+            response.put("success", false);
+            response.put("error", "La ubicación o enlace debe ser un enlace válido que comience con http:// o https://");
+            return response;
+        }
+
+        if (entrevistador != null && !entrevistador.isBlank() && !entrevistador.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]+$")) {
+            response.put("success", false);
+            response.put("error", "El nombre del entrevistador solo debe contener letras");
+            return response;
+        }
+
         try {
             String candidatoNombre = candidatoService.getNombreCompleto(candidatoId);
 
@@ -233,6 +245,18 @@ public class CalendarioController {
         if (rrhh == null || !"ROLE_RRHH".equals(rrhh.getRol())) {
             response.put("success", false);
             response.put("error", "No autorizado");
+            return response;
+        }
+
+        if (lugar != null && !lugar.isBlank() && !lugar.matches("(?i)^https?://.+$")) {
+            response.put("success", false);
+            response.put("error", "La ubicación o enlace debe ser un enlace válido que comience con http:// o https://");
+            return response;
+        }
+
+        if (entrevistador != null && !entrevistador.isBlank() && !entrevistador.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]+$")) {
+            response.put("success", false);
+            response.put("error", "El nombre del entrevistador solo debe contener letras");
             return response;
         }
 

@@ -13,6 +13,10 @@ public class EventoValidator {
     private static final LocalTime HORA_MAX = LocalTime.of(19, 0);
 
     public static void validate(LocalDate fecha, LocalTime hora, String lugar, String observaciones) {
+        validate(fecha, hora, lugar, null, observaciones);
+    }
+
+    public static void validate(LocalDate fecha, LocalTime hora, String lugar, String entrevistador, String observaciones) {
         if (fecha == null || hora == null) {
             throw new IllegalArgumentException("La fecha y la hora son obligatorias");
         }
@@ -25,10 +29,27 @@ public class EventoValidator {
         if (fecha.equals(LocalDate.now()) && hora.isBefore(LocalTime.now().withSecond(0).withNano(0))) {
             throw new IllegalArgumentException("La hora seleccionada ya pasó");
         }
-        if (lugar != null && lugar.length() > 200) {
-            throw new IllegalArgumentException("El lugar no puede tener más de 200 caracteres");
+        if (lugar != null && !lugar.isBlank()) {
+            if (lugar.length() > 200) {
+                throw new IllegalArgumentException("El lugar no puede tener más de 200 caracteres");
+            }
+            if (!lugar.matches("(?i)^https?://.+$")) {
+                throw new IllegalArgumentException("La ubicación o enlace debe ser un enlace válido que comience con http:// o https://");
+            }
         }
+        validateEntrevistador(entrevistador);
         validateObservaciones(observaciones);
+    }
+
+    public static void validateEntrevistador(String entrevistador) {
+        if (entrevistador != null && !entrevistador.isBlank()) {
+            if (entrevistador.length() > 200) {
+                throw new IllegalArgumentException("El entrevistador no puede tener más de 200 caracteres");
+            }
+            if (!entrevistador.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]+$")) {
+                throw new IllegalArgumentException("El nombre del entrevistador solo debe contener letras");
+            }
+        }
     }
 
     public static void validateObservaciones(String observaciones) {

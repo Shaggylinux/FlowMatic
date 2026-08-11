@@ -248,11 +248,14 @@
         </div>
         <div class="cal-modal-field">
           <label class="cal-modal-label" for="calLugar">Ubicaci&oacute;n o enlace</label>
-          <input type="text" name="lugar" id="calLugar" class="cal-modal-input" placeholder="Ej: https://meet.google.com/xxx" maxlength="200">
+          <input type="text" name="lugar" id="calLugar" class="cal-modal-input" placeholder="Ej: https://meet.google.com/xxx" maxlength="200"
+                 pattern="https?://.+" title="Debe ser una URL válida que comience con http:// o https://">
         </div>
         <div class="cal-modal-field">
           <label class="cal-modal-label" for="calEntrevistador">Entrevistador</label>
-          <input type="text" name="entrevistador" id="calEntrevistador" class="cal-modal-input" placeholder="Nombre del entrevistador" maxlength="200">
+          <input type="text" name="entrevistador" id="calEntrevistador" class="cal-modal-input" placeholder="Nombre del entrevistador" maxlength="200"
+                 pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="El nombre del entrevistador solo debe contener letras"
+                 oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')">
         </div>
         <div class="cal-modal-field">
           <label class="cal-modal-label" for="calObs">Observaciones</label>
@@ -706,6 +709,21 @@ function selectModalidad(btn) {
 
 function guardarEntrevista() {
   var form = document.getElementById('calEventoForm');
+  var lugarVal = (document.getElementById('calLugar').value || '').trim();
+  var entrevistadorVal = (document.getElementById('calEntrevistador').value || '').trim();
+
+  if (lugarVal !== "" && !/^https?:\/\/.+/i.test(lugarVal)) {
+    mostrarToast('La ubicación o enlace debe ser un enlace válido que comience con http:// o https://', 'error');
+    document.getElementById('calLugar').focus();
+    return;
+  }
+
+  if (entrevistadorVal !== "" && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(entrevistadorVal)) {
+    mostrarToast('El nombre del entrevistador solo debe contener letras', 'error');
+    document.getElementById('calEntrevistador').focus();
+    return;
+  }
+
   if (!form.checkValidity()) {
     form.reportValidity();
     return;
@@ -731,10 +749,10 @@ function guardarEntrevista() {
       }
       setTimeout(function() { location.reload(); }, 1200);
     } else {
-      alert(data.error || (isReprogram ? 'No se pudo reprogramar la entrevista' : 'No se pudo crear la entrevista'));
+      mostrarToast(data.error || (isReprogram ? 'No se pudo reprogramar la entrevista' : 'No se pudo crear la entrevista'), 'error');
     }
   })
-  .catch(function(err) { alert('Error: ' + err.message); });
+  .catch(function(err) { mostrarToast('Error: ' + err.message, 'error'); });
 }
 
 // ── TOAST ─────────────────────────────────────
