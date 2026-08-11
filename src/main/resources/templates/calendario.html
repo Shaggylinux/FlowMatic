@@ -155,10 +155,6 @@
         <!-- CALENDAR -->
         <div class="cal-calendar-area">
           <div id="calendar" style="position:relative;" th:attr="data-rrhh-id=${rrhhId}"></div>
-          <div id="calSinEntrevistas" class="cal-empty-message" style="display:none;">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span>Sin entrevistas en este período</span>
-          </div>
           <div id="filterDropdown" class="cal-filter-dropdown" sec:authorize="hasRole('RRHH')">
             <div class="cal-filter-dropdown-section">
               <span class="cal-filter-label">Candidato</span>
@@ -979,8 +975,6 @@ document.addEventListener('DOMContentLoaded', function() {
       fetch(url)
         .then(function(res) { return res.json(); })
         .then(function(data) {
-          var vacio = document.getElementById('calSinEntrevistas');
-          if (vacio) vacio.style.display = (data && data.length) ? 'none' : 'block';
           successCallback(data);
         })
         .catch(function(err) { failureCallback(err); });
