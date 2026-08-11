@@ -109,6 +109,19 @@ function guardarRRHH() {
         cargo: document.getElementById('rrhhCargo').value
     };
 
+    if (data.telefono && !/^[0-9]+$/.test(data.telefono)) {
+        mostrarToastAdmin('El teléfono debe contener solo números', false);
+        return;
+    }
+    if (data.documento && !/^[0-9]+$/.test(data.documento)) {
+        mostrarToastAdmin('El documento debe contener solo números', false);
+        return;
+    }
+    if (data.cargo && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(data.cargo)) {
+        mostrarToastAdmin('El cargo debe contener solo letras', false);
+        return;
+    }
+
     const method = 'PUT';
     const url = `/admin/api/rrhh/${id}`;
 

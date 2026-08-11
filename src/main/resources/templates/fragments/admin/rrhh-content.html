@@ -11,6 +11,18 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
         La contrase&ntilde;a debe tener m&iacute;nimo 8 caracteres
     </div>
+    <div th:if="${errorDocumentoInvalido}" class="cfg-toast cfg-toast-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        El documento debe contener solo n&uacute;meros
+    </div>
+    <div th:if="${errorCargoInvalido}" class="cfg-toast cfg-toast-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        El cargo debe contener solo letras
+    </div>
+    <div th:if="${errorTelefonoInvalido}" class="cfg-toast cfg-toast-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        El tel&eacute;fono debe contener solo n&uacute;meros
+    </div>
     <header class="fm-topbar" style="background:transparent;position:static;padding:8px 0;margin-bottom:24px;">
       <div style="display:flex; align-items:center; gap: 12px;">
         <button type="button" id="fm-mobile-menu-btn" class="d-md-none" style="display:flex; align-items:center; justify-content:center; padding:6px; background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:var(--fm-radius-md); color:var(--fm-text); cursor:pointer;">
@@ -294,15 +306,24 @@
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Teléfono</label>
-                  <input type="tel" class="form-control" id="rrhhTelefono" name="telefono" style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="+57 300 123">
+                  <input type="tel" class="form-control" id="rrhhTelefono" name="telefono"
+                         pattern="[0-9]+" title="El teléfono debe contener solo números" inputmode="numeric"
+                         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                         style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="Número de teléfono">
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Documento</label>
-                  <input type="text" class="form-control" id="rrhhDocumento" name="documento" style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                  <input type="text" class="form-control" id="rrhhDocumento" name="documento"
+                         pattern="[0-9]+" title="El documento debe contener solo números" inputmode="numeric"
+                         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                         style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Cargo</label>
-                  <input type="text" class="form-control" id="rrhhCargo" name="cargo" required style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                  <input type="text" class="form-control" id="rrhhCargo" name="cargo" required
+                         pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="El cargo debe contener solo letras"
+                         oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                         style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
                 </div>
               </div>
             </form>

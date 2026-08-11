@@ -72,6 +72,24 @@ public class AdminRRHHRestController {
                         .body(Map.of("error", "La contraseña debe tener mínimo 8 caracteres"));
             }
 
+            if (request.getTelefono() != null && !request.getTelefono().isBlank()
+                    && !request.getTelefono().matches("^[0-9]+$")) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "El teléfono debe contener solo números"));
+            }
+
+            if (request.getDocumento() != null && !request.getDocumento().isBlank()
+                    && !request.getDocumento().matches("^[0-9]+$")) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "El documento debe contener solo números"));
+            }
+
+            if (request.getCargo() != null && !request.getCargo().isBlank()
+                    && !request.getCargo().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]+$")) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "El cargo debe contener solo letras"));
+            }
+
             u.setEmail(request.getEmail());
             if (request.getClave() != null && !request.getClave().isBlank()) {
                 u.setClave(passwordEncoder.encode(request.getClave()));

@@ -12,8 +12,22 @@ class EventoValidatorTest {
 
     @Test
     void validate_conDatosValidosNoLanzaExcepcion() {
-        assertThatCode(() -> EventoValidator.validate(LocalDate.now().plusDays(2), LocalTime.of(10, 0), "Oficina piso 3", null))
+        assertThatCode(() -> EventoValidator.validate(LocalDate.now().plusDays(2), LocalTime.of(10, 0), "https://meet.google.com/abc-defg-hij", "Juan Perez", null))
                 .doesNotThrowAnyException();
+    }
+
+    @Test
+    void validate_lugarSinUrlLanzaExcepcion() {
+        assertThatThrownBy(() -> EventoValidator.validate(LocalDate.now().plusDays(2), LocalTime.of(10, 0), "Oficina piso 3", "Juan Perez", null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("enlace válido");
+    }
+
+    @Test
+    void validate_entrevistadorConNumerosLanzaExcepcion() {
+        assertThatThrownBy(() -> EventoValidator.validate(LocalDate.now().plusDays(2), LocalTime.of(10, 0), "https://meet.google.com/abc-defg-hij", "Juan123", null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("solo debe contener letras");
     }
 
     @Test

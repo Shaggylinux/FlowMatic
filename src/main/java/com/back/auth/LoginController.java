@@ -20,16 +20,16 @@ public class LoginController {
                         .toList();
 
         if (roles.contains("ROLE_RRHH")) {
-            return "redirect:/dashboard";
+            return "redirect:/dashboard?loginExitoso=true";
         }
 
         if (roles.contains("ROLE_CANDIDATO")) {
-            return "redirect:/candidato/home";
+            return "redirect:/candidato/home?loginExitoso=true";
         }
 
         if (roles.contains("ROLE_ADMINISTRADOR")) {
-            return "redirect:/admin/dashboard";
+            return "redirect:/admin/dashboard?loginExitoso=true";
         }
-        return "redirect:/";
+        return "redirect:/?loginExitoso=true";
     }
 }

@@ -57,13 +57,17 @@
                         <div class="col-md-6 form-group">
                             <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Tel&eacute;fono</label>
                             <input type="tel" name="telefono" class="form-input" maxlength="20"
-                                   placeholder="+57 300 123 4567">
+                                   pattern="[0-9]+" title="El teléfono debe contener solo números"
+                                   inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                   placeholder="Número de teléfono">
                         </div>
 
                         <!-- Documento -->
                         <div class="col-md-6 form-group">
                             <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Documento</label>
                             <input type="text" name="documento" class="form-input" maxlength="20"
+                                   pattern="[0-9]+" title="El documento debe contener solo números"
+                                   inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                    placeholder="Número de documento">
                         </div>
 
@@ -71,6 +75,8 @@
                         <div class="col-md-6 form-group">
                             <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Cargo</label>
                             <input type="text" name="cargo" class="form-input" maxlength="100"
+                                   pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="El cargo debe contener solo letras"
+                                   oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
                                    placeholder="Cargo en la empresa">
                         </div>
 

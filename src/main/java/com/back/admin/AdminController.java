@@ -186,7 +186,7 @@ public class AdminController {
     @GetMapping
     public String panelAdmin(Model model,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "size", defaultValue = "5") int size,
             @RequestParam(name = "buscar", required = false) String buscar,
             @RequestParam(name = "estado", required = false) String estado,
             @RequestParam(name = "pendiente", required = false) String pendiente,
@@ -235,6 +235,9 @@ public class AdminController {
         model.addAttribute("pendiente", pendiente != null);
         model.addAttribute("errorDuplicado", "duplicado".equals(error));
         model.addAttribute("errorClaveCorta", "clave_corta".equals(error));
+        model.addAttribute("errorDocumentoInvalido", "documento_invalido".equals(error));
+        model.addAttribute("errorCargoInvalido", "cargo_invalido".equals(error));
+        model.addAttribute("errorTelefonoInvalido", "telefono_invalido".equals(error));
 
         return "admin";
     }
@@ -301,6 +304,18 @@ public class AdminController {
                             @RequestParam(required = false) String telefono,
                             @RequestParam(required = false) String documento,
                             @RequestParam(required = false) String cargo) {
+        if (telefono != null && !telefono.isBlank() && !telefono.matches("^[0-9]+$")) {
+            return "redirect:/admin?error=telefono_invalido";
+        }
+
+        if (documento != null && !documento.isBlank() && !documento.matches("^[0-9]+$")) {
+            return "redirect:/admin?error=documento_invalido";
+        }
+
+        if (cargo != null && !cargo.isBlank() && !cargo.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]+$")) {
+            return "redirect:/admin?error=cargo_invalido";
+        }
+
         nuevoRRHH.setRol("ROLE_RRHH");
 
         RegistroUsuarioDTO dto = RegistroUsuarioDTO.builder()

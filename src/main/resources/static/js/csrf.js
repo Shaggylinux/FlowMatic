@@ -83,4 +83,39 @@
     }
   }, true);
 
+  function checkLoginToast() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.has('loginExitoso') || params.get('login') === 'exitoso' || params.has('login_ok')) {
+      mostrarToastLoginExitoso();
+      var cleanParams = new URLSearchParams(window.location.search);
+      cleanParams.delete('loginExitoso');
+      cleanParams.delete('login');
+      cleanParams.delete('login_ok');
+      var searchStr = cleanParams.toString();
+      var newUrl = window.location.pathname + (searchStr ? '?' + searchStr : '');
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  }
+
+  function mostrarToastLoginExitoso() {
+    var toast = document.createElement('div');
+    toast.className = 'fm-toast-success';
+    toast.innerHTML = '<div class="fm-toast-success-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div><span>¡Inicio de sesión exitoso!</span>';
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.classList.add('show'); }, 50);
+    setTimeout(function() {
+      toast.classList.remove('show');
+      setTimeout(function() {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 400);
+    }, 3500);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkLoginToast);
+  } else {
+    checkLoginToast();
+  }
+
 })();
+
