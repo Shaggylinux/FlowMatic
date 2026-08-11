@@ -53,10 +53,9 @@ public class UsuarioService implements AuthApi {
             throw new UsuarioDuplicadoException("El email ya est\u00e1 registrado");
         }
 
-        int minLength = Integer.parseInt(configuracionService.getValor("password.min.length", "8"));
-        if (usuario.getClave() == null || usuario.getClave().trim().length() < minLength) {
-            logger.warn("Contrase\u00f1a demasiado corta: {}", usuario.getEmail());
-            throw new ClaveCortaException("La contrase\u00f1a es muy corta");
+        if (!com.back.util.ValidadorClave.esClaveSegura(usuario.getClave())) {
+            logger.warn("Contraseña no cumple requisitos de complejidad: {}", usuario.getEmail());
+            throw new ClaveCortaException("La contraseña debe tener mínimo 8 caracteres, mayúsculas, minúsculas, un número y un carácter especial");
         }
 
         usuario.setClave(encoder.encode(usuario.getClave()));

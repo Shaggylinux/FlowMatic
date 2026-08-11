@@ -525,8 +525,7 @@ public class AdminController {
             return "redirect:/admin/dashboard?clave_error";
         }
 
-        int minLength = Integer.parseInt(configuracionService.getValor("password.min.length", "8"));
-        if (nuevaClave.trim().length() < minLength) {
+        if (!com.back.util.ValidadorClave.esClaveSegura(nuevaClave)) {
             return "redirect:/admin/dashboard?clave_error";
         }
 

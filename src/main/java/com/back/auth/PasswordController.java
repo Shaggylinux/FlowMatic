@@ -51,8 +51,7 @@ public class PasswordController {
             @RequestParam String password,
             Model model) {
 
-        int minLength = Integer.parseInt(configuracionService.getValor("password.min.length", "8"));
-        if (password == null || password.trim().length() < minLength) {
+        if (!com.back.util.ValidadorClave.esClaveSegura(password)) {
             model.addAttribute("token", token);
             model.addAttribute("errorPassword", true);
             return "reset-password";

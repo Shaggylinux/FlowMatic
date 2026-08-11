@@ -50,7 +50,10 @@
                         <div class="col-md-6 form-group">
                             <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Contrase&ntilde;a</label>
                             <input type="password" name="clave" class="form-input" required
-                                   minlength="8" maxlength="100" placeholder="M&iacute;nimo 8 caracteres">
+                                   minlength="8" maxlength="100"
+                                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+                                   title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
+                                   placeholder="Ej: Flowmatic#2026">
                         </div>
 
                         <!-- Teléfono -->

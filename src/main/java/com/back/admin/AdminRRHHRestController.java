@@ -67,9 +67,9 @@ public class AdminRRHHRestController {
             }
 
             if (request.getClave() != null && !request.getClave().isBlank()
-                    && request.getClave().trim().length() < 8) {
+                    && !com.back.util.ValidadorClave.esClaveSegura(request.getClave())) {
                 return ResponseEntity.badRequest()
-                        .body(Map.of("error", "La contraseña debe tener mínimo 8 caracteres"));
+                        .body(Map.of("error", "La contraseña debe tener mínimo 8 caracteres, mayúsculas, minúsculas, un número y un carácter especial"));
             }
 
             if (request.getTelefono() != null && !request.getTelefono().isBlank()

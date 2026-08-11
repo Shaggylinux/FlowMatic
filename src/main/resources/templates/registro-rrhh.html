@@ -32,7 +32,7 @@
 
       <div th:if="${mensajeExito}" class="alert alert-success">Registro exitoso. Se ha enviado un correo de activación.</div>
       <div th:if="${errorDuplicado}" class="alert alert-error">El correo ya está registrado.</div>
-      <div th:if="${errorClaveCorta}" class="alert alert-error">La contraseña es demasiado corta.</div>
+      <div th:if="${errorClaveCorta}" class="alert alert-error">La contraseña debe tener mínimo 8 caracteres, mayúscula, minúscula, número y símbolo especial.</div>
 
       <form th:action="@{/registro/rrhh}" th:object="${registro}" method="post" id="formRegistroRRHH">
 
@@ -53,7 +53,11 @@
 
         <div class="form-group">
           <label class="form-label">Contraseña</label>
-          <input class="form-input" type="password" th:field="*{clave}" required minlength="8" placeholder="Mínimo 8 caracteres"/>
+          <input class="form-input" type="password" th:field="*{clave}" required minlength="8"
+                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+                 title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
+                 placeholder="Ej: Flowmatic#2026"/>
+          <p style="font-size:11.5px; color:var(--fm-text-muted); margin-top:4px;">Debe incluir 8+ caracteres, mayúscula, minúscula, número y símbolo (ej: !@#$).</p>
         </div>
 
         <button type="submit" class="btn btn-primary btn-full">Registrar RRHH</button>

@@ -54,7 +54,10 @@
                         <div class="cfg-form-row">
                             <div class="cfg-form-group">
                                 <label class="cfg-form-label">Nueva contrase&ntilde;a</label>
-                                <input type="password" name="nuevaClave" class="cfg-form-input" required minlength="8" placeholder="M&iacute;nimo 8 caracteres">
+                                <input type="password" name="nuevaClave" class="cfg-form-input" required minlength="8"
+                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+                                       title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
+                                       placeholder="Mínimo 8 (mayús, minús, num, símbolo)">
                             </div>
                             <div class="cfg-form-group">
                                 <label class="cfg-form-label">Confirmar contrase&ntilde;a</label>
