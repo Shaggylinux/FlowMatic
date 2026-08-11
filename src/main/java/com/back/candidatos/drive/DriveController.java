@@ -57,6 +57,8 @@ public class DriveController {
             @RequestParam(name = "buscar", required = false) String buscar,
             @RequestParam(name = "tipo", required = false) String tipo,
             @RequestParam(name = "estado", required = false) String estado,
+            @RequestParam(name = "categoria", required = false) String categoria,
+            @RequestParam(name = "tab", required = false) String tab,
             @RequestParam(name = "error", required = false) String error,
             Principal principal, Model model) {
         String loginId = (principal != null) ? principal.getName() : null;
@@ -159,6 +161,20 @@ public class DriveController {
                         return true;
                     return estado.trim().equalsIgnoreCase(a.getEstadoDocumento());
                 })
+                .filter(a -> {
+                    if (categoria == null || categoria.isBlank() || "todos".equalsIgnoreCase(categoria))
+                        return true;
+                    if ("requeridos".equalsIgnoreCase(categoria) || "requerido".equalsIgnoreCase(categoria)) {
+                        return "Requerido".equalsIgnoreCase(a.getCategoriaCalculada());
+                    }
+                    if ("opcionales".equalsIgnoreCase(categoria) || "opcional".equalsIgnoreCase(categoria)) {
+                        return "Opcional".equalsIgnoreCase(a.getCategoriaCalculada());
+                    }
+                    if ("compartidos".equalsIgnoreCase(categoria)) {
+                        return a.getDestinario() != null && a.getDestinario().equalsIgnoreCase(emailReal);
+                    }
+                    return true;
+                })
                 .toList();
 
         long totalItems = archivosFiltrados.size();
@@ -201,6 +217,9 @@ public class DriveController {
         int pendingCount = 0;
         int approvedCount = 0;
         int rejectedCount = 0;
+        int requeridosCount = 0;
+        int opcionalesCount = 0;
+        int compartidosCount = 0;
         int filesCount = 0;
         int foldersCount = 0;
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy", new java.util.Locale("es", "ES"));
@@ -219,6 +238,17 @@ public class DriveController {
             } else if ("Rechazado".equalsIgnoreCase(a.getEstadoDocumento())) {
                 rejectedCount++;
             }
+
+            if ("Opcional".equalsIgnoreCase(a.getCategoriaCalculada())) {
+                opcionalesCount++;
+            } else {
+                requeridosCount++;
+            }
+
+            if (a.getDestinario() != null && a.getDestinario().equalsIgnoreCase(emailReal)) {
+                compartidosCount++;
+            }
+
             java.io.File physicalFile = new java.io.File(a.getUbicacion());
             long lastModified = 0L;
             if (physicalFile.exists()) {
@@ -387,6 +417,17 @@ public class DriveController {
         model.addAttribute("pendientesRevision", pendingCount);
         model.addAttribute("aprobadosCount", approvedCount);
         model.addAttribute("rechazadosCount", rejectedCount);
+        model.addAttribute("requeridosCount", requeridosCount);
+        model.addAttribute("opcionalesCount", opcionalesCount);
+        model.addAttribute("compartidosCount", compartidosCount);
+        model.addAttribute("categoriaActual", categoria != null ? categoria : "todos");
+        model.addAttribute("tabActual", tab != null ? tab : "mis-docs");
+        model.addAttribute("tipoActual", tipo != null ? tipo : "");
+        model.addAttribute("estadoActual", estado != null ? estado : "");
+
+        if (usuarioActual != null && "ROLE_CANDIDATO".equals(usuarioActual.getRol())) {
+            return "candidato-documentos";
+        }
 
         return "drive";
     }
@@ -483,8 +524,9 @@ public class DriveController {
 
     @PostMapping("/subir-archivo")
     public String subirArchivo(@RequestParam("archivo") MultipartFile archivo,
-            @RequestParam("folder") String folder,
+            @RequestParam(value = "folder", defaultValue = "") String folder,
             @RequestParam(value = "candidatoId", required = false) Long candidatoId,
+            @RequestParam(value = "fileId", required = false) Long fileId,
             Principal principal) {
         String loginId = (principal != null) ? principal.getName() : null;
         if (loginId == null)
@@ -492,6 +534,24 @@ public class DriveController {
 
         Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
         String email = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
+
+        if (fileId != null) {
+            Archivos existente = filesRepository.findById(fileId).orElse(null);
+            if (existente != null) {
+                try {
+                    java.nio.file.Path rutaCompleta = java.nio.file.Paths.get(existente.getUbicacion());
+                    java.nio.file.Files.createDirectories(rutaCompleta.getParent());
+                    java.nio.file.Files.copy(archivo.getInputStream(), rutaCompleta, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                    existente.setEstadoDocumento("Pendiente");
+                    existente.setObservacion(null);
+                    existente.setFechaSubida(LocalDateTime.now());
+                    filesRepository.save(existente);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return "redirect:/drive?folder=" + folder;
+            }
+        }
 
         Usuario candidatoVinculado = null;
         if (usuarioActual != null && "ROLE_CANDIDATO".equals(usuarioActual.getRol())) {

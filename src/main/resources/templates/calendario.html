@@ -24,8 +24,10 @@
   <div class="drive-main">
     <header class="fm-topbar">
       <div>
-        <p class="fm-topbar-title">Calendario de Entrevistas</p>
-        <p class="fm-topbar-sub">Agenda y gesti&oacute;n de entrevistas</p>
+        <p class="fm-topbar-title" sec:authorize="hasRole('CANDIDATO')">Mis entrevistas</p>
+        <p class="fm-topbar-title" sec:authorize="hasRole('RRHH')">Calendario de Entrevistas</p>
+        <p class="fm-topbar-sub" sec:authorize="hasRole('CANDIDATO')">Consulta y gestiona tus entrevistas de selección</p>
+        <p class="fm-topbar-sub" sec:authorize="hasRole('RRHH')">Agenda y gestión de entrevistas</p>
       </div>
       <div style="display:flex; align-items:center; gap:16px;">
         <div style="position:relative;">

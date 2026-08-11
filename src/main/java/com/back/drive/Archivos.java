@@ -25,6 +25,9 @@ public class Archivos {
     
     private String observacion;
 
+    @Column(name = "categoria_documento")
+    private String categoriaDocumento = "Requerido";
+
     @Column(name = "fecha_subida")
     private java.time.LocalDateTime fechaSubida;
 
@@ -40,4 +43,17 @@ public class Archivos {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidato_id")
     private com.back.auth.Usuario candidato;
+
+    public String getCategoriaCalculada() {
+        if (categoriaDocumento != null && !categoriaDocumento.isBlank()) {
+            return categoriaDocumento;
+        }
+        if (nombre != null) {
+            String n = nombre.toLowerCase();
+            if (n.contains("portafolio") || n.contains("certificados_estudios") || n.contains("referencias") || n.contains("opcional")) {
+                return "Opcional";
+            }
+        }
+        return "Requerido";
+    }
 }

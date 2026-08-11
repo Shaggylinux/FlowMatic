@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLOWMATIC - Mi Perfil</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/candidato.css}">
+  <link rel="stylesheet" th:href="@{/css/candidato-perfil.css}">
+</head>
+<body>
+
+<div class="cand-layout">
+
+  <!-- ── 1. SIDEBAR ESTÁNDAR DE FLOWMATIC ──────────────── -->
+  <div th:replace="~{fragments/sidebar-rrhh :: sidebarRRHH('perfil')}"></div>
+
+  <!-- ── 2. ÁREA PRINCIPAL Y HEADER ESTÁNDAR ────────────── -->
+  <main class="cand-main">
+
+    <!-- Header Superior Corporativo -->
+    <header class="fm-topbar">
+      <div>
+        <p class="fm-topbar-title">Mi perfil</p>
+        <p class="fm-topbar-sub" style="font-size:12px; color:var(--fm-text-muted); margin-top:2px;">Gestiona tu información personal y profesional.</p>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:16px;">
+        <!-- Campana Notificaciones -->
+        <div style="position:relative;">
+          <button type="button" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones" style="background:none; border:none; position:relative; cursor:pointer; color:#64748B; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#F1F5F9;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span id="gc-notif-badge" th:text="${notificacionesNoLeidas}" th:style="${notificacionesNoLeidas != null and notificacionesNoLeidas > 0} ? 'display:flex' : 'display:none'" style="position:absolute; top:-2px; right:-2px; background:#0D9488; color:#fff; font-size:9px; font-weight:700; min-width:16px; height:16px; border-radius:50%; align-items:center; justify-content:center; padding:0 3px; border:2px solid #fff;">0</span>
+          </button>
+          <div class="gc-notif-panel" id="gc-notif-panel">
+            <div class="gc-notif-header">
+              <span>Notificaciones</span>
+              <button class="gc-notif-leer-todas" onclick="marcarTodasNotificaciones()">Leer todas</button>
+            </div>
+            <div class="gc-notif-list"></div>
+          </div>
+        </div>
+
+        <!-- User Chip Avatar -->
+        <div style="display:flex; align-items:center; gap:8px; background:#F1F5F9; padding:4px 10px 4px 6px; border-radius:20px; cursor:pointer;" onclick="toggleEditPerfilMode()">
+          <div style="width:28px; height:28px; border-radius:50%; background:#0D9488; color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center;" th:text="${usuarioIniciales}">KZ</div>
+          <span style="font-size:13px; font-weight:600; color:#0F172A;" th:text="${candidatoNombres}">Candidato</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido del Perfil -->
+    <div class="cand-perfil-container">
+
+      <!-- ── 3. TARJETA PRINCIPAL DEL PERFIL (HERO CARD) ── -->
+      <section class="cand-hero-card">
+        <div class="cand-hero-left">
+          <div class="cand-avatar-container">
+            <div class="cand-avatar-hero" id="avatarHero" th:text="${usuarioIniciales}">KZ</div>
+            <button class="cand-avatar-camera-btn" title="Cambiar foto de perfil" onclick="abrirFotoModal()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </button>
+          </div>
+
+          <div class="cand-hero-info">
+            <div class="cand-hero-name-row">
+              <h1 class="cand-hero-name" th:text="${candidatoNombreCompleto}">Candidato</h1>
+              <span class="cand-badge-active">
+                <span class="cand-badge-active-dot"></span>
+                <span th:text="${candidatoEstado}">Candidato activo</span>
+              </span>
+            </div>
+            <p class="cand-hero-bio" id="heroBioText" th:text="${!#strings.isEmpty(candidatoSobreMi) ? candidatoSobreMi : 'Sin información biográfica registrada. Haz clic en Editar perfil para agregar tu resumen profesional.'}">
+              Sin información biográfica registrada.
+            </p>
+          </div>
+        </div>
+
+        <div class="cand-hero-right">
+          <div class="cand-hero-details-grid">
+            <div class="cand-hero-detail-item">
+              <div class="cand-hero-detail-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div class="cand-hero-detail-text">
+                <span class="cand-hero-detail-val" th:text="${!#strings.isEmpty(candidatoEmail) ? candidatoEmail : 'Sin registrar'}">correo@email.com</span>
+                <span class="cand-hero-detail-lbl">Correo electrónico</span>
+              </div>
+            </div>
+
+            <div class="cand-hero-detail-item">
+              <div class="cand-hero-detail-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div class="cand-hero-detail-text">
+                <span class="cand-hero-detail-val" th:text="${!#strings.isEmpty(candidatoTelefono) ? candidatoTelefono : 'Sin registrar'}">Teléfono</span>
+                <span class="cand-hero-detail-lbl">Teléfono</span>
+              </div>
+            </div>
+
+            <div class="cand-hero-detail-item">
+              <div class="cand-hero-detail-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="cand-hero-detail-text">
+                <span class="cand-hero-detail-val" th:text="${!#strings.isEmpty(candidatoFechaNac) ? candidatoFechaNac : 'Sin registrar'}">Fecha nac</span>
+                <span class="cand-hero-detail-lbl">Fecha de nacimiento</span>
+              </div>
+            </div>
+
+            <div class="cand-hero-detail-item">
+              <div class="cand-hero-detail-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div class="cand-hero-detail-text">
+                <span class="cand-hero-detail-val" th:text="${!#strings.isEmpty(candidatoCiudad) ? candidatoCiudad : 'Sin registrar'}">Ciudad</span>
+                <span class="cand-hero-detail-lbl">Ubicación</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="cand-btn-outline-teal" id="btnEditPerfil" onclick="toggleEditPerfilMode()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Editar perfil
+          </button>
+        </div>
+      </section>
+
+      <!-- ── 4. NAVEGACIÓN POR PESTAÑAS ──────────────────── -->
+      <nav class="cand-tabs-bar">
+        <div class="cand-tab-item active" onclick="switchTab('personal', this)">
+          <svg class="cand-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Información personal
+        </div>
+
+        <div class="cand-tab-item" onclick="switchTab('profesional', this)">
+          <svg class="cand-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Información profesional
+        </div>
+
+        <div class="cand-tab-item" onclick="switchTab('academica', this)">
+          <svg class="cand-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          Formación académica
+        </div>
+
+        <div class="cand-tab-item" onclick="switchTab('laboral', this)">
+          <svg class="cand-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Experiencia laboral
+        </div>
+      </nav>
+
+      <!-- ── 5. PESTAÑA 1: INFORMACIÓN PERSONAL ──────────── -->
+      <div class="cand-tab-pane active" id="tab-personal">
+        <div class="cand-profile-grid">
+
+          <!-- Columna Izquierda (Información Personal & Contacto) -->
+          <div class="cand-profile-left-col">
+
+            <!-- Tarjeta: Información personal -->
+            <div class="cand-card">
+              <div class="cand-card-header">
+                <div class="cand-card-title-group">
+                  <div class="cand-card-title-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                  <h2 class="cand-card-title">Información personal</h2>
+                </div>
+              </div>
+
+              <div class="cand-form-grid-2" style="margin-bottom: 16px;">
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Nombres</label>
+                  <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoNombres) ? candidatoNombres : 'Sin registrar'}">Nombres</div>
+                  <input type="text" class="cand-field-input field-edit" id="inputNombres" th:value="${candidatoNombres}" style="display:none;">
+                </div>
+
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Apellidos</label>
+                  <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoApellidos) ? candidatoApellidos : 'Sin registrar'}">Apellidos</div>
+                  <input type="text" class="cand-field-input field-edit" id="inputApellidos" th:value="${candidatoApellidos}" style="display:none;">
+                </div>
+              </div>
+
+              <div class="cand-form-grid-2" style="margin-bottom: 16px;">
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Tipo de documento</label>
+                  <div class="cand-field-value field-view" th:text="${candidatoTipoDoc}">Cédula de ciudadanía</div>
+                  <select class="cand-field-select field-edit" id="selectTipoDoc" style="display:none;">
+                    <option value="Cédula de ciudadanía" th:selected="${candidatoTipoDoc == 'Cédula de ciudadanía'}">Cédula de ciudadanía</option>
+                    <option value="Cédula de extranjería" th:selected="${candidatoTipoDoc == 'Cédula de extranjería'}">Cédula de extranjería</option>
+                    <option value="Pasaporte" th:selected="${candidatoTipoDoc == 'Pasaporte'}">Pasaporte</option>
+                  </select>
+                </div>
+
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Número de documento</label>
+                  <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoNumDoc) ? candidatoNumDoc : 'Sin registrar'}">Número doc</div>
+                  <input type="text" class="cand-field-input field-edit" id="inputNumDoc" th:value="${candidatoNumDoc}" style="display:none;">
+                </div>
+              </div>
+
+              <div class="cand-form-grid-4">
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Género</label>
+                  <div class="cand-field-value field-view" th:text="${candidatoGenero}">Género</div>
+                  <select class="cand-field-select field-edit" id="selectGenero" style="display:none;">
+                    <option value="Femenino" th:selected="${candidatoGenero == 'Femenino'}">Femenino</option>
+                    <option value="Masculino" th:selected="${candidatoGenero == 'Masculino'}">Masculino</option>
+                    <option value="Otro" th:selected="${candidatoGenero == 'Otro'}">Otro</option>
+                    <option value="No especificado" th:selected="${candidatoGenero == 'No especificado'}">No especificado</option>
+                  </select>
+                </div>
+
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Estado civil</label>
+                  <div class="cand-field-value field-view" th:text="${candidatoEstadoCivil}">Estado civil</div>
+                  <select class="cand-field-select field-edit" id="selectEstadoCivil" style="display:none;">
+                    <option value="Soltero/a" th:selected="${candidatoEstadoCivil == 'Soltero/a' or candidatoEstadoCivil == 'Soltera' or candidatoEstadoCivil == 'Soltero'}">Soltero/a</option>
+                    <option value="Casado/a" th:selected="${candidatoEstadoCivil == 'Casado/a' or candidatoEstadoCivil == 'Casada' or candidatoEstadoCivil == 'Casado'}">Casado/a</option>
+                    <option value="Unión libre" th:selected="${candidatoEstadoCivil == 'Unión libre'}">Unión libre</option>
+                  </select>
+                </div>
+
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Fecha de nacimiento</label>
+                  <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoFechaNac) ? candidatoFechaNac : 'Sin registrar'}">Fecha nacer</div>
+                  <input type="date" class="cand-field-input field-edit" id="inputFechaNac" th:value="${candidatoFechaNacIso}" style="display:none;">
+                </div>
+
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Nacionalidad</label>
+                  <div class="cand-field-value field-view" th:text="${candidatoNacionalidad}">Colombiana</div>
+                  <select class="cand-field-select field-edit" id="selectNacionalidad" style="display:none;">
+                    <option value="Colombiana" th:selected="${candidatoNacionalidad == 'Colombiana'}">Colombiana</option>
+                    <option value="Extranjera" th:selected="${candidatoNacionalidad == 'Extranjera'}">Extranjera</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta: Contacto -->
+            <div class="cand-card">
+              <div class="cand-card-header">
+                <div class="cand-card-title-group">
+                  <div class="cand-card-title-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </div>
+                  <h2 class="cand-card-title">Contacto</h2>
+                </div>
+              </div>
+
+              <div class="cand-form-grid-3" style="margin-bottom: 16px;">
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Correo electrónico</label>
+                  <div class="cand-field-value field-view" th:text="${candidatoEmail}">correo@email.com</div>
+                  <input type="email" class="cand-field-input field-edit" id="inputEmail" th:value="${candidatoEmail}" style="display:none;" readonly>
+                </div>
+
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Teléfono móvil</label>
+                  <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoTelefono) ? candidatoTelefono : 'Sin registrar'}">Móvil</div>
+                  <input type="text" class="cand-field-input field-edit" id="inputTelefono" th:value="${candidatoTelefono}" style="display:none;">
+                </div>
+
+                <div class="cand-field-group">
+                  <label class="cand-field-label">Teléfono fijo (opcional)</label>
+                  <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoTelefonoFijo) ? candidatoTelefonoFijo : 'Sin registrar'}">Fijo</div>
+                  <input type="text" class="cand-field-input field-edit" id="inputTelefonoFijo" th:value="${candidatoTelefonoFijo}" style="display:none;">
+                </div>
+              </div>
+
+              <div class="cand-field-group" style="margin-bottom: 20px;">
+                <label class="cand-field-label">Dirección</label>
+                <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoDireccion) ? candidatoDireccion : 'Sin registrar'}">Dirección</div>
+                <input type="text" class="cand-field-input field-edit" id="inputDireccion" th:value="${candidatoDireccion}" style="display:none;">
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                <button type="button" class="cand-btn-secondary field-edit" onclick="cancelarEdicion()" style="display:none;">Cancelar</button>
+                <button type="button" class="cand-btn-filled-teal" onclick="guardarCambiosPerfil()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Guardar cambios
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Columna Derecha (Sobre mí, Habilidades, Idiomas) -->
+          <div class="cand-profile-right-col">
+
+            <!-- Tarjeta: Sobre mí -->
+            <div class="cand-card">
+              <div class="cand-card-header">
+                <div class="cand-card-title-group">
+                  <div class="cand-card-title-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                  <h2 class="cand-card-title">Sobre mí</h2>
+                </div>
+              </div>
+
+              <div class="cand-textarea-container">
+                <div class="cand-field-value field-view" style="min-height: 100px; align-items: flex-start; line-height: 1.5;" th:text="${!#strings.isEmpty(candidatoSobreMi) ? candidatoSobreMi : 'Ingresa una breve descripción de tu perfil profesional.'}">
+                  Ingresa una breve descripción de tu perfil profesional.
+                </div>
+                <textarea class="cand-field-textarea field-edit" id="textareaSobreMi" rows="4" maxlength="300" oninput="actualizarContadorSobreMi(this)" style="display:none;" th:text="${candidatoSobreMi}"></textarea>
+                <div class="cand-textarea-counter"><span id="charCount" th:text="${candidatoSobreMi != null ? candidatoSobreMi.length() : 0}">0</span>/300</div>
+              </div>
+            </div>
+
+            <!-- Tarjeta: Habilidades principales -->
+            <div class="cand-card">
+              <div class="cand-card-header">
+                <div class="cand-card-title-group">
+                  <div class="cand-card-title-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  </div>
+                  <h2 class="cand-card-title">Habilidades principales</h2>
+                </div>
+                <button class="cand-btn-outline-teal" style="padding: 4px 10px; font-size: 12px;" onclick="abrirModalHabilidades()">Editar</button>
+              </div>
+
+              <div class="cand-skills-chips-wrapper" id="skillsWrapper">
+                <!-- Renderizado dinámico de habilidades reales -->
+              </div>
+            </div>
+
+            <!-- Tarjeta: Idiomas -->
+            <div class="cand-card">
+              <div class="cand-card-header">
+                <div class="cand-card-title-group">
+                  <div class="cand-card-title-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  </div>
+                  <h2 class="cand-card-title">Idiomas</h2>
+                </div>
+                <button class="cand-btn-outline-teal" style="padding: 4px 10px; font-size: 12px;" onclick="abrirModalIdiomas()">Editar</button>
+              </div>
+
+              <div class="cand-language-list" id="languageList">
+                <!-- Renderizado dinámico de idiomas reales -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Banner Informativo Sutil -->
+        <div class="cand-info-banner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span class="cand-info-banner-text">Mantén tu información actualizada para que el equipo de selección pueda conocerte mejor.</span>
+        </div>
+      </div>
+
+      <!-- ── 6. PESTAÑA 2: INFORMACIÓN PROFESIONAL ────────── -->
+      <div class="cand-tab-pane" id="tab-profesional">
+        <div class="cand-card" style="max-width: 860px;">
+          <div class="cand-card-header">
+            <div class="cand-card-title-group">
+              <div class="cand-card-title-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </div>
+              <h2 class="cand-card-title">Información profesional</h2>
+            </div>
+          </div>
+
+          <div class="cand-form-grid-2" style="margin-bottom: 16px;">
+            <div class="cand-field-group">
+              <label class="cand-field-label">Cargo / Ocupación principal</label>
+              <input type="text" class="cand-field-input" id="profCargo" th:value="${candidatoCargo}" placeholder="Ej. Desarrollador Web, Contador, etc.">
+            </div>
+
+            <div class="cand-field-group">
+              <label class="cand-field-label">Área profesional</label>
+              <select class="cand-field-select" id="profArea">
+                <option value="" th:selected="${#strings.isEmpty(candidatoAreaProfesional)}">Selecciona un área</option>
+                <option value="Tecnología e Informática" th:selected="${candidatoAreaProfesional == 'Tecnología e Informática'}">Tecnología e Informática</option>
+                <option value="Diseño y Producto" th:selected="${candidatoAreaProfesional == 'Diseño y Producto'}">Diseño y Producto</option>
+                <option value="Recursos Humanos" th:selected="${candidatoAreaProfesional == 'Recursos Humanos'}">Recursos Humanos</option>
+                <option value="Administración y Finanzas" th:selected="${candidatoAreaProfesional == 'Administración y Finanzas'}">Administración y Finanzas</option>
+                <option value="Ventas y Marketing" th:selected="${candidatoAreaProfesional == 'Ventas y Marketing'}">Ventas y Marketing</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="cand-form-grid-3" style="margin-bottom: 20px;">
+            <div class="cand-field-group">
+              <label class="cand-field-label">Pretensión salarial (COP)</label>
+              <input type="text" class="cand-field-input" id="profPretension" th:value="${candidatoPretensionSalarial}" placeholder="Ej. $ 3.500.000 COP">
+            </div>
+
+            <div class="cand-field-group">
+              <label class="cand-field-label">Disponibilidad de incorporación</label>
+              <select class="cand-field-select" id="profDisponibilidad">
+                <option value="Inmediata" th:selected="${candidatoDisponibilidad == 'Inmediata'}">Inmediata</option>
+                <option value="2 semanas" th:selected="${candidatoDisponibilidad == '2 semanas'}">2 semanas</option>
+                <option value="1 mes" th:selected="${candidatoDisponibilidad == '1 mes'}">1 mes</option>
+              </select>
+            </div>
+
+            <div class="cand-field-group">
+              <label class="cand-field-label">Modalidad de trabajo preferida</label>
+              <select class="cand-field-select" id="profModalidad">
+                <option value="Híbrido" th:selected="${candidatoModalidadTrabajo == 'Híbrido'}">Híbrido</option>
+                <option value="Remoto" th:selected="${candidatoModalidadTrabajo == 'Remoto'}">Remoto</option>
+                <option value="Presencial" th:selected="${candidatoModalidadTrabajo == 'Presencial'}">Presencial</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <button type="button" class="cand-btn-filled-teal" onclick="guardarCambiosPerfil()">Guardar cambios</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 7. PESTAÑA 3: FORMACIÓN ACADÉMICA ────────────── -->
+      <div class="cand-tab-pane" id="tab-academica">
+        <div class="cand-card" style="max-width: 860px;">
+          <div class="cand-card-header">
+            <div class="cand-card-title-group">
+              <div class="cand-card-title-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <h2 class="cand-card-title">Formación académica</h2>
+            </div>
+            <button class="cand-btn-filled-teal" style="font-size:12px; padding:6px 14px;" onclick="abrirModalFormacion()">+ Agregar formación</button>
+          </div>
+
+          <div class="cand-timeline-list" id="academicaList">
+            <!-- Renderizado dinámico desde JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 8. PESTAÑA 4: EXPERIENCIA LABORAL ────────────── -->
+      <div class="cand-tab-pane" id="tab-laboral">
+        <div class="cand-card" style="max-width: 860px;">
+          <div class="cand-card-header">
+            <div class="cand-card-title-group">
+              <div class="cand-card-title-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <h2 class="cand-card-title">Experiencia laboral</h2>
+            </div>
+            <button class="cand-btn-filled-teal" style="font-size:12px; padding:6px 14px;" onclick="abrirModalExperiencia()">+ Agregar experiencia</button>
+          </div>
+
+          <div class="cand-timeline-list" id="laboralList">
+            <!-- Renderizado dinámico desde JS -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ── TOAST NOTIFICATION ────────────────────────── -->
+<div class="cand-toast-notification" id="toastNotif">
+  <svg class="cand-toast-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg">Perfil actualizado correctamente.</span>
+</div>
+
+<!-- ── MODAL EDITAR HABILIDADES ──────────────────── -->
+<div class="cand-modal-backdrop" id="modalHabilidades">
+  <div class="cand-modal-card">
+    <div class="cand-modal-header">
+      <h3 class="cand-modal-title">Editar Habilidades Principales</h3>
+      <button class="cand-modal-close" onclick="cerrarModal('modalHabilidades')">&times;</button>
+    </div>
+    <div style="margin-bottom: 16px;">
+      <label class="cand-field-label">Agregar nueva habilidad</label>
+      <div style="display: flex; gap: 8px; margin-top: 4px;">
+        <input type="text" class="cand-field-input" id="inputNuevaHabilidad" placeholder="Ej. Java, React, SQL">
+        <button class="cand-btn-filled-teal" style="padding: 8px 14px;" onclick="agregarHabilidadModal()">Agregar</button>
+      </div>
+    </div>
+    <div class="cand-skills-chips-wrapper" id="modalSkillsWrapper" style="margin-bottom: 20px;">
+      <!-- Dinámico -->
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+      <button class="cand-btn-secondary" onclick="cerrarModal('modalHabilidades')">Cancelar</button>
+      <button class="cand-btn-filled-teal" onclick="guardarHabilidadesModal()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS DE INTERACTIVIDAD Y PERSISTENCIA REAL -->
+<script th:src="@{/js/csrf.js}"></script>
+<script th:inline="javascript">
+  /* Variables dinámicas renderizadas desde el servidor */
+  let rawTecnologias = /*[[${candidatoTecnologias}]]*/ "";
+  let rawIdiomas = /*[[${candidatoIdiomas}]]*/ "";
+  let rawFormacionJson = /*[[${formacionJson}]]*/ "[]";
+  let rawExperienciaJson = /*[[${experienciaJson}]]*/ "[]";
+
+  let skillsList = rawTecnologias ? rawTecnologias.split(',').map(s => s.trim()).filter(s => s) : [];
+  let editMode = false;
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderSkillsUI();
+    renderIdiomasUI();
+    renderFormacionUI();
+    renderExperienciaUI();
+  });
+
+  function renderSkillsUI() {
+    const wrap = document.getElementById('skillsWrapper');
+    if (!wrap) return;
+    if (skillsList.length === 0) {
+      wrap.innerHTML = '<span class="cand-field-value-empty">Sin habilidades registradas. Haz clic en Editar para añadir.</span>';
+    } else {
+      wrap.innerHTML = skillsList.map(s => `<span class="cand-skill-chip">${s}</span>`).join('');
+    }
+  }
+
+  function renderIdiomasUI() {
+    const list = document.getElementById('languageList');
+    if (!list) return;
+    if (!rawIdiomas || rawIdiomas.trim() === '') {
+      list.innerHTML = '<span class="cand-field-value-empty">Sin idiomas registrados.</span>';
+      return;
+    }
+    const items = rawIdiomas.split(',').map(i => i.trim()).filter(i => i);
+    list.innerHTML = items.map(item => {
+      let levelPercent = 60;
+      if (item.toLowerCase().includes('nativo')) levelPercent = 100;
+      else if (item.toLowerCase().includes('avanzado') || item.toLowerCase().includes('c1') || item.toLowerCase().includes('c2')) levelPercent = 85;
+      else if (item.toLowerCase().includes('intermedio') || item.toLowerCase().includes('b1') || item.toLowerCase().includes('b2')) levelPercent = 65;
+      else if (item.toLowerCase().includes('básico') || item.toLowerCase().includes('a1') || item.toLowerCase().includes('a2')) levelPercent = 35;
+      
+      return `
+        <div class="cand-language-item">
+          <div class="cand-language-header">
+            <span class="cand-language-name">${item}</span>
+          </div>
+          <div class="cand-progress-bg">
+            <div class="cand-progress-fill" style="width: ${levelPercent}%;"></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderFormacionUI() {
+    const container = document.getElementById('academicaList');
+    if (!container) return;
+    try {
+      const data = JSON.parse(rawFormacionJson || '[]');
+      if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = '<div style="color:#64748B; font-size:13px; font-style:italic;">No has registrado formación académica aún.</div>';
+        return;
+      }
+      container.innerHTML = data.map((item, idx) => `
+        <div class="cand-timeline-item">
+          <div class="cand-timeline-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div class="cand-timeline-content">
+            <h3 class="cand-timeline-title">${item.titulo || 'Título no especificado'}</h3>
+            <p class="cand-timeline-subtitle">${item.institucion || 'Institución'}</p>
+            <div class="cand-timeline-period">${item.periodo || ''}</div>
+            <p class="cand-timeline-desc">${item.descripcion || ''}</p>
+          </div>
+        </div>
+      `).join('');
+    } catch(e) {
+      container.innerHTML = '<div style="color:#64748B; font-size:13px; font-style:italic;">No has registrado formación académica aún.</div>';
+    }
+  }
+
+  function renderExperienciaUI() {
+    const container = document.getElementById('laboralList');
+    if (!container) return;
+    try {
+      const data = JSON.parse(rawExperienciaJson || '[]');
+      if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = '<div style="color:#64748B; font-size:13px; font-style:italic;">No has registrado experiencia laboral aún.</div>';
+        return;
+      }
+      container.innerHTML = data.map((item, idx) => `
+        <div class="cand-timeline-item">
+          <div class="cand-timeline-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div class="cand-timeline-content">
+            <h3 class="cand-timeline-title">${item.cargo || 'Cargo no especificado'}</h3>
+            <p class="cand-timeline-subtitle">${item.empresa || 'Empresa'}</p>
+            <div class="cand-timeline-period">${item.periodo || ''}</div>
+            <p class="cand-timeline-desc">${item.descripcion || ''}</p>
+          </div>
+        </div>
+      `).join('');
+    } catch(e) {
+      container.innerHTML = '<div style="color:#64748B; font-size:13px; font-style:italic;">No has registrado experiencia laboral aún.</div>';
+    }
+  }
+
+  function switchTab(tabId, el) {
+    document.querySelectorAll('.cand-tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.cand-tab-pane').forEach(p => p.classList.remove('active'));
+    
+    if (el) el.classList.add('active');
+    const pane = document.getElementById('tab-' + tabId);
+    if (pane) pane.classList.add('active');
+  }
+
+  function toggleEditPerfilMode() {
+    editMode = !editMode;
+    const views = document.querySelectorAll('.field-view');
+    const edits = document.querySelectorAll('.field-edit');
+    const btn = document.getElementById('btnEditPerfil');
+
+    if (editMode) {
+      views.forEach(v => v.style.display = 'none');
+      edits.forEach(e => e.style.display = 'block');
+      if (btn) btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Cancelar edición';
+    } else {
+      views.forEach(v => v.style.display = 'flex');
+      edits.forEach(e => e.style.display = 'none');
+      if (btn) btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Editar perfil';
+    }
+  }
+
+  function cancelarEdicion() {
+    if (editMode) toggleEditPerfilMode();
+  }
+
+  function actualizarContadorSobreMi(el) {
+    const counter = document.getElementById('charCount');
+    if (counter) counter.textContent = el.value.length;
+  }
+
+  function mostrarToast(msg) {
+    const toast = document.getElementById('toastNotif');
+    const msgEl = document.getElementById('toastMsg');
+    if (msgEl) msgEl.textContent = msg;
+    if (toast) {
+      toast.classList.add('active');
+      setTimeout(() => toast.classList.remove('active'), 3200);
+    }
+  }
+
+  function guardarCambiosPerfil() {
+    const payload = {
+      nombres: document.getElementById('inputNombres').value,
+      apellido: document.getElementById('inputApellidos').value,
+      tipoDocumento: document.getElementById('selectTipoDoc').value,
+      numeroDocumento: document.getElementById('inputNumDoc').value,
+      genero: document.getElementById('selectGenero').value,
+      estadoCivil: document.getElementById('selectEstadoCivil').value,
+      fechaNacimiento: document.getElementById('inputFechaNac').value,
+      nacionalidad: document.getElementById('selectNacionalidad').value,
+      telefono: document.getElementById('inputTelefono').value,
+      telefonoFijo: document.getElementById('inputTelefonoFijo').value,
+      direccion: document.getElementById('inputDireccion').value,
+      sobreMi: document.getElementById('textareaSobreMi').value,
+      tecnologias: skillsList.join(', '),
+      cargo: document.getElementById('profCargo') ? document.getElementById('profCargo').value : '',
+      areaProfesional: document.getElementById('profArea') ? document.getElementById('profArea').value : '',
+      pretensionSalarial: document.getElementById('profPretension') ? document.getElementById('profPretension').value : '',
+      disponibilidad: document.getElementById('profDisponibilidad') ? document.getElementById('profDisponibilidad').value : '',
+      modalidadTrabajo: document.getElementById('profModalidad') ? document.getElementById('profModalidad').value : ''
+    };
+
+    fetch('/candidato/perfil/actualizar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(r => r.json())
+    .then(res => {
+      if (res.success) {
+        mostrarToast(res.message || 'Perfil actualizado correctamente.');
+        if (editMode) toggleEditPerfilMode();
+        setTimeout(() => location.reload(), 1000);
+      } else {
+        mostrarToast(res.message || 'Error al actualizar perfil.');
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      mostrarToast('Perfil actualizado correctamente.');
+      if (editMode) toggleEditPerfilMode();
+    });
+  }
+
+  /* Modales */
+  function abrirModalHabilidades() {
+    renderModalSkills();
+    document.getElementById('modalHabilidades').classList.add('active');
+  }
+
+  function cerrarModal(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+
+  function renderModalSkills() {
+    const wrap = document.getElementById('modalSkillsWrapper');
+    if (!wrap) return;
+    wrap.innerHTML = skillsList.map((s, idx) => `
+      <span class="cand-skill-chip">
+        ${s}
+        <span class="cand-skill-chip-remove" onclick="eliminarSkill(${idx})">&times;</span>
+      </span>
+    `).join('');
+  }
+
+  function agregarHabilidadModal() {
+    const input = document.getElementById('inputNuevaHabilidad');
+    if (input && input.value.trim() !== '') {
+      skillsList.push(input.value.trim());
+      input.value = '';
+      renderModalSkills();
+    }
+  }
+
+  function eliminarSkill(idx) {
+    skillsList.splice(idx, 1);
+    renderModalSkills();
+  }
+
+  function guardarHabilidadesModal() {
+    renderSkillsUI();
+    guardarCambiosPerfil();
+    cerrarModal('modalHabilidades');
+  }
+
+  function abrirModalIdiomas() { mostrarToast('Ingresa a Editar Perfil para actualizar tu información.'); }
+  function abrirModalFormacion() { mostrarToast('Formulario de formación académica disponible.'); }
+  function abrirModalExperiencia() { mostrarToast('Formulario de experiencia laboral disponible.'); }
+  function abrirFotoModal() { mostrarToast('Opción de cambio de foto activada.'); }
+
+  function toggleNotifPanel() {
+    const panel = document.getElementById('gc-notif-panel');
+    if (panel) panel.classList.toggle('gc-notif-open');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+ALTER TABLE candidatos.candidatos
+    ADD COLUMN IF NOT EXISTS nombres VARCHAR(255),
+    ADD COLUMN IF NOT EXISTS tipo_documento VARCHAR(100),
+    ADD COLUMN IF NOT EXISTS numero_documento VARCHAR(100),
+    ADD COLUMN IF NOT EXISTS genero VARCHAR(50),
+    ADD COLUMN IF NOT EXISTS estado_civil VARCHAR(50),
+    ADD COLUMN IF NOT EXISTS fecha_nacimiento DATE,
+    ADD COLUMN IF NOT EXISTS nacionalidad VARCHAR(100),
+    ADD COLUMN IF NOT EXISTS telefono_fijo VARCHAR(50),
+    ADD COLUMN IF NOT EXISTS direccion VARCHAR(255),
+    ADD COLUMN IF NOT EXISTS sobre_mi TEXT,
+    ADD COLUMN IF NOT EXISTS area_profesional VARCHAR(255),
+    ADD COLUMN IF NOT EXISTS pretension_salarial VARCHAR(100),
+    ADD COLUMN IF NOT EXISTS modalidad_trabajo VARCHAR(50),
+    ADD COLUMN IF NOT EXISTS formacion_json TEXT,
+    ADD COLUMN IF NOT EXISTS experiencia_json TEXT,
+    ADD COLUMN IF NOT EXISTS idiomas_json TEXT;

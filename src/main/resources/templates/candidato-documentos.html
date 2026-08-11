@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLOWMATIC - Mis Documentos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" th:href="@{/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/candidato.css}">
+  <link rel="stylesheet" th:href="@{/css/candidato-documentos.css}">
+</head>
+<body class="cand-body">
+
+<div class="cand-layout">
+
+  <!-- ── 1. SIDEBAR ESTÁNDAR ──────────────── -->
+  <div th:replace="~{fragments/sidebar-rrhh :: sidebarRRHH('documentos')}"></div>
+
+  <!-- ── 2. ÁREA PRINCIPAL ───────────────── -->
+  <main class="cand-main">
+
+    <!-- Encabezado Corporativo del Módulo -->
+    <header class="cand-header">
+      <div>
+        <h1 class="cand-header-title">Mis documentos</h1>
+        <p class="cand-header-sub">
+          Consulta, sube y revisa el estado de tus documentos requeridos para tu proceso de selección.
+        </p>
+      </div>
+
+      <div class="cand-header-actions">
+        <!-- Campana Notificaciones -->
+        <div style="position:relative;">
+          <button type="button" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones" class="cand-notif-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span id="gc-notif-badge" style="position:absolute; top:-2px; right:-2px; background:#0D9488; color:#fff; font-size:9px; font-weight:700; min-width:16px; height:16px; border-radius:50%; display:none; align-items:center; justify-content:center; padding:0 3px; border:2px solid #fff;">0</span>
+          </button>
+          <div class="gc-notif-panel" id="gc-notif-panel">
+            <div class="gc-notif-header">
+              <span>Notificaciones</span>
+              <button class="gc-notif-leer-todas" onclick="marcarTodasNotificaciones()">Leer todas</button>
+            </div>
+            <div class="gc-notif-list"></div>
+          </div>
+        </div>
+
+        <!-- User Chip Avatar -->
+        <div style="display:flex; align-items:center; gap:8px; background:#F1F5F9; padding:4px 12px 4px 6px; border-radius:20px;">
+          <div style="width:28px; height:28px; border-radius:50%; background:#0D9488; color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center;"
+               th:text="${usuarioActual != null ? usuarioActual.substring(0,2).toUpperCase() : 'KA'}">KA</div>
+          <span style="font-size:13px; font-weight:600; color:#0F172A;" th:text="${usuarioActual}">Candidato</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenedor Principal de Mis Documentos -->
+    <div class="doc-container">
+
+      <!-- Mensaje de Error / Alerta si existe -->
+      <div th:if="${error != null and !error.isBlank()}" style="background:#FEF2F2; border:1px solid #FECACA; color:#B91C1C; border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:13px; font-weight:500; display:flex; align-items:center; gap:10px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span th:text="${error}">Mensaje de error</span>
+      </div>
+
+      <!-- Alerta Destacada si Hay Documentos Rechazados con Observaciones -->
+      <div th:if="${rechazadosCount != null and rechazadosCount > 0}" class="doc-alert-banner">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="doc-alert-icon red">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <div>
+            <strong style="font-size:13.5px; color:#991B1B;">Tienes <span th:text="${rechazadosCount}">1</span> documento(s) con observaciones de RRHH</strong>
+            <p style="margin:2px 0 0 0; font-size:12px; color:#7F1D1D;">Revisa las indicaciones de RRHH en la tabla y vuelve a subir tus archivos corregidos.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 3. RESUMEN DEL ESTADO (4 TARJETAS COMPACTAS TOP) ── -->
+      <section class="doc-kpi-grid">
+        <!-- Totales -->
+        <div class="doc-kpi-card">
+          <div class="doc-kpi-icon-wrapper blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="doc-kpi-content">
+            <span class="doc-kpi-label">Documentos totales</span>
+            <span class="doc-kpi-value" th:text="${totalArchivos ?: 0}">0</span>
+            <span class="doc-kpi-subtext">Todos tus documentos</span>
+          </div>
+        </div>
+
+        <!-- Pendientes -->
+        <div class="doc-kpi-card">
+          <div class="doc-kpi-icon-wrapper orange">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="doc-kpi-content">
+            <span class="doc-kpi-label">Pendientes</span>
+            <span class="doc-kpi-value" th:text="${pendientesRevision ?: 0}">0</span>
+            <span class="doc-kpi-subtext">Requieren tu atención</span>
+          </div>
+        </div>
+
+        <!-- Aprobados -->
+        <div class="doc-kpi-card">
+          <div class="doc-kpi-icon-wrapper green">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="doc-kpi-content">
+            <span class="doc-kpi-label">Aprobados</span>
+            <span class="doc-kpi-value" th:text="${aprobadosCount ?: 0}">0</span>
+            <span class="doc-kpi-subtext">Documentos verificados</span>
+          </div>
+        </div>
+
+        <!-- Rechazados -->
+        <div class="doc-kpi-card">
+          <div class="doc-kpi-icon-wrapper red">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <div class="doc-kpi-content">
+            <span class="doc-kpi-label">Rechazados</span>
+            <span class="doc-kpi-value" th:text="${rechazadosCount ?: 0}">0</span>
+            <span class="doc-kpi-subtext">Requieren actualización</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 4. BARRA DE PESTAÑAS Y ACCIONES DE CABECERA ── -->
+      <div class="doc-action-bar">
+        <div class="doc-tabs">
+          <a th:href="@{/drive}" class="doc-tab-item" th:classappend="${tabActual == 'mis-docs' ? 'active' : ''}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            Mis documentos
+          </a>
+          <a th:href="@{/drive(categoria='compartidos', tab='compartidos')}" class="doc-tab-item" th:classappend="${tabActual == 'compartidos' ? 'active' : ''}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Compartidos conmigo
+          </a>
+          <a th:href="@{/drive(tab='historial')}" class="doc-tab-item" th:classappend="${tabActual == 'historial' ? 'active' : ''}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Historial
+          </a>
+        </div>
+
+        <div class="doc-action-buttons">
+          <button type="button" class="doc-btn-primary" onclick="abrirModalSubirDoc()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Subir documento
+          </button>
+        </div>
+      </div>
+
+      <!-- ── 5. ESTRUCTURA DE 3 COLUMNAS RESPONSIVE ── -->
+      <div class="doc-split-layout">
+
+        <!-- COLUMNA IZQUIERDA (CATEGORÍAS Y FILTROS) -->
+        <aside class="doc-left-col">
+          <!-- Tarjeta: Categorías -->
+          <div class="doc-sidebar-card">
+            <h3 class="doc-sidebar-title">Categorías</h3>
+            <ul class="doc-category-list">
+              <a th:href="@{/drive(categoria='todos')}" class="doc-category-item" th:classappend="${categoriaActual == 'todos' ? 'active' : ''}">
+                <span>Todos</span>
+                <span class="doc-category-badge" th:text="${totalArchivos ?: 0}">0</span>
+              </a>
+              <a th:href="@{/drive(categoria='requeridos')}" class="doc-category-item" th:classappend="${categoriaActual == 'requeridos' ? 'active' : ''}">
+                <span>Requeridos por empresa</span>
+                <span class="doc-category-badge" th:text="${requeridosCount ?: 0}">0</span>
+              </a>
+              <a th:href="@{/drive(categoria='opcionales')}" class="doc-category-item" th:classappend="${categoriaActual == 'opcionales' ? 'active' : ''}">
+                <span>Opcionales</span>
+                <span class="doc-category-badge" th:text="${opcionalesCount ?: 0}">0</span>
+              </a>
+              <a th:href="@{/drive(categoria='compartidos')}" class="doc-category-item" th:classappend="${categoriaActual == 'compartidos' ? 'active' : ''}">
+                <span>Compartidos por RRHH</span>
+                <span class="doc-category-badge" th:text="${compartidosCount ?: 0}">0</span>
+              </a>
+            </ul>
+          </div>
+
+          <!-- Tarjeta: Filtros -->
+          <div class="doc-sidebar-card">
+            <h3 class="doc-sidebar-title">Filtros</h3>
+            
+            <form id="formFiltros" th:action="@{/drive}" method="get">
+              <input type="hidden" name="categoria" th:value="${categoriaActual}">
+              <input type="hidden" name="tab" th:value="${tabActual}">
+              
+              <div class="doc-filter-group">
+                <label class="doc-filter-label">Estado</label>
+                <select name="estado" class="doc-filter-select" onchange="this.form.submit()">
+                  <option value="" th:selected="${#strings.isEmpty(estadoActual)}">Todos los estados</option>
+                  <option value="Pendiente" th:selected="${estadoActual == 'Pendiente'}">Pendiente</option>
+                  <option value="Aprobado" th:selected="${estadoActual == 'Aprobado'}">Aprobado</option>
+                  <option value="Rechazado" th:selected="${estadoActual == 'Rechazado'}">Rechazado</option>
+                </select>
+              </div>
+
+              <div class="doc-filter-group">
+                <label class="doc-filter-label">Tipo de archivo</label>
+                <select name="tipo" class="doc-filter-select" onchange="this.form.submit()">
+                  <option value="" th:selected="${#strings.isEmpty(tipoActual)}">Todos los tipos</option>
+                  <option value="pdf" th:selected="${tipoActual == 'pdf'}">PDF</option>
+                  <option value="doc,docx" th:selected="${tipoActual == 'doc,docx'}">Word</option>
+                  <option value="jpg,jpeg,png" th:selected="${tipoActual == 'jpg,jpeg,png'}">Imágenes</option>
+                  <option value="zip,rar" th:selected="${tipoActual == 'zip,rar'}">ZIP / Comprimidos</option>
+                </select>
+              </div>
+
+              <a th:href="@{/drive}" class="doc-btn-clear-filters">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Limpiar filtros
+              </a>
+            </form>
+          </div>
+        </aside>
+
+        <!-- COLUMNA CENTRAL (TABLA PRINCIPAL DE DOCUMENTOS O ESTADO VACÍO) -->
+        <main class="doc-center-col">
+          <div class="doc-table-card">
+
+            <!-- Estado Vacío si no hay archivos -->
+            <div th:if="${archivos == null or archivos.isEmpty()}" class="doc-empty-state">
+              <div class="doc-empty-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              </div>
+              <h3 class="doc-empty-title">Aún no has cargado documentos</h3>
+              <p class="doc-empty-desc">Sube tus archivos requeridos (Hoja de vida, Documento de identidad, Certificados) para continuar con tu proceso de selección.</p>
+              <button class="doc-btn-primary" onclick="abrirModalSubirDoc()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Cargar documento
+              </button>
+            </div>
+
+            <!-- Tabla de Documentos -->
+            <div th:unless="${archivos == null or archivos.isEmpty()}" class="doc-table-wrapper">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>Documento</th>
+                    <th>Categoría</th>
+                    <th>Estado / Observación</th>
+                    <th>Fecha subida</th>
+                    <th style="text-align:center;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="archivo : ${archivos}">
+                    <!-- Columna 1: Documento -->
+                    <td>
+                      <div class="doc-file-info">
+                        <div class="doc-file-icon-badge"
+                             th:classappend="${archivo.nombre.endsWith('.pdf') ? 'pdf' : (archivo.nombre.endsWith('.doc') or archivo.nombre.endsWith('.docx') ? 'docx' : (archivo.nombre.endsWith('.jpg') or archivo.nombre.endsWith('.png') ? 'jpg' : 'zip'))}">
+                          <span th:text="${archivo.nombre.contains('.') ? archivo.nombre.substring(archivo.nombre.lastIndexOf('.') + 1).toUpperCase() : 'DOC'}">PDF</span>
+                        </div>
+                        <div class="doc-file-details">
+                          <a class="doc-file-name" th:text="${archivo.nombre}" th:href="@{/drive/descargar(fileId=${archivo.id})}" th:title="${archivo.nombre}">Nombre de archivo</a>
+                          <span class="doc-file-meta" th:text="${(archivo.nombre.contains('.') ? archivo.nombre.substring(archivo.nombre.lastIndexOf('.') + 1).toUpperCase() : 'ARCHIVO') + ' • ' + (archivo.tamanoFormateado ?: '1.2 MB')}">PDF • 2.4 MB</span>
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- Columna 2: Categoría -->
+                    <td>
+                      <span class="doc-badge-cat"
+                            th:classappend="${#strings.toLowerCase(archivo.getCategoriaCalculada()) == 'requerido' ? 'requerido' : 'opcional'}"
+                            th:text="${archivo.getCategoriaCalculada()}">Requerido</span>
+                    </td>
+
+                    <!-- Columna 3: Estado y Observación de RRHH -->
+                    <td>
+                      <div>
+                        <span class="doc-badge-status"
+                              th:classappend="${#strings.toLowerCase(archivo.estadoDocumento) == 'aprobado' ? 'aprobado' : (#strings.toLowerCase(archivo.estadoDocumento) == 'rechazado' ? 'rechazado' : 'pendiente')}">
+                          <span class="doc-badge-status-dot"></span>
+                          <span th:text="${archivo.estadoDocumento ?: 'Pendiente'}">Pendiente</span>
+                        </span>
+
+                        <!-- RENDERIZADO DE OBSERVACIÓN DE RECHAZO DE RRHH -->
+                        <div th:if="${archivo.estadoDocumento == 'Rechazado' and archivo.observacion != null and !archivo.observacion.isBlank()}"
+                             class="doc-observacion-note" th:title="${archivo.observacion}">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                          <span th:text="${archivo.observacion}">Observación de RRHH</span>
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- Columna 4: Fecha subida -->
+                    <td>
+                      <span style="font-size:12.5px; color:var(--text-muted);" th:text="${archivo.fechaModificacion ?: 'Reciente'}">12 Jul 2026</span>
+                    </td>
+
+                    <!-- Columna 5: Acciones -->
+                    <td style="text-align:center;">
+                      <div class="doc-action-icons" style="justify-content:center;">
+                        <!-- Ver Previa (Eye) -->
+                        <button type="button" class="doc-icon-btn" title="Ver documento" th:onclick="'abrirPreview(' + ${archivo.id} + ')'">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                        <!-- Descargar -->
+                        <a class="doc-icon-btn" title="Descargar" th:href="@{/drive/descargar(fileId=${archivo.id})}">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </a>
+                        <!-- Reemplazar (Si Rechazado) -->
+                        <button th:if="${archivo.estadoDocumento == 'Rechazado'}" type="button" class="doc-icon-btn replace" title="Reemplazar documento"
+                                th:data-id="${archivo.id}" th:data-obs="${archivo.observacion}" onclick="abrirModalRechazo(this)">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6"/><path d="M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer Paginador -->
+            <div th:unless="${archivos == null or archivos.isEmpty()}" class="doc-table-footer">
+              <span>Mostrando <strong th:text="${startItem}">1</strong> a <strong th:text="${endItem}">8</strong> de <strong th:text="${totalItems}">8</strong> documentos</span>
+              <div class="doc-pagination" th:if="${totalPages > 1}">
+                <a class="doc-page-btn" th:if="${currentPage > 0}" th:href="@{/drive(page=${currentPage - 1}, categoria=${categoriaActual}, estado=${estadoActual}, tipo=${tipoActual})}">&lt; Anterior</a>
+                <span class="doc-page-btn active" th:text="${currentPage + 1}">1</span>
+                <a class="doc-page-btn" th:if="${currentPage < totalPages - 1}" th:href="@{/drive(page=${currentPage + 1}, categoria=${categoriaActual}, estado=${estadoActual}, tipo=${tipoActual})}">Siguiente &gt;</a>
+              </div>
+            </div>
+
+          </div>
+        </main>
+
+        <!-- COLUMNA DERECHA (INFORMACIÓN IMPORTANTE & SEGURIDAD) -->
+        <aside class="doc-right-col">
+          <!-- Tarjeta: Información importante -->
+          <div class="doc-sidebar-card">
+            <h3 class="doc-sidebar-title">Información importante</h3>
+            <div class="doc-info-list">
+              <div class="doc-info-item">
+                <div class="doc-info-icon green">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="doc-info-text-group">
+                  <span class="doc-info-title">Documentos requeridos</span>
+                  <span class="doc-info-desc">Son obligatorios para continuar con tu proceso de selección.</span>
+                </div>
+              </div>
+
+              <div class="doc-info-item">
+                <div class="doc-info-icon orange">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="doc-info-text-group">
+                  <span class="doc-info-title">Pendientes</span>
+                  <span class="doc-info-desc">Documentos que debes subir o actualizar.</span>
+                </div>
+              </div>
+
+              <div class="doc-info-item">
+                <div class="doc-info-icon red">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </div>
+                <div class="doc-info-text-group">
+                  <span class="doc-info-title">Rechazados</span>
+                  <span class="doc-info-desc">Revisa el motivo y vuelve a subir el documento corregido.</span>
+                </div>
+              </div>
+
+              <div class="doc-info-item">
+                <div class="doc-info-icon blue">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                </div>
+                <div class="doc-info-text-group">
+                  <span class="doc-info-title">Compartidos contigo</span>
+                  <span class="doc-info-desc">Archivos que RRHH ha compartido para ti.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta: Seguridad -->
+          <div class="doc-security-card">
+            <div class="doc-security-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h4 class="doc-security-title">Tus documentos están seguros</h4>
+              <p class="doc-security-desc">Utilizamos encriptación y medidas de seguridad corporativa para proteger toda tu información confidencial.</p>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ── MODAL ELEGANTE: CARGAR DOCUMENTO (DRAG & DROP) ── -->
+<div class="doc-modal-backdrop" id="modalSubirDocumento">
+  <div class="doc-modal-card">
+    <div class="doc-modal-header">
+      <h3 class="doc-modal-title">Subir documento</h3>
+      <button type="button" class="doc-modal-close" onclick="cerrarModalSubirDoc()">&times;</button>
+    </div>
+
+    <form th:action="@{/drive/subir-archivo}" method="post" enctype="multipart/form-data" id="formSubirModal">
+      <input type="hidden" name="folder" th:value="${folderActual ?: ''}">
+      
+      <div class="doc-dropzone" id="dropZone" onclick="document.getElementById('fileInputModal').click()">
+        <div class="doc-dropzone-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <div class="doc-dropzone-text" id="dropText">Arrastra y suelta tu archivo aquí</div>
+        <div class="doc-dropzone-sub">o haz clic para explorar en tu dispositivo</div>
+        <input type="file" name="archivo" id="fileInputModal" style="display:none;" onchange="actualizarNombreArchivo(this)" required>
+      </div>
+
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:20px; text-align:center;">
+        Formatos permitidos: <strong>PDF, DOCX, JPG, PNG, ZIP</strong> (Máx. 30 MB)
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:12px;">
+        <button type="button" class="doc-btn-outline" onclick="cerrarModalSubirDoc()">Cancelar</button>
+        <button type="submit" class="doc-btn-primary">Cargar documento</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── MODAL RECHAZO / REEMPLAZAR DOCUMENTO ── -->
+<div class="doc-modal-backdrop" id="modalRechazo">
+  <div class="doc-modal-card">
+    <div class="doc-modal-header">
+      <h3 class="doc-modal-title" style="color:#DC2626;">Documento requiere corrección</h3>
+      <button type="button" class="doc-modal-close" onclick="cerrarModalRechazo()">&times;</button>
+    </div>
+
+    <div style="background:#FEF2F2; border:1px solid #FCA5A5; border-radius:10px; padding:14px; margin-bottom:20px;">
+      <span style="font-size:12px; font-weight:700; color:#991B1B; display:block; margin-bottom:4px;">Motivo o indicación de RRHH:</span>
+      <p id="motivoRechazoText" style="font-size:13px; color:#7F1D1D; margin:0; line-height:1.4;">El documento adjunto no es legible o venció.</p>
+    </div>
+
+    <form th:action="@{/drive/subir-archivo}" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="folder" th:value="${folderActual ?: ''}">
+      <input type="hidden" name="fileId" id="reemplazarFileId">
+      
+      <div style="margin-bottom:20px;">
+        <label class="doc-filter-label" style="margin-bottom:8px; display:block;">Selecciona el archivo corregido</label>
+        <input type="file" name="archivo" class="doc-filter-select" required>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:12px;">
+        <button type="button" class="doc-btn-outline" onclick="cerrarModalRechazo()">Cancelar</button>
+        <button type="submit" class="doc-btn-primary" style="background:#DC2626; border-color:#DC2626;">Reemplazar documento</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── MODAL VISTA PREVIA (IFRAME) ── -->
+<div class="doc-modal-backdrop" id="modalPreview">
+  <div class="doc-modal-card" style="max-width:900px; height:80vh; display:flex; flex-direction:column; padding:0; overflow:hidden;">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 20px; border-bottom:1px solid var(--border-subtle);">
+      <h3 style="margin:0; font-size:16px; font-weight:700; color:#0F172A; display:flex; align-items:center; gap:8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Vista previa del documento
+      </h3>
+      <button type="button" onclick="cerrarPreview()" class="doc-modal-close">&times;</button>
+    </div>
+    <iframe id="previewIframe" style="flex:1; border:none; width:100%; background:#F8FAFC;" src="about:blank"></iframe>
+  </div>
+</div>
+
+<!-- SCRIPTS DE INTERACTIVIDAD -->
+<script th:src="@{/js/csrf.js}"></script>
+<script>
+  function abrirModalSubirDoc() {
+    document.getElementById('modalSubirDocumento').classList.add('active');
+  }
+
+  function cerrarModalSubirDoc() {
+    document.getElementById('modalSubirDocumento').classList.remove('active');
+  }
+
+  function actualizarNombreArchivo(input) {
+    const textEl = document.getElementById('dropText');
+    if (input.files && input.files[0]) {
+      textEl.textContent = 'Archivo seleccionado: ' + input.files[0].name;
+      textEl.style.color = '#0D9488';
+    }
+  }
+
+  function abrirModalRechazo(btn) {
+    const obs = btn.getAttribute('data-obs') || 'Se requiere actualizar la información del documento.';
+    const id = btn.getAttribute('data-id');
+    document.getElementById('motivoRechazoText').textContent = obs;
+    document.getElementById('reemplazarFileId').value = id;
+    document.getElementById('modalRechazo').classList.add('active');
+  }
+
+  function cerrarModalRechazo() {
+    document.getElementById('modalRechazo').classList.remove('active');
+  }
+
+  function abrirPreview(fileId) {
+    const modal = document.getElementById('modalPreview');
+    const iframe = document.getElementById('previewIframe');
+    iframe.src = '/drive/ver-archivo/' + fileId;
+    modal.classList.add('active');
+  }
+
+  function cerrarPreview() {
+    const modal = document.getElementById('modalPreview');
+    const iframe = document.getElementById('previewIframe');
+    iframe.src = 'about:blank';
+    modal.classList.remove('active');
+  }
+
+  /* Drag and Drop handling */
+  const dropZone = document.getElementById('dropZone');
+  if (dropZone) {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+    });
+
+    dropZone.addEventListener('drop', e => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      const fileInput = document.getElementById('fileInputModal');
+      if (files.length > 0) {
+        fileInput.files = files;
+        actualizarNombreArchivo(fileInput);
+      }
+    });
+  }
+
+  function toggleNotifPanel() {
+    const panel = document.getElementById('gc-notif-panel');
+    if (panel) panel.classList.toggle('gc-notif-open');
+  }
+</script>
+
+</body>
+</html>

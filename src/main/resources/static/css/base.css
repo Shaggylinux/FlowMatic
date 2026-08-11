@@ -657,7 +657,9 @@ body {
 
 .fm-sidebar {
   width: var(--fm-sidebar-width);
-  min-height: 100vh;
+  height: 100vh;
+  flex-shrink: 0;
+  overflow: hidden;
   background: var(--fm-brand-dark);
   display: flex;
   flex-direction: column;

@@ -121,7 +121,7 @@
             Nueva carpeta
           </button>
           
-          <button sec:authorize="hasAnyRole('RRHH', 'CANDIDATO')" type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('inputArchivoGlobal').click()" style="display:flex; align-items:center; gap:6px;">
+          <button sec:authorize="hasAnyRole('RRHH', 'CANDIDATO')" type="button" class="btn btn-primary btn-sm" onclick="abrirModalSubirDocRRHH()" style="display:flex; align-items:center; gap:6px;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             Subir archivo
           </button>
@@ -625,6 +625,38 @@
     </div>
   </div>
 
+  <!-- ── MODAL ELEGANTE: CARGAR DOCUMENTO (DRAG & DROP RRHH) ── -->
+  <div class="doc-modal-backdrop" id="modalSubirDocRRHH">
+    <div class="doc-modal-card">
+      <div class="doc-modal-header">
+        <h3 class="doc-modal-title">Subir archivo a Drive</h3>
+        <button type="button" class="doc-modal-close" onclick="cerrarModalSubirDocRRHH()">&times;</button>
+      </div>
+
+      <form th:action="@{/drive/subir-archivo}" method="post" enctype="multipart/form-data" id="formSubirModalRRHH">
+        <input type="hidden" name="folder" th:value="${folderActual ?: ''}">
+        
+        <div class="doc-dropzone" id="dropZoneRRHH" onclick="document.getElementById('fileInputModalRRHH').click()">
+          <div class="doc-dropzone-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="doc-dropzone-text" id="dropTextRRHH">Arrastra y suelta tu archivo aquí</div>
+          <div class="doc-dropzone-sub">o haz clic para explorar en tu equipo</div>
+          <input type="file" name="archivo" id="fileInputModalRRHH" style="display:none;" onchange="actualizarNombreArchivoRRHH(this)" required>
+        </div>
+
+        <div style="font-size:12px; color:#64748B; margin-bottom:20px; text-align:center;">
+          Formatos permitidos: <strong>PDF, DOCX, JPG, PNG, ZIP</strong> (Máx. 30 MB)
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px;">
+          <button type="button" class="btn btn-ghost btn-sm" onclick="cerrarModalSubirDocRRHH()">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-sm">Subir archivo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <style>
     @keyframes modalIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
   </style>
@@ -864,6 +896,52 @@
     function confirmarEliminarCarpeta() {
       document.getElementById('formEliminarCarpeta').submit();
     }
+
+    /* ── MODAL SUBIDA DRAG & DROP RRHH ── */
+    function abrirModalSubirDocRRHH() {
+      const modal = document.getElementById('modalSubirDocRRHH');
+      if (modal) modal.classList.add('active');
+    }
+
+    function cerrarModalSubirDocRRHH() {
+      const modal = document.getElementById('modalSubirDocRRHH');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function actualizarNombreArchivoRRHH(input) {
+      const textEl = document.getElementById('dropTextRRHH');
+      if (textEl && input.files && input.files[0]) {
+        textEl.textContent = 'Archivo seleccionado: ' + input.files[0].name;
+        textEl.style.color = '#0D9488';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const dropZone = document.getElementById('dropZoneRRHH');
+      if (dropZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+          dropZone.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+        });
+
+        dropZone.addEventListener('drop', e => {
+          const dt = e.dataTransfer;
+          const files = dt.files;
+          const fileInput = document.getElementById('fileInputModalRRHH');
+          if (files.length > 0 && fileInput) {
+            fileInput.files = files;
+            actualizarNombreArchivoRRHH(fileInput);
+          }
+        });
+      }
+    });
   </script>
   <script th:src="@{/js/csrf.js}"></script>
   <script th:src="@{/js/i18n.js}"></script>

@@ -1,0 +1,820 @@
+/* ================================================
+   FLOWMATIC — PORTAL DEL CANDIDATO STYLES
+   Identidad visual oficial de Flowmatic (#0D9488)
+   ================================================ */
+
+:root {
+  --cand-sidebar-bg: #0B192C;
+  --cand-sidebar-hover: #1E293B;
+  --cand-sidebar-text: #94A3B8;
+  --cand-sidebar-active-bg: #0D9488;
+  --cand-card-bg: #FFFFFF;
+  --cand-border: #E2E8F0;
+  --cand-text: #0F172A;
+  --cand-text-muted: #64748B;
+  --cand-brand: #0D9488;
+  --cand-brand-hover: #0F766E;
+  --cand-brand-light: #F0FDFA;
+}
+
+/* ── LAYOUT PRINCIPAL ────────────────────────── */
+.cand-body {
+  margin: 0;
+  padding: 0;
+  background-color: #F8FAFC;
+  font-family: var(--fm-font, 'Inter', sans-serif);
+  color: var(--cand-text);
+  min-height: 100vh;
+}
+
+.cand-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* ── ÁREA DE CONTENIDO ───────────────────────── */
+.cand-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Header Superior */
+.cand-header {
+  height: 70px;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--cand-border);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+
+.cand-header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--cand-text);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.2;
+}
+
+.cand-header-sub {
+  font-size: 12px;
+  color: var(--cand-text-muted);
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+.cand-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cand-notif-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #F1F5F9;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  color: #64748B;
+  transition: all 0.2s ease;
+}
+
+.cand-notif-btn:hover {
+  background-color: #E2E8F0;
+  color: var(--cand-text);
+}
+
+.cand-notif-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #0D9488;
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #FFFFFF;
+}
+
+.cand-header-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.cand-header-user:hover {
+  background-color: #F1F5F9;
+}
+
+/* ── PANEL DESPLEGABLE DE NOTIFICACIONES ──────── */
+.gc-notif-panel {
+  display: none;
+  position: absolute;
+  top: 44px;
+  right: 0;
+  width: 320px;
+  background: #FFFFFF;
+  border: 1px solid var(--fm-border, #E2E8F0);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.gc-notif-panel.gc-notif-open {
+  display: block;
+}
+
+.gc-notif-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F1F5F9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0F172A;
+}
+
+.gc-notif-leer-todas {
+  background: none;
+  border: 1px solid #E2E8F0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #0D9488;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.gc-notif-leer-todas:hover {
+  background: #F0FDFA;
+}
+
+/* ── CONTENIDO DEL DASHBOARD ─────────────────── */
+.cand-content {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── METRIC CARDS (GRID DE 4 TARJETAS) ───────── */
+.cand-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.cand-kpi-card {
+  background: #FFFFFF;
+  border: 1px solid var(--cand-border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cand-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.cand-kpi-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.cand-kpi-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cand-kpi-icon-blue { background: #EFF6FF; color: #2563EB; }
+.cand-kpi-icon-teal { background: #E6FFFA; color: #0D9488; }
+.cand-kpi-icon-purple { background: #F3E8FF; color: #7C3AED; }
+.cand-kpi-icon-green { background: #DCFCE7; color: #166534; }
+
+.cand-kpi-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cand-text-muted);
+}
+
+.cand-kpi-val-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.cand-kpi-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cand-text);
+}
+
+.cand-kpi-subtext {
+  font-size: 12px;
+  color: var(--cand-text-muted);
+  line-height: 1.4;
+}
+
+/* Badges pequeños */
+.cand-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cand-badge-info { background: #EFF6FF; color: #1D4ED8; }
+.cand-badge-success { background: #DCFCE7; color: #166534; }
+.cand-badge-warning { background: #FEF3C7; color: #92400E; }
+.cand-badge-purple { background: #F3E8FF; color: #7C3AED; }
+
+/* Botones Outlined dentro de KPI cards */
+.cand-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid var(--cand-brand);
+  color: var(--cand-brand);
+  background: transparent;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: fit-content;
+}
+
+.cand-btn-outline:hover {
+  background: var(--cand-brand-light);
+}
+
+/* Progress bar inside KPI card */
+.cand-progress-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 10px 0 6px 0;
+}
+
+.cand-progress-bar-fill {
+  height: 100%;
+  background: var(--cand-brand);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* ── SECCIÓN PROGRESO (STEPPER HORIZONTAL) ───── */
+.cand-section-card {
+  background: #FFFFFF;
+  border: 1px solid var(--cand-border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.cand-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--cand-text);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cand-stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  margin: 20px 10px;
+}
+
+.cand-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.cand-step-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  background: #FFFFFF;
+  border: 2px solid #CBD5E1;
+  color: #64748B;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.cand-step-item.completed .cand-step-circle {
+  background: #10B981;
+  border-color: #10B981;
+  color: #FFFFFF;
+}
+
+.cand-step-item.active .cand-step-circle {
+  background: #0D9488;
+  border-color: #0D9488;
+  color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+}
+
+.cand-step-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cand-text);
+  margin-top: 10px;
+}
+
+.cand-step-status {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cand-text-muted);
+  margin-top: 2px;
+}
+
+.cand-step-item.active .cand-step-status {
+  color: #0D9488;
+  font-weight: 600;
+}
+
+/* Línea conectora horizontal entre steps */
+.cand-stepper-line-bg {
+  position: absolute;
+  top: 22px;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: #E2E8F0;
+  z-index: 1;
+}
+
+.cand-stepper-line-progress {
+  height: 100%;
+  background: #10B981;
+  transition: width 0.4s ease;
+}
+
+/* ── GRID DE 3 COLUMNAS INFERIORES ───────────── */
+.cand-columns-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.cand-column-card {
+  background: #FFFFFF;
+  border: 1px solid var(--cand-border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.cand-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cand-column-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cand-column-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cand-column-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--cand-text);
+}
+
+.cand-column-desc {
+  font-size: 12px;
+  color: var(--cand-text-muted);
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+/* Listas internas de cada columna */
+.cand-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cand-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #F8FAFC;
+  border: 1px solid #F1F5F9;
+  gap: 10px;
+}
+
+.cand-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cand-file-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #FEE2E2;
+  color: #DC2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.cand-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cand-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cand-text);
+}
+
+.cand-item-meta {
+  font-size: 11px;
+  color: var(--cand-text-muted);
+  margin-top: 1px;
+}
+
+.cand-column-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cand-brand);
+  text-decoration: none;
+  transition: gap 0.2s ease;
+  margin-top: 8px;
+}
+
+.cand-column-footer-link:hover {
+  gap: 10px;
+  color: var(--cand-brand-hover);
+}
+
+/* Notificación Item */
+.cand-notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed #E2E8F0;
+}
+
+.cand-notif-item:last-child {
+  border-bottom: none;
+}
+
+.cand-notif-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0D9488;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.cand-notif-text {
+  font-size: 12px;
+  color: var(--cand-text);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.cand-notif-time {
+  font-size: 11px;
+  color: var(--cand-text-muted);
+  white-space: nowrap;
+}
+
+/* ── GRID DE ACCIONES RÁPIDAS Y CONSEJOS ─────── */
+.cand-secondary-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.cand-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.cand-action-card {
+  background: #FFFFFF;
+  border: 1px solid var(--cand-border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: var(--cand-text);
+  transition: all 0.2s ease;
+}
+
+.cand-action-card:hover {
+  border-color: var(--cand-brand);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.08);
+}
+
+.cand-action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--cand-brand-light);
+  color: var(--cand-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cand-action-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cand-action-desc {
+  font-size: 12px;
+  color: var(--cand-text-muted);
+  margin-top: 2px;
+}
+
+/* Tarjeta Consejos */
+.cand-tips-card {
+  background: #FFFFFF;
+  border: 1px solid var(--cand-border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cand-tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cand-tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--cand-text-muted);
+  line-height: 1.4;
+}
+
+.cand-tip-check {
+  color: #10B981;
+  font-weight: bold;
+}
+
+/* ── BANNER INFORMATIVO (RECUERDA) ───────────── */
+.cand-banner {
+  background: #F0FDFA;
+  border: 1px solid #CCFBF1;
+  border-radius: 16px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cand-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cand-banner-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--cand-brand);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cand-banner-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0F766E;
+  margin-bottom: 2px;
+}
+
+.cand-banner-text {
+  font-size: 13px;
+  color: #115E59;
+}
+
+.cand-banner-illustration {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* ── MODALES ─────────────────────────────────── */
+.cand-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.cand-modal-backdrop.active {
+  display: flex;
+}
+
+.cand-modal-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  padding: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.cand-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cand-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cand-text);
+}
+
+.cand-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--cand-text-muted);
+  cursor: pointer;
+}
+
+/* ── RESPONSIVE DESIGN ───────────────────────── */
+@media (max-width: 1200px) {
+  .cand-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cand-columns-grid {
+    grid-template-columns: 1fr;
+  }
+  .cand-secondary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .cand-sidebar {
+    transform: translateX(-100%);
+  }
+  .cand-sidebar.open {
+    transform: translateX(0);
+  }
+  .cand-main {
+    margin-left: 0;
+  }
+  .cand-header, .fm-topbar {
+    padding: 0 16px !important;
+  }
+  .cand-content {
+    padding: 16px;
+  }
+  .cand-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .cand-actions-grid {
+    grid-template-columns: 1fr;
+  }
+  .cand-stepper {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .cand-stepper-line-bg {
+    display: none;
+  }
+  .cand-step-item {
+    flex-direction: row;
+    gap: 12px;
+    text-align: left;
+  }
+  .cand-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cand-banner-illustration {
+    display: none;
+  }
+}

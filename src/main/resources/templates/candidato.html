@@ -3,41 +3,685 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Candidato — Flowmatic</title>
+  <title>Portal del Candidato — Flowmatic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/tokens.css}">
   <link rel="stylesheet" th:href="@{/css/base.css}">
-  <link rel="stylesheet" th:href="@{/css/drive.css}">
+  <link rel="stylesheet" th:href="@{/css/candidato.css}">
 </head>
-<body class="drive-body">
-<div class="drive-layout">
+<body class="cand-body">
 
-  <!-- ── SIDEBAR ─────────────────────────────── -->
-  <div th:replace="~{fragments/sidebar-rrhh :: sidebarRRHH('drive')}"></div>
+<div class="cand-layout">
 
-  <!-- ── ÁREA PRINCIPAL ──────────────────────── -->
-  <div class="drive-main">
+  <!-- ── 1. SIDEBAR ESTÁNDAR DE FLOWMATIC ──────────────── -->
+  <div th:replace="~{fragments/sidebar-rrhh :: sidebarRRHH('inicio')}"></div>
 
+  <!-- ── 2. ÁREA PRINCIPAL Y HEADER ESTÁNDAR (fm-topbar) ── -->
+  <main class="cand-main">
+
+    <!-- Header Superior Oficial Flowmatic (Norma Corporativa) -->
     <header class="fm-topbar">
       <div>
-        <p class="fm-topbar-title">Panel de Candidato</p>
-        <p class="fm-topbar-sub">Bienvenido a Flowmatic</p>
+        <p class="fm-topbar-title">Portal del Candidato</p>
+        <p class="fm-topbar-sub" style="font-size:12px; color:var(--fm-text-muted); margin-top:2px;">Resumen general de tu proceso de selección</p>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:16px;">
+        <!-- Botón y Panel de Notificaciones (Notificaciones Limpias, Sin Avatar) -->
+        <div style="position:relative;">
+          <button type="button" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones" style="background:none; border:none; position:relative; cursor:pointer; color:#64748B; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#F1F5F9;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span id="gc-notif-badge" th:text="${notificacionesNoLeidas}" th:style="${notificacionesNoLeidas != null and notificacionesNoLeidas > 0} ? 'display:flex' : 'display:none'" style="position:absolute; top:-2px; right:-2px; background:#0D9488; color:#fff; font-size:9px; font-weight:700; min-width:16px; height:16px; border-radius:50%; align-items:center; justify-content:center; padding:0 3px; border:2px solid #fff;">0</span>
+          </button>
+          <div class="gc-notif-panel" id="gc-notif-panel">
+            <div class="gc-notif-header">
+              <span>Notificaciones</span>
+              <button class="gc-notif-leer-todas" onclick="marcarTodasNotificaciones()">Leer todas</button>
+            </div>
+            <div class="gc-notif-list"></div>
+          </div>
+        </div>
       </div>
     </header>
 
-    <div class="drive-content">
-      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; text-align:center;">
-        <span th:replace="~{fragments/logo :: logoFull}"></span>
-        <h2 style="margin-top:24px; font-size:22px; color:var(--fm-text);">Vista en construcción</h2>
-        <p style="color:var(--fm-text-muted); margin-top:8px; font-size:14px;">Accede a tus documentos desde el Drive.</p>
-        <a th:href="@{/drive}" class="btn btn-primary" style="margin-top:24px;">Ir al Drive</a>
+    <!-- Contenido Dashboard -->
+    <div class="cand-content">
+
+      <!-- ── SALUDO PRINCIPAL (DINÁMICO) ───────────────── -->
+      <div style="margin-bottom: 8px;">
+        <h1 style="font-size: 24px; font-weight: 800; color: #0F172A; margin: 0; display: flex; align-items: center; gap: 8px;">
+          <span th:text="${'¡Hola, ' + (candidatoPrimerNombre != null ? candidatoPrimerNombre : 'Candidato') + '! 👋'}">¡Hola, Candidato! 👋</span>
+        </h1>
+        <p style="font-size: 13px; color: #64748B; margin-top: 4px;">Este es el resumen de tu proceso de selección.</p>
+      </div>
+
+      <!-- ── 3. METRIC CARDS (GRID DE 4 TARJETAS) ────── -->
+      <section class="cand-kpi-grid">
+
+        <!-- Card 1: Estado actual -->
+        <div class="cand-kpi-card">
+          <div>
+            <div class="cand-kpi-header">
+              <div class="cand-kpi-icon-wrapper cand-kpi-icon-blue">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </div>
+              <span class="cand-kpi-label">Estado actual</span>
+            </div>
+            <div class="cand-kpi-val-row">
+              <span class="cand-kpi-value" th:text="${candidatoEstado != null ? candidatoEstado : 'Registrado'}">Registrado</span>
+              <span class="cand-badge cand-badge-info">En curso</span>
+            </div>
+          </div>
+          <p class="cand-kpi-subtext" th:text="${candidatoCargo != null and !candidatoCargo.isBlank() ? 'Postulación: ' + candidatoCargo : 'Vas por buen camino. Sigue atento a tus próximas actividades.'}">Vas por buen camino. Sigue atento a tus próximas actividades.</p>
+        </div>
+
+        <!-- Card 2: Próxima entrevista (100% REAL DE LA BASE DE DATOS) -->
+        <div class="cand-kpi-card">
+          <div>
+            <div class="cand-kpi-header">
+              <div class="cand-kpi-icon-wrapper cand-kpi-icon-teal">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+              <span class="cand-kpi-label">Próxima entrevista</span>
+            </div>
+            
+            <!-- Si HAY una entrevista agendada en la BD para este candidato -->
+            <div th:if="${proximaEntrevista != null}">
+              <div class="cand-kpi-val-row">
+                <span class="cand-kpi-value" th:text="${#temporals.format(proximaEntrevista.fecha, 'dd MMM yyyy')}">15 Ago 2026</span>
+              </div>
+              <p class="cand-kpi-subtext">
+                🕒 <span th:text="${proximaEntrevista.hora}">10:00 AM</span><br>
+                <span th:text="${proximaEntrevista.vacante != null ? proximaEntrevista.vacante : 'Entrevista agendada'}">Entrevista agendada</span><br>
+                Virtual - Google Meet
+              </p>
+            </div>
+
+            <!-- Si NO HAY entrevista agendada en la BD para este candidato -->
+            <div th:if="${proximaEntrevista == null}">
+              <div class="cand-kpi-val-row">
+                <span class="cand-kpi-value" style="font-size: 15px; color: #64748B;">Sin agendar</span>
+              </div>
+              <p class="cand-kpi-subtext">Te avisaremos cuando se programe una entrevista.</p>
+            </div>
+          </div>
+
+          <button th:if="${proximaEntrevista != null}" class="cand-btn-outline" onclick="abrirModalEntrevista()">
+            Ver detalles
+          </button>
+          <a th:if="${proximaEntrevista == null}" th:href="@{/calendario}" class="cand-btn-outline">
+            Ver calendario
+          </a>
+        </div>
+
+        <!-- Card 3: Etapa del proceso -->
+        <div class="cand-kpi-card">
+          <div>
+            <div class="cand-kpi-header">
+              <div class="cand-kpi-icon-wrapper cand-kpi-icon-purple">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                  <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+              </div>
+              <span class="cand-kpi-label">Etapa del proceso</span>
+            </div>
+            <div class="cand-kpi-val-row">
+              <span class="cand-kpi-value" th:text="${(stepIndex != null ? stepIndex : 1) + ' de 5'}">1 de 5</span>
+              <span style="font-size: 12px; color: #64748B;">etapas evaluadas</span>
+            </div>
+            <div class="cand-progress-bar-bg">
+              <div class="cand-progress-bar-fill" th:style="'width: ' + ${(procesoProgresoPct != null ? procesoProgresoPct : 20)} + '%'"></div>
+            </div>
+          </div>
+          <p class="cand-kpi-subtext" th:text="${stepIndex != null and stepIndex >= 3 ? '¡Vas a la mitad del proceso!' : 'Etapa ' + (stepIndex != null ? stepIndex : 1) + ' en curso.'}">Avance del proceso</p>
+        </div>
+
+        <!-- Card 4: Última actualización -->
+        <div class="cand-kpi-card">
+          <div>
+            <div class="cand-kpi-header">
+              <div class="cand-kpi-icon-wrapper cand-kpi-icon-green">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <span class="cand-kpi-label">Última actualización</span>
+            </div>
+            <div class="cand-kpi-val-row">
+              <span class="cand-kpi-value" style="font-size: 15px;" th:text="${ultimaActualizacionFecha != null ? ultimaActualizacionFecha : 'Reciente'}">Reciente</span>
+            </div>
+            <p class="cand-kpi-subtext" th:text="${ultimaActualizacionMensaje != null ? ultimaActualizacionMensaje : 'Sin registros recientes'}">Sin registros recientes</p>
+          </div>
+          <button class="cand-btn-outline" onclick="abrirModalHistorial()">
+            Ver historial
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ── 4. PROGRESO DE TU PROCESO (STEPPER HORIZONTAL) ── -->
+      <section class="cand-section-card">
+        <div class="cand-section-title">
+          <span>Progreso de tu proceso</span>
+        </div>
+
+        <div style="position: relative;">
+          <!-- Linea conectora de fondo -->
+          <div class="cand-stepper-line-bg">
+            <div class="cand-stepper-line-progress" th:style="'width: ' + ${((stepIndex != null ? stepIndex : 1) - 1) * 25} + '%'"></div>
+          </div>
+
+          <div class="cand-stepper">
+            <!-- Step 1 -->
+            <div th:class="${(stepIndex != null and stepIndex > 1) ? 'cand-step-item completed' : ((stepIndex != null and stepIndex == 1) ? 'cand-step-item active' : 'cand-step-item')}">
+              <div class="cand-step-circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <span class="cand-step-title">Registro</span>
+              <span class="cand-step-status" th:text="${(stepIndex != null and stepIndex > 1) ? 'Completado' : ((stepIndex != null and stepIndex == 1) ? 'En curso' : 'Pendiente')}">Completado</span>
+            </div>
+
+            <!-- Step 2 -->
+            <div th:class="${(stepIndex != null and stepIndex > 2) ? 'cand-step-item completed' : ((stepIndex != null and stepIndex == 2) ? 'cand-step-item active' : 'cand-step-item')}">
+              <div class="cand-step-circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <span class="cand-step-title">Revisión de perfil</span>
+              <span class="cand-step-status" th:text="${(stepIndex != null and stepIndex > 2) ? 'Completado' : ((stepIndex != null and stepIndex == 2) ? 'En curso' : 'Pendiente')}">Pendiente</span>
+            </div>
+
+            <!-- Step 3 -->
+            <div th:class="${(stepIndex != null and stepIndex > 3) ? 'cand-step-item completed' : ((stepIndex != null and stepIndex == 3) ? 'cand-step-item active' : 'cand-step-item')}">
+              <div class="cand-step-circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <span class="cand-step-title">Entrevista técnica</span>
+              <span class="cand-step-status" th:text="${(stepIndex != null and stepIndex > 3) ? 'Completado' : ((stepIndex != null and stepIndex == 3) ? 'En curso' : 'Pendiente')}">Pendiente</span>
+            </div>
+
+            <!-- Step 4 -->
+            <div th:class="${(stepIndex != null and stepIndex > 4) ? 'cand-step-item completed' : ((stepIndex != null and stepIndex == 4) ? 'cand-step-item active' : 'cand-step-item')}">
+              <div class="cand-step-circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <span class="cand-step-title">Entrevista final</span>
+              <span class="cand-step-status" th:text="${(stepIndex != null and stepIndex > 4) ? 'Completado' : ((stepIndex != null and stepIndex == 4) ? 'En curso' : 'Pendiente')}">Pendiente</span>
+            </div>
+
+            <!-- Step 5 -->
+            <div th:class="${(stepIndex != null and stepIndex == 5) ? 'cand-step-item completed' : 'cand-step-item'}">
+              <div class="cand-step-circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                  <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                  <path d="M4 22h16"></path>
+                  <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                  <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                  <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path>
+                </svg>
+              </div>
+              <span class="cand-step-title">Decisión final</span>
+              <span class="cand-step-status" th:text="${(stepIndex != null and stepIndex == 5) ? 'Completado' : 'Pendiente'}">Pendiente</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 5. GRID DE 3 COLUMNAS INFERIORES ─────────── -->
+      <section class="cand-columns-grid">
+
+        <!-- Columna 1: Documentos pendientes -->
+        <div class="cand-column-card">
+          <div>
+            <div class="cand-column-header">
+              <div class="cand-column-title-group">
+                <div class="cand-column-icon" style="background: #FEF3C7; color: #D97706;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                </div>
+                <span class="cand-column-title">Documentos pendientes</span>
+              </div>
+              <span class="cand-badge cand-badge-warning" th:text="${archivosTotal != null and archivosTotal > 0 ? archivosTotal + ' pendientes' : '0 pendientes'}">0 pendientes</span>
+            </div>
+            <p class="cand-column-desc">Tienes documentos pendientes por subir o que requieren revisión.</p>
+
+            <div class="cand-item-list">
+              <!-- Renderizado de archivos reales -->
+              <div class="cand-list-item" th:each="doc : ${candidatoArchivos}" th:if="${!doc.esCarpeta}">
+                <div class="cand-item-left">
+                  <div class="cand-file-icon" th:text="${doc.tipoDocumento != null ? doc.tipoDocumento.toUpperCase() : 'PDF'}">PDF</div>
+                  <div class="cand-item-info">
+                    <span class="cand-item-name" th:text="${doc.nombre}">Documento</span>
+                    <span class="cand-item-meta" th:text="${doc.fechaSubida != null ? #temporals.format(doc.fechaSubida, 'dd MMM yyyy') : 'Subido'}">Subido</span>
+                  </div>
+                </div>
+                <span class="cand-badge" th:classappend="${doc.estadoDocumento == 'Aprobado' ? 'cand-badge-success' : (doc.estadoDocumento == 'Rechazado' ? 'cand-badge-warning' : 'cand-badge-info')}" th:text="${doc.estadoDocumento != null ? doc.estadoDocumento : 'En revisión'}">En revisión</span>
+              </div>
+
+              <!-- Estado Vacío Si No Hay Archivos -->
+              <div th:if="${candidatoArchivos == null or candidatoArchivos.isEmpty()}" style="text-align:center; color:#94A3B8; font-size:13px; padding:24px 0;">
+                <div style="font-weight:600; color:#64748B; margin-bottom:4px;">Sin documentos pendientes</div>
+                <div>No tienes documentos cargados en tu expediente por el momento.</div>
+              </div>
+            </div>
+          </div>
+
+          <a th:href="@{/drive}" class="cand-column-footer-link">
+            Ir a mis documentos →
+          </a>
+        </div>
+
+        <!-- Columna 2: Próximas actividades -->
+        <div class="cand-column-card">
+          <div>
+            <div class="cand-column-header">
+              <div class="cand-column-title-group">
+                <div class="cand-column-icon" style="background: #E6FFFA; color: #0D9488;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                </div>
+                <span class="cand-column-title">Próximas actividades</span>
+              </div>
+            </div>
+            <p class="cand-column-desc">Revisa el itinerario de tus reuniones y entregables.</p>
+
+            <div class="cand-item-list">
+              <!-- Renderizado de actividades reales -->
+              <div class="cand-list-item" th:each="ent : ${proximasEntrevistas}" style="cursor: pointer;" onclick="abrirModalEntrevista()">
+                <div class="cand-item-left">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <div class="cand-item-info">
+                    <span class="cand-item-name" th:text="${(ent.fecha != null ? #temporals.format(ent.fecha, 'dd MMM yyyy') : '') + ' - ' + (ent.hora != null ? ent.hora : '')}">Fecha y Hora</span>
+                    <span class="cand-item-meta" th:text="${ent.vacante != null ? ent.vacante : 'Entrevista'}">Entrevista</span>
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span class="cand-badge cand-badge-info" th:text="${ent.estado != null ? ent.estado : 'Programada'}">Programada</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+              </div>
+
+              <!-- Estado Vacío Si No Hay Actividades -->
+              <div th:if="${proximasEntrevistas == null or proximasEntrevistas.isEmpty()}" style="text-align:center; color:#94A3B8; font-size:13px; padding:24px 0;">
+                <div style="font-weight:600; color:#64748B; margin-bottom:4px;">Sin actividades agendadas</div>
+                <div>No tienes entrevistas o entregables pendientes por el momento.</div>
+              </div>
+            </div>
+          </div>
+
+          <a th:href="@{/calendario}" class="cand-column-footer-link">
+            Ver todas mis actividades →
+          </a>
+        </div>
+
+        <!-- Columna 3: Notificaciones recientes -->
+        <div class="cand-column-card" id="notificacionesSec">
+          <div>
+            <div class="cand-column-header">
+              <div class="cand-column-title-group">
+                <div class="cand-column-icon" style="background: #F3E8FF; color: #7C3AED;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                  </svg>
+                </div>
+                <span class="cand-column-title">Notificaciones recientes</span>
+              </div>
+              <span class="cand-badge cand-badge-purple" th:text="${notificacionesNoLeidas != null ? notificacionesNoLeidas + ' nuevas' : '0 nuevas'}">0 nuevas</span>
+            </div>
+
+            <div style="margin-top: 12px;">
+              <!-- Renderizado de notificaciones reales -->
+              <div class="cand-notif-item" th:each="notif : ${notificaciones}">
+                <div class="cand-notif-dot" th:style="${notif.leida ? 'background: #CBD5E1;' : 'background: #0D9488;'}"></div>
+                <div class="cand-notif-text" th:text="${notif.mensaje}">Notificación</div>
+                <span class="cand-notif-time" th:text="${notif.fecha != null ? #temporals.format(notif.fecha, 'dd MMM, HH:mm') : ''}">Fecha</span>
+              </div>
+
+              <!-- Estado Vacío Si No Hay Notificaciones -->
+              <div th:if="${notificaciones == null or notificaciones.isEmpty()}" style="text-align:center; color:#94A3B8; font-size:13px; padding:24px 0;">
+                <div style="font-weight:600; color:#64748B; margin-bottom:4px;">Sin notificaciones recientes</div>
+                <div>Estás al día con tus notificaciones.</div>
+              </div>
+            </div>
+          </div>
+
+          <a href="#" onclick="toggleNotifPanel(); return false;" class="cand-column-footer-link">
+            Ver todas las notificaciones →
+          </a>
+        </div>
+
+      </section>
+
+      <!-- ── 6. ACCIONES RÁPIDAS Y CONSEJOS ─────────── -->
+      <section class="cand-secondary-grid">
+
+        <!-- Accesos rápidos -->
+        <div>
+          <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin-bottom: 14px;">Acciones rápidas</h3>
+          <div class="cand-actions-grid">
+
+            <a th:href="@{/drive}" class="cand-action-card">
+              <div class="cand-action-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <div>
+                <div class="cand-action-title">Subir documento</div>
+                <div class="cand-action-desc">Carga tus documentos solicitados.</div>
+              </div>
+            </a>
+
+            <a th:href="@{/calendario}" class="cand-action-card">
+              <div class="cand-action-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+              <div>
+                <div class="cand-action-title">Ver entrevistas</div>
+                <div class="cand-action-desc">Consulta tus entrevistas programadas.</div>
+              </div>
+            </a>
+
+            <a href="#" onclick="toggleNotifPanel(); return false;" class="cand-action-card">
+              <div class="cand-action-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <div>
+                <div class="cand-action-title">Notificaciones</div>
+                <div class="cand-action-desc">Revisa tus notificaciones recientes.</div>
+              </div>
+            </a>
+
+            <a th:href="@{/candidato/perfil}" class="cand-action-card">
+              <div class="cand-action-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div>
+                <div class="cand-action-title">Mi perfil</div>
+                <div class="cand-action-desc">Consulta tu información personal registrada.</div>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- Consejos -->
+        <div class="cand-tips-card">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;">Consejos</h3>
+            <p style="font-size: 12px; color: #64748B; margin: 0 0 14px 0;">Para acelerar tu proceso de selección:</p>
+
+            <div class="cand-tips-list">
+              <div class="cand-tip-item">
+                <span class="cand-tip-check">✓</span>
+                <span>Completa todos tus documentos solicitados.</span>
+              </div>
+              <div class="cand-tip-item">
+                <span class="cand-tip-check">✓</span>
+                <span>Revisa y confirma tu asistencia a las entrevistas.</span>
+              </div>
+              <div class="cand-tip-item">
+                <span class="cand-tip-check">✓</span>
+                <span>Mantente atento a tus notificaciones.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── 7. BANNER INFORMATIVO (RECUERDA) ────────── -->
+      <section class="cand-banner">
+        <div class="cand-banner-left">
+          <div class="cand-banner-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="cand-banner-title">Recuerda</div>
+            <div class="cand-banner-text">
+              Toda la información que compartas es confidencial y será utilizada únicamente para el proceso de selección.
+            </div>
+          </div>
+        </div>
+
+        <div class="cand-banner-illustration">
+          <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="10" width="80" height="40" rx="6" fill="#FFFFFF" stroke="#0D9488" stroke-width="2"/>
+            <path d="M30 42H90" stroke="#CCFBF1" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="60" cy="30" r="12" fill="#E6FFFA" stroke="#0D9488" stroke-width="2"/>
+            <path d="M57 30L59 32L63 28" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ── MODAL DETALLES DE ENTREVISTA ──────────────── -->
+<div class="cand-modal-backdrop" id="modalEntrevista">
+  <div class="cand-modal-card">
+    <div class="cand-modal-header">
+      <h3 class="cand-modal-title">Detalles de la Entrevista</h3>
+      <button class="cand-modal-close" onclick="cerrarModalEntrevista()">&times;</button>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px;" th:if="${proximaEntrevista != null}">
+      <div style="padding: 14px; background: #F8FAFC; border-radius: 10px; border: 1px solid #E2E8F0;">
+        <div style="font-size: 12px; color: #64748B;">Tipo de Entrevista</div>
+        <div style="font-size: 15px; font-weight: 700; color: #0F172A; margin-top: 2px;" th:text="${proximaEntrevista.vacante != null ? proximaEntrevista.vacante : 'Entrevista de selección'}">Entrevista</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div style="padding: 12px; background: #F8FAFC; border-radius: 10px; border: 1px solid #E2E8F0;">
+          <div style="font-size: 12px; color: #64748B;">Fecha y Hora</div>
+          <div style="font-size: 13px; font-weight: 600; color: #0F172A; margin-top: 2px;" th:text="${(proximaEntrevista.fecha != null ? #temporals.format(proximaEntrevista.fecha, 'dd MMM yyyy') : '') + ', ' + (proximaEntrevista.hora != null ? proximaEntrevista.hora : '')}">Fecha y hora</div>
+        </div>
+        <div style="padding: 12px; background: #F8FAFC; border-radius: 10px; border: 1px solid #E2E8F0;">
+          <div style="font-size: 12px; color: #64748B;">Modalidad</div>
+          <div style="font-size: 13px; font-weight: 600; color: #0D9488; margin-top: 2px;">Virtual (Google Meet)</div>
+        </div>
       </div>
     </div>
-
+    <div style="padding: 20px 0; text-align: center; color: #94A3B8; font-size: 13px;" th:if="${proximaEntrevista == null}">
+      No tienes entrevistas programadas en tu calendario por el momento.
+    </div>
+    <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+      <button class="btn btn-primary" onclick="cerrarModalEntrevista()">Entendido</button>
+    </div>
   </div>
 </div>
+
+<!-- ── MODAL VER HISTORIAL ───────────────────────── -->
+<div class="cand-modal-backdrop" id="modalHistorial">
+  <div class="cand-modal-card">
+    <div class="cand-modal-header">
+      <h3 class="cand-modal-title">Historial del Proceso</h3>
+      <button class="cand-modal-close" onclick="cerrarModalHistorial()">&times;</button>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="padding: 12px; border-left: 3px solid #0D9488; background: #F8FAFC; border-radius: 0 8px 8px 0;">
+        <div style="font-size: 13px; font-weight: 600; color: #0F172A;" th:text="${ultimaActualizacionFecha != null ? ultimaActualizacionFecha : 'Fecha actual'}">Fecha</div>
+        <div style="font-size: 12px; color: #64748B; margin-top: 2px;" th:text="${ultimaActualizacionMensaje != null ? ultimaActualizacionMensaje : 'Expediente actualizado'}">Expediente actualizado</div>
+      </div>
+    </div>
+    <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+      <button class="btn btn-secondary" onclick="cerrarModalHistorial()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL MI PERFIL ───────────────────────────── -->
+<div class="cand-modal-backdrop" id="modalPerfil">
+  <div class="cand-modal-card">
+    <div class="cand-modal-header">
+      <h3 class="cand-modal-title">Mi Perfil de Candidato</h3>
+      <button class="cand-modal-close" onclick="cerrarModalPerfil()">&times;</button>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 14px; padding-bottom: 12px; border-bottom: 1px solid #E2E8F0;">
+        <div class="cand-user-avatar" style="width: 50px; height: 50px; font-size: 20px; background: #0D9488; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;" th:text="${usuarioIniciales != null ? usuarioIniciales : 'C'}">C</div>
+        <div>
+          <div style="font-size: 16px; font-weight: 700;" th:text="${candidatoNombreCompleto != null ? candidatoNombreCompleto : 'Candidato'}">Candidato</div>
+          <div style="font-size: 13px; color: #64748B;" th:text="${candidatoEmail}">correo@ejemplo.com</div>
+        </div>
+      </div>
+      <div style="font-size: 13px; color: #0F172A;" th:if="${candidatoCargo != null and !candidatoCargo.isBlank()}">
+        <strong>Cargo postulado:</strong> <span th:text="${candidatoCargo}">Cargo</span>
+      </div>
+      <div style="font-size: 13px; color: #0F172A;" th:if="${candidatoCiudad != null and !candidatoCiudad.isBlank()}">
+        <strong>Ciudad:</strong> <span th:text="${candidatoCiudad}">Ciudad</span>
+      </div>
+      <div style="font-size: 13px; color: #0F172A;">
+        <strong>Estado en Flowmatic:</strong> <span class="cand-badge cand-badge-info" th:text="${candidatoEstado != null ? candidatoEstado : 'Registrado'}">Registrado</span>
+      </div>
+    </div>
+    <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+      <button class="btn btn-primary" onclick="cerrarModalPerfil()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS DE NOTIFICACIONES Y MODALES -->
 <script th:src="@{/js/csrf.js}"></script>
 <script th:src="@{/js/i18n.js}"></script>
+<script>
+  function abrirModalEntrevista() {
+    document.getElementById('modalEntrevista').classList.add('active');
+  }
+  function cerrarModalEntrevista() {
+    document.getElementById('modalEntrevista').classList.remove('active');
+  }
+
+  function abrirModalHistorial() {
+    document.getElementById('modalHistorial').classList.add('active');
+  }
+  function cerrarModalHistorial() {
+    document.getElementById('modalHistorial').classList.remove('active');
+  }
+
+  function abrirModalPerfil(e) {
+    if(e) e.preventDefault();
+    document.getElementById('modalPerfil').classList.add('active');
+  }
+  function cerrarModalPerfil() {
+    document.getElementById('modalPerfil').classList.remove('active');
+  }
+
+  /* ── SISTEMA DE NOTIFICACIONES REAL ── */
+  function cargarNotificaciones() {
+    const list = document.querySelector('#gc-notif-panel .gc-notif-list');
+    const badge = document.getElementById('gc-notif-badge');
+    if (!list) return;
+
+    fetch('/notificaciones', { credentials: 'same-origin' })
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(res => {
+        const notifs = res.notificaciones || [];
+        const total = res.total || 0;
+
+        if (badge) {
+          badge.textContent = total;
+          badge.style.display = total > 0 ? 'flex' : 'none';
+        }
+
+        if (notifs.length === 0) {
+          list.innerHTML = '<div style="padding:16px; text-align:center; font-size:12px; color:#94A3B8;">No hay notificaciones pendientes</div>';
+          return;
+        }
+
+        list.innerHTML = notifs.map(n => `
+          <div class="gc-notif-item ${n.leida ? 'gc-notif-leida' : 'gc-notif-no-leida'}" data-id="${n.id}">
+            <div style="padding:10px 14px; border-bottom:1px solid #f1f5f9;">
+              <div style="font-size:12px; color:#0f172a;">${n.mensaje}</div>
+              <div style="font-size:10px; color:#94a3b8; margin-top:2px;">${n.fecha ? new Date(n.fecha).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}</div>
+            </div>
+          </div>
+        `).join('');
+      })
+      .catch(err => console.error('Error cargando notificaciones:', err));
+  }
+
+  function marcarTodasNotificaciones() {
+    fetch('/notificaciones/leer-todas', { method: 'POST', credentials: 'same-origin' })
+      .then(r => r.json())
+      .then(() => cargarNotificaciones())
+      .catch(err => console.error('Error marcando notificaciones:', err));
+  }
+
+  function toggleNotifPanel() {
+    const panel = document.getElementById('gc-notif-panel');
+    const btn = document.getElementById('gc-notif-btn');
+    if (!panel || !btn) return;
+    const isOpen = panel.classList.contains('gc-notif-open');
+    panel.classList.toggle('gc-notif-open');
+    if (!isOpen) { cargarNotificaciones(); }
+  }
+
+  document.addEventListener('click', function(e) {
+    const panel = document.getElementById('gc-notif-panel');
+    const btn = document.getElementById('gc-notif-btn');
+    if (panel && btn && !panel.contains(e.target) && !btn.contains(e.target)) {
+      panel.classList.remove('gc-notif-open');
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    cargarNotificaciones();
+  });
+</script>
+
 </body>
 </html>
