@@ -94,7 +94,10 @@
           </div>
           <div class="mr-group">
             <label class="mr-label">Contrase&ntilde;a</label>
-            <input type="password" name="clave" class="mr-input" required placeholder="M&iacute;nimo 8 caracteres">
+            <input type="password" name="clave" class="mr-input" required minlength="8"
+                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+                   title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
+                   placeholder="Ej: Flowmatic#2026">
           </div>
           <input type="hidden" name="rol" value="ROLE_CANDIDATO">
         </div>

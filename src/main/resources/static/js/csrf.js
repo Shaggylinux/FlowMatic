@@ -111,11 +111,39 @@
     }, 3500);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', checkLoginToast);
-  } else {
+  function initMobileSidebar() {
+    var mobileMenuBtn = document.getElementById('fm-mobile-menu-btn');
+    var sidebar = document.querySelector('.fm-sidebar');
+    if (!mobileMenuBtn || !sidebar) return;
+
+    var overlay = document.querySelector('.fm-sidebar-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'fm-sidebar-overlay';
+      document.body.appendChild(overlay);
+    }
+
+    function toggleSidebar(e) {
+      if (e) e.preventDefault();
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('show');
+    }
+
+    mobileMenuBtn.onclick = toggleSidebar;
+    overlay.onclick = toggleSidebar;
+  }
+
+  function initGlobalHandlers() {
     checkLoginToast();
+    initMobileSidebar();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGlobalHandlers);
+  } else {
+    initGlobalHandlers();
   }
 
 })();
+
 

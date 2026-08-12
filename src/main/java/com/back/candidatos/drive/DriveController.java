@@ -383,6 +383,7 @@ public class DriveController {
         model.addAttribute("pageSize", pageable.getPageSize());
         model.addAttribute("startItem", startItem);
         model.addAttribute("endItem", endItem);
+        model.addAttribute("pageItems", getPageItems(archivosPage.getNumber(), totalPages));
         model.addAttribute("buscar", buscar);
         model.addAttribute("tipo", tipo);
         model.addAttribute("estado", estado);
@@ -810,5 +811,32 @@ public class DriveController {
         }
 
         return "redirect:/drive?folder=" + folder;
+    }
+
+    private List<PageItem> getPageItems(int current, int total) {
+        List<PageItem> items = new ArrayList<>();
+        if (total <= 5) {
+            for (int i = 0; i < total; i++)
+                items.add(new PageItem(i, false));
+            return items;
+        }
+        items.add(new PageItem(0, false));
+        if (current > 2)
+            items.add(new PageItem(-1, true));
+        int start = Math.max(1, current - 1);
+        int end = Math.min(total - 2, current + 1);
+        if (current <= 2)
+            end = Math.min(3, total - 2);
+        if (current >= total - 3)
+            start = Math.max(total - 4, 1);
+        for (int i = start; i <= end; i++)
+            items.add(new PageItem(i, false));
+        if (current < total - 3)
+            items.add(new PageItem(-1, true));
+        items.add(new PageItem(total - 1, false));
+        return items;
+    }
+
+    public record PageItem(int number, boolean ellipsis) {
     }
 }

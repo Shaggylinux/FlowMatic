@@ -300,9 +300,20 @@
     }
     .dr-pipeline-stages {
         flex-wrap: wrap;
+        gap: 12px;
     }
     .dr-pipeline-stage {
-        flex: 1 1 30%;
-        margin-bottom: 16px;
+        flex: 1 1 45%;
+        margin-bottom: 8px;
+    }
+}
+@media (max-width: 480px) {
+    .dr-pipeline-stage {
+        flex: 1 1 100%;
+    }
+    .dr-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
     }
 }

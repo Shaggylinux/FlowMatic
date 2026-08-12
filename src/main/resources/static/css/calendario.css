@@ -1053,9 +1053,24 @@ textarea.cal-modal-input {
     grid-template-columns: 1fr;
   }
   .cal-main-grid {
-    padding: 16px;
+    padding: 12px 8px;
   }
   .cal-legend {
-    padding: 12px 16px 0;
+    padding: 12px 8px 0;
+  }
+  .fc .fc-toolbar {
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+  .fc .fc-toolbar-chunk {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+  .fc .fc-toolbar-title {
+    font-size: 15px !important;
+    text-align: center !important;
   }
 }

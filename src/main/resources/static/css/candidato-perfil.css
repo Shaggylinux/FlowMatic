@@ -842,3 +842,29 @@
     padding: 10px 2px;
   }
 }
+
+@media (max-width: 480px) {
+  .cand-perfil-container {
+    padding: 12px 8px;
+  }
+  .cand-hero-card {
+    padding: 16px 12px;
+  }
+  .cand-hero-avatar-lg {
+    width: 64px;
+    height: 64px;
+  }
+  .cand-tab-item {
+    font-size: 12px;
+    padding: 8px 0;
+  }
+  .cand-tabs-bar {
+    gap: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cand-card {
+    padding: 12px;
+  }
+}
+

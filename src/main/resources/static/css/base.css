@@ -837,6 +837,9 @@ body {
 }
 
 @media (max-width: 768px) {
+  #fm-mobile-menu-btn, .fm-mobile-toggle-btn {
+    display: flex !important;
+  }
   .fm-sidebar {
     position: fixed;
     top: 0;
@@ -969,5 +972,182 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+/* ── 13. GLOBAL PAGINATION ────────────────────── */
+.gc-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  margin-top: 20px;
+  background: var(--fm-surface);
+  border-radius: 14px;
+  border: 1px solid #F1F5F9;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  flex-wrap: wrap;
+}
+
+.gc-page-info {
+  font-size: 13px;
+  color: #64748B;
+  white-space: nowrap;
+}
+.gc-page-info strong {
+  color: #0F172A;
+}
+
+.gc-page-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.gc-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.gc-page-btn:hover {
+  border-color: var(--fm-brand, #0D9488);
+  color: var(--fm-brand, #0D9488);
+  background: #F0FDFA;
+}
+.gc-page-btn.active {
+  background: var(--fm-brand, #0D9488);
+  border-color: var(--fm-brand, #0D9488);
+  color: #ffffff;
+}
+.gc-page-dots {
+  color: #94A3B8;
+  padding: 0 2px;
+  font-weight: 600;
+}
+
+/* ── 14. GLOBAL RESPONSIVE RULES ─────────────── */
+@media (max-width: 992px) {
+  .fm-topbar, .cand-header {
+    padding: 8px 16px !important;
+  }
+  .fm-topbar-sub, .cand-header-sub {
+    display: none !important;
+  }
+  .drive-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .dr-search-bar {
+    width: 100% !important;
+  }
+  .dr-filters {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .dr-select {
+    flex: 1;
+    min-width: 130px;
+  }
+}
+
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
+  .fm-topbar, .cand-header {
+    height: auto !important;
+    min-height: 56px !important;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+  }
+  .fm-topbar-title, .cand-header-title {
+    font-size: 15px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 160px !important;
+  }
+  .btn-text-responsive {
+    display: none !important;
+  }
+  .gc-pagination {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+  .gc-page-controls {
+    justify-content: center;
+  }
+  .fm-table-container,
+  .gc-table-wrapper,
+  .table-responsive,
+  .doc-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  .fm-table, .gc-table, .doc-table {
+    min-width: 650px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fm-topbar, .cand-header {
+    padding: 6px 10px !important;
+    min-height: 52px !important;
+  }
+  .fm-topbar-title, .cand-header-title {
+    font-size: 14px !important;
+    max-width: 120px !important;
+  }
+  .fm-mobile-toggle-btn {
+    padding: 4px !important;
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .cand-header-actions, .fm-topbar > div:last-child {
+    gap: 6px !important;
+  }
+  .gc-page-btn {
+    min-width: 28px;
+    height: 28px;
+    padding: 0 6px;
+    font-size: 11px;
+  }
+  .gc-notif-panel {
+    position: fixed !important;
+    top: 60px !important;
+    right: 12px !important;
+    left: 12px !important;
+    width: auto !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+  .modal-dialog,
+  .cal-modal-card,
+  .cand-modal-card,
+  .doc-modal-card,
+  .gc-modal-card {
+    max-width: 95vw !important;
+    margin: 10px auto !important;
+  }
 }
 

@@ -1820,16 +1820,21 @@
   .gc-filters-row {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
   }
   .gc-filter-search {
     max-width: none;
+    width: 100% !important;
   }
-  .gc-filter-select {
-    min-width: auto;
+  .gc-filter-select, .gc-filter-input {
+    min-width: 0 !important;
+    width: 100% !important;
   }
   .gc-pagination {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
   }
   .gc-pagination-center {
     justify-content: center;

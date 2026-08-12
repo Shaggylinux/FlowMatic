@@ -96,12 +96,17 @@
 
     <div class="drive-main">
       <header class="fm-topbar">
-        <div>
-          <p class="fm-topbar-title">Drive</p>
-          <p class="fm-topbar-sub" sec:authorize="hasRole('RRHH')">Gestiona documentos y archivos de los procesos de selección</p>
-          <p class="fm-topbar-sub" sec:authorize="hasRole('CANDIDATO')">Documentación de tu proceso</p>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button type="button" id="fm-mobile-menu-btn" class="fm-mobile-toggle-btn" title="Abrir menú" style="display:none; align-items:center; justify-content:center; padding:6px; background:var(--fm-surface); border:1px solid var(--fm-border); border-radius:var(--fm-radius-md); color:var(--fm-text); cursor:pointer;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div>
+            <p class="fm-topbar-title">Drive</p>
+            <p class="fm-topbar-sub" sec:authorize="hasRole('RRHH')">Gestiona documentos y archivos de los procesos de selección</p>
+            <p class="fm-topbar-sub" sec:authorize="hasRole('CANDIDATO')">Documentación de tu proceso</p>
+          </div>
         </div>
-        <div style="display:flex; align-items:center; gap:16px;">
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
           <div style="position:relative;">
             <button type="button" id="gc-notif-btn" onclick="toggleNotifPanel()" title="Notificaciones" style="background:none; border:none; position:relative; cursor:pointer; color:#64748B;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -118,12 +123,12 @@
           
           <button sec:authorize="hasRole('RRHH')" type="button" class="btn btn-ghost btn-sm" onclick="solicitarNombreCarpeta()" style="display:flex; align-items:center; gap:6px;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
-            Nueva carpeta
+            <span class="btn-text-responsive">Nueva carpeta</span>
           </button>
           
           <button sec:authorize="hasAnyRole('RRHH', 'CANDIDATO')" type="button" class="btn btn-primary btn-sm" onclick="abrirModalSubirDocRRHH()" style="display:flex; align-items:center; gap:6px;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            Subir archivo
+            <span class="btn-text-responsive">Subir archivo</span>
           </button>
         </div>
       </header>
@@ -425,17 +430,24 @@
               </table>
             </div>
 
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:16px; border-top:1px solid var(--fm-border); padding-top:16px;">
-              <span id="drRowCounter" style="font-size:12px; color:#64748B;">Mostrando <span th:text="${totalItems == 0 ? 0 : startItem}"></span>-<span th:text="${endItem}"></span> de <span th:text="${totalItems}"></span> archivos</span>
-
-              <div class="dr-pagination" th:if="${totalPages > 1}">
-                <div class="dr-pagination-info">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></div>
-                <div class="dr-pagination-controls">
-                  <a class="dr-page-btn" th:if="${currentPage > 0}"
-                     th:href="@{/drive(folder=${folderActual}, page=${currentPage - 1}, size=${pageSize}, buscar=${buscar}, tipo=${tipo}, estado=${estado})}">Anterior</a>
-                  <a class="dr-page-btn" th:if="${currentPage < totalPages - 1}"
-                     th:href="@{/drive(folder=${folderActual}, page=${currentPage + 1}, size=${pageSize}, buscar=${buscar}, tipo=${tipo}, estado=${estado})}">Siguiente</a>
-                </div>
+            <!-- Paginación estilo Flowmatic -->
+            <div class="gc-pagination" th:if="${totalPages > 1}">
+              <div class="gc-page-info">
+                <p>Mostrando <strong th:text="${totalItems == 0 ? 0 : startItem}"></strong> a <strong th:text="${endItem}"></strong> de <strong th:text="${totalItems}"></strong> archivos</p>
+              </div>
+              <div class="gc-page-controls">
+                <a class="gc-page-btn" th:if="${currentPage > 0}"
+                   th:href="@{/drive(folder=${folderActual}, page=${currentPage - 1}, size=${pageSize}, buscar=${buscar}, tipo=${tipo}, estado=${estado})}">Anterior</a>
+                <th:block th:each="item : ${pageItems}">
+                  <span th:if="${item.ellipsis}" class="gc-page-dots">&hellip;</span>
+                  <a th:unless="${item.ellipsis}"
+                     class="gc-page-btn"
+                     th:classappend="${item.number == currentPage} ? ' active'"
+                     th:href="@{/drive(folder=${folderActual}, page=${item.number}, size=${pageSize}, buscar=${buscar}, tipo=${tipo}, estado=${estado})}"
+                     th:text="${item.number + 1}"></a>
+                </th:block>
+                <a class="gc-page-btn" th:if="${currentPage < totalPages - 1}"
+                   th:href="@{/drive(folder=${folderActual}, page=${currentPage + 1}, size=${pageSize}, buscar=${buscar}, tipo=${tipo}, estado=${estado})}">Siguiente</a>
               </div>
             </div>
 
