@@ -59,14 +59,14 @@ class NotificacionServiceTest {
     }
 
     @Test
-    void marcarLeida_globalIntentaMarcaDeCandidato_noMarca() {
+    void marcarLeida_globalPuedeMarcarCualquiera() {
         Notificacion deCandidato = notificacion(3L, 5L, false);
         when(notificacionRepository.findById(3L)).thenReturn(Optional.of(deCandidato));
 
         service.marcarLeida(3L, false, null);
 
-        assertThat(deCandidato.isLeida()).isFalse();
-        verify(notificacionRepository, never()).save(any());
+        assertThat(deCandidato.isLeida()).isTrue();
+        verify(notificacionRepository).save(deCandidato);
     }
 
     @Test
@@ -81,14 +81,14 @@ class NotificacionServiceTest {
     }
 
     @Test
-    void marcarTodasLeidas_globalUsaSoloGlobales() {
-        when(notificacionRepository.findByLeidaFalseAndCandidatoIdIsNullOrderByFechaDesc())
-                .thenReturn(List.of(notificacion(6L, null, false)));
+    void marcarTodasLeidas_globalMarcaTodasLasNoLeidas() {
+        when(notificacionRepository.findByLeidaFalseOrderByFechaDesc())
+                .thenReturn(List.of(notificacion(6L, null, false), notificacion(7L, 5L, false)));
 
         service.marcarTodasLeidas(false, null);
 
-        verify(notificacionRepository).findByLeidaFalseAndCandidatoIdIsNullOrderByFechaDesc();
-        verify(notificacionRepository).save(any());
+        verify(notificacionRepository).findByLeidaFalseOrderByFechaDesc();
+        verify(notificacionRepository, org.mockito.Mockito.times(2)).save(any());
     }
 
     @Test

@@ -761,7 +761,59 @@
 
   function toggleNotifPanel() {
     const panel = document.getElementById('gc-notif-panel');
-    if (panel) panel.classList.toggle('gc-notif-open');
+    if (panel) {
+      const abierto = panel.classList.contains('gc-notif-open');
+      panel.classList.toggle('gc-notif-open');
+      if (!abierto) cargarNotificaciones();
+    }
+  }
+
+  function cargarNotificaciones() {
+    const list = document.querySelector('#gc-notif-panel .gc-notif-list');
+    const badge = document.getElementById('gc-notif-badge');
+    if (!list) return;
+
+    fetch('/notificaciones', { credentials: 'same-origin' })
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(res => {
+        const notifs = res.notificaciones || [];
+        const total = res.total || 0;
+
+        if (badge) {
+          badge.textContent = total;
+          badge.style.display = total > 0 ? 'flex' : 'none';
+        }
+
+        if (notifs.length === 0) {
+          list.innerHTML = '<div style="padding:16px; text-align:center; font-size:12px; color:#94A3B8;">No hay notificaciones pendientes</div>';
+          return;
+        }
+
+        list.innerHTML = notifs.map(n => `
+          <div class="gc-notif-item ${n.leida ? 'gc-notif-leida' : 'gc-notif-no-leida'}" data-id="${n.id}">
+            <div style="flex:1; padding:10px 14px; border-bottom:1px solid #f1f5f9;">
+              <div style="font-size:12px; color:#0f172a;">${n.mensaje}</div>
+              <div style="font-size:10px; color:#94a3b8; margin-top:2px;">${n.fecha ? new Date(n.fecha).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}</div>
+            </div>
+            ${n.leida ? '' : '<button class="gc-notif-marcar" onclick="marcarNotificacion(' + n.id + ')" title="Marcar como leída">✓</button>'}
+          </div>
+        `).join('');
+      })
+      .catch(err => console.error('Error cargando notificaciones:', err));
+  }
+
+  function marcarNotificacion(id) {
+    fetch('/notificaciones/' + id + '/leer', { method: 'POST', credentials: 'same-origin' })
+      .then(r => r.json())
+      .then(() => cargarNotificaciones())
+      .catch(err => console.error('Error marcando notificación:', err));
+  }
+
+  function marcarTodasNotificaciones() {
+    fetch('/notificaciones/leer-todas', { method: 'POST', credentials: 'same-origin' })
+      .then(r => r.json())
+      .then(() => cargarNotificaciones())
+      .catch(err => console.error('Error marcando notificaciones:', err));
   }
 </script>
 

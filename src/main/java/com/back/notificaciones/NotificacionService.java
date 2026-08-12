@@ -59,11 +59,7 @@ public class NotificacionService {
 
     public void marcarLeida(Long id, boolean esCandidato, Long candidatoId) {
         notificacionRepository.findById(id).ifPresent(n -> {
-            if (esCandidato) {
-                if (n.getCandidatoId() == null || !n.getCandidatoId().equals(candidatoId)) {
-                    return;
-                }
-            } else if (n.getCandidatoId() != null) {
+            if (esCandidato && (n.getCandidatoId() == null || !n.getCandidatoId().equals(candidatoId))) {
                 return;
             }
             n.setLeida(true);
@@ -74,7 +70,7 @@ public class NotificacionService {
     public void marcarTodasLeidas(boolean esCandidato, Long candidatoId) {
         List<Notificacion> noLeidas = esCandidato
             ? notificacionRepository.findByLeidaFalseAndCandidatoIdOrderByFechaDesc(candidatoId)
-            : notificacionRepository.findByLeidaFalseAndCandidatoIdIsNullOrderByFechaDesc();
+            : notificacionRepository.findByLeidaFalseOrderByFechaDesc();
         for (Notificacion n : noLeidas) {
             n.setLeida(true);
             notificacionRepository.save(n);
