@@ -22,6 +22,7 @@ public class CandidatoRegistrationListener {
 
     private final CandidatoRepository candidatoRepository;
     private final FilesServices filesServices;
+    private final com.back.shared.HistorialService historialService;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
@@ -37,8 +38,12 @@ public class CandidatoRegistrationListener {
             candidato.setId(event.usuarioId());
             candidato.setUsername(event.username());
             candidato.setApellido(event.apellido());
+            candidato.setEstado("Registrado");
+            candidato.setUltimaActualizacion(java.time.LocalDateTime.now());
             candidato.setRrhhEmail(event.rrhhEmail());
             candidatoRepository.save(candidato);
+
+            historialService.registrarCambio(event.usuarioId(), "Nuevo Registro", "Registrado", "Sistema");
 
             String nombreCompleto = (event.username() + " " + (event.apellido() != null ? event.apellido() : "")).trim();
             filesServices.asegurarCarpetaCandidato("Candidatos/" + nombreCompleto, nombreCompleto, event.email());

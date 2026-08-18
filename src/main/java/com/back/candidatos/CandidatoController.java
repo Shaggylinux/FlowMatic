@@ -43,6 +43,7 @@ public class CandidatoController {
     private final ExcelService excelService;
     private final CvService cvService;
     private final NotificacionService notificacionService;
+    private final com.back.shared.HistorialService historialService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping
@@ -176,7 +177,7 @@ public class CandidatoController {
 
     @PostMapping("/{id}/estado")
     @ResponseBody
-    public ResponseEntity<?> actualizarEstado(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<?> actualizarEstado(@PathVariable Long id, @RequestBody Map<String, String> body, java.security.Principal principal) {
         Candidato candidato = candidatoRepository.findById(id).orElse(null);
         if (candidato == null) {
             return ResponseEntity.notFound().build();
@@ -195,6 +196,9 @@ public class CandidatoController {
         candidatoRepository.save(candidato);
 
         if (estadoAnterior == null || !estadoAnterior.equals(estado)) {
+            String responsable = principal != null ? principal.getName() : "RRHH";
+            historialService.registrarCambio(id, estadoAnterior, estado, responsable);
+
             String nombre = candidato.getUsername() + " "
                     + (candidato.getApellido() != null ? candidato.getApellido() : "");
             notificacionService.crear("ESTADO",
@@ -203,6 +207,12 @@ public class CandidatoController {
         }
 
         return ResponseEntity.ok(new EstadoResponseDTO(true, estado));
+    }
+
+    @GetMapping("/{id}/historial")
+    @ResponseBody
+    public ResponseEntity<List<com.back.shared.Historial>> obtenerHistorialCandidato(@PathVariable Long id) {
+        return ResponseEntity.ok(historialService.obtenerHistorialPorCandidato(id));
     }
 
     @PostMapping("/{id}/editar")

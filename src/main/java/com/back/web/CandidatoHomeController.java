@@ -31,6 +31,7 @@ public class CandidatoHomeController {
     private final EventoRepository eventoRepository;
     private final ArchivosRepository archivosRepository;
     private final NotificacionRepository notificacionRepository;
+    private final com.back.shared.HistorialService historialService;
 
     @GetMapping("/candidato/home")
     public String vistaCandidato(Authentication auth, Model model) {
@@ -147,6 +148,11 @@ public class CandidatoHomeController {
         model.addAttribute("notificacionesNoLeidas", notificacionesNoLeidas);
         model.addAttribute("stepIndex", stepIndex);
         model.addAttribute("procesoProgresoPct", porcentaje);
+        List<com.back.shared.Historial> historialProceso = candidatoId != null
+                ? historialService.obtenerHistorialPorCandidato(candidatoId)
+                : Collections.emptyList();
+
+        model.addAttribute("historialProceso", historialProceso);
         model.addAttribute("ultimaActualizacionFecha", ultimaActualizacionFecha);
         model.addAttribute("ultimaActualizacionMensaje", ultimaActualizacionMensaje);
 

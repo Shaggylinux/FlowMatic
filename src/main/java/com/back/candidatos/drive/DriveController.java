@@ -45,6 +45,7 @@ public class DriveController {
     private final CandidatoRepository candidatoRepository;
     private final FilesServices filesServices;
     private final NotificacionService notificacionService;
+    private final com.back.shared.HistorialService historialService;
 
     @GetMapping
     public String mostrarPagina(@RequestParam(name = "folder", required = false, defaultValue = "") String folder,
@@ -738,6 +739,9 @@ public class DriveController {
         candidatoRepository.save(candidato);
 
         if (estadoAnterior == null || !estadoAnterior.equals(estado)) {
+            String responsable = principal != null ? principal.getName() : "RRHH";
+            historialService.registrarCambio(id, estadoAnterior, estado, responsable);
+
             String nombre = candidato.getUsername() + " "
                     + (candidato.getApellido() != null ? candidato.getApellido() : "");
             notificacionService.crear("ESTADO",

@@ -574,11 +574,23 @@
       <h3 class="cand-modal-title">Historial del Proceso</h3>
       <button class="cand-modal-close" onclick="cerrarModalHistorial()">&times;</button>
     </div>
-    <div style="display: flex; flex-direction: column; gap: 12px;">
-      <div style="padding: 12px; border-left: 3px solid #0D9488; background: #F8FAFC; border-radius: 0 8px 8px 0;">
-        <div style="font-size: 13px; font-weight: 600; color: #0F172A;" th:text="${ultimaActualizacionFecha != null ? ultimaActualizacionFecha : 'Fecha actual'}">Fecha</div>
-        <div style="font-size: 12px; color: #64748B; margin-top: 2px;" th:text="${ultimaActualizacionMensaje != null ? ultimaActualizacionMensaje : 'Expediente actualizado'}">Expediente actualizado</div>
-      </div>
+    <div style="display: flex; flex-direction: column; gap: 12px; max-height: 350px; overflow-y: auto;">
+      <th:block th:if="${historialProceso != null and not #lists.isEmpty(historialProceso)}">
+        <div th:each="h : ${historialProceso}" style="padding: 12px; border-left: 3px solid #0D9488; background: #F8FAFC; border-radius: 0 8px 8px 0;">
+          <div style="font-size: 13px; font-weight: 600; color: #0F172A;" th:text="${h.fecha != null ? #temporals.format(h.fecha, 'dd MMM yyyy HH:mm') : 'Fecha actual'}">Fecha</div>
+          <div style="font-size: 12px; color: #334155; margin-top: 2px;">
+            <span style="font-weight: 600;" th:text="${h.estadoNuevo}">Estado</span>
+            <span style="color: #64748B;" th:if="${h.estadoAnterior != null}" th:text="' (Anterior: ' + ${h.estadoAnterior} + ')'"></span>
+            <span style="color: #94A3B8; font-size: 11px; display: block; margin-top: 2px;" th:text="'Responsable: ' + ${h.responsable != null ? h.responsable : 'Sistema'}"></span>
+          </div>
+        </div>
+      </th:block>
+      <th:block th:if="${historialProceso == null or #lists.isEmpty(historialProceso)}">
+        <div style="padding: 12px; border-left: 3px solid #0D9488; background: #F8FAFC; border-radius: 0 8px 8px 0;">
+          <div style="font-size: 13px; font-weight: 600; color: #0F172A;" th:text="${ultimaActualizacionFecha != null ? ultimaActualizacionFecha : 'Fecha actual'}">Fecha</div>
+          <div style="font-size: 12px; color: #64748B; margin-top: 2px;" th:text="${ultimaActualizacionMensaje != null ? ultimaActualizacionMensaje : 'Expediente actualizado'}">Expediente actualizado</div>
+        </div>
+      </th:block>
     </div>
     <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
       <button class="btn btn-secondary" onclick="cerrarModalHistorial()">Cerrar</button>
