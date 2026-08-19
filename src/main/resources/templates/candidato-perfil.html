@@ -209,7 +209,10 @@
                 <div class="cand-field-group">
                   <label class="cand-field-label">Número de documento</label>
                   <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoNumDoc) ? candidatoNumDoc : 'Sin registrar'}">Número doc</div>
-                  <input type="text" class="cand-field-input field-edit" id="inputNumDoc" th:value="${candidatoNumDoc}" style="display:none;">
+                  <input type="text" class="cand-field-input field-edit" id="inputNumDoc" th:value="${candidatoNumDoc}"
+                         maxlength="10" pattern="[0-9]{1,10}" title="El documento debe contener solo números (máximo 10 dígitos)" inputmode="numeric"
+                         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                         placeholder="Máx. 10 dígitos" style="display:none;">
                 </div>
               </div>
 
@@ -279,7 +282,10 @@
                 <div class="cand-field-group">
                   <label class="cand-field-label">Teléfono móvil</label>
                   <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoTelefono) ? candidatoTelefono : 'Sin registrar'}">Móvil</div>
-                  <input type="text" class="cand-field-input field-edit" id="inputTelefono" th:value="${candidatoTelefono}" style="display:none;">
+                  <input type="tel" class="cand-field-input field-edit" id="inputTelefono" th:value="${candidatoTelefono}"
+                         maxlength="10" minlength="10" pattern="[0-9]{10}" title="El teléfono móvil debe contener 10 dígitos" inputmode="numeric"
+                         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                         placeholder="Ej: 3001234567" style="display:none;">
                 </div>
 
                 <div class="cand-field-group">

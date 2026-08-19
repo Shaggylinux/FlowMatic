@@ -77,20 +77,20 @@
 
                         <!-- Teléfono -->
                         <div class="col-md-6 form-group">
-                            <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Tel&eacute;fono</label>
-                            <input type="tel" name="telefono" class="form-input" maxlength="20"
-                                   pattern="[0-9]+" title="El teléfono debe contener solo números"
+                            <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Teléfono</label>
+                            <input type="tel" name="telefono" class="form-input" maxlength="10" minlength="10"
+                                   pattern="[0-9]{10}" title="El teléfono debe contener 10 dígitos (número colombiano)"
                                    inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                   placeholder="Número de teléfono">
+                                   placeholder="Ej: 3001234567">
                         </div>
 
                         <!-- Documento -->
                         <div class="col-md-6 form-group">
                             <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Documento</label>
-                            <input type="text" name="documento" class="form-input" maxlength="20"
-                                   pattern="[0-9]+" title="El documento debe contener solo números"
+                            <input type="text" name="documento" class="form-input" maxlength="10"
+                                   pattern="[0-9]{1,10}" title="El documento debe contener solo números (máximo 10 dígitos)"
                                    inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                   placeholder="Número de documento">
+                                   placeholder="Número de documento (máx. 10)">
                         </div>
 
                         <!-- Cargo -->

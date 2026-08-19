@@ -239,6 +239,7 @@ public class AdminController {
         model.addAttribute("errorDocumentoInvalido", "documento_invalido".equals(error));
         model.addAttribute("errorCargoInvalido", "cargo_invalido".equals(error));
         model.addAttribute("errorTelefonoInvalido", "telefono_invalido".equals(error));
+        model.addAttribute("errorGeneral", "error_general".equals(error));
 
         return "admin";
     }
@@ -309,11 +310,11 @@ public class AdminController {
         if (confirmarClave != null && !confirmarClave.isBlank() && !nuevoRRHH.getClave().equals(confirmarClave)) {
             return "redirect:/admin?error=clave_no_coincide";
         }
-        if (telefono != null && !telefono.isBlank() && !telefono.matches("^[0-9]+$")) {
+        if (telefono != null && !telefono.isBlank() && (!telefono.matches("^[0-9]+$") || telefono.length() != 10)) {
             return "redirect:/admin?error=telefono_invalido";
         }
 
-        if (documento != null && !documento.isBlank() && !documento.matches("^[0-9]+$")) {
+        if (documento != null && !documento.isBlank() && (!documento.matches("^[0-9]+$") || documento.length() > 10)) {
             return "redirect:/admin?error=documento_invalido";
         }
 
@@ -336,16 +337,17 @@ public class AdminController {
 
         try {
             usuarioService.registrarUsuario(dto);
+            auditoriaService.registrar("CREACIÓN",
+                "Se creó el usuario RRHH " + username + " " + apellido,
+                "Administrador", "USUARIO");
+            return "redirect:/admin?pendiente";
         } catch (UsuarioDuplicadoException e) {
             return "redirect:/admin?error=duplicado";
         } catch (ClaveCortaException e) {
             return "redirect:/admin?error=clave_corta";
+        } catch (Exception e) {
+            return "redirect:/admin?error=error_general";
         }
-
-        auditoriaService.registrar("CREACI\u00d3N",
-            "Se cre\u00f3 el usuario RRHH " + username + " " + apellido,
-            "Administrador", "USUARIO");
-        return "redirect:/admin?pendiente";
     }
 
     @GetMapping("/exportar")

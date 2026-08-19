@@ -200,7 +200,11 @@ public class PerfilCandidatoController {
             }
             if (dto.getApellido() != null) c.setApellido(dto.getApellido());
             if (dto.getTipoDocumento() != null) c.setTipoDocumento(dto.getTipoDocumento());
-            if (dto.getNumeroDocumento() != null) c.setNumeroDocumento(dto.getNumeroDocumento());
+            if (dto.getNumeroDocumento() != null) {
+                String doc = dto.getNumeroDocumento().replaceAll("[^0-9]", "");
+                if (doc.length() > 10) doc = doc.substring(0, 10);
+                c.setNumeroDocumento(doc);
+            }
             if (dto.getGenero() != null) c.setGenero(dto.getGenero());
             if (dto.getEstadoCivil() != null) c.setEstadoCivil(dto.getEstadoCivil());
             if (dto.getFechaNacimiento() != null && !dto.getFechaNacimiento().isBlank()) {
@@ -211,7 +215,11 @@ public class PerfilCandidatoController {
                 }
             }
             if (dto.getNacionalidad() != null) c.setNacionalidad(dto.getNacionalidad());
-            if (dto.getTelefono() != null) c.setTelefono(dto.getTelefono());
+            if (dto.getTelefono() != null) {
+                String tel = dto.getTelefono().replaceAll("[^0-9]", "");
+                if (tel.length() > 10) tel = tel.substring(0, 10);
+                c.setTelefono(tel);
+            }
             if (dto.getTelefonoFijo() != null) c.setTelefonoFijo(dto.getTelefonoFijo());
             if (dto.getDireccion() != null) c.setDireccion(dto.getDireccion());
             if (dto.getSobreMi() != null) c.setSobreMi(dto.getSobreMi());

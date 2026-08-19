@@ -151,21 +151,39 @@ function guardarRRHH() {
 
 function toggleBloqueoRRHH(id) {
     if(confirm('¿Estás seguro de que deseas modificar el estado de bloqueo de este usuario?')) {
-        fetch(`/admin/api/rrhh/${id}/toggle-bloqueo`, { method: 'PUT' })
-        .then(r => { if(r.ok) window.location.reload(); });
+        var csrfToken = (window.getCsrfToken && window.getCsrfToken()) || (document.querySelector('meta[name="_csrf"]')?.content);
+        var headers = { 'X-Requested-With': 'XMLHttpRequest' };
+        if (csrfToken) headers['X-CSRF-TOKEN'] = csrfToken;
+
+        fetch(`/admin/api/rrhh/${id}/toggle-bloqueo`, { method: 'PUT', headers: headers })
+        .then(async r => {
+            if(r.ok) {
+                window.location.reload();
+            } else {
+                var err = await r.json().catch(() => ({}));
+                alert(err.error || 'Error al cambiar estado de bloqueo');
+            }
+        })
+        .catch(e => alert('Error de red: ' + e));
     }
 }
 
 function eliminarRRHH(id) {
     if(confirm('¿Seguro que deseas ELIMINAR permanentemente a este usuario?')) {
-        fetch(`/admin/api/rrhh/${id}`, { method: 'DELETE' })
-        .then(r => {
+        var csrfToken = (window.getCsrfToken && window.getCsrfToken()) || (document.querySelector('meta[name="_csrf"]')?.content);
+        var headers = { 'X-Requested-With': 'XMLHttpRequest' };
+        if (csrfToken) headers['X-CSRF-TOKEN'] = csrfToken;
+
+        fetch(`/admin/api/rrhh/${id}`, { method: 'DELETE', headers: headers })
+        .then(async r => {
             if(r.ok) {
                 mostrarToastAdmin('Usuario eliminado', true);
                 setTimeout(function () { window.location.reload(); }, 1200);
             } else {
-                alert('Error al eliminar el usuario');
+                var err = await r.json().catch(() => ({}));
+                alert(err.error || 'Error al eliminar el usuario');
             }
-        });
+        })
+        .catch(e => alert('Error de conexión: ' + e));
     }
 }

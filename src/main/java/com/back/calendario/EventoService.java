@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.context.event.EventListener;
 import com.back.shared.event.CandidatoEliminadoEvent;
+import com.back.shared.event.RRHHEliminadoEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -157,5 +158,10 @@ public class EventoService {
     @EventListener
     public void onCandidatoEliminado(CandidatoEliminadoEvent event) {
         eventoRepository.deleteByCandidatoId(event.candidatoId());
+    }
+
+    @EventListener
+    public void onRRHHEliminado(RRHHEliminadoEvent event) {
+        eventoRepository.deleteByRrhhId(event.rrhhId());
     }
 }

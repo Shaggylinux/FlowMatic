@@ -21,7 +21,11 @@
     </div>
     <div th:if="${errorTelefonoInvalido}" class="cfg-toast cfg-toast-error">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-        El tel&eacute;fono debe contener solo n&uacute;meros
+        El teléfono debe contener 10 dígitos numéricos
+    </div>
+    <div th:if="${errorGeneral}" class="cfg-toast cfg-toast-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        Ocurrió un error inesperado al procesar el registro
     </div>
     <header class="fm-topbar" style="background:transparent;position:static;padding:8px 0;margin-bottom:24px;">
       <div style="display:flex; align-items:center; gap: 12px;">
@@ -312,16 +316,16 @@
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Teléfono</label>
                   <input type="tel" class="form-control" id="rrhhTelefono" name="telefono"
-                         pattern="[0-9]+" title="El teléfono debe contener solo números" inputmode="numeric"
+                         maxlength="10" minlength="10" pattern="[0-9]{10}" title="El teléfono debe contener 10 dígitos (número colombiano)" inputmode="numeric"
                          oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                         style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="Número de teléfono">
+                         style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="Ej: 3001234567">
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Documento</label>
                   <input type="text" class="form-control" id="rrhhDocumento" name="documento"
-                         pattern="[0-9]+" title="El documento debe contener solo números" inputmode="numeric"
+                         maxlength="10" pattern="[0-9]{1,10}" title="El documento debe contener solo números (máximo 10 dígitos)" inputmode="numeric"
                          oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                         style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                         style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="Máx. 10 dígitos">
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Cargo</label>

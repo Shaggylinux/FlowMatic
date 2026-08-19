@@ -19,6 +19,8 @@ public class AdminRRHHRestController {
     private final UsuarioRepository usuarioRepository;
     private final RRHHRepository rrhhRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuditoriaService auditoriaService;
+    private final org.springframework.context.ApplicationEventPublisher eventPublisher;
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioRRHHDTO> getUsuarioRRHH(@PathVariable Long id) {
@@ -73,15 +75,15 @@ public class AdminRRHHRestController {
             }
 
             if (request.getTelefono() != null && !request.getTelefono().isBlank()
-                    && !request.getTelefono().matches("^[0-9]+$")) {
+                    && (!request.getTelefono().matches("^[0-9]+$") || request.getTelefono().length() != 10)) {
                 return ResponseEntity.badRequest()
-                        .body(Map.of("error", "El teléfono debe contener solo números"));
+                        .body(Map.of("error", "El teléfono debe contener 10 dígitos numéricos"));
             }
 
             if (request.getDocumento() != null && !request.getDocumento().isBlank()
-                    && !request.getDocumento().matches("^[0-9]+$")) {
+                    && (!request.getDocumento().matches("^[0-9]+$") || request.getDocumento().length() > 10)) {
                 return ResponseEntity.badRequest()
-                        .body(Map.of("error", "El documento debe contener solo números"));
+                        .body(Map.of("error", "El documento debe contener solo números y máximo 10 dígitos"));
             }
 
             if (request.getCargo() != null && !request.getCargo().isBlank()
@@ -121,9 +123,25 @@ public class AdminRRHHRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUsuario(@PathVariable Long id) {
-        rrhhRepository.deleteById(id);
-        usuarioRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+    @Transactional
+    public ResponseEntity<?> deleteUsuario(@PathVariable Long id, java.security.Principal principal) {
+        try {
+            Usuario u = usuarioRepository.findById(id).orElse(null);
+            if (u == null) {
+                return ResponseEntity.notFound().build();
+            }
+            String email = u.getEmail();
+            eventPublisher.publishEvent(new com.back.shared.event.RRHHEliminadoEvent(id));
+            rrhhRepository.deleteById(id);
+            usuarioRepository.delete(u);
+
+            String actor = principal != null ? principal.getName() : "Administrador";
+            auditoriaService.registrar("ELIMINACIÓN", "Usuario RRHH eliminado: " + email, actor, "SEGURIDAD");
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("error", "Error al eliminar el usuario: " + e.getMessage()));
+        }
     }
 }
