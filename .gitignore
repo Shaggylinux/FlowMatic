@@ -55,3 +55,9 @@ superfolder/
 ### Spring Boot ###
 *.pid
 heapdump.*.hprof
+
+### AI / Agent instructions ###
+[Cc][Ll][Aa][Uu][Dd][Ee].md
+claude.md
+CLAUDE.md
+
