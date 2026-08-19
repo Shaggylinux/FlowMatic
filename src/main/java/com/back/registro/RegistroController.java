@@ -69,6 +69,9 @@ public class RegistroController {
     } catch (ClaveCortaException e) {
         model.addAttribute("errorClaveCorta", true);
         return "registro-candidato";
+    } catch (Exception e) {
+        model.addAttribute("errorGeneral", true);
+        return "registro-candidato";
     }
 
     if ("XMLHttpRequest".equals(requestedWith)) {
@@ -147,7 +150,9 @@ public class RegistroController {
         } catch (UsuarioDuplicadoException e) {
             return ResponseEntity.status(409).body("El usuario ya existe");
         } catch (ClaveCortaException e) {
-            return ResponseEntity.badRequest().body("La contrase\u00f1a debe tener m\u00ednimo 8 caracteres");
+            return ResponseEntity.badRequest().body("La contraseña debe tener mínimo 8 caracteres");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al procesar el registro");
         }
 
     return ResponseEntity.ok().build();

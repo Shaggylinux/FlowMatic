@@ -38,6 +38,9 @@
       <div th:if="${errorClaveNoCoincide}" class="alert alert-error">
         Las contraseñas no coinciden.
       </div>
+      <div th:if="${errorGeneral}" class="alert alert-error">
+        Ocurrió un error inesperado al procesar el registro. Inténtalo nuevamente.
+      </div>
 
       <form th:action="@{/registro/candidato}" th:object="${registro}" method="post" id="formRegistro">
 
