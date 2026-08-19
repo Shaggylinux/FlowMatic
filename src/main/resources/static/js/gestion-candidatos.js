@@ -308,6 +308,7 @@ function renderDrawer(c) {
             <button onclick="event.stopPropagation();closeDrawer();window.location.href='/calendario'">Agendar entrevista</button>
             <button onclick="event.stopPropagation();closeDrawer();abrirModalCompartir(${c.id}, '${c.email}', '${c.nombre.replace(/'/g, "\\'")}')">Compartir expediente</button>
             <button onclick="event.stopPropagation();closeDrawer();abrirPdfCV(${c.id})">Descargar CV</button>
+            <button onclick="event.stopPropagation();switchTab('actividad', ${c.id})">Ver historial de cambios</button>
             <div class="gc-dropdown-divider"></div>
             <button onclick="event.stopPropagation();eliminarCandidato(${c.id}, '${c.nombre.replace(/'/g, "\\'")}')" style="color:#DC2626;">Eliminar candidato</button>
           </div>
@@ -319,7 +320,7 @@ function renderDrawer(c) {
         <button class="gc-tab" onclick="switchTab('expediente', ${c.id})" data-tab="expediente">Expediente</button>
         <button class="gc-tab" onclick="switchTab('entrevistas', ${c.id})" data-tab="entrevistas">Entrevistas</button>
         <button class="gc-tab" onclick="switchTab('notas', ${c.id})" data-tab="notas">Notas</button>
-        <button class="gc-tab" onclick="switchTab('actividad', ${c.id})" data-tab="actividad">Actividad</button>
+        <button class="gc-tab" onclick="switchTab('actividad', ${c.id})" data-tab="actividad">Historial</button>
       </div>
 
       <div class="gc-tab-panel active" id="tab-info">
@@ -376,7 +377,10 @@ function renderDrawer(c) {
         </div>
 
         <div class="gc-info-section">
-          <div class="gc-info-section-title">Proceso</div>
+          <div class="gc-info-section-title" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>Proceso</span>
+            <button type="button" onclick="switchTab('actividad', ${c.id})" style="font-size:12px; color:#0D9488; background:none; border:none; cursor:pointer; font-weight:600; padding:0;">Ver historial &rarr;</button>
+          </div>
           <div class="gc-info-grid">
             <div class="gc-info-row">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -602,42 +606,53 @@ function cargarEventos(id) {
     });
 }
 
-// ── CARGAR ACTIVIDAD ────────────────────────
+// ── CARGAR ACTIVIDAD / HISTORIAL ────────────────
+function formatFechaHistorial(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  const fecha = d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+  const hora = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  return `${fecha}, ${hora}`;
+}
 
 function cargarActividad(id) {
   const list = $('#gc-timeline-actividad');
-  fetch(`/gestion-candidatos/${id}`, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-    .then(r => r.json())
-    .then(c => {
-      const items = [];
-      if (c.ultimaActualizacion) {
-        items.push(`
-          <div class="gc-timeline-item last">
+  list.innerHTML = '<div class="gc-event-no-data">Cargando historial...</div>';
+  
+  fetch(`/gestion-candidatos/${id}/historial`, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(historial => {
+      if (!historial || historial.length === 0) {
+        list.innerHTML = '<div class="gc-event-no-data">Sin historial de cambios de estado</div>';
+        return;
+      }
+      list.innerHTML = historial.map((h, i) => {
+        const estadoInfo = getEstadoInfo(h.estadoNuevo);
+        const fechaFormateada = formatFechaHistorial(h.fecha);
+        return `
+          <div class="gc-timeline-item ${i === historial.length - 1 ? 'last' : ''}">
             <div class="gc-timeline-line"></div>
-            <div class="gc-timeline-dot" style="background:#6366F1;"></div>
+            <div class="gc-timeline-dot" style="background:#0D9488;"></div>
             <div class="gc-timeline-content">
-              <div class="gc-timeline-title">Última actualización del perfil</div>
-              <div class="gc-timeline-date">${c.ultimaActualizacion}</div>
+              <div class="gc-timeline-title" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                <span style="font-weight:600; color:#0F172A; font-size:12px;">${h.estadoAnterior || 'Registro'}</span>
+                <span style="color:#94A3B8; font-size:12px;">&rarr;</span>
+                <span class="gc-badge gc-badge-${estadoInfo.badge}" style="font-size:11px; padding:1px 7px;">${h.estadoNuevo}</span>
+              </div>
+              <div class="gc-timeline-date" style="font-size:11px; color:#64748B; margin-top:3px;">
+                ${fechaFormateada} • <span style="color:#475569; font-weight:500;">${h.responsable || 'Sistema'}</span>
+              </div>
             </div>
           </div>
-        `);
-      }
-      if (c.estado) {
-        items.push(`
-          <div class="gc-timeline-item last">
-            <div class="gc-timeline-line"></div>
-            <div class="gc-timeline-dot" style="background:#22C55E;"></div>
-            <div class="gc-timeline-content">
-              <div class="gc-timeline-title">Estado actual: ${c.estado}</div>
-              <div class="gc-timeline-date">${c.ultimaActualizacion || ''}</div>
-            </div>
-          </div>
-        `);
-      }
-      list.innerHTML = items.length > 0 ? items.join('') : '<div class="gc-event-no-data">No hay actividad reciente</div>';
+        `;
+      }).join('');
     })
     .catch(() => {
-      list.innerHTML = '<div class="gc-event-no-data">Error al cargar actividad</div>';
+      list.innerHTML = '<div class="gc-event-no-data">No se pudo cargar el historial</div>';
     });
 }
 

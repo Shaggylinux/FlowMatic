@@ -583,6 +583,9 @@
 .fc .fc-daygrid-day-frame {
   cursor: pointer;
   min-height: 90px;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .fc .fc-daygrid-day-number {
@@ -594,6 +597,14 @@
 
 .fc .fc-daygrid-day-events {
   min-height: 40px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.fc .fc-daygrid-event-harness {
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .fc .fc-day-today {
@@ -629,6 +640,11 @@
   color: #0D9488;
   padding: 2px 8px;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
 }
 
 .fc .fc-daygrid-more-link:hover {
@@ -641,8 +657,23 @@
   font-size: 11px;
   cursor: pointer;
   border: none !important;
-  margin: 1px 4px !important;
+  margin: 1px 2px !important;
   font-weight: 500;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+  display: block !important;
+}
+
+.fc .fc-event-main {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .fc .fc-daygrid-event-dot {
@@ -652,6 +683,9 @@
 .fc .fc-daygrid-event .fc-event-title {
   font-weight: 500;
   padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .fc .fc-view-harness {
