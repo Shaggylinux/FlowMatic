@@ -85,6 +85,10 @@ document.addEventListener('click', function(e) {
 });
 
 function mostrarToastAdmin(mensaje, ok) {
+  if (typeof window.showToast === 'function') {
+    window.showToast(ok ? 'success' : 'error', mensaje, 4000);
+    return;
+  }
   var toast = document.createElement('div');
   toast.className = ok ? 'cfg-toast cfg-toast-ok' : 'cfg-toast cfg-toast-error';
   toast.style.position = 'fixed';

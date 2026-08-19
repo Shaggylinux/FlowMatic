@@ -149,6 +149,35 @@ body {
   justify-content: center;
 }
 
+/* Estado de carga de botones (Prevención de doble envío) */
+.btn.is-loading {
+  pointer-events: none;
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: fm-btn-spin 0.6s linear infinite;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.btn-secondary .btn-spinner,
+.btn-ghost .btn-spinner {
+  border-color: rgba(13, 148, 136, 0.2);
+  border-top-color: var(--fm-brand);
+}
+
+@keyframes fm-btn-spin {
+  to { transform: rotate(360deg); }
+}
+
 /* ── 3. FORMULARIOS ─────────────────────────── */
 
 .form-group {
@@ -271,6 +300,104 @@ body {
   background: var(--fm-warning-bg);
   color: var(--fm-warning-text);
   border-left: 4px solid var(--fm-warning);
+}
+
+/* ── 4.1 TOASTS FLOTANTES UNIFICADOS ─────────── */
+
+.fm-toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+  max-width: 380px;
+  width: calc(100% - 40px);
+}
+
+.fm-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--fm-surface);
+  color: var(--fm-text);
+  border: 1px solid var(--fm-border);
+  border-radius: var(--fm-radius-lg);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+  font-size: 13.5px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.fm-toast.fm-toast-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fm-toast.fm-toast-hiding {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.fm-toast-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fm-toast-message {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.fm-toast-close {
+  background: none;
+  border: none;
+  color: var(--fm-text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color var(--fm-transition);
+}
+
+.fm-toast-close:hover {
+  color: var(--fm-text);
+}
+
+.fm-toast-success {
+  border-left: 4px solid var(--fm-success);
+}
+.fm-toast-success .fm-toast-icon {
+  color: var(--fm-success);
+}
+
+.fm-toast-error {
+  border-left: 4px solid var(--fm-danger);
+}
+.fm-toast-error .fm-toast-icon {
+  color: var(--fm-danger);
+}
+
+.fm-toast-warning {
+  border-left: 4px solid var(--fm-warning);
+}
+.fm-toast-warning .fm-toast-icon {
+  color: var(--fm-warning);
+}
+
+.fm-toast-info {
+  border-left: 4px solid var(--fm-brand);
+}
+.fm-toast-info .fm-toast-icon {
+  color: var(--fm-brand);
 }
 
 /* ── 5. BADGES DE ESTADO Y ROL ──────────────── */
