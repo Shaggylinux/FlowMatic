@@ -46,25 +46,41 @@
                         </svg>
                         <span>Cambiar contrase&ntilde;a</span>
                     </div>
-                    <form th:action="@{/admin/cambiar-clave}" method="post" class="cfg-form">
+                    <form th:action="@{/admin/cambiar-clave}" method="post" class="cfg-form" id="formCambiarClaveAdmin">
                         <div class="cfg-form-group">
-                            <label class="cfg-form-label">Contrase&ntilde;a actual</label>
-                            <input type="password" name="claveActual" class="cfg-form-input" required minlength="8">
+                            <label class="cfg-form-label">Contraseña actual</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="adminClaveActual" name="claveActual" class="cfg-form-input" required minlength="8">
+                                <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('adminClaveActual', this)" aria-label="Mostrar u ocultar contraseña" title="Mostrar u ocultar contraseña">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
                         </div>
                         <div class="cfg-form-row">
                             <div class="cfg-form-group">
-                                <label class="cfg-form-label">Nueva contrase&ntilde;a</label>
-                                <input type="password" name="nuevaClave" class="cfg-form-input" required minlength="8"
-                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
-                                       title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
-                                       placeholder="Mínimo 8 (mayús, minús, num, símbolo)">
+                                <label class="cfg-form-label">Nueva contraseña</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="adminNuevaClave" name="nuevaClave" class="cfg-form-input" required minlength="8"
+                                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+                                           title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
+                                           placeholder="Mínimo 8 (mayús, minús, num, símbolo)">
+                                    <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('adminNuevaClave', this)" aria-label="Mostrar u ocultar contraseña" title="Mostrar u ocultar contraseña">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    </button>
+                                </div>
                             </div>
                             <div class="cfg-form-group">
-                                <label class="cfg-form-label">Confirmar contrase&ntilde;a</label>
-                                <input type="password" name="confirmarClave" class="cfg-form-input" required minlength="8">
+                                <label class="cfg-form-label">Confirmar contraseña</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="adminConfirmarClave" name="confirmarClave" class="cfg-form-input" required minlength="8" placeholder="Repite la nueva contraseña">
+                                    <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('adminConfirmarClave', this)" aria-label="Mostrar u ocultar contraseña" title="Mostrar u ocultar contraseña">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <button type="submit" class="cfg-btn">Actualizar contrase&ntilde;a</button>
+                        <span id="matchFeedbackAdminConfig" class="password-match-feedback" style="margin-bottom: 12px;"></span>
+                        <button type="submit" class="cfg-btn">Actualizar contraseña</button>
                     </form>
                 </div>
 
@@ -87,4 +103,10 @@
         </div>
     </div>
 
+<script th:src="@{/js/password-toggle.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initPasswordMatch('adminNuevaClave', 'adminConfirmarClave', 'matchFeedbackAdminConfig');
+    });
+</script>
 </div>

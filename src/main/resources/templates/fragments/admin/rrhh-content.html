@@ -302,7 +302,12 @@
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Contraseña <span id="pwdHint" style="font-size:10px; color:#94A3B8;">(déjalo vacío)</span></label>
-                  <input type="password" class="form-control" id="rrhhClave" name="clave" minlength="8" style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="Mínimo 8">
+                  <div class="password-input-wrapper">
+                    <input type="password" class="form-control" id="rrhhClave" name="clave" minlength="8" style="font-size: 13px; padding: 6px 10px; border-radius: 6px;" placeholder="Mínimo 8">
+                    <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('rrhhClave', this)" aria-label="Mostrar u ocultar contraseña" title="Mostrar u ocultar contraseña">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Teléfono</label>

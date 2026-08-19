@@ -92,12 +92,27 @@
             <label class="mr-label">Correo electr&oacute;nico</label>
             <input type="email" name="email" class="mr-input" required placeholder="correo@ejemplo.com">
           </div>
-          <div class="mr-group">
-            <label class="mr-label">Contrase&ntilde;a</label>
-            <input type="password" name="clave" class="mr-input" required minlength="8"
-                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
-                   title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
-                   placeholder="Ej: Flowmatic#2026">
+          <div class="mr-group" style="position: relative;">
+            <label class="mr-label">Contraseña</label>
+            <div style="position: relative; display: flex; align-items: center;">
+              <input type="password" id="modalClaveCand" name="clave" class="mr-input" required minlength="8"
+                     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+                     title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
+                     placeholder="Ej: Flowmatic#2026" style="padding-right: 32px;">
+              <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('modalClaveCand', this)" aria-label="Mostrar u ocultar contraseña" style="position:absolute; right:0; top:50%; transform:translateY(-50%); background:none; border:none; color:#94A3B8; cursor:pointer; padding:2px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="mr-group" style="position: relative;">
+            <label class="mr-label">Confirmar contraseña</label>
+            <div style="position: relative; display: flex; align-items: center;">
+              <input type="password" id="modalConfirmarClaveCand" name="confirmarClave" class="mr-input" required minlength="8"
+                     placeholder="Repite la contraseña" style="padding-right: 32px;">
+              <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('modalConfirmarClaveCand', this)" aria-label="Mostrar u ocultar contraseña" style="position:absolute; right:0; top:50%; transform:translateY(-50%); background:none; border:none; color:#94A3B8; cursor:pointer; padding:2px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
           </div>
           <input type="hidden" name="rol" value="ROLE_CANDIDATO">
         </div>
@@ -117,12 +132,19 @@
   </div>
 </div>
 
+<script th:src="@{/js/password-toggle.js}"></script>
 <script>
   function enviarRegistro(modalId, formId) {
     var modal = document.getElementById(modalId);
     var form = document.getElementById(formId);
     if (!modal || !form) return;
     var datos = Object.fromEntries(new FormData(form).entries());
+
+    if (datos.clave && datos.confirmarClave && datos.clave !== datos.confirmarClave) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+
     fetch('/registro/candidato/api', {
       method: 'POST',
       credentials: 'same-origin',
@@ -132,7 +154,7 @@
       if (res.ok) {
         modal.style.display = 'none';
         form.reset();
-        alert('Candidato registrado. Se envi\u00f3 un correo de activaci\u00f3n.');
+        alert('Candidato registrado. Se envió un correo de activación.');
         location.reload();
       } else {
         return res.text().then(function(text) {

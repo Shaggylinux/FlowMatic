@@ -194,6 +194,57 @@ body {
   margin-top: 2px;
 }
 
+/* ── Password Input Wrapper & Toggle ── */
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper .form-input,
+.password-input-wrapper .cfg-form-input,
+.password-input-wrapper .form-control {
+  width: 100%;
+  padding-right: 40px !important;
+}
+
+.btn-toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #94A3B8;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+  z-index: 2;
+}
+
+.btn-toggle-password:hover {
+  color: var(--fm-brand, #0D9488);
+}
+
+.password-match-feedback {
+  font-size: 11.5px;
+  display: block;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.password-match-ok {
+  color: var(--fm-success, #16A34A);
+}
+
+.password-match-error {
+  color: var(--fm-danger, #DC2626);
+}
+
 /* ── 4. ALERTAS Y MENSAJES ──────────────────── */
 
 .alert {

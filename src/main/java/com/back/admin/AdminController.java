@@ -234,6 +234,7 @@ public class AdminController {
         model.addAttribute("estado", estado);
         model.addAttribute("pendiente", pendiente != null);
         model.addAttribute("errorDuplicado", "duplicado".equals(error));
+        model.addAttribute("errorClaveNoCoincide", "clave_no_coincide".equals(error));
         model.addAttribute("errorClaveCorta", "clave_corta".equals(error));
         model.addAttribute("errorDocumentoInvalido", "documento_invalido".equals(error));
         model.addAttribute("errorCargoInvalido", "cargo_invalido".equals(error));
@@ -301,9 +302,13 @@ public class AdminController {
     public String crearRRHH(@ModelAttribute Usuario nuevoRRHH,
                             @RequestParam String username,
                             @RequestParam String apellido,
+                            @RequestParam(required = false) String confirmarClave,
                             @RequestParam(required = false) String telefono,
                             @RequestParam(required = false) String documento,
                             @RequestParam(required = false) String cargo) {
+        if (confirmarClave != null && !confirmarClave.isBlank() && !nuevoRRHH.getClave().equals(confirmarClave)) {
+            return "redirect:/admin?error=clave_no_coincide";
+        }
         if (telefono != null && !telefono.isBlank() && !telefono.matches("^[0-9]+$")) {
             return "redirect:/admin?error=telefono_invalido";
         }

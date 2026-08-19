@@ -41,6 +41,11 @@ public class RegistroController {
         @RequestHeader(value = "X-Requested-With", required = false) String requestedWith,
         java.security.Principal principal) {
 
+    if (registro.getConfirmarClave() != null && !registro.getClave().equals(registro.getConfirmarClave())) {
+        model.addAttribute("errorClaveNoCoincide", true);
+        return "registro-candidato";
+    }
+
     if (resultado.hasErrors()) {
         return "registro-candidato";
     }
@@ -118,8 +123,12 @@ public class RegistroController {
     @PostMapping("/api")
     @ResponseBody
     public ResponseEntity<?> registrarDesdeModal(@Valid @RequestBody RegistroRequest registro, BindingResult resultado, java.security.Principal principal) {
+        if (registro.getConfirmarClave() != null && !registro.getClave().equals(registro.getConfirmarClave())) {
+            return ResponseEntity.badRequest().body("Las contraseñas no coinciden");
+        }
+
         if (resultado.hasErrors()) {
-            return ResponseEntity.badRequest().body("Datos inv\u00e1lidos");
+            return ResponseEntity.badRequest().body("Datos inválidos");
         }
 
         String rrhhEmail = (principal != null) ? principal.getName() : null;

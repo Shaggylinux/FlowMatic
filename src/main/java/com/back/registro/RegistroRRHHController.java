@@ -32,6 +32,11 @@ public class RegistroRRHHController {
         BindingResult resultado,
         Model model) {
 
+        if (registro.getConfirmarClave() != null && !registro.getClave().equals(registro.getConfirmarClave())) {
+            model.addAttribute("errorClaveNoCoincide", true);
+            return "registro-rrhh";
+        }
+
         if (resultado.hasErrors()) {
             return "registro-rrhh";
         }

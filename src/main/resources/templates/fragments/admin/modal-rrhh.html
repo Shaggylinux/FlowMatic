@@ -48,12 +48,31 @@
 
                         <!-- Contraseña -->
                         <div class="col-md-6 form-group">
-                            <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Contrase&ntilde;a</label>
-                            <input type="password" name="clave" class="form-input" required
-                                   minlength="8" maxlength="100"
-                                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
-                                   title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
-                                   placeholder="Ej: Flowmatic#2026">
+                            <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Contraseña</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="adminClaveRRHH" name="clave" class="form-input" required
+                                       minlength="8" maxlength="100"
+                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+                                       title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
+                                       placeholder="Ej: Flowmatic#2026">
+                                <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('adminClaveRRHH', this)" aria-label="Mostrar u ocultar contraseña" title="Mostrar u ocultar contraseña">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Confirmar Contraseña -->
+                        <div class="col-md-6 form-group">
+                            <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Confirmar contraseña</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="adminConfirmarClaveRRHH" name="confirmarClave" class="form-input" required
+                                       minlength="8" maxlength="100"
+                                       placeholder="Repite la contraseña">
+                                <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('adminConfirmarClaveRRHH', this)" aria-label="Mostrar u ocultar contraseña" title="Mostrar u ocultar contraseña">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+                            <span id="matchFeedbackAdminRRHH" class="password-match-feedback"></span>
                         </div>
 
                         <!-- Teléfono -->
@@ -96,4 +115,10 @@
         </div>
     </div>
 
+<script th:src="@{/js/password-toggle.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initPasswordMatch('adminClaveRRHH', 'adminConfirmarClaveRRHH', 'matchFeedbackAdminRRHH');
+    });
+</script>
 </div>

@@ -17,8 +17,10 @@ public class RegistroRequest {
     @Email(message = "Ingresa un correo v\u00e1lido")
     private String email;
 
-    @NotBlank(message = "La contrase\u00f1a es obligatoria")
+    @NotBlank(message = "La contraseña es obligatoria")
     private String clave;
+
+    private String confirmarClave;
 
     private String cargo;
     private String ciudad;

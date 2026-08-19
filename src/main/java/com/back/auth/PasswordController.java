@@ -49,7 +49,14 @@ public class PasswordController {
     @PostMapping("/reset-password")
     public String cambiarPassword(@RequestParam String token,
             @RequestParam String password,
+            @RequestParam(required = false) String confirmPassword,
             Model model) {
+
+        if (confirmPassword != null && !confirmPassword.isBlank() && !password.equals(confirmPassword)) {
+            model.addAttribute("token", token);
+            model.addAttribute("errorPasswordMatch", true);
+            return "reset-password";
+        }
 
         if (!com.back.util.ValidadorClave.esClaveSegura(password)) {
             model.addAttribute("token", token);

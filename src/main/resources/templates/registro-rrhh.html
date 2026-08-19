@@ -32,6 +32,7 @@
 
       <div th:if="${mensajeExito}" class="alert alert-success">Registro exitoso. Se ha enviado un correo de activación.</div>
       <div th:if="${errorDuplicado}" class="alert alert-error">El correo ya está registrado.</div>
+      <div th:if="${errorClaveNoCoincide}" class="alert alert-error">Las contraseñas no coinciden.</div>
       <div th:if="${errorClaveCorta}" class="alert alert-error">La contraseña debe tener mínimo 8 caracteres, mayúscula, minúscula, número y símbolo especial.</div>
 
       <form th:action="@{/registro/rrhh}" th:object="${registro}" method="post" id="formRegistroRRHH">
@@ -53,11 +54,28 @@
 
         <div class="form-group">
           <label class="form-label">Contraseña</label>
-          <input class="form-input" type="password" th:field="*{clave}" required minlength="8"
-                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
-                 title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
-                 placeholder="Ej: Flowmatic#2026"/>
+          <div class="password-input-wrapper">
+            <input class="form-input" type="password" id="claveRRHH" th:field="*{clave}" required minlength="8"
+                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+                   title="Mínimo 8 caracteres con al menos una mayúscula, una minúscula, un número y un carácter especial"
+                   placeholder="Ej: Flowmatic#2026"/>
+            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('claveRRHH', this)" aria-label="Mostrar u ocultar contraseña" title="Mostrar u ocultar contraseña">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
           <p style="font-size:11.5px; color:var(--fm-text-muted); margin-top:4px;">Debe incluir 8+ caracteres, mayúscula, minúscula, número y símbolo (ej: !@#$).</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confirmar contraseña</label>
+          <div class="password-input-wrapper">
+            <input class="form-input" type="password" id="confirmarClaveRRHH" th:field="*{confirmarClave}" required minlength="8"
+                   placeholder="Repite tu contraseña"/>
+            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('confirmarClaveRRHH', this)" aria-label="Mostrar u ocultar contraseña" title="Mostrar u ocultar contraseña">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <span id="matchFeedbackRRHH" class="password-match-feedback"></span>
         </div>
 
         <button type="submit" class="btn btn-primary btn-full">Registrar RRHH</button>
@@ -102,6 +120,10 @@
 
 </div>
 
+<script th:src="@{/js/password-toggle.js}"></script>
+<script>
+  initPasswordMatch('claveRRHH', 'confirmarClaveRRHH', 'matchFeedbackRRHH');
+</script>
 <script th:src="@{/js/csrf.js}"></script>
 <script th:src="@{/js/i18n.js}"></script>
 </body>
