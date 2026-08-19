@@ -21,15 +21,31 @@
       <span>FLOWMATIC</span>
     </a>
 
-    <nav class="home-navbar-nav">
+    <nav class="home-navbar-nav" id="homeNavbarNav">
       <a href="#features">Características</a>
       <a href="#pipeline">Pipeline</a>
       <a href="#contacto">Contacto</a>
     </nav>
 
     <div class="home-navbar-actions">
-      <a th:href="@{/login}" class="btn btn-primary btn-sm">Iniciar Sesión</a>
+      <a th:href="@{/login}" class="btn btn-primary btn-sm d-none-mobile">Iniciar Sesión</a>
+      <button type="button" class="home-mobile-toggle" id="homeMobileToggle" aria-label="Abrir menú de navegación" aria-expanded="false">
+        <svg class="icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div class="home-mobile-drawer" id="homeMobileDrawer">
+    <nav class="home-mobile-nav">
+      <a href="#features" class="home-mobile-link">Características</a>
+      <a href="#pipeline" class="home-mobile-link">Pipeline</a>
+      <a href="#contacto" class="home-mobile-link">Contacto</a>
+      <div class="home-mobile-cta">
+        <a th:href="@{/login}" class="btn btn-primary btn-full">Iniciar Sesión</a>
+      </div>
+    </nav>
   </div>
 </header>
 
@@ -242,5 +258,37 @@
 
 <script th:src="@{/js/csrf.js}"></script>
 <script th:src="@{/js/i18n.js}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggle = document.getElementById('homeMobileToggle');
+    const drawer = document.getElementById('homeMobileDrawer');
+    if (toggle && drawer) {
+      const iconMenu = toggle.querySelector('.icon-menu');
+      const iconClose = toggle.querySelector('.icon-close');
+
+      function toggleDrawer() {
+        const isOpen = drawer.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        if (iconMenu && iconClose) {
+          iconMenu.style.display = isOpen ? 'none' : 'block';
+          iconClose.style.display = isOpen ? 'block' : 'none';
+        }
+      }
+
+      toggle.addEventListener('click', toggleDrawer);
+
+      drawer.querySelectorAll('.home-mobile-link, .btn').forEach(function (link) {
+        link.addEventListener('click', function () {
+          drawer.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          if (iconMenu && iconClose) {
+            iconMenu.style.display = 'block';
+            iconClose.style.display = 'none';
+          }
+        });
+      });
+    }
+  });
+</script>
 </body>
 </html>
