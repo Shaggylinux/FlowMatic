@@ -741,9 +741,49 @@ function selectModalidad(btn) {
       inputEl.title = 'Debe ser un enlace que comience con http:// o https://';
     }
   }
+  var errEl = inputEl ? inputEl.parentNode.querySelector('.cal-error-inline') : null;
+  if (errEl) errEl.remove();
+  if (inputEl) inputEl.classList.remove('cal-input-error');
+}
+
+function limpiarErroresModal() {
+  document.querySelectorAll('#calEventoForm .cal-input-error').forEach(function(el) {
+    el.classList.remove('cal-input-error');
+  });
+  document.querySelectorAll('#calEventoForm .cal-error-inline').forEach(function(el) {
+    el.remove();
+  });
+}
+
+function marcarErrorCampo(inputId, mensaje) {
+  var input = document.getElementById(inputId);
+  if (!input) return;
+  input.classList.add('cal-input-error');
+  input.focus();
+
+  var parent = input.parentNode;
+  var existing = parent.querySelector('.cal-error-inline');
+  if (existing) existing.remove();
+
+  var err = document.createElement('div');
+  err.className = 'cal-error-inline';
+  err.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>' + mensaje + '</span>';
+  parent.appendChild(err);
+
+  var clearFn = function() {
+    input.classList.remove('cal-input-error');
+    err.remove();
+    input.removeEventListener('input', clearFn);
+    input.removeEventListener('change', clearFn);
+  };
+  input.addEventListener('input', clearFn);
+  input.addEventListener('change', clearFn);
+
+  mostrarToast(mensaje, 'warning');
 }
 
 function guardarEntrevista() {
+  limpiarErroresModal();
   var form = document.getElementById('calEventoForm');
   var candidatoId = (document.getElementById('calCandidato').value || '').trim();
   var vacanteVal = (document.getElementById('calVacante').value || '').trim();
@@ -756,80 +796,63 @@ function guardarEntrevista() {
   var obsVal = (document.getElementById('calObs').value || '').trim();
 
   if (!candidatoId) {
-    mostrarToast('Debes seleccionar un candidato para la entrevista', 'error');
-    document.getElementById('calCandidato').focus();
+    marcarErrorCampo('calCandidato', 'Debes seleccionar un candidato para la entrevista');
     return;
   }
 
   if (!vacanteVal || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$/.test(vacanteVal)) {
-    mostrarToast('La vacante es obligatoria y debe contener solo letras (de 2 a 100 caracteres)', 'error');
-    document.getElementById('calVacante').focus();
+    marcarErrorCampo('calVacante', 'La vacante es obligatoria y debe contener solo letras (2 a 100 caracteres)');
     return;
   }
 
   if (!tipoVal) {
-    mostrarToast('Debes seleccionar el tipo de entrevista', 'error');
-    document.getElementById('calTipo').focus();
+    marcarErrorCampo('calTipo', 'Debes seleccionar el tipo de entrevista');
     return;
   }
 
   if (!fechaVal) {
-    mostrarToast('Debes seleccionar la fecha de la entrevista', 'error');
-    document.getElementById('calFecha').focus();
+    marcarErrorCampo('calFecha', 'Debes seleccionar la fecha de la entrevista');
     return;
   }
 
   if (!horaVal) {
-    mostrarToast('Debes seleccionar la hora de la entrevista', 'error');
-    document.getElementById('calHora').focus();
+    marcarErrorCampo('calHora', 'Debes seleccionar la hora de la entrevista');
     return;
   }
 
-  if (!lugarVal) {
-    if (modalidadVal === 'PRESENCIAL') {
-      mostrarToast('Ingresa la dirección física o enlace de Google Maps', 'error');
-    } else {
-      mostrarToast('Ingresa el enlace de la reunión virtual', 'error');
-    }
-    document.getElementById('calLugar').focus();
+  if (!lugarVal || lugarVal.length < 3) {
+    marcarErrorCampo('calLugar', 'Ingresa la dirección física o el enlace de la reunión (mínimo 3 caracteres)');
     return;
   }
 
-  if (modalidadVal === 'PRESENCIAL') {
-    if (!/^https?:\/\/.+/i.test(lugarVal) && !/^[A-Za-záéíóúÁÉÍÓÚñÑ0-9\s#.,\-_/°]{3,200}$/.test(lugarVal)) {
-      mostrarToast('Ingresa una dirección física válida o un enlace de Google Maps', 'error');
-      document.getElementById('calLugar').focus();
-      return;
-    }
-  } else {
-    if (!/^https?:\/\/.+/i.test(lugarVal)) {
-      mostrarToast('El enlace de la reunión virtual debe comenzar con http:// o https://', 'error');
-      document.getElementById('calLugar').focus();
-      return;
-    }
+  // Si ingresó una dirección física evidente y no es URL, cambiar automáticamente a presencial
+  if (!/^https?:\/\/.+/i.test(lugarVal)) {
+    modalidadVal = 'PRESENCIAL';
+    document.getElementById('calModalidad').value = 'PRESENCIAL';
+    var btnPres = document.getElementById('btnModalidadPresencial');
+    if (btnPres) selectModalidad(btnPres);
   }
 
   if (!entrevistadorVal || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$/.test(entrevistadorVal)) {
-    mostrarToast('El nombre del entrevistador es obligatorio y solo debe contener letras (de 2 a 100 caracteres)', 'error');
-    document.getElementById('calEntrevistador').focus();
+    marcarErrorCampo('calEntrevistador', 'El nombre del entrevistador es obligatorio y solo debe contener letras');
     return;
   }
 
   if (!obsVal) {
-    mostrarToast('Las observaciones son obligatorias para agendar la entrevista', 'error');
-    document.getElementById('calObs').focus();
+    marcarErrorCampo('calObs', 'Las observaciones son obligatorias para agendar la entrevista');
     return;
   }
 
   if (obsVal.length > 500) {
-    mostrarToast('Las observaciones no pueden superar los 500 caracteres', 'error');
-    document.getElementById('calObs').focus();
+    marcarErrorCampo('calObs', 'Las observaciones no pueden superar los 500 caracteres');
     return;
   }
 
   var eventoId = document.getElementById('calEventoId').value;
   var isReprogram = eventoId ? true : false;
   var formData = new URLSearchParams(new FormData(form));
+  formData.set('modalidad', modalidadVal);
+
   var url = isReprogram ? '/calendario/actualizar/' + eventoId : '/calendario/crear';
   fetch(url, {
     method: 'POST',
@@ -842,25 +865,53 @@ function guardarEntrevista() {
       cerrarModalCrear();
       if (calendarInstance) calendarInstance.refetchEvents();
       if (isReprogram) {
-        mostrarToast('Entrevista reprogramada correctamente');
+        mostrarToast('Entrevista reprogramada correctamente', 'success');
       } else {
-        mostrarToast('Entrevista agendada correctamente');
+        mostrarToast('Entrevista agendada correctamente', 'success');
       }
       setTimeout(function() { location.reload(); }, 1200);
     } else {
-      mostrarToast(data.error || (isReprogram ? 'No se pudo reprogramar la entrevista' : 'No se pudo crear la entrevista'), 'error');
+      mostrarToast(data.error || (isReprogram ? 'No se pudo reprogramar la entrevista' : 'No se pudo crear la entrevista'), 'warning');
     }
   })
-  .catch(function(err) { mostrarToast('Error: ' + err.message, 'error'); });
+  .catch(function(err) { mostrarToast('Error de comunicación: ' + err.message, 'warning'); });
 }
 
-// ── TOAST ─────────────────────────────────────
+// ── NOTIFICACIONES CON DISEÑO ELEGANTE (SIN ROJO) ────────
 function mostrarToast(mensaje, tipo) {
-  var el = document.createElement('div');
-  el.textContent = mensaje;
-  el.style.cssText = 'position:fixed; top:20px; right:20px; z-index:99999; padding:12px 18px; border-radius:8px; color:#fff; font-size:13px; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,0.15); ' + (tipo === 'error' ? 'background:#EF4444;' : 'background:#0D9488;');
-  document.body.appendChild(el);
-  setTimeout(function() { el.remove(); }, 4000);
+  var existing = document.querySelectorAll('.cal-custom-toast');
+  existing.forEach(function(t) { t.remove(); });
+
+  var isSuccess = (tipo === 'success');
+  var toast = document.createElement('div');
+  toast.className = 'cal-custom-toast';
+  toast.style.cssText = 'position:fixed; top:24px; right:24px; z-index:999999; display:flex; align-items:flex-start; gap:12px; padding:14px 18px; border-radius:12px; background:#1E293B; border:1px solid ' + (isSuccess ? '#0D9488' : '#F59E0B') + '; box-shadow:0 12px 30px rgba(0,0,0,0.25); max-width:400px; min-width:300px; color:#F8FAFC; font-family:var(--fm-font); opacity:0; transform:translateX(30px); transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1);';
+
+  var iconHtml = isSuccess
+    ? '<div style="width:28px; height:28px; border-radius:8px; background:rgba(13,148,136,0.2); display:flex; align-items:center; justify-content:center; color:#2DD4BF; flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'
+    : '<div style="width:28px; height:28px; border-radius:8px; background:rgba(245,158,11,0.2); display:flex; align-items:center; justify-content:center; color:#FBBF24; flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>';
+
+  var title = isSuccess ? 'Operación exitosa' : 'Validación requerida';
+
+  toast.innerHTML = iconHtml +
+    '<div style="flex:1; min-width:0;">' +
+      '<div style="font-size:13px; font-weight:700; color:#FFFFFF; margin-bottom:2px;">' + title + '</div>' +
+      '<div style="font-size:12px; color:#CBD5E1; line-height:1.4;">' + mensaje + '</div>' +
+    '</div>' +
+    '<button type="button" style="background:none; border:none; color:#94A3B8; font-size:18px; cursor:pointer; padding:0; line-height:1; margin-left:4px;" onclick="this.parentElement.remove()">&times;</button>';
+
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(function() {
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(0)';
+  });
+
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(30px)';
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 4500);
 }
 
 // ── EVENT ACTIONS ────────────────────────────

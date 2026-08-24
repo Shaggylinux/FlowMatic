@@ -194,18 +194,15 @@ public class CalendarioController {
         }
 
         String modVal = (modalidad != null && !modalidad.isBlank()) ? modalidad.toUpperCase() : "VIRTUAL";
-        if ("PRESENCIAL".equals(modVal)) {
-            if (lugar == null || lugar.isBlank() || (!lugar.trim().matches("(?i)^https?://.+$") && !lugar.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ0-9\\s#.,\\-_/°]{3,200}$"))) {
-                response.put("success", false);
-                response.put("error", "Para entrevistas presenciales, ingresa una dirección física o un enlace de Google Maps");
-                return response;
-            }
-        } else {
-            if (lugar == null || lugar.isBlank() || !lugar.trim().matches("(?i)^https?://.+$")) {
-                response.put("success", false);
-                response.put("error", "Para entrevistas virtuales, el enlace de reunión debe ser una URL válida que comience con http:// o https://");
-                return response;
-            }
+        if (lugar == null || lugar.isBlank() || lugar.trim().length() < 3 || lugar.trim().length() > 200) {
+            response.put("success", false);
+            response.put("error", "Ingresa la ubicación, dirección física o enlace de reunión (entre 3 y 200 caracteres)");
+            return response;
+        }
+
+        if (!"PRESENCIAL".equals(modVal) && !lugar.trim().matches("(?i)^https?://.+$")) {
+            // Si no es un link http/https, se asume ubicación/dirección presencial
+            modVal = "PRESENCIAL";
         }
 
         if (entrevistador == null || entrevistador.isBlank() || !entrevistador.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,100}$")) {
@@ -282,18 +279,14 @@ public class CalendarioController {
         }
 
         String modVal = (modalidad != null && !modalidad.isBlank()) ? modalidad.toUpperCase() : "VIRTUAL";
-        if ("PRESENCIAL".equals(modVal)) {
-            if (lugar == null || lugar.isBlank() || (!lugar.trim().matches("(?i)^https?://.+$") && !lugar.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ0-9\\s#.,\\-_/°]{3,200}$"))) {
-                response.put("success", false);
-                response.put("error", "Para entrevistas presenciales, ingresa una dirección física o un enlace de Google Maps");
-                return response;
-            }
-        } else {
-            if (lugar == null || lugar.isBlank() || !lugar.trim().matches("(?i)^https?://.+$")) {
-                response.put("success", false);
-                response.put("error", "Para entrevistas virtuales, el enlace de reunión debe ser una URL válida que comience con http:// o https://");
-                return response;
-            }
+        if (lugar == null || lugar.isBlank() || lugar.trim().length() < 3 || lugar.trim().length() > 200) {
+            response.put("success", false);
+            response.put("error", "Ingresa la ubicación, dirección física o enlace de reunión (entre 3 y 200 caracteres)");
+            return response;
+        }
+
+        if (!"PRESENCIAL".equals(modVal) && !lugar.trim().matches("(?i)^https?://.+$")) {
+            modVal = "PRESENCIAL";
         }
 
         if (entrevistador == null || entrevistador.isBlank() || !entrevistador.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,100}$")) {
