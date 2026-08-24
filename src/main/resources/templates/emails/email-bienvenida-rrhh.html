@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido al equipo de RRHH en FLOWMATIC</title>
+</head>
+<body style="font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: #F8FAFC; color: #1E293B;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; padding: 30px 10px;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="100%" max-width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 1px solid #E2E8F0;">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); padding: 32px 24px; text-align: center; border-bottom: 4px solid #0D9488;">
+                            <h1 style="color: #FFFFFF; margin: 0; font-size: 26px; font-weight: 800; letter-spacing: 0.5px;">FLOWMATIC</h1>
+                            <p style="color: #94A3B8; margin: 8px 0 0 0; font-size: 14px; font-weight: 500;">Portal de Gestión de Talento Humano</p>
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 32px 28px;">
+                            <h2 style="color: #0F172A; font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">¡Bienvenido/a al equipo, <span th:text="${nombre}">Gestor RRHH</span>! 🎉</h2>
+                            <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
+                                El Administrador ha creado tu cuenta con el rol de <strong>Gestor de Recursos Humanos</strong> en la plataforma <strong>FLOWMATIC</strong>.
+                            </p>
+
+                            <!-- Credentials Box -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; border-left: 4px solid #0F172A; border: 1px solid #E2E8F0; border-left-width: 4px; border-left-color: #0D9488; border-radius: 6px; padding: 18px 20px; margin: 20px 0;">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 0 0 10px 0; font-size: 13px; color: #0D9488; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Tus Credenciales de Acceso</p>
+                                        <p style="margin: 0 0 8px 0; font-size: 14px; color: #1E293B;">
+                                            <strong>👤 Rol:</strong> <span style="background: #E2E8F0; color: #334155; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 12px;">Gestión de Talento (RRHH)</span>
+                                        </p>
+                                        <p style="margin: 0 0 8px 0; font-size: 14px; color: #1E293B;">
+                                            <strong>📧 Correo (Usuario):</strong> <span th:text="${email}" style="color: #0D9488; font-weight: 600;">rrhh@flowmatic.com</span>
+                                        </p>
+                                        <p style="margin: 0; font-size: 14px; color: #1E293B;">
+                                            <strong>🔑 Contraseña asignada:</strong> <span th:text="${clave}" style="font-family: monospace; background: #FEF3C7; color: #92400E; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 15px; border: 1px solid #FDE68A;">********</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 20px 0 24px 0;">
+                                Ya puedes ingresar al portal administrativo con tus credenciales asignadas haciendo clic en el siguiente botón:
+                            </p>
+
+                            <!-- Button -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 28px 0;">
+                                <tr>
+                                    <td align="center">
+                                        <a th:href="${enlaceLogin}" style="background-color: #0F172A; color: #FFFFFF; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(15,23,42,0.25);">
+                                            Iniciar Sesión en FLOWMATIC &rarr;
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div style="background-color: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 14px 16px; margin: 20px 0;">
+                                <p style="color: #92400E; font-size: 13px; margin: 0; line-height: 1.5;">
+                                    💡 <strong>Recomendación de seguridad:</strong> Por tu seguridad, te aconsejamos cambiar tu contraseña temporal una vez que inicies sesión en la plataforma desde tu perfil de usuario.
+                                </p>
+                            </div>
+
+                            <div style="border-top: 1px solid #E2E8F0; margin-top: 24px; padding-top: 18px;">
+                                <p style="color: #94A3B8; font-size: 12px; margin: 0;">
+                                    Si tienes alguna duda o no reconoces este registro, contacta al Administrador de sistemas de FLOWMATIC.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #F1F5F9; padding: 18px 24px; text-align: center; border-top: 1px solid #E2E8F0;">
+                            <p style="color: #64748B; font-size: 12px; margin: 0;">
+                                &copy; Flowmatic. Portal Corporativo.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

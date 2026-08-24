@@ -39,14 +39,20 @@ public class EmailService {
     private String mailFrom;
 
     public boolean enviarEmailVerificacion(String destinatario, String nombre, String token) {
+        return enviarEmailVerificacion(destinatario, nombre, null, token);
+    }
+
+    public boolean enviarEmailVerificacion(String destinatario, String nombre, String clave, String token) {
         try {
             logger.info("📧 Preparando email de verificación para: {}", destinatario);
 
             String enlaceActivacion = appBaseUrl + contextPath + "/registro/candidato/activar?token=" + token;
 
-            String asunto = "✅ Activa tu cuenta en FLOWMATIC";
+            String asunto = "✅ Activa tu cuenta y credenciales de acceso — FLOWMATIC";
             Context context = new Context();
             context.setVariable("nombre", nombre);
+            context.setVariable("email", destinatario);
+            context.setVariable("clave", clave != null && !clave.isBlank() ? clave : "Asignada durante tu registro");
             context.setVariable("enlaceActivacion", enlaceActivacion);
 
             String mensaje = templateEngine.process("emails/email-verificacion", context);
@@ -65,7 +71,41 @@ public class EmailService {
 
         } catch (Exception e) {
             logger.error("Error al enviar email de verificación: {}", e.getMessage());
-            throw new RuntimeException("Error al enviar el email de verificación", e);
+            return false;
+        }
+    }
+
+    public boolean enviarEmailBienvenidaRRHH(String destinatario, String nombre, String apellido, String clave, String token) {
+        try {
+            logger.info("📧 Preparando email de bienvenida RRHH para: {}", destinatario);
+
+            String nombreCompleto = nombre + (apellido != null && !apellido.isBlank() ? " " + apellido : "");
+            String enlaceLogin = appBaseUrl + contextPath + "/login";
+
+            String asunto = "🎉 Bienvenido al equipo de RRHH — Credenciales FLOWMATIC";
+            Context context = new Context();
+            context.setVariable("nombre", nombreCompleto);
+            context.setVariable("email", destinatario);
+            context.setVariable("clave", clave != null && !clave.isBlank() ? clave : "Asignada por el Administrador");
+            context.setVariable("enlaceLogin", enlaceLogin);
+
+            String mensaje = templateEngine.process("emails/email-bienvenida-rrhh", context);
+
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(destinatario);
+            helper.setSubject(asunto);
+            helper.setText(mensaje, true);
+            helper.setFrom(mailFrom);
+
+            mailSender.send(mimeMessage);
+
+            logger.info("Email de bienvenida RRHH enviado a: {}", destinatario);
+            return true;
+
+        } catch (Exception e) {
+            logger.error("Error al enviar email de bienvenida RRHH: {}", e.getMessage());
+            return false;
         }
     }
 

@@ -5,6 +5,8 @@ import com.back.shared.event.AuditoriaEvent;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -23,13 +25,17 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
                                         AuthenticationException exception) throws IOException {
         String email = request.getParameter("email");
         if (email != null) {
-            if (loginAttemptService.isBlocked(email)) {
+            if (loginAttemptService.isBlocked(email) || exception instanceof LockedException) {
                 getRedirectStrategy().sendRedirect(request, response, "/login?bloqueado");
+                return;
+            }
+            if (exception instanceof DisabledException) {
+                getRedirectStrategy().sendRedirect(request, response, "/login?inactiva");
                 return;
             }
             loginAttemptService.recordFailed(email);
             eventPublisher.publishEvent(new AuditoriaEvent(this, "SEGURIDAD",
-                "Intento de inicio de sesi\u00f3n fallido: " + email,
+                "Intento de inicio de sesión fallido: " + email,
                 email, "SEGURIDAD"));
             if (loginAttemptService.isBlocked(email)) {
                 loginAttemptService.publicarEventoBloqueo(email);

@@ -2,27 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activa tu cuenta en FLOWMATIC</title>
 </head>
-<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa;">
-    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 28px;">FLOWMATIC</h1>
-            <p style="color: #e0e0e0; margin: 10px 0 0 0;">Sistema de Gestión de Candidatos</p>
-        </div>
-        <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px;">
-            <h2 style="color: #333;">¡Bienvenido, <span th:text="${nombre}">Usuario</span>!</h2>
-            <p style="color: #666; line-height: 1.6;">Gracias por registrarte en <strong>FLOWMATIC</strong>. Estamos encantado de tenerte con nosotros.</p>
-            <p style="color: #666; line-height: 1.6;">Para completar tu registro, necesitas activar tu cuenta. Haz clic en el siguiente botón:</p>
-            <div style="text-align: center; margin: 30px 0;">
-                <a th:href="${enlaceActivacion}" style="background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Activar mi cuenta</a>
-            </div>
-            <p style="color: #999; font-size: 12px; text-align: center;">O copia y pega este enlace en tu navegador:</p>
-            <p style="color: #667eea; font-size: 12px; text-align: center; word-break: break-all;" th:text="${enlaceActivacion}"></p>
-            <p style="color: #999; font-size: 12px; margin-top: 20px;">Este enlace expira en 24 horas.</p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-            <p style="color: #666; font-size: 12px;">Si no creaste esta cuenta, puedes ignorar este correo sin preocupaciones.</p>
-            <p style="color: #666; font-size: 12px; margin-top: 20px;">Saludos cordiales,<br><strong>Equipo de FLOWMATIC</strong></p>
-        </div>
-    </div>
+<body style="font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: #F8FAFC; color: #1E293B;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; padding: 30px 10px;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="100%" max-width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 1px solid #E2E8F0;">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%); padding: 32px 24px; text-align: center;">
+                            <h1 style="color: #FFFFFF; margin: 0; font-size: 26px; font-weight: 800; letter-spacing: 0.5px;">FLOWMATIC</h1>
+                            <p style="color: #CCFBF1; margin: 8px 0 0 0; font-size: 14px; font-weight: 500;">Plataforma de Selección y Gestión de Talento</p>
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 32px 28px;">
+                            <h2 style="color: #0F172A; font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">¡Bienvenido/a, <span th:text="${nombre}">Candidato</span>! 👋</h2>
+                            <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Tu cuenta de candidato ha sido registrada exitosamente en <strong>FLOWMATIC</strong>. A continuación, encontrarás tus datos de acceso al portal:
+                            </p>
+
+                            <!-- Credentials Box -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F0FDFA; border-left: 4px solid #0D9488; border-radius: 6px; padding: 18px 20px; margin: 20px 0;">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 0 0 8px 0; font-size: 13px; color: #0F766E; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Credenciales de Acceso</p>
+                                        <p style="margin: 0 0 6px 0; font-size: 14px; color: #1E293B;">
+                                            <strong>📧 Correo (Usuario):</strong> <span th:text="${email}" style="color: #0F766E; font-weight: 600;">usuario@ejemplo.com</span>
+                                        </p>
+                                        <p style="margin: 0; font-size: 14px; color: #1E293B;">
+                                            <strong>🔑 Contraseña asignada:</strong> <span th:text="${clave}" style="font-family: monospace; background: #E6FFFA; padding: 2px 8px; border-radius: 4px; color: #115E59; font-weight: 700; font-size: 15px;">********</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 20px 0 24px 0;">
+                                Para poder ingresar y comenzar tu proceso de selección, debes activar tu cuenta haciendo clic en el siguiente botón:
+                            </p>
+
+                            <!-- Button -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 28px 0;">
+                                <tr>
+                                    <td align="center">
+                                        <a th:href="${enlaceActivacion}" style="background-color: #0D9488; color: #FFFFFF; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(13,148,136,0.3);">
+                                            Activar mi cuenta ahora &rarr;
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #64748B; font-size: 12px; line-height: 1.5; margin: 20px 0 8px 0; text-align: center;">
+                                Si el botón no funciona, copia y pega este enlace en tu navegador:
+                            </p>
+                            <p style="color: #0D9488; font-size: 12px; text-align: center; word-break: break-all; margin: 0 0 20px 0;" th:text="${enlaceActivacion}"></p>
+
+                            <div style="border-top: 1px solid #E2E8F0; margin-top: 24px; padding-top: 18px;">
+                                <p style="color: #94A3B8; font-size: 12px; margin: 0 0 6px 0;">
+                                    ⏱ Este enlace de activación expira en 24 horas por motivos de seguridad.
+                                </p>
+                                <p style="color: #94A3B8; font-size: 12px; margin: 0;">
+                                    Si no realizaste este registro, por favor ignora este mensaje.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #F1F5F9; padding: 18px 24px; text-align: center; border-top: 1px solid #E2E8F0;">
+                            <p style="color: #64748B; font-size: 12px; margin: 0;">
+                                &copy; Flowmatic. Todos los derechos reservados.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

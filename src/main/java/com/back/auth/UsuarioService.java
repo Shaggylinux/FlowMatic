@@ -58,13 +58,15 @@ public class UsuarioService implements AuthApi {
             throw new ClaveCortaException("La contraseña debe tener mínimo 8 caracteres, mayúsculas, minúsculas, un número y un carácter especial");
         }
 
+        String clavePlana = dto.getClave();
         usuario.setClave(encoder.encode(usuario.getClave()));
 
         if (usuario.getRol() == null || usuario.getRol().isEmpty()) {
             usuario.setRol("ROLE_CANDIDATO");
         }
 
-        usuario.setActivo(false);
+        boolean esRRHH = "ROLE_RRHH".equals(usuario.getRol());
+        usuario.setActivo(esRRHH);
         usuario = usuarioRepository.save(usuario);
 
         String tokenUuid = UUID.randomUUID().toString();
@@ -72,7 +74,7 @@ public class UsuarioService implements AuthApi {
         tokenRepository.save(tokenObj);
 
         eventPublisher.publishEvent(new UsuarioRegistradoEvent(usuario.getId(),
-            usuario.getEmail(), usuario.getRol(), username, apellido, telefono, dto.getDocumento(), dto.getCargo(), tokenUuid, dto.getRrhhEmail()));
+            usuario.getEmail(), usuario.getRol(), username, apellido, telefono, dto.getDocumento(), dto.getCargo(), tokenUuid, dto.getRrhhEmail(), clavePlana));
     }
 
     public Usuario buscarPorToken(String token) {

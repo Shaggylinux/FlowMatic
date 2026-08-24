@@ -84,7 +84,8 @@
 }
 
 .modal-backdrop.show {
-    backdrop-filter: blur(6px);
+    backdrop-filter: none;
+    opacity: 0.5;
 }
 
 .btn-primary {
