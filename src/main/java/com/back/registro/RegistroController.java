@@ -90,15 +90,15 @@ public class RegistroController {
 
     @GetMapping("/activar")
     public String activarCuenta(@RequestParam("token") String token, Model model) {
-        Usuario usuario = usuarioService.buscarPorToken(token);
+        boolean activado = usuarioService.activarCuenta(token);
 
-        if (usuario == null) {
+        if (!activado) {
+            model.addAttribute("tokenInvalido", true);
             model.addAttribute("enlaceExpirado", true);
             return "caduco";
         }
 
-        boolean activado = usuarioService.activarCuenta(token);
-        model.addAttribute("activacionExitosa", activado);
+        model.addAttribute("activacionExitosa", true);
         return "activacion";
     }
 

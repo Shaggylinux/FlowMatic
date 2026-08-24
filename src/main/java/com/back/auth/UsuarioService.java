@@ -123,21 +123,22 @@ public class UsuarioService implements AuthApi {
         return "ENVIADO";
     }
 
+    @org.springframework.transaction.annotation.Transactional
     public boolean activarCuenta(String token) {
-        logger.info("Buscando token de activaci\u00f3n: {}", token);
+        logger.info("Buscando token de activación: {}", token);
 
         Token t = tokenRepository.findById(token).orElse(null);
         if (t == null || !"ACTIVACION".equals(t.getTipo())) {
-            logger.warn("Token no encontrado o inv\u00e1lido");
+            logger.warn("Token no encontrado o inválido: {}", token);
             return false;
         }
 
         Usuario usuario = usuarioRepository.findById(t.getUsuarioId()).orElse(null);
         if (usuario != null) {
             usuario.setActivo(true);
-            usuarioRepository.save(usuario);
+            usuarioRepository.saveAndFlush(usuario);
             tokenRepository.delete(t);
-            logger.info("Cuenta activada para: {}", usuario.getEmail());
+            logger.info("Cuenta activada exitosamente para: {}", usuario.getEmail());
             return true;
         }
         return false;
