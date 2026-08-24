@@ -307,6 +307,13 @@ public class AdminController {
                             @RequestParam(required = false) String telefono,
                             @RequestParam(required = false) String documento,
                             @RequestParam(required = false) String cargo) {
+        if (username == null || username.isBlank() || !username.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+            return "redirect:/admin?error=nombre_invalido";
+        }
+        if (apellido == null || apellido.isBlank() || !apellido.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+            return "redirect:/admin?error=apellido_invalido";
+        }
+
         if (confirmarClave != null && !confirmarClave.isBlank() && !nuevoRRHH.getClave().equals(confirmarClave)) {
             return "redirect:/admin?error=clave_no_coincide";
         }

@@ -46,11 +46,17 @@ public class UsuarioService implements AuthApi {
         String apellido = dto.getApellido();
         String telefono = dto.getTelefono();
 
-        logger.info("Iniciando registro de usuario: {}", usuario.getEmail());
+        if (username == null || username.isBlank() || !username.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+            throw new IllegalArgumentException("El nombre solo puede contener letras y espacios (de 2 a 50 caracteres)");
+        }
+
+        if (apellido == null || apellido.isBlank() || !apellido.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+            throw new IllegalArgumentException("El apellido solo puede contener letras y espacios (de 2 a 50 caracteres)");
+        }
 
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             logger.warn("Correo duplicado: {}", usuario.getEmail());
-            throw new UsuarioDuplicadoException("El email ya est\u00e1 registrado");
+            throw new UsuarioDuplicadoException("El email ya está registrado");
         }
 
         if (!com.back.util.ValidadorClave.esClaveSegura(usuario.getClave())) {
