@@ -185,13 +185,19 @@
                 <div class="cand-field-group">
                   <label class="cand-field-label">Nombres</label>
                   <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoNombres) ? candidatoNombres : 'Sin registrar'}">Nombres</div>
-                  <input type="text" class="cand-field-input field-edit" id="inputNombres" th:value="${candidatoNombres}" style="display:none;">
+                  <input type="text" class="cand-field-input field-edit" id="inputNombres" th:value="${candidatoNombres}"
+                         maxlength="50" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
+                         oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                         placeholder="Tus nombres" style="display:none;">
                 </div>
 
                 <div class="cand-field-group">
                   <label class="cand-field-label">Apellidos</label>
                   <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoApellidos) ? candidatoApellidos : 'Sin registrar'}">Apellidos</div>
-                  <input type="text" class="cand-field-input field-edit" id="inputApellidos" th:value="${candidatoApellidos}" style="display:none;">
+                  <input type="text" class="cand-field-input field-edit" id="inputApellidos" th:value="${candidatoApellidos}"
+                         maxlength="50" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
+                         oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                         placeholder="Tus apellidos" style="display:none;">
                 </div>
               </div>
 
@@ -256,7 +262,10 @@
                 <div class="cand-field-group">
                   <label class="cand-field-label">Ciudad</label>
                   <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoCiudad) ? candidatoCiudad : 'Sin registrar'}">Ciudad</div>
-                  <input type="text" class="cand-field-input field-edit" id="inputCiudad" th:value="${candidatoCiudad}" style="display:none;" maxlength="100" placeholder="Ej. Medellín">
+                  <input type="text" class="cand-field-input field-edit" id="inputCiudad" th:value="${candidatoCiudad}" style="display:none;" maxlength="50"
+                         pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
+                         oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                         placeholder="Ej. Medellín">
                 </div>
               </div>
             </div>
@@ -291,7 +300,10 @@
                 <div class="cand-field-group">
                   <label class="cand-field-label">Teléfono fijo (opcional)</label>
                   <div class="cand-field-value field-view" th:text="${!#strings.isEmpty(candidatoTelefonoFijo) ? candidatoTelefonoFijo : 'Sin registrar'}">Fijo</div>
-                  <input type="text" class="cand-field-input field-edit" id="inputTelefonoFijo" th:value="${candidatoTelefonoFijo}" style="display:none;">
+                  <input type="tel" class="cand-field-input field-edit" id="inputTelefonoFijo" th:value="${candidatoTelefonoFijo}"
+                         maxlength="10" pattern="[0-9]{7,10}" title="El teléfono fijo debe contener entre 7 y 10 dígitos" inputmode="numeric"
+                         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                         placeholder="Ej: 6012345678" style="display:none;">
                 </div>
               </div>
 

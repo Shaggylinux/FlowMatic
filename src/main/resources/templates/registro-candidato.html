@@ -49,6 +49,7 @@
           <input class="form-input" type="text" th:field="*{username}" required
                  minlength="2" maxlength="50"
                  pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
+                 oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
                  placeholder="Tu nombre"/>
           <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-msg"></span>
         </div>
@@ -58,6 +59,7 @@
           <input class="form-input" type="text" th:field="*{apellido}" required
                  minlength="2" maxlength="50"
                  pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios"
+                 oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
                  placeholder="Tu apellido"/>
           <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="error-msg"></span>
         </div>

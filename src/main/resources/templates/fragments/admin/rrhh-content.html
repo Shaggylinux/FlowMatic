@@ -294,11 +294,17 @@
               <div class="row g-2">
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Nombre</label>
-                  <input type="text" class="form-control" id="rrhhNombre" name="nombre" required style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                  <input type="text" class="form-control" id="rrhhNombre" name="nombre" required maxlength="50"
+                         pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="El nombre debe contener solo letras"
+                         oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                         style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Apellido</label>
-                  <input type="text" class="form-control" id="rrhhApellido" name="apellido" required style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
+                  <input type="text" class="form-control" id="rrhhApellido" name="apellido" required maxlength="50"
+                         pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="El apellido debe contener solo letras"
+                         oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                         style="font-size: 13px; padding: 6px 10px; border-radius: 6px;">
                 </div>
                 <div class="col-md-6">
                   <label class="form-label" style="font-size: 11px; font-weight: 500; color: #64748B; margin-bottom: 2px;">Correo Electrónico</label>

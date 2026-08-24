@@ -28,7 +28,9 @@
                             <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Nombre</label>
                             <input type="text" name="username" class="form-input" required
                                    minlength="2" maxlength="50"
-                                   pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" placeholder="Nombre">
+                                   pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                                   oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                                   placeholder="Nombre">
                         </div>
 
                         <!-- Apellido -->
@@ -36,7 +38,9 @@
                             <label class="form-label" style="font-size: 12px; font-weight: 500; color: #64748B;">Apellido</label>
                             <input type="text" name="apellido" class="form-input" required
                                    minlength="2" maxlength="50"
-                                   pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" placeholder="Apellido">
+                                   pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                                   oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                                   placeholder="Apellido">
                         </div>
 
                         <!-- Correo -->
