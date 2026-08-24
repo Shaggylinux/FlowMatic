@@ -444,12 +444,12 @@ public class CalendarioController {
         }
         if (motivo == null || motivo.isBlank()) {
             response.put("success", false);
-            response.put("error", "El motivo es obligatorio");
+            response.put("error", "El motivo de la reprogramación es obligatorio");
             return response;
         }
-        if (motivo.length() > 500) {
+        if (motivo.trim().length() > 300) {
             response.put("success", false);
-            response.put("error", "El motivo no puede tener más de 500 caracteres");
+            response.put("error", "El motivo no puede tener más de 300 caracteres");
             return response;
         }
 

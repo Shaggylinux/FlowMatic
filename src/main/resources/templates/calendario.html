@@ -301,7 +301,10 @@
         <input type="hidden" id="reproEventoId" value="">
         <div class="cal-modal-field">
           <label class="cal-modal-label" for="reproMotivo">Motivo de la solicitud <span class="required">*</span></label>
-          <textarea name="motivo" id="reproMotivo" class="cal-modal-input" placeholder="Ej: Tengo una reunión inaplazable a esa hora..." maxlength="500" required></textarea>
+          <textarea name="motivo" id="reproMotivo" class="cal-modal-input" placeholder="Ej: Tengo una reunión inaplazable a esa hora..." maxlength="300" required oninput="var c = document.getElementById('reproMotivoCount'); if(c) c.textContent = this.value.length;"></textarea>
+          <div style="text-align: right; font-size: 11px; color: #94A3B8; margin-top: 4px;">
+            <span id="reproMotivoCount">0</span>/300
+          </div>
         </div>
         <div class="cal-modal-row">
           <div class="cal-modal-field">
@@ -944,12 +947,53 @@ function marcarRealizada(eventoId) {
 }
 
 // ── SOLICITAR REPROGRAMACIÓN (CANDIDATO) ─────
+function limpiarErroresReprogramar() {
+  document.querySelectorAll('#formReprogramar .is-invalid').forEach(function(el) {
+    el.classList.remove('is-invalid');
+  });
+  document.querySelectorAll('#formReprogramar .error-msg').forEach(function(el) {
+    el.remove();
+  });
+}
+
+function marcarErrorCampoReprogramar(inputId, mensaje) {
+  var input = document.getElementById(inputId);
+  if (!input) return;
+  input.classList.add('is-invalid');
+  input.focus();
+
+  var parent = input.parentNode;
+  var existing = parent.querySelector('.error-msg');
+  if (existing) existing.remove();
+
+  var err = document.createElement('span');
+  err.className = 'error-msg';
+  err.style.display = 'block';
+  err.style.marginTop = '4px';
+  err.textContent = mensaje;
+  parent.appendChild(err);
+
+  var clearFn = function() {
+    input.classList.remove('is-invalid');
+    if (err.parentNode) err.remove();
+    input.removeEventListener('input', clearFn);
+    input.removeEventListener('change', clearFn);
+  };
+  input.addEventListener('input', clearFn);
+  input.addEventListener('change', clearFn);
+
+  mostrarToast(mensaje, 'warning');
+}
+
 function abrirModalReprogramar(eventoId) {
   if (!eventoId) return;
   document.getElementById('reproEventoId').value = eventoId;
   document.getElementById('reproMotivo').value = '';
+  var countEl = document.getElementById('reproMotivoCount');
+  if (countEl) countEl.textContent = '0';
   document.getElementById('reproFecha').value = '';
   document.getElementById('reproHora').value = '';
+  limpiarErroresReprogramar();
   document.getElementById('modalReprogramar').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -960,14 +1004,28 @@ function cerrarModalReprogramar() {
 }
 
 function enviarSolicitudReprogramacion() {
+  limpiarErroresReprogramar();
   var id = document.getElementById('reproEventoId').value;
   var motivo = document.getElementById('reproMotivo').value.trim();
   var nuevaFecha = document.getElementById('reproFecha').value;
   var nuevaHora = document.getElementById('reproHora').value;
 
-  if (!motivo) { alert('El motivo es obligatorio'); return; }
-  if (!nuevaFecha) { alert('La nueva fecha es obligatoria'); return; }
-  if (!nuevaHora) { alert('La nueva hora es obligatoria'); return; }
+  if (!motivo) {
+    marcarErrorCampoReprogramar('reproMotivo', 'El motivo de la solicitud es obligatorio');
+    return;
+  }
+  if (motivo.length > 300) {
+    marcarErrorCampoReprogramar('reproMotivo', 'El motivo no puede tener más de 300 caracteres');
+    return;
+  }
+  if (!nuevaFecha) {
+    marcarErrorCampoReprogramar('reproFecha', 'La nueva fecha deseada es obligatoria');
+    return;
+  }
+  if (!nuevaHora) {
+    marcarErrorCampoReprogramar('reproHora', 'La nueva hora deseada es obligatoria');
+    return;
+  }
 
   var formData = new URLSearchParams();
   formData.set('motivo', motivo);
@@ -983,14 +1041,14 @@ function enviarSolicitudReprogramacion() {
   .then(function(data) {
     if (data.success) {
       cerrarModalReprogramar();
-      mostrarToast('Solicitud enviada. RRHH te contactar\u00e1 con una nueva fecha');
+      mostrarToast('Solicitud enviada correctamente. RRHH revisará tu petición.', 'success');
       if (calendarInstance) calendarInstance.refetchEvents();
       setTimeout(function() { location.reload(); }, 1200);
     } else {
-      alert('Error: ' + (data.error || 'No se pudo enviar la solicitud'));
+      mostrarToast(data.error || 'No se pudo enviar la solicitud', 'warning');
     }
   })
-  .catch(function(err) { alert('Error: ' + err.message); });
+  .catch(function(err) { mostrarToast('Error: ' + err.message, 'warning'); });
 }
 
 function reprogramarEvento(eventoId) {
