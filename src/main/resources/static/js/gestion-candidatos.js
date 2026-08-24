@@ -911,18 +911,61 @@ function abrirModalEditar(id) {
 
 function guardarEdicion() {
   const id = document.getElementById('edit-id').value;
+  const nombre = document.getElementById('edit-nombre').value.trim();
+  const apellido = document.getElementById('edit-apellido').value.trim();
+  const email = document.getElementById('edit-email').value.trim();
+  const telefono = document.getElementById('edit-telefono').value.trim();
+  const cargo = document.getElementById('edit-cargo').value.trim();
+  const ciudad = document.getElementById('edit-ciudad').value.trim();
+  const experiencia = document.getElementById('edit-experiencia').value;
+  const disponibilidad = document.getElementById('edit-disponibilidad').value;
+  const tecnologias = document.getElementById('edit-tecnologias').value.trim();
+  const idiomas = document.getElementById('edit-idiomas').value.trim();
+  const procesoActual = document.getElementById('edit-procesoActual').value;
+
+  if (!nombre || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(nombre)) {
+    alert('El nombre es obligatorio y debe contener solo letras (2 a 50 caracteres)');
+    document.getElementById('edit-nombre').focus();
+    return;
+  }
+  if (!apellido || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(apellido)) {
+    alert('El apellido es obligatorio y debe contener solo letras (2 a 50 caracteres)');
+    document.getElementById('edit-apellido').focus();
+    return;
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Ingresa un correo electrónico válido');
+    document.getElementById('edit-email').focus();
+    return;
+  }
+  if (telefono && !/^[0-9]{10}$/.test(telefono)) {
+    alert('El teléfono debe tener exactamente 10 dígitos numéricos');
+    document.getElementById('edit-telefono').focus();
+    return;
+  }
+  if (cargo && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$/.test(cargo)) {
+    alert('El cargo debe contener solo letras y espacios');
+    document.getElementById('edit-cargo').focus();
+    return;
+  }
+  if (ciudad && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(ciudad)) {
+    alert('La ciudad debe contener solo letras y espacios');
+    document.getElementById('edit-ciudad').focus();
+    return;
+  }
+
   const data = {
-    nombre: document.getElementById('edit-nombre').value.trim(),
-    apellido: document.getElementById('edit-apellido').value.trim(),
-    email: document.getElementById('edit-email').value.trim(),
-    telefono: document.getElementById('edit-telefono').value.trim(),
-    cargo: document.getElementById('edit-cargo').value.trim(),
-    ciudad: document.getElementById('edit-ciudad').value.trim(),
-    experiencia: document.getElementById('edit-experiencia').value,
-    disponibilidad: document.getElementById('edit-disponibilidad').value,
-    tecnologias: document.getElementById('edit-tecnologias').value.trim(),
-    idiomas: document.getElementById('edit-idiomas').value.trim(),
-    procesoActual: document.getElementById('edit-procesoActual').value
+    nombre: nombre,
+    apellido: apellido,
+    email: email,
+    telefono: telefono,
+    cargo: cargo,
+    ciudad: ciudad,
+    experiencia: experiencia,
+    disponibilidad: disponibilidad,
+    tecnologias: tecnologias,
+    idiomas: idiomas,
+    procesoActual: procesoActual
   };
 
   fetch(`/gestion-candidatos/${id}/editar`, {

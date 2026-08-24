@@ -671,27 +671,82 @@
   }
 
   function guardarCambiosPerfil() {
+    const nombres = document.getElementById('inputNombres').value.trim();
+    const apellido = document.getElementById('inputApellidos').value.trim();
+    const tipoDocumento = document.getElementById('selectTipoDoc').value;
+    const numeroDocumento = document.getElementById('inputNumDoc').value.trim();
+    const genero = document.getElementById('selectGenero').value;
+    const estadoCivil = document.getElementById('selectEstadoCivil').value;
+    const fechaNacimiento = document.getElementById('inputFechaNac').value;
+    const nacionalidad = document.getElementById('selectNacionalidad').value;
+    const telefono = document.getElementById('inputTelefono').value.trim();
+    const telefonoFijo = document.getElementById('inputTelefonoFijo').value.trim();
+    const direccion = document.getElementById('inputDireccion').value.trim();
+    const sobreMi = document.getElementById('textareaSobreMi').value.trim();
+    const ciudad = document.getElementById('inputCiudad') ? document.getElementById('inputCiudad').value.trim() : '';
+    const cargo = document.getElementById('profCargo') ? document.getElementById('profCargo').value.trim() : '';
+    const areaProfesional = document.getElementById('profArea') ? document.getElementById('profArea').value.trim() : '';
+    const pretensionSalarial = document.getElementById('profPretension') ? document.getElementById('profPretension').value.trim() : '';
+    const disponibilidad = document.getElementById('profDisponibilidad') ? document.getElementById('profDisponibilidad').value : '';
+    const modalidadTrabajo = document.getElementById('profModalidad') ? document.getElementById('profModalidad').value : '';
+
+    if (nombres && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(nombres)) {
+      mostrarToast('Los nombres deben contener solo letras (2 a 50 caracteres)');
+      document.getElementById('inputNombres').focus();
+      return;
+    }
+    if (apellido && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(apellido)) {
+      mostrarToast('Los apellidos deben contener solo letras (2 a 50 caracteres)');
+      document.getElementById('inputApellidos').focus();
+      return;
+    }
+    if (numeroDocumento && !/^[0-9]{6,10}$/.test(numeroDocumento)) {
+      mostrarToast('El documento debe contener solo números (6 a 10 dígitos)');
+      document.getElementById('inputNumDoc').focus();
+      return;
+    }
+    if (telefono && !/^[0-9]{10}$/.test(telefono)) {
+      mostrarToast('El teléfono celular debe tener exactamente 10 dígitos numéricos');
+      document.getElementById('inputTelefono').focus();
+      return;
+    }
+    if (telefonoFijo && !/^[0-9]{7,10}$/.test(telefonoFijo)) {
+      mostrarToast('El teléfono fijo debe tener entre 7 y 10 dígitos numéricos');
+      document.getElementById('inputTelefonoFijo').focus();
+      return;
+    }
+    if (cargo && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$/.test(cargo)) {
+      mostrarToast('El cargo debe contener solo letras y espacios');
+      if (document.getElementById('profCargo')) document.getElementById('profCargo').focus();
+      return;
+    }
+    if (ciudad && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(ciudad)) {
+      mostrarToast('La ciudad debe contener solo letras y espacios');
+      if (document.getElementById('inputCiudad')) document.getElementById('inputCiudad').focus();
+      return;
+    }
+
     const payload = {
-      nombres: document.getElementById('inputNombres').value,
-      apellido: document.getElementById('inputApellidos').value,
-      tipoDocumento: document.getElementById('selectTipoDoc').value,
-      numeroDocumento: document.getElementById('inputNumDoc').value,
-      genero: document.getElementById('selectGenero').value,
-      estadoCivil: document.getElementById('selectEstadoCivil').value,
-      fechaNacimiento: document.getElementById('inputFechaNac').value,
-      nacionalidad: document.getElementById('selectNacionalidad').value,
-      telefono: document.getElementById('inputTelefono').value,
-      telefonoFijo: document.getElementById('inputTelefonoFijo').value,
-      direccion: document.getElementById('inputDireccion').value,
-      sobreMi: document.getElementById('textareaSobreMi').value,
+      nombres: nombres,
+      apellido: apellido,
+      tipoDocumento: tipoDocumento,
+      numeroDocumento: numeroDocumento,
+      genero: genero,
+      estadoCivil: estadoCivil,
+      fechaNacimiento: fechaNacimiento,
+      nacionalidad: nacionalidad,
+      telefono: telefono,
+      telefonoFijo: telefonoFijo,
+      direccion: direccion,
+      sobreMi: sobreMi,
       tecnologias: skillsList.join(', '),
-      ciudad: document.getElementById('inputCiudad') ? document.getElementById('inputCiudad').value : '',
+      ciudad: ciudad,
       idiomas: rawIdiomas,
-      cargo: document.getElementById('profCargo') ? document.getElementById('profCargo').value : '',
-      areaProfesional: document.getElementById('profArea') ? document.getElementById('profArea').value : '',
-      pretensionSalarial: document.getElementById('profPretension') ? document.getElementById('profPretension').value : '',
-      disponibilidad: document.getElementById('profDisponibilidad') ? document.getElementById('profDisponibilidad').value : '',
-      modalidadTrabajo: document.getElementById('profModalidad') ? document.getElementById('profModalidad').value : '',
+      cargo: cargo,
+      areaProfesional: areaProfesional,
+      pretensionSalarial: pretensionSalarial,
+      disponibilidad: disponibilidad,
+      modalidadTrabajo: modalidadTrabajo,
       formacionJson: rawFormacionJson,
       experienciaJson: rawExperienciaJson,
       idiomasJson: JSON.stringify([])

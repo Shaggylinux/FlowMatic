@@ -236,8 +236,32 @@ public class CandidatoController {
         String idiomas = body.getOrDefault("idiomas", "").trim();
         String procesoActual = body.getOrDefault("procesoActual", "").trim();
 
-        if (nombre.isBlank() || apellido.isBlank() || email.isBlank()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Nombre, apellido y email son obligatorios"));
+        if (nombre.isBlank() || !nombre.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+            return ResponseEntity.badRequest().body(Map.of("error", "El nombre es obligatorio y debe contener solo letras (de 2 a 50 caracteres)"));
+        }
+        if (apellido.isBlank() || !apellido.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+            return ResponseEntity.badRequest().body(Map.of("error", "El apellido es obligatorio y debe contener solo letras (de 2 a 50 caracteres)"));
+        }
+        if (email.isBlank() || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Ingresa un correo electrónico válido"));
+        }
+        if (!telefono.isBlank() && !telefono.matches("^[0-9]{10}$")) {
+            return ResponseEntity.badRequest().body(Map.of("error", "El teléfono debe contener exactamente 10 dígitos numéricos"));
+        }
+        if (!cargo.isBlank() && !cargo.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,100}$")) {
+            return ResponseEntity.badRequest().body(Map.of("error", "El cargo debe contener solo letras y espacios (de 2 a 100 caracteres)"));
+        }
+        if (!ciudad.isBlank() && !ciudad.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+            return ResponseEntity.badRequest().body(Map.of("error", "La ciudad debe contener solo letras y espacios (de 2 a 50 caracteres)"));
+        }
+
+        if (usuario != null && !email.equalsIgnoreCase(usuario.getEmail())) {
+            boolean emailEnUso = usuarioRepository.findByEmail(email)
+                    .map(u -> !u.getId().equals(id))
+                    .orElse(false);
+            if (emailEnUso) {
+                return ResponseEntity.status(409).body(Map.of("error", "El correo electrónico ya se encuentra registrado por otro usuario"));
+            }
         }
 
         candidato.setUsername(nombre);
@@ -246,13 +270,14 @@ public class CandidatoController {
         candidato.setCargo(cargo);
         candidato.setCiudad(ciudad);
         try {
-            candidato.setExperiencia(Integer.parseInt(experienciaStr));
+            int exp = Integer.parseInt(experienciaStr);
+            candidato.setExperiencia(Math.max(0, Math.min(exp, 50)));
         } catch (NumberFormatException e) {
             candidato.setExperiencia(0);
         }
         candidato.setDisponibilidad(disponibilidad);
-        candidato.setTecnologias(tecnologias);
-        candidato.setIdiomas(idiomas);
+        candidato.setTecnologias(tecnologias.length() > 255 ? tecnologias.substring(0, 255) : tecnologias);
+        candidato.setIdiomas(idiomas.length() > 255 ? idiomas.substring(0, 255) : idiomas);
         candidato.setProcesoActual(procesoActual);
         candidato.setUltimaActualizacion(LocalDateTime.now());
         candidatoRepository.save(candidato);

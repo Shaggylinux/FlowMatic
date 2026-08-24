@@ -103,28 +103,54 @@ function mostrarToastAdmin(mensaje, ok) {
 
 function guardarRRHH() {
     const id = document.getElementById('rrhhId').value;
-    const data = {
-        nombre: document.getElementById('rrhhNombre').value,
-        apellido: document.getElementById('rrhhApellido').value,
-        email: document.getElementById('rrhhEmail').value,
-        clave: document.getElementById('rrhhClave').value,
-        telefono: document.getElementById('rrhhTelefono').value,
-        documento: document.getElementById('rrhhDocumento').value,
-        cargo: document.getElementById('rrhhCargo').value
-    };
+    const nombre = document.getElementById('rrhhNombre').value.trim();
+    const apellido = document.getElementById('rrhhApellido').value.trim();
+    const email = document.getElementById('rrhhEmail').value.trim();
+    const clave = document.getElementById('rrhhClave').value;
+    const telefono = document.getElementById('rrhhTelefono').value.trim();
+    const documento = document.getElementById('rrhhDocumento').value.trim();
+    const cargo = document.getElementById('rrhhCargo').value.trim();
 
-    if (data.telefono && !/^[0-9]+$/.test(data.telefono)) {
-        mostrarToastAdmin('El teléfono debe contener solo números', false);
+    if (!nombre || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(nombre)) {
+        mostrarToastAdmin('El nombre es obligatorio y debe contener solo letras (2 a 50 caracteres)', false);
+        document.getElementById('rrhhNombre').focus();
         return;
     }
-    if (data.documento && !/^[0-9]+$/.test(data.documento)) {
-        mostrarToastAdmin('El documento debe contener solo números', false);
+    if (!apellido || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(apellido)) {
+        mostrarToastAdmin('El apellido es obligatorio y debe contener solo letras (2 a 50 caracteres)', false);
+        document.getElementById('rrhhApellido').focus();
         return;
     }
-    if (data.cargo && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(data.cargo)) {
-        mostrarToastAdmin('El cargo debe contener solo letras', false);
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        mostrarToastAdmin('Ingresa un correo electrónico válido', false);
+        document.getElementById('rrhhEmail').focus();
         return;
     }
+    if (telefono && !/^[0-9]{10}$/.test(telefono)) {
+        mostrarToastAdmin('El teléfono debe contener exactamente 10 dígitos numéricos', false);
+        document.getElementById('rrhhTelefono').focus();
+        return;
+    }
+    if (documento && !/^[0-9]{6,10}$/.test(documento)) {
+        mostrarToastAdmin('El documento debe contener solo números (6 a 10 dígitos)', false);
+        document.getElementById('rrhhDocumento').focus();
+        return;
+    }
+    if (cargo && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$/.test(cargo)) {
+        mostrarToastAdmin('El cargo debe contener solo letras y espacios', false);
+        document.getElementById('rrhhCargo').focus();
+        return;
+    }
+
+    const data = {
+        nombre: nombre,
+        apellido: apellido,
+        email: email,
+        clave: clave,
+        telefono: telefono,
+        documento: documento,
+        cargo: cargo
+    };
 
     const method = 'PUT';
     const url = `/admin/api/rrhh/${id}`;

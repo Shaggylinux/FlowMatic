@@ -199,28 +199,28 @@
         <input type="hidden" id="edit-id" name="id">
         <div class="gc-modal-grid">
           <div class="gc-field-card">
-            <label class="gc-field-label">Nombre</label>
-            <input type="text" class="gc-field-input" id="edit-nombre" name="nombre" required>
+            <label class="gc-field-label">Nombre *</label>
+            <input type="text" class="gc-field-input" id="edit-nombre" name="nombre" required maxlength="50" pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$" title="Solo letras y espacios (2 a 50 caracteres)" placeholder="Nombre del candidato">
           </div>
           <div class="gc-field-card">
-            <label class="gc-field-label">Apellido</label>
-            <input type="text" class="gc-field-input" id="edit-apellido" name="apellido" required>
+            <label class="gc-field-label">Apellido *</label>
+            <input type="text" class="gc-field-input" id="edit-apellido" name="apellido" required maxlength="50" pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$" title="Solo letras y espacios (2 a 50 caracteres)" placeholder="Apellido del candidato">
           </div>
           <div class="gc-field-card">
-            <label class="gc-field-label">Email</label>
-            <input type="email" class="gc-field-input" id="edit-email" name="email" required>
+            <label class="gc-field-label">Email *</label>
+            <input type="email" class="gc-field-input" id="edit-email" name="email" required maxlength="100" placeholder="correo@ejemplo.com">
           </div>
           <div class="gc-field-card">
             <label class="gc-field-label">Teléfono</label>
-            <input type="text" class="gc-field-input" id="edit-telefono" name="telefono">
+            <input type="tel" class="gc-field-input" id="edit-telefono" name="telefono" maxlength="10" placeholder="3001234567" pattern="^[0-9]{10}$" title="10 dígitos numéricos">
           </div>
           <div class="gc-field-card">
             <label class="gc-field-label">Cargo</label>
-            <input type="text" class="gc-field-input" id="edit-cargo" name="cargo">
+            <input type="text" class="gc-field-input" id="edit-cargo" name="cargo" maxlength="100" pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$" title="Solo letras y espacios" placeholder="Ej: Desarrollador Java">
           </div>
           <div class="gc-field-card">
             <label class="gc-field-label">Ciudad</label>
-            <input type="text" class="gc-field-input" id="edit-ciudad" name="ciudad">
+            <input type="text" class="gc-field-input" id="edit-ciudad" name="ciudad" maxlength="50" pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$" title="Solo letras y espacios" placeholder="Ej: Bogotá">
           </div>
           <div class="gc-field-card">
             <label class="gc-field-label">Experiencia</label>
@@ -248,11 +248,11 @@
         </div>
         <div class="gc-field-card">
           <label class="gc-field-label">Tecnologías</label>
-          <input type="text" class="gc-field-input" id="edit-tecnologias" name="tecnologias" placeholder="Java, Spring, Angular, ...">
+          <input type="text" class="gc-field-input" id="edit-tecnologias" name="tecnologias" maxlength="255" placeholder="Java, Spring, Angular, ...">
         </div>
         <div class="gc-field-card">
           <label class="gc-field-label">Idiomas</label>
-          <input type="text" class="gc-field-input" id="edit-idiomas" name="idiomas" placeholder="Español (nativo), Inglés (avanzado)">
+          <input type="text" class="gc-field-input" id="edit-idiomas" name="idiomas" maxlength="255" placeholder="Español (nativo), Inglés (avanzado)">
         </div>
         <div class="gc-field-card">
           <label class="gc-field-label">Etapa del proceso</label>

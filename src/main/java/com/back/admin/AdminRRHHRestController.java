@@ -59,6 +59,18 @@ public class AdminRRHHRestController {
             Usuario u = usuarioRepository.findById(id).orElse(null);
             if (u == null) return ResponseEntity.notFound().build();
 
+            if (request.getNombre() == null || request.getNombre().isBlank()
+                    || !request.getNombre().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "El nombre es obligatorio y debe contener solo letras (de 2 a 50 caracteres)"));
+            }
+
+            if (request.getApellido() == null || request.getApellido().isBlank()
+                    || !request.getApellido().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "El apellido es obligatorio y debe contener solo letras (de 2 a 50 caracteres)"));
+            }
+
             if (request.getEmail() != null && !request.getEmail().equalsIgnoreCase(u.getEmail())) {
                 boolean duplicado = usuarioRepository.findByEmail(request.getEmail())
                         .map(existente -> !existente.getId().equals(id))

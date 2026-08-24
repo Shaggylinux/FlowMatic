@@ -186,24 +186,74 @@ public class PerfilCandidatoController {
         Optional<Usuario> uOpt = usuarioRepository.findByEmail(email);
         if (uOpt.isPresent()) {
             Usuario u = uOpt.get();
+
+            if (dto.getNombres() != null && !dto.getNombres().isBlank() && !dto.getNombres().trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+                resp.put("success", false);
+                resp.put("message", "Los nombres deben contener solo letras (de 2 a 50 caracteres)");
+                return ResponseEntity.badRequest().body(resp);
+            }
+
+            if (dto.getApellido() != null && !dto.getApellido().isBlank() && !dto.getApellido().trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+                resp.put("success", false);
+                resp.put("message", "Los apellidos deben contener solo letras (de 2 a 50 caracteres)");
+                return ResponseEntity.badRequest().body(resp);
+            }
+
+            if (dto.getTelefono() != null && !dto.getTelefono().isBlank()) {
+                String tel = dto.getTelefono().trim();
+                if (!tel.matches("^[0-9]{10}$")) {
+                    resp.put("success", false);
+                    resp.put("message", "El teléfono celular debe contener exactamente 10 dígitos numéricos");
+                    return ResponseEntity.badRequest().body(resp);
+                }
+            }
+
+            if (dto.getTelefonoFijo() != null && !dto.getTelefonoFijo().isBlank()) {
+                String telFijo = dto.getTelefonoFijo().trim();
+                if (!telFijo.matches("^[0-9]{7,10}$")) {
+                    resp.put("success", false);
+                    resp.put("message", "El teléfono fijo debe contener entre 7 y 10 dígitos numéricos");
+                    return ResponseEntity.badRequest().body(resp);
+                }
+            }
+
+            if (dto.getNumeroDocumento() != null && !dto.getNumeroDocumento().isBlank()) {
+                String doc = dto.getNumeroDocumento().trim();
+                if (!doc.matches("^[0-9]{6,10}$")) {
+                    resp.put("success", false);
+                    resp.put("message", "El documento debe contener solo números (de 6 a 10 dígitos)");
+                    return ResponseEntity.badRequest().body(resp);
+                }
+            }
+
+            if (dto.getCargo() != null && !dto.getCargo().isBlank() && !dto.getCargo().trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,100}$")) {
+                resp.put("success", false);
+                resp.put("message", "El cargo debe contener solo letras y espacios");
+                return ResponseEntity.badRequest().body(resp);
+            }
+
+            if (dto.getCiudad() != null && !dto.getCiudad().isBlank() && !dto.getCiudad().trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,50}$")) {
+                resp.put("success", false);
+                resp.put("message", "La ciudad debe contener solo letras y espacios");
+                return ResponseEntity.badRequest().body(resp);
+            }
+
             Candidato c = candidatoRepository.findById(u.getId()).orElseGet(() -> {
                 Candidato nuevo = new Candidato();
                 nuevo.setId(u.getId());
-                nuevo.setUsername(dto.getNombres() != null ? dto.getNombres() : u.getEmail());
-                nuevo.setApellido(dto.getApellido() != null ? dto.getApellido() : "");
+                nuevo.setUsername(dto.getNombres() != null ? dto.getNombres().trim() : u.getEmail());
+                nuevo.setApellido(dto.getApellido() != null ? dto.getApellido().trim() : "");
                 return nuevo;
             });
 
-            if (dto.getNombres() != null) {
-                c.setNombres(dto.getNombres());
-                c.setUsername(dto.getNombres());
+            if (dto.getNombres() != null && !dto.getNombres().isBlank()) {
+                c.setNombres(dto.getNombres().trim());
+                c.setUsername(dto.getNombres().trim());
             }
-            if (dto.getApellido() != null) c.setApellido(dto.getApellido());
+            if (dto.getApellido() != null && !dto.getApellido().isBlank()) c.setApellido(dto.getApellido().trim());
             if (dto.getTipoDocumento() != null) c.setTipoDocumento(dto.getTipoDocumento());
-            if (dto.getNumeroDocumento() != null) {
-                String doc = dto.getNumeroDocumento().replaceAll("[^0-9]", "");
-                if (doc.length() > 10) doc = doc.substring(0, 10);
-                c.setNumeroDocumento(doc);
+            if (dto.getNumeroDocumento() != null && !dto.getNumeroDocumento().isBlank()) {
+                c.setNumeroDocumento(dto.getNumeroDocumento().trim());
             }
             if (dto.getGenero() != null) c.setGenero(dto.getGenero());
             if (dto.getEstadoCivil() != null) c.setEstadoCivil(dto.getEstadoCivil());
