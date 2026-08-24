@@ -220,12 +220,15 @@
           </select>
         </div>
         <div class="cal-modal-field">
-          <label class="cal-modal-label" for="calVacante">Vacante</label>
-          <input type="text" name="vacante" id="calVacante" class="cal-modal-input" placeholder="Ej: Ingeniero Backend Senior" maxlength="200">
+          <label class="cal-modal-label" for="calVacante">Vacante <span class="required">*</span></label>
+          <input type="text" name="vacante" id="calVacante" class="cal-modal-input" required
+                 maxlength="100" pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$" title="Solo letras y espacios (2 a 100 caracteres)"
+                 oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                 placeholder="Ej: Desarrollador Backend Senior">
         </div>
         <div class="cal-modal-field">
           <label class="cal-modal-label" for="calTipo">Tipo de entrevista <span class="required">*</span></label>
-          <select name="tipo" id="calTipo" class="cal-modal-input">
+          <select name="tipo" id="calTipo" class="cal-modal-input" required>
             <option value="ENTREVISTA_INICIAL">Entrevista inicial</option>
             <option value="ENTREVISTA_TECNICA">Entrevista t&eacute;cnica</option>
             <option value="ENTREVISTA_FINAL">Entrevista final</option>
@@ -243,27 +246,34 @@
           </div>
         </div>
         <div class="cal-modal-field">
-          <label class="cal-modal-label">Modalidad</label>
+          <label class="cal-modal-label">Modalidad <span class="required">*</span></label>
           <div class="cal-modal-toggle">
-            <button type="button" class="cal-modal-toggle-btn active" data-value="VIRTUAL" onclick="selectModalidad(this)">Virtual</button>
-            <button type="button" class="cal-modal-toggle-btn" data-value="PRESENCIAL" onclick="selectModalidad(this)">Presencial</button>
+            <button type="button" class="cal-modal-toggle-btn active" id="btnModalidadVirtual" data-value="VIRTUAL" onclick="selectModalidad(this)">Virtual</button>
+            <button type="button" class="cal-modal-toggle-btn" id="btnModalidadPresencial" data-value="PRESENCIAL" onclick="selectModalidad(this)">Presencial</button>
           </div>
           <input type="hidden" name="modalidad" id="calModalidad" value="VIRTUAL">
         </div>
         <div class="cal-modal-field">
-          <label class="cal-modal-label" for="calLugar">Ubicaci&oacute;n o enlace</label>
-          <input type="text" name="lugar" id="calLugar" class="cal-modal-input" placeholder="Ej: https://meet.google.com/xxx" maxlength="200"
-                 pattern="https?://.+" title="Debe ser una URL válida que comience con http:// o https://">
+          <label class="cal-modal-label" for="calLugar" id="calLugarLabel">Enlace de la reunión virtual <span class="required">*</span></label>
+          <input type="text" name="lugar" id="calLugar" class="cal-modal-input" required
+                 placeholder="Ej: https://meet.google.com/xxx" maxlength="200"
+                 title="Enlace de la reunión o dirección">
         </div>
         <div class="cal-modal-field">
-          <label class="cal-modal-label" for="calEntrevistador">Entrevistador</label>
-          <input type="text" name="entrevistador" id="calEntrevistador" class="cal-modal-input" placeholder="Nombre del entrevistador" maxlength="200"
-                 pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="El nombre del entrevistador solo debe contener letras"
+          <label class="cal-modal-label" for="calEntrevistador">Entrevistador <span class="required">*</span></label>
+          <input type="text" name="entrevistador" id="calEntrevistador" class="cal-modal-input" required
+                 placeholder="Nombre del entrevistador" maxlength="100"
+                 pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$" title="El nombre del entrevistador solo debe contener letras"
                  oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')">
         </div>
         <div class="cal-modal-field">
-          <label class="cal-modal-label" for="calObs">Observaciones</label>
-          <textarea name="observaciones" id="calObs" class="cal-modal-input" placeholder="Notas adicionales..." maxlength="500"></textarea>
+          <label class="cal-modal-label" for="calObs">Observaciones <span class="required">*</span></label>
+          <textarea name="observaciones" id="calObs" class="cal-modal-input" required
+                    placeholder="Notas o instrucciones adicionales para el candidato..." maxlength="500"
+                    oninput="document.getElementById('calObsCount').textContent = this.value.length;"></textarea>
+          <div style="text-align: right; font-size: 11px; color: #94A3B8; margin-top: 4px;">
+            <span id="calObsCount">0</span>/500
+          </div>
         </div>
       </form>
     </div>
@@ -614,8 +624,8 @@ function renderEventDetail(eventoId, detailEl) {
 
     html += '<div class="cal-timeline-detail-divider"></div>';
     html += '<div class="cal-timeline-detail-row" style="flex-direction:column;align-items:stretch;gap:6px;">';
-    html += '<span class="cal-timeline-detail-label">Deja una nota</span>';
-    html += '<textarea id="nota-' + eventoId + '" class="cal-modal-input" style="min-height:60px;resize:vertical;" placeholder="Escribe tus comentarios...">' + escapeHtml(props.observaciones || '') + '</textarea>';
+    html += '<span class="cal-timeline-detail-label">Deja una nota (máx. 500 caracteres)</span>';
+    html += '<textarea id="nota-' + eventoId + '" class="cal-modal-input" maxlength="500" style="min-height:60px;resize:vertical;" placeholder="Escribe tus comentarios...">' + escapeHtml(props.observaciones || '') + '</textarea>';
     html += '<button class="cal-timeline-detail-btn cal-timeline-detail-btn-secondary" onclick="guardarNota(\'' + eventoId + '\')" style="width:auto;align-self:flex-end;padding:6px 16px;">Guardar nota</button>';
     html += '</div>';
   }
@@ -679,8 +689,11 @@ function abrirModalCrear() {
   document.getElementById('calLugar').value = '';
   document.getElementById('calEntrevistador').value = '';
   document.getElementById('calObs').value = '';
+  if (document.getElementById('calObsCount')) document.getElementById('calObsCount').textContent = '0';
   document.getElementById('calEventoId').value = '';
   document.getElementById('calModalTitle').textContent = 'Nueva Entrevista';
+  var btnVirtual = document.getElementById('btnModalidadVirtual');
+  if (btnVirtual) selectModalidad(btnVirtual);
   document.getElementById('calModalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -694,8 +707,11 @@ function abrirModalCrearParaFecha(dateStr) {
   document.getElementById('calLugar').value = '';
   document.getElementById('calEntrevistador').value = '';
   document.getElementById('calObs').value = '';
+  if (document.getElementById('calObsCount')) document.getElementById('calObsCount').textContent = '0';
   document.getElementById('calEventoId').value = '';
   document.getElementById('calModalTitle').textContent = 'Nueva Entrevista';
+  var btnVirtual = document.getElementById('btnModalidadVirtual');
+  if (btnVirtual) selectModalidad(btnVirtual);
   document.getElementById('calModalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -708,30 +724,109 @@ function cerrarModalCrear() {
 function selectModalidad(btn) {
   document.querySelectorAll('.cal-modal-toggle-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
-  document.getElementById('calModalidad').value = btn.dataset.value;
+  var val = btn.dataset.value;
+  document.getElementById('calModalidad').value = val;
+  var labelEl = document.getElementById('calLugarLabel');
+  var inputEl = document.getElementById('calLugar');
+  if (val === 'PRESENCIAL') {
+    if (labelEl) labelEl.innerHTML = 'Dirección física o enlace de Google Maps <span class="required">*</span>';
+    if (inputEl) {
+      inputEl.placeholder = 'Ej: Cra. 45 # 12-34, Piso 3 o https://maps.google.com/...';
+      inputEl.title = 'Ingresa una dirección física o enlace de Google Maps';
+    }
+  } else {
+    if (labelEl) labelEl.innerHTML = 'Enlace de la reunión virtual <span class="required">*</span>';
+    if (inputEl) {
+      inputEl.placeholder = 'Ej: https://meet.google.com/xxx';
+      inputEl.title = 'Debe ser un enlace que comience con http:// o https://';
+    }
+  }
 }
 
 function guardarEntrevista() {
   var form = document.getElementById('calEventoForm');
+  var candidatoId = (document.getElementById('calCandidato').value || '').trim();
+  var vacanteVal = (document.getElementById('calVacante').value || '').trim();
+  var tipoVal = (document.getElementById('calTipo').value || '').trim();
+  var fechaVal = (document.getElementById('calFecha').value || '').trim();
+  var horaVal = (document.getElementById('calHora').value || '').trim();
+  var modalidadVal = (document.getElementById('calModalidad').value || 'VIRTUAL').trim().toUpperCase();
   var lugarVal = (document.getElementById('calLugar').value || '').trim();
   var entrevistadorVal = (document.getElementById('calEntrevistador').value || '').trim();
+  var obsVal = (document.getElementById('calObs').value || '').trim();
 
-  if (lugarVal !== "" && !/^https?:\/\/.+/i.test(lugarVal)) {
-    mostrarToast('La ubicación o enlace debe ser un enlace válido que comience con http:// o https://', 'error');
+  if (!candidatoId) {
+    mostrarToast('Debes seleccionar un candidato para la entrevista', 'error');
+    document.getElementById('calCandidato').focus();
+    return;
+  }
+
+  if (!vacanteVal || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$/.test(vacanteVal)) {
+    mostrarToast('La vacante es obligatoria y debe contener solo letras (de 2 a 100 caracteres)', 'error');
+    document.getElementById('calVacante').focus();
+    return;
+  }
+
+  if (!tipoVal) {
+    mostrarToast('Debes seleccionar el tipo de entrevista', 'error');
+    document.getElementById('calTipo').focus();
+    return;
+  }
+
+  if (!fechaVal) {
+    mostrarToast('Debes seleccionar la fecha de la entrevista', 'error');
+    document.getElementById('calFecha').focus();
+    return;
+  }
+
+  if (!horaVal) {
+    mostrarToast('Debes seleccionar la hora de la entrevista', 'error');
+    document.getElementById('calHora').focus();
+    return;
+  }
+
+  if (!lugarVal) {
+    if (modalidadVal === 'PRESENCIAL') {
+      mostrarToast('Ingresa la dirección física o enlace de Google Maps', 'error');
+    } else {
+      mostrarToast('Ingresa el enlace de la reunión virtual', 'error');
+    }
     document.getElementById('calLugar').focus();
     return;
   }
 
-  if (entrevistadorVal !== "" && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(entrevistadorVal)) {
-    mostrarToast('El nombre del entrevistador solo debe contener letras', 'error');
+  if (modalidadVal === 'PRESENCIAL') {
+    if (!/^https?:\/\/.+/i.test(lugarVal) && !/^[A-Za-záéíóúÁÉÍÓÚñÑ0-9\s#.,\-_/°]{3,200}$/.test(lugarVal)) {
+      mostrarToast('Ingresa una dirección física válida o un enlace de Google Maps', 'error');
+      document.getElementById('calLugar').focus();
+      return;
+    }
+  } else {
+    if (!/^https?:\/\/.+/i.test(lugarVal)) {
+      mostrarToast('El enlace de la reunión virtual debe comenzar con http:// o https://', 'error');
+      document.getElementById('calLugar').focus();
+      return;
+    }
+  }
+
+  if (!entrevistadorVal || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$/.test(entrevistadorVal)) {
+    mostrarToast('El nombre del entrevistador es obligatorio y solo debe contener letras (de 2 a 100 caracteres)', 'error');
     document.getElementById('calEntrevistador').focus();
     return;
   }
 
-  if (!form.checkValidity()) {
-    form.reportValidity();
+  if (!obsVal) {
+    mostrarToast('Las observaciones son obligatorias para agendar la entrevista', 'error');
+    document.getElementById('calObs').focus();
     return;
   }
+
+  if (obsVal.length > 500) {
+    mostrarToast('Las observaciones no pueden superar los 500 caracteres', 'error');
+    document.getElementById('calObs').focus();
+    return;
+  }
+
   var eventoId = document.getElementById('calEventoId').value;
   var isReprogram = eventoId ? true : false;
   var formData = new URLSearchParams(new FormData(form));
@@ -876,6 +971,17 @@ function reprogramarEvento(eventoId) {
   document.getElementById('calLugar').value = props.lugar || '';
   document.getElementById('calEntrevistador').value = props.entrevistador || '';
   document.getElementById('calObs').value = props.observaciones || '';
+  if (document.getElementById('calObsCount')) {
+    document.getElementById('calObsCount').textContent = (props.observaciones || '').length;
+  }
+  var mod = props.modalidad || 'VIRTUAL';
+  if (mod === 'PRESENCIAL') {
+    var btnP = document.getElementById('btnModalidadPresencial');
+    if (btnP) selectModalidad(btnP);
+  } else {
+    var btnV = document.getElementById('btnModalidadVirtual');
+    if (btnV) selectModalidad(btnV);
+  }
   document.getElementById('calEventoId').value = eventoId;
   document.getElementById('calModalTitle').textContent = 'Reprogramar Entrevista';
 

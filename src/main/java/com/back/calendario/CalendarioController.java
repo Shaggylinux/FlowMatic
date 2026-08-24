@@ -187,23 +187,50 @@ public class CalendarioController {
             return response;
         }
 
-        if (lugar != null && !lugar.isBlank() && !lugar.matches("(?i)^https?://.+$")) {
+        if (vacante == null || vacante.isBlank() || !vacante.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,100}$")) {
             response.put("success", false);
-            response.put("error", "La ubicación o enlace debe ser un enlace válido que comience con http:// o https://");
+            response.put("error", "La vacante es obligatoria y debe contener solo letras (de 2 a 100 caracteres)");
             return response;
         }
 
-        if (entrevistador != null && !entrevistador.isBlank() && !entrevistador.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]+$")) {
+        String modVal = (modalidad != null && !modalidad.isBlank()) ? modalidad.toUpperCase() : "VIRTUAL";
+        if ("PRESENCIAL".equals(modVal)) {
+            if (lugar == null || lugar.isBlank() || (!lugar.trim().matches("(?i)^https?://.+$") && !lugar.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ0-9\\s#.,\\-_/°]{3,200}$"))) {
+                response.put("success", false);
+                response.put("error", "Para entrevistas presenciales, ingresa una dirección física o un enlace de Google Maps");
+                return response;
+            }
+        } else {
+            if (lugar == null || lugar.isBlank() || !lugar.trim().matches("(?i)^https?://.+$")) {
+                response.put("success", false);
+                response.put("error", "Para entrevistas virtuales, el enlace de reunión debe ser una URL válida que comience con http:// o https://");
+                return response;
+            }
+        }
+
+        if (entrevistador == null || entrevistador.isBlank() || !entrevistador.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,100}$")) {
             response.put("success", false);
-            response.put("error", "El nombre del entrevistador solo debe contener letras");
+            response.put("error", "El nombre del entrevistador es obligatorio y solo debe contener letras (de 2 a 100 caracteres)");
+            return response;
+        }
+
+        if (observaciones == null || observaciones.isBlank()) {
+            response.put("success", false);
+            response.put("error", "Las observaciones son obligatorias para agendar la entrevista");
+            return response;
+        }
+
+        if (observaciones.trim().length() > 500) {
+            response.put("success", false);
+            response.put("error", "Las observaciones no pueden superar los 500 caracteres");
             return response;
         }
 
         try {
             String candidatoNombre = candidatoService.getNombreCompleto(candidatoId);
 
-            Evento evento = eventoService.crearEvento(candidatoId, candidatoNombre, fecha, hora, tipo, lugar, vacante, modalidad,
-                    entrevistador, observaciones, estado, rrhh.getId());
+            Evento evento = eventoService.crearEvento(candidatoId, candidatoNombre, fecha, hora, tipo, lugar.trim(), vacante.trim(), modVal,
+                    entrevistador.trim(), observaciones.trim(), estado, rrhh.getId());
             response.put("success", true);
             response.put("eventoId", evento.getId());
 
@@ -248,21 +275,48 @@ public class CalendarioController {
             return response;
         }
 
-        if (lugar != null && !lugar.isBlank() && !lugar.matches("(?i)^https?://.+$")) {
+        if (vacante == null || vacante.isBlank() || !vacante.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,100}$")) {
             response.put("success", false);
-            response.put("error", "La ubicación o enlace debe ser un enlace válido que comience con http:// o https://");
+            response.put("error", "La vacante es obligatoria y debe contener solo letras (de 2 a 100 caracteres)");
             return response;
         }
 
-        if (entrevistador != null && !entrevistador.isBlank() && !entrevistador.matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]+$")) {
+        String modVal = (modalidad != null && !modalidad.isBlank()) ? modalidad.toUpperCase() : "VIRTUAL";
+        if ("PRESENCIAL".equals(modVal)) {
+            if (lugar == null || lugar.isBlank() || (!lugar.trim().matches("(?i)^https?://.+$") && !lugar.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ0-9\\s#.,\\-_/°]{3,200}$"))) {
+                response.put("success", false);
+                response.put("error", "Para entrevistas presenciales, ingresa una dirección física o un enlace de Google Maps");
+                return response;
+            }
+        } else {
+            if (lugar == null || lugar.isBlank() || !lugar.trim().matches("(?i)^https?://.+$")) {
+                response.put("success", false);
+                response.put("error", "Para entrevistas virtuales, el enlace de reunión debe ser una URL válida que comience con http:// o https://");
+                return response;
+            }
+        }
+
+        if (entrevistador == null || entrevistador.isBlank() || !entrevistador.trim().matches("^[A-Za-záéíóúÁÉÍÓÚñÑ\\s]{2,100}$")) {
             response.put("success", false);
-            response.put("error", "El nombre del entrevistador solo debe contener letras");
+            response.put("error", "El nombre del entrevistador es obligatorio y solo debe contener letras (de 2 a 100 caracteres)");
+            return response;
+        }
+
+        if (observaciones == null || observaciones.isBlank()) {
+            response.put("success", false);
+            response.put("error", "Las observaciones son obligatorias para actualizar la entrevista");
+            return response;
+        }
+
+        if (observaciones.trim().length() > 500) {
+            response.put("success", false);
+            response.put("error", "Las observaciones no pueden superar los 500 caracteres");
             return response;
         }
 
         try {
-            eventoService.actualizarEvento(id, fecha, hora, tipo, lugar, vacante, modalidad, entrevistador,
-                    observaciones);
+            eventoService.actualizarEvento(id, fecha, hora, tipo, lugar.trim(), vacante.trim(), modVal, entrevistador.trim(),
+                    observaciones.trim());
             response.put("success", true);
 
             try {
@@ -494,8 +548,14 @@ public class CalendarioController {
             }
         }
 
+        if (observaciones != null && observaciones.trim().length() > 500) {
+            response.put("success", false);
+            response.put("error", "Las observaciones no pueden superar los 500 caracteres");
+            return response;
+        }
+
         try {
-            eventoService.actualizarObservaciones(id, observaciones);
+            eventoService.actualizarObservaciones(id, observaciones != null ? observaciones.trim() : "");
             response.put("success", true);
         } catch (Exception e) {
             response.put("success", false);
