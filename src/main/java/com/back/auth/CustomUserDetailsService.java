@@ -36,10 +36,13 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new LockedException("Cuenta bloqueada por un administrador");
         }
 
+        if (!usuario.isActivo()) {
+            throw new org.springframework.security.authentication.DisabledException("Tu cuenta no está activa. Por favor revisa tu correo electrónico y haz clic en el enlace de activación.");
+        }
+
         return User.builder()
                 .username(usuario.getEmail())
                 .password(usuario.getClave())
-                .disabled(!usuario.isActivo())
                 .authorities(new SimpleGrantedAuthority(usuario.getRol()))
                 .build();
     }

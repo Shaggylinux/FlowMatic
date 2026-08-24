@@ -65,8 +65,7 @@ public class UsuarioService implements AuthApi {
             usuario.setRol("ROLE_CANDIDATO");
         }
 
-        boolean esRRHH = "ROLE_RRHH".equals(usuario.getRol());
-        usuario.setActivo(esRRHH);
+        usuario.setActivo(false);
         usuario = usuarioRepository.save(usuario);
 
         String tokenUuid = UUID.randomUUID().toString();

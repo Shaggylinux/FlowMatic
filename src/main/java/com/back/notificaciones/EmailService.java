@@ -80,13 +80,15 @@ public class EmailService {
             logger.info("📧 Preparando email de bienvenida RRHH para: {}", destinatario);
 
             String nombreCompleto = nombre + (apellido != null && !apellido.isBlank() ? " " + apellido : "");
+            String enlaceActivacion = appBaseUrl + contextPath + "/registro/candidato/activar?token=" + token;
             String enlaceLogin = appBaseUrl + contextPath + "/login";
 
-            String asunto = "🎉 Bienvenido al equipo de RRHH — Credenciales FLOWMATIC";
+            String asunto = "🎉 Bienvenido al equipo de RRHH — Activa tu cuenta en FLOWMATIC";
             Context context = new Context();
             context.setVariable("nombre", nombreCompleto);
             context.setVariable("email", destinatario);
             context.setVariable("clave", clave != null && !clave.isBlank() ? clave : "Asignada por el Administrador");
+            context.setVariable("enlaceActivacion", enlaceActivacion);
             context.setVariable("enlaceLogin", enlaceLogin);
 
             String mensaje = templateEngine.process("emails/email-bienvenida-rrhh", context);

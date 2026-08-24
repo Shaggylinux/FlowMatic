@@ -22,11 +22,11 @@
                         <td style="padding: 32px 28px;">
                             <h2 style="color: #0F172A; font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">¡Bienvenido/a al equipo, <span th:text="${nombre}">Gestor RRHH</span>! 🎉</h2>
                             <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
-                                El Administrador ha creado tu cuenta con el rol de <strong>Gestor de Recursos Humanos</strong> en la plataforma <strong>FLOWMATIC</strong>.
+                                El Administrador ha creado tu cuenta como <strong>Gestor de Recursos Humanos</strong> en la plataforma <strong>FLOWMATIC</strong>.
                             </p>
 
                             <!-- Credentials Box -->
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; border-left: 4px solid #0F172A; border: 1px solid #E2E8F0; border-left-width: 4px; border-left-color: #0D9488; border-radius: 6px; padding: 18px 20px; margin: 20px 0;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-left-width: 4px; border-left-color: #0D9488; border-radius: 6px; padding: 18px 20px; margin: 20px 0;">
                                 <tr>
                                     <td>
                                         <p style="margin: 0 0 10px 0; font-size: 13px; color: #0D9488; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Tus Credenciales de Acceso</p>
@@ -44,29 +44,37 @@
                             </table>
 
                             <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 20px 0 24px 0;">
-                                Ya puedes ingresar al portal administrativo con tus credenciales asignadas haciendo clic en el siguiente botón:
+                                ⚠️ <strong>Importante:</strong> Tu cuenta se encuentra en estado <strong>Pendiente de Activación</strong>. Para poder iniciar sesión con tus credenciales asignadas, debes activar tu cuenta haciendo clic en el siguiente botón:
                             </p>
 
-                            <!-- Button -->
+                            <!-- Activation Button -->
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 28px 0;">
                                 <tr>
                                     <td align="center">
-                                        <a th:href="${enlaceLogin}" style="background-color: #0F172A; color: #FFFFFF; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(15,23,42,0.25);">
-                                            Iniciar Sesión en FLOWMATIC &rarr;
+                                        <a th:href="${enlaceActivacion}" style="background-color: #0D9488; color: #FFFFFF; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(13,148,136,0.3);">
+                                            Activar mi cuenta de RRHH &rarr;
                                         </a>
                                     </td>
                                 </tr>
                             </table>
 
+                            <p style="color: #64748B; font-size: 12px; line-height: 1.5; margin: 20px 0 8px 0; text-align: center;">
+                                Si el botón no responde, copia y pega este enlace en tu navegador:
+                            </p>
+                            <p style="color: #0D9488; font-size: 12px; text-align: center; word-break: break-all; margin: 0 0 20px 0;" th:text="${enlaceActivacion}"></p>
+
                             <div style="background-color: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 14px 16px; margin: 20px 0;">
                                 <p style="color: #92400E; font-size: 13px; margin: 0; line-height: 1.5;">
-                                    💡 <strong>Recomendación de seguridad:</strong> Por tu seguridad, te aconsejamos cambiar tu contraseña temporal una vez que inicies sesión en la plataforma desde tu perfil de usuario.
+                                    💡 <strong>Recomendación de seguridad:</strong> Por tu seguridad, te aconsejamos cambiar tu contraseña asignada una vez que ingreses a la plataforma desde tu perfil.
                                 </p>
                             </div>
 
                             <div style="border-top: 1px solid #E2E8F0; margin-top: 24px; padding-top: 18px;">
+                                <p style="color: #94A3B8; font-size: 12px; margin: 0 0 6px 0;">
+                                    ⏱ Este enlace de activación expira en 24 horas por motivos de seguridad.
+                                </p>
                                 <p style="color: #94A3B8; font-size: 12px; margin: 0;">
-                                    Si tienes alguna duda o no reconoces este registro, contacta al Administrador de sistemas de FLOWMATIC.
+                                    Si tienes alguna duda o no reconoces este registro, contacta al Administrador del sistema.
                                 </p>
                             </div>
                         </td>
