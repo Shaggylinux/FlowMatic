@@ -747,10 +747,11 @@ function selectModalidad(btn) {
 }
 
 function limpiarErroresModal() {
-  document.querySelectorAll('#calEventoForm .cal-input-error').forEach(function(el) {
+  document.querySelectorAll('#calEventoForm .is-invalid, #calEventoForm .cal-input-error').forEach(function(el) {
+    el.classList.remove('is-invalid');
     el.classList.remove('cal-input-error');
   });
-  document.querySelectorAll('#calEventoForm .cal-error-inline').forEach(function(el) {
+  document.querySelectorAll('#calEventoForm .error-msg, #calEventoForm .cal-error-inline').forEach(function(el) {
     el.remove();
   });
 }
@@ -758,21 +759,23 @@ function limpiarErroresModal() {
 function marcarErrorCampo(inputId, mensaje) {
   var input = document.getElementById(inputId);
   if (!input) return;
-  input.classList.add('cal-input-error');
+  input.classList.add('is-invalid');
   input.focus();
 
   var parent = input.parentNode;
-  var existing = parent.querySelector('.cal-error-inline');
+  var existing = parent.querySelector('.error-msg');
   if (existing) existing.remove();
 
-  var err = document.createElement('div');
-  err.className = 'cal-error-inline';
-  err.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>' + mensaje + '</span>';
+  var err = document.createElement('span');
+  err.className = 'error-msg';
+  err.style.display = 'block';
+  err.style.marginTop = '4px';
+  err.textContent = mensaje;
   parent.appendChild(err);
 
   var clearFn = function() {
-    input.classList.remove('cal-input-error');
-    err.remove();
+    input.classList.remove('is-invalid');
+    if (err.parentNode) err.remove();
     input.removeEventListener('input', clearFn);
     input.removeEventListener('change', clearFn);
   };
@@ -877,41 +880,32 @@ function guardarEntrevista() {
   .catch(function(err) { mostrarToast('Error de comunicación: ' + err.message, 'warning'); });
 }
 
-// ── NOTIFICACIONES CON DISEÑO ELEGANTE (SIN ROJO) ────────
+// ── SISTEMA DE TOAST UNIFICADO FLOWMATIC ───────────────
 function mostrarToast(mensaje, tipo) {
-  var existing = document.querySelectorAll('.cal-custom-toast');
-  existing.forEach(function(t) { t.remove(); });
-
-  var isSuccess = (tipo === 'success');
+  if (typeof window.showToast === 'function') {
+    window.showToast(tipo || 'info', mensaje, 4000);
+    return;
+  }
+  var container = document.getElementById('fm-toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'fm-toast-container';
+    container.className = 'fm-toast-container';
+    document.body.appendChild(container);
+  }
   var toast = document.createElement('div');
-  toast.className = 'cal-custom-toast';
-  toast.style.cssText = 'position:fixed; top:24px; right:24px; z-index:999999; display:flex; align-items:flex-start; gap:12px; padding:14px 18px; border-radius:12px; background:#1E293B; border:1px solid ' + (isSuccess ? '#0D9488' : '#F59E0B') + '; box-shadow:0 12px 30px rgba(0,0,0,0.25); max-width:400px; min-width:300px; color:#F8FAFC; font-family:var(--fm-font); opacity:0; transform:translateX(30px); transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1);';
-
-  var iconHtml = isSuccess
-    ? '<div style="width:28px; height:28px; border-radius:8px; background:rgba(13,148,136,0.2); display:flex; align-items:center; justify-content:center; color:#2DD4BF; flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'
-    : '<div style="width:28px; height:28px; border-radius:8px; background:rgba(245,158,11,0.2); display:flex; align-items:center; justify-content:center; color:#FBBF24; flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>';
-
-  var title = isSuccess ? 'Operación exitosa' : 'Validación requerida';
-
-  toast.innerHTML = iconHtml +
-    '<div style="flex:1; min-width:0;">' +
-      '<div style="font-size:13px; font-weight:700; color:#FFFFFF; margin-bottom:2px;">' + title + '</div>' +
-      '<div style="font-size:12px; color:#CBD5E1; line-height:1.4;">' + mensaje + '</div>' +
-    '</div>' +
-    '<button type="button" style="background:none; border:none; color:#94A3B8; font-size:18px; cursor:pointer; padding:0; line-height:1; margin-left:4px;" onclick="this.parentElement.remove()">&times;</button>';
-
-  document.body.appendChild(toast);
-
-  requestAnimationFrame(function() {
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(0)';
-  });
-
+  toast.className = 'fm-toast fm-toast-' + (tipo || 'info');
+  var iconSvg = tipo === 'success'
+    ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+    : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+  toast.innerHTML = '<div class="fm-toast-icon">' + iconSvg + '</div><div class="fm-toast-message">' + mensaje + '</div><button type="button" class="fm-toast-close" onclick="this.parentElement.remove()">&times;</button>';
+  container.appendChild(toast);
+  requestAnimationFrame(function() { toast.classList.add('fm-toast-visible'); });
   setTimeout(function() {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(30px)';
-    setTimeout(function() { toast.remove(); }, 300);
-  }, 4500);
+    toast.classList.remove('fm-toast-visible');
+    toast.classList.add('fm-toast-hiding');
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
+  }, 4000);
 }
 
 // ── EVENT ACTIONS ────────────────────────────
@@ -1211,6 +1205,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+<script th:src="@{/js/ui-feedback.js}"></script>
 <script th:src="@{/js/csrf.js}"></script>
 </body>
 </html>
