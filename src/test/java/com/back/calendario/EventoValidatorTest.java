@@ -17,10 +17,9 @@ class EventoValidatorTest {
     }
 
     @Test
-    void validate_lugarSinUrlLanzaExcepcion() {
-        assertThatThrownBy(() -> EventoValidator.validate(LocalDate.now().plusDays(2), LocalTime.of(10, 0), "Oficina piso 3", "Juan Perez", null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("enlace válido");
+    void validate_conDireccionFisicaNoLanzaExcepcion() {
+        assertThatCode(() -> EventoValidator.validate(LocalDate.now().plusDays(2), LocalTime.of(10, 0), "Cra. 77 # 65j-66 SUR", "Juan Perez", null))
+                .doesNotThrowAnyException();
     }
 
     @Test

@@ -30,11 +30,8 @@ public class EventoValidator {
             throw new IllegalArgumentException("La hora seleccionada ya pasó");
         }
         if (lugar != null && !lugar.isBlank()) {
-            if (lugar.length() > 200) {
-                throw new IllegalArgumentException("El lugar no puede tener más de 200 caracteres");
-            }
-            if (!lugar.matches("(?i)^https?://.+$")) {
-                throw new IllegalArgumentException("La ubicación o enlace debe ser un enlace válido que comience con http:// o https://");
+            if (lugar.trim().length() < 3 || lugar.trim().length() > 200) {
+                throw new IllegalArgumentException("La ubicación o enlace debe tener entre 3 y 200 caracteres");
             }
         }
         validateEntrevistador(entrevistador);
