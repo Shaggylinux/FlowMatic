@@ -31,8 +31,12 @@
       <h2 style="text-align:center; margin-bottom:24px;">Iniciar Sesión</h2>
 
       <div th:if="${param.error}" class="alert alert-error">Credenciales inválidas. Verifica tu correo y contraseña.</div>
-      <div th:if="${param.inactiva}" class="alert alert-error">Tu cuenta aún no está activa. Por favor revisa tu correo electrónico y haz clic en el enlace de activación para habilitar tu acceso.</div>
-      <div th:if="${param.bloqueado}" class="alert alert-error">Acceso bloqueado temporalmente</div>
+      <div th:if="${param.inactiva}" class="alert alert-error" style="line-height: 1.5; font-size: 13px;">
+        <strong>⚠️ Cuenta pendiente de activación</strong><br>
+        Tu cuenta aún no ha sido activada. Por favor revisa tu correo electrónico y haz clic en el enlace de activación que te enviamos.<br>
+        <span style="font-size: 12px; margin-top: 4px; display: inline-block;">¿No recibiste el correo? <a th:href="@{/registro/candidato/reenviar-activacion}" style="color: inherit; text-decoration: underline; font-weight: 600;">Reenviar activación</a></span>
+      </div>
+      <div th:if="${param.bloqueado}" class="alert alert-error">Acceso bloqueado temporalmente. Intenta más tarde o contacta al administrador.</div>
       <div th:if="${param.reset_ok}" class="alert alert-success">Contraseña actualizada correctamente</div>
       <div th:if="${param.logout}" class="alert alert-success">Sesión cerrada correctamente</div>
 

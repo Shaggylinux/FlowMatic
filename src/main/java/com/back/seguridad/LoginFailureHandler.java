@@ -1,10 +1,12 @@
 package com.back.seguridad;
 
-import org.springframework.context.ApplicationEventPublisher;
+import com.back.auth.Usuario;
+import com.back.auth.UsuarioRepository;
 import com.back.shared.event.AuditoriaEvent;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
@@ -19,26 +21,40 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     private final LoginAttemptService loginAttemptService;
     private final ApplicationEventPublisher eventPublisher;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         String email = request.getParameter("email");
-        if (email != null) {
-            if (loginAttemptService.isBlocked(email) || exception instanceof LockedException) {
-                getRedirectStrategy().sendRedirect(request, response, "/login?bloqueado");
-                return;
+        if (email != null && !email.isBlank()) {
+            String emailNormalizado = email.trim();
+            Usuario usuario = usuarioRepository.findByEmailIgnoreCase(emailNormalizado).orElse(null);
+
+            if (usuario != null) {
+                if (usuario.isBloqueado() || loginAttemptService.isBlocked(emailNormalizado) || exception instanceof LockedException || (exception.getCause() instanceof LockedException)) {
+                    getRedirectStrategy().sendRedirect(request, response, "/login?bloqueado");
+                    return;
+                }
+
+                if (!usuario.isActivo() || exception instanceof DisabledException || (exception.getCause() instanceof DisabledException)) {
+                    getRedirectStrategy().sendRedirect(request, response, "/login?inactiva");
+                    return;
+                }
+            } else {
+                if (loginAttemptService.isBlocked(emailNormalizado)) {
+                    getRedirectStrategy().sendRedirect(request, response, "/login?bloqueado");
+                    return;
+                }
             }
-            if (exception instanceof DisabledException) {
-                getRedirectStrategy().sendRedirect(request, response, "/login?inactiva");
-                return;
-            }
-            loginAttemptService.recordFailed(email);
+
+            loginAttemptService.recordFailed(emailNormalizado);
             eventPublisher.publishEvent(new AuditoriaEvent(this, "SEGURIDAD",
-                "Intento de inicio de sesión fallido: " + email,
-                email, "SEGURIDAD"));
-            if (loginAttemptService.isBlocked(email)) {
-                loginAttemptService.publicarEventoBloqueo(email);
+                "Intento de inicio de sesión fallido: " + emailNormalizado,
+                emailNormalizado, "SEGURIDAD"));
+
+            if (loginAttemptService.isBlocked(emailNormalizado)) {
+                loginAttemptService.publicarEventoBloqueo(emailNormalizado);
                 getRedirectStrategy().sendRedirect(request, response, "/login?bloqueado");
                 return;
             }
