@@ -22,6 +22,10 @@ public class RRHHService {
         return rrhhRepository.findById(id);
     }
 
+    public boolean existePorId(Long id) {
+        return rrhhRepository.existsById(id);
+    }
+
     @Transactional
     public RRHH guardar(RRHH rrhh) {
         return rrhhRepository.save(rrhh);

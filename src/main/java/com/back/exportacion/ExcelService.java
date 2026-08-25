@@ -2,6 +2,8 @@ package com.back.exportacion;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -17,6 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class ExcelService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExcelService.class);
 
     private static final XSSFColor COLOR_PRIMARY_TEAL = new XSSFColor(new java.awt.Color(13, 148, 136), null);
     private static final XSSFColor COLOR_DARK_TITLE = new XSSFColor(new java.awt.Color(15, 23, 42), null);
@@ -55,7 +59,8 @@ public class ExcelService {
                 anchor.setRow2(3);
                 drawing.createPicture(anchor, pictureIdx);
                 titleStartCol = 2;
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                logger.warn("No se pudo incrustar el logo en el archivo Excel: {}", e.getMessage());
             }
         }
 
@@ -196,14 +201,16 @@ public class ExcelService {
             if (is != null) {
                 return is.readAllBytes();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            logger.debug("No se pudo leer logo desde resources classpath: {}", e.getMessage());
         }
         try {
             Path path = Paths.get("src/main/resources/img/Flowmatic-excel.png");
             if (Files.exists(path)) {
                 return Files.readAllBytes(path);
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            logger.debug("No se pudo leer logo desde ruta de archivo: {}", e.getMessage());
         }
         return null;
     }

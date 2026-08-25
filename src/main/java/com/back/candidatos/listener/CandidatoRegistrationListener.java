@@ -2,7 +2,7 @@ package com.back.candidatos.listener;
 
 import com.back.auth.event.UsuarioRegistradoEvent;
 import com.back.candidatos.Candidato;
-import com.back.candidatos.CandidatoRepository;
+import com.back.candidatos.CandidatoService;
 import com.back.drive.FilesServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class CandidatoRegistrationListener {
 
     private static final Logger logger = LoggerFactory.getLogger(CandidatoRegistrationListener.class);
 
-    private final CandidatoRepository candidatoRepository;
+    private final CandidatoService candidatoService;
     private final FilesServices filesServices;
     private final com.back.shared.HistorialService historialService;
 
@@ -28,7 +28,7 @@ public class CandidatoRegistrationListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void onUsuarioRegistrado(UsuarioRegistradoEvent event) {
         if ("ROLE_CANDIDATO".equals(event.rol())) {
-            if (candidatoRepository.existsById(event.usuarioId())) {
+            if (candidatoService.existePorId(event.usuarioId())) {
                 logger.info("Perfil de candidato ya existe, omitiendo: {}", event.email());
                 return;
             }
@@ -41,7 +41,7 @@ public class CandidatoRegistrationListener {
             candidato.setEstado("Registrado");
             candidato.setUltimaActualizacion(java.time.LocalDateTime.now());
             candidato.setRrhhEmail(event.rrhhEmail());
-            candidatoRepository.save(candidato);
+            candidatoService.guardar(candidato);
 
             historialService.registrarCambio(event.usuarioId(), "Nuevo Registro", "Registrado", "Sistema");
 
