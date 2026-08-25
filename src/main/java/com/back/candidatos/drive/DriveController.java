@@ -706,7 +706,7 @@ public class DriveController {
                 try {
                     notificacionService.crear("DOCUMENTO", "Se ha compartido contigo el archivo: " + archivo.getNombre(), destUser.getId(), candNombre, "/drive");
                 } catch (Exception e) {
-                    // Ignore notification error
+                    logger.warn("No se pudo crear notificación web para archivo compartido: {}", e.getMessage());
                 }
             }
         }

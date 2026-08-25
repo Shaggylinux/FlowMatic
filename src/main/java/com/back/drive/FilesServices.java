@@ -151,7 +151,9 @@ public class FilesServices {
     public void eliminarArchivo(Archivos archivo) {
         try {
             Files.deleteIfExists(Paths.get(archivo.getUbicacion()));
-        } catch (IOException ignored) {}
+        } catch (IOException e) {
+            logger.warn("No se pudo eliminar el archivo físico en disco {}: {}", archivo.getUbicacion(), e.getMessage());
+        }
         repository.delete(archivo);
     }
 

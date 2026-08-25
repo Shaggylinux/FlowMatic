@@ -1,7 +1,7 @@
 package com.back.admin.listener;
 
 import com.back.admin.RRHH;
-import com.back.admin.RRHHRepository;
+import com.back.admin.RRHHService;
 import com.back.auth.event.UsuarioRegistradoEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +18,13 @@ public class RRHHRegistrationListener {
 
     private static final Logger logger = LoggerFactory.getLogger(RRHHRegistrationListener.class);
 
-    private final RRHHRepository rrhhRepository;
+    private final RRHHService rrhhService;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void onUsuarioRegistrado(UsuarioRegistradoEvent event) {
         if ("ROLE_RRHH".equals(event.rol())) {
-            if (rrhhRepository.existsById(event.usuarioId())) {
+            if (rrhhService.existePorId(event.usuarioId())) {
                 logger.info("Perfil RRHH ya existe, omitiendo: {}", event.email());
                 return;
             }
@@ -43,7 +43,7 @@ public class RRHHRegistrationListener {
             if (event.cargo() != null && !event.cargo().trim().isEmpty()) {
                 rrhh.setCargo(event.cargo());
             }
-            rrhhRepository.save(rrhh);
+            rrhhService.guardar(rrhh);
 
             logger.info("Perfil RRHH creado para: {}", event.email());
         }
