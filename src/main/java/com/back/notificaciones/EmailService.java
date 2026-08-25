@@ -64,6 +64,8 @@ public class EmailService {
             helper.setText(mensaje, true);
             helper.setFrom(mailFrom);
 
+            adjuntarRecursosEmail(helper, "icon-activate.png");
+
             mailSender.send(mimeMessage);
 
             logger.info("Email enviado exitosamente a: {}", destinatario);
@@ -100,6 +102,8 @@ public class EmailService {
             helper.setText(mensaje, true);
             helper.setFrom(mailFrom);
 
+            adjuntarRecursosEmail(helper, "icon-rrhh.png");
+
             mailSender.send(mimeMessage);
 
             logger.info("Email de bienvenida RRHH enviado a: {}", destinatario);
@@ -131,6 +135,8 @@ public class EmailService {
             helper.setText(mensaje, true);
             helper.setFrom(mailFrom);
 
+            adjuntarRecursosEmail(helper, "icon-reset.png");
+
             mailSender.send(mimeMessage);
 
             logger.info("Email de recuperación enviado a: {}", destinatario);
@@ -159,6 +165,8 @@ public class EmailService {
             helper.setSubject(asunto);
             helper.setText(mensaje, true);
             helper.setFrom(mailFrom);
+
+            adjuntarRecursosEmail(helper, "icon-block.png");
 
             mailSender.send(mimeMessage);
 
@@ -201,6 +209,8 @@ public class EmailService {
             helper.setText(mensaje, true);
             helper.setFrom(mailFrom);
 
+            adjuntarRecursosEmail(helper, "CONFIRMACION".equals(accion) ? "icon-activate.png" : "icon-interview.png");
+
             mailSender.send(mimeMessage);
 
             logger.info("Email de accion del candidato enviado a: {}", destinatario);
@@ -238,6 +248,8 @@ public class EmailService {
             helper.setText(mensaje, true);
             helper.setFrom(mailFrom);
 
+            adjuntarRecursosEmail(helper, "icon-interview.png");
+
             mailSender.send(mimeMessage);
 
             logger.info("Email de entrevista enviado a: {}", destinatario);
@@ -274,6 +286,8 @@ public class EmailService {
             helper.setText(mensaje, true);
             helper.setFrom(mailFrom);
 
+            adjuntarRecursosEmail(helper, "icon-interview.png");
+
             mailSender.send(mimeMessage);
 
             logger.info("Email de entrevista enviado al candidato: {}", destinatario);
@@ -282,6 +296,27 @@ public class EmailService {
         } catch (Exception e) {
             logger.error("Error al enviar email de entrevista al candidato: {}", e.getMessage());
             throw new RuntimeException("Error al enviar el email de entrevista al candidato", e);
+        }
+    }
+
+    private void adjuntarRecursosEmail(MimeMessageHelper helper, String iconoBadge) {
+        try {
+            org.springframework.core.io.ClassPathResource logo = new org.springframework.core.io.ClassPathResource("static/images/flowmatic-logo.png");
+            if (logo.exists()) {
+                helper.addInline("logoFlowmatic", logo, "image/png");
+            }
+            org.springframework.core.io.ClassPathResource shield = new org.springframework.core.io.ClassPathResource("static/images/icon-shield.png");
+            if (shield.exists()) {
+                helper.addInline("iconShield", shield, "image/png");
+            }
+            if (iconoBadge != null) {
+                org.springframework.core.io.ClassPathResource badge = new org.springframework.core.io.ClassPathResource("static/images/" + iconoBadge);
+                if (badge.exists()) {
+                    helper.addInline("badgeIcon", badge, "image/png");
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("No se pudieron adjuntar recursos inline al correo: {}", e.getMessage());
         }
     }
 }

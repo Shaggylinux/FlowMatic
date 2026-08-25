@@ -18,15 +18,7 @@
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto;">
                 <tr>
                   <td valign="middle" style="padding-right: 14px;">
-                    <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
-                      <circle cx="50" cy="50" r="8" fill="#0D9488" />
-                      <path d="M 50 35 L 50 14 M 35 50 L 14 50 M 50 65 L 50 86 M 65 50 L 86 50" stroke="#0D9488" stroke-width="7" stroke-linecap="round" />
-                      <path d="M 28 28 L 41 41 M 72 28 L 59 41 M 28 72 L 41 59 M 72 72 L 59 59" stroke="#0D9488" stroke-width="6" stroke-linecap="round" />
-                      <circle cx="50" cy="11" r="5.5" fill="#0D9488" />
-                      <circle cx="11" cy="50" r="5.5" fill="#0D9488" />
-                      <circle cx="50" cy="89" r="5.5" fill="#0D9488" />
-                      <circle cx="89" cy="50" r="5.5" fill="#0D9488" />
-                    </svg>
+                    <img src="cid:logoFlowmatic" width="44" height="44" alt="FlowMatic" style="display: block; width: 44px; height: 44px; border: 0; outline: none; text-decoration: none;" />
                   </td>
                   <td valign="middle" align="left">
                     <div style="font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: 0.8px; line-height: 1.1;">FLOWMATIC</div>
@@ -43,22 +35,8 @@
               <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <!-- Left Illustration Badge -->
-                  <td width="110" valign="top" style="padding-right: 24px;" class="email-badge-col">
-                    <div style="width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #F0FDFA 0%, #CCFBF1 100%); display: flex; align-items: center; justify-content: center; border: 1px solid #99F6E4;">
-                      <!-- Envelope Checkmark Illustration -->
-                      <table role="presentation" width="96" height="96" border="0" cellpadding="0" cellspacing="0">
-                        <tr>
-                          <td align="center" valign="middle">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <rect x="2" y="4" width="20" height="16" rx="3" fill="#0D9488" fill-opacity="0.12" stroke="#0D9488" stroke-width="1.8"/>
-                              <path d="M2 7L12 13L22 7" stroke="#0D9488" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                              <circle cx="12" cy="14" r="5" fill="#0D9488"/>
-                              <polyline points="10 14 11.5 15.5 14 12.5" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
+                  <td width="90" valign="top" style="padding-right: 24px;" class="email-badge-col">
+                    <img src="cid:badgeIcon" width="84" height="84" alt="Icono" style="display: block; width: 84px; height: 84px; border: 0; outline: none;" />
                   </td>
 
                   <!-- Right Text & Action Content -->
@@ -85,26 +63,12 @@
                     </table>
 
                     <!-- Primary CTA Button -->
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 20px 0 22px 0;">
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 22px 0 26px 0;">
                       <tr>
                         <td align="left">
-                          <a th:href="${enlaceActivacion}" style="background-color: #0D9488; color: #FFFFFF; text-decoration: none; padding: 13px 30px; border-radius: 8px; font-weight: 700; font-size: 14.5px; display: inline-block; letter-spacing: 0.2px; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.28);">
+                          <a th:href="${enlaceActivacion}" style="background-color: #0D9488; color: #FFFFFF; text-decoration: none; padding: 13px 32px; border-radius: 8px; font-weight: 700; font-size: 14.5px; display: inline-block; letter-spacing: 0.2px; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.28);">
                             Activar mi cuenta
                           </a>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <!-- Fallback Link Instruction -->
-                    <p style="margin: 0 0 8px 0; font-size: 12px; color: #64748B; line-height: 1.4;">
-                      Si el bot&oacute;n no funciona, copia y pega el siguiente enlace en tu navegador:
-                    </p>
-                    
-                    <!-- Fallback Link Box -->
-                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F0FDFA; border: 1px solid #CCFBF1; border-radius: 8px; margin: 0 0 22px 0;">
-                      <tr>
-                        <td style="padding: 10px 14px; font-family: Consolas, Monaco, 'Courier New', monospace; font-size: 12px; color: #0D9488; word-break: break-all; line-height: 1.4;" th:text="${enlaceActivacion}">
-                          https://flowmatic.tech/activar-cuenta?token=abc123def456ghi789
                         </td>
                       </tr>
                     </table>
@@ -113,10 +77,7 @@
                     <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px;">
                       <tr>
                         <td width="36" valign="top" style="padding: 12px 0 12px 14px;">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                            <polyline points="9 12 11 14 15 10"/>
-                          </svg>
+                          <img src="cid:iconShield" width="20" height="20" alt="Seguridad" style="display: block; width: 20px; height: 20px; border: 0;" />
                         </td>
                         <td valign="middle" style="padding: 12px 14px 12px 10px;">
                           <div style="font-size: 12.5px; font-weight: 700; color: #0F172A; margin-bottom: 2px;">Tu seguridad es importante</div>
@@ -137,15 +98,7 @@
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto 12px auto;">
                 <tr>
                   <td valign="middle" style="padding-right: 8px;">
-                    <svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
-                      <circle cx="50" cy="50" r="8" fill="#0D9488" />
-                      <path d="M 50 35 L 50 14 M 35 50 L 14 50 M 50 65 L 50 86 M 65 50 L 86 50" stroke="#0D9488" stroke-width="7" stroke-linecap="round" />
-                      <path d="M 28 28 L 41 41 M 72 28 L 59 41 M 28 72 L 41 59 M 72 72 L 59 59" stroke="#0D9488" stroke-width="6" stroke-linecap="round" />
-                      <circle cx="50" cy="11" r="5.5" fill="#0D9488" />
-                      <circle cx="11" cy="50" r="5.5" fill="#0D9488" />
-                      <circle cx="50" cy="89" r="5.5" fill="#0D9488" />
-                      <circle cx="89" cy="50" r="5.5" fill="#0D9488" />
-                    </svg>
+                    <img src="cid:logoFlowmatic" width="26" height="26" alt="FlowMatic" style="display: block; width: 26px; height: 26px; border: 0;" />
                   </td>
                   <td valign="middle" align="left">
                     <div style="font-size: 15px; font-weight: 800; color: #0F172A; letter-spacing: 0.6px; line-height: 1;">FLOWMATIC</div>
