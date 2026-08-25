@@ -29,7 +29,7 @@ public class EmailService {
     @Value("${server.servlet.context-path:}")
     private String contextPath;
 
-    @Value("${app.base.url:http://localhost:8080}")
+    @Value("${app.base.url:http://flowmatic.tech}")
     private String appBaseUrl;
 
     @Value("${server.port:8080}")
