@@ -491,7 +491,7 @@ public class AdminController {
         defaults.put("login.max.attempts", "5");
         defaults.put("login.block.minutes", "15");
         defaults.put("app.name", "Flowmatic");
-        defaults.put("app.support.email", "malacruz132@gmail.com");
+        defaults.put("app.support.email", "flowmatic31@gmail.com");
         defaults.put("password.reset.expiry.minutes", "15");
 
         List<Map<String, String>> result = new ArrayList<>();

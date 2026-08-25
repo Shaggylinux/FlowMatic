@@ -35,7 +35,7 @@ public class EmailService {
     @Value("${server.port:8080}")
     private String serverPort;
 
-    @Value("${mail.from:FLOWMATIC <malacruz132@gmail.com>}")
+    @Value("${mail.from:FLOWMATIC <flowmatic31@gmail.com>}")
     private String mailFrom;
 
     public boolean enviarEmailVerificacion(String destinatario, String nombre, String token) {

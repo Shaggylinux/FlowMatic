@@ -42,6 +42,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: 12345
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: ${MAIL_USERNAME:-flowmatic31@gmail.com}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD:-wjrsclybgxxgsbbi}
       MAIL_USERNAME: ${MAIL_USERNAME:-flowmatic31@gmail.com}
       MAIL_PASSWORD: ${MAIL_PASSWORD:-wjrsclybgxxgsbbi}
       MAIL_FROM: ${MAIL_FROM:-flowmatic31@gmail.com}
