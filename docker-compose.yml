@@ -42,9 +42,9 @@ services:
       SPRING_DATASOURCE_PASSWORD: 12345
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      MAIL_USERNAME: ${MAIL_USERNAME:-malacruz132@gmail.com}
-      MAIL_PASSWORD: ${MAIL_PASSWORD:-tuqkknvqulhnykbi}
-      MAIL_FROM: ${MAIL_FROM:-malacruz132@gmail.com}
+      MAIL_USERNAME: ${MAIL_USERNAME:-flowmatic31@gmail.com}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-wjrsclybgxxgsbbi}
+      MAIL_FROM: ${MAIL_FROM:-flowmatic31@gmail.com}
       APP_BASE_URL: ${APP_BASE_URL:-http://localhost:8080}
     volumes:
       - superfolder:/app/superfolder
