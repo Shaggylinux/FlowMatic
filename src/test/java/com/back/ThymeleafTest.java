@@ -16,7 +16,7 @@ class ThymeleafTest extends BaseIntegrationTest {
     public void testTemplateOutput() {
         Context context = new Context();
         context.setVariable("nombre", "Juan");
-        context.setVariable("enlace", "http://localhost:8080/reset-password?token=12345-67890");
+        context.setVariable("enlace", "http://flowmatic.tech/reset-password?token=12345-67890");
 
         String output = templateEngine.process("emails/email-recuperacion", context);
         System.out.println("OUTPUT_START");
