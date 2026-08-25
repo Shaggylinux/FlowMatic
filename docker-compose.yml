@@ -45,9 +45,9 @@ services:
       SPRING_MAIL_HOST: smtp.gmail.com
       SPRING_MAIL_PORT: 587
       SPRING_MAIL_USERNAME: ${MAIL_USERNAME:-flowmatic31@gmail.com}
-      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD:-wjrsclybgxxgsbbi}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD:-xnawiqauwunwqwuj}
       MAIL_USERNAME: ${MAIL_USERNAME:-flowmatic31@gmail.com}
-      MAIL_PASSWORD: ${MAIL_PASSWORD:-wjrsclybgxxgsbbi}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-xnawiqauwunwqwuj}
       MAIL_FROM: ${MAIL_FROM:-flowmatic31@gmail.com}
       APP_BASE_URL: ${APP_BASE_URL:-http://localhost:8080}
     volumes:
