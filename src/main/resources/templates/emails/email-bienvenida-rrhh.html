@@ -1,95 +1,178 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido al equipo de RRHH en FLOWMATIC</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenido al equipo de RRHH en FLOWMATIC</title>
 </head>
-<body style="font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: #F8FAFC; color: #1E293B;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; padding: 30px 10px;">
-        <tr>
-            <td align="center">
-                <table role="presentation" width="100%" max-width="600" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 1px solid #E2E8F0;">
-                    <!-- Header -->
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); padding: 32px 24px; text-align: center; border-bottom: 4px solid #0D9488;">
-                            <h1 style="color: #FFFFFF; margin: 0; font-size: 26px; font-weight: 800; letter-spacing: 0.5px;">FLOWMATIC</h1>
-                            <p style="color: #94A3B8; margin: 8px 0 0 0; font-size: 14px; font-weight: 500;">Portal de Gestión de Talento Humano</p>
-                        </td>
-                    </tr>
-                    <!-- Body -->
-                    <tr>
-                        <td style="padding: 32px 28px;">
-                            <h2 style="color: #0F172A; font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">¡Bienvenido/a al equipo, <span th:text="${nombre}">Gestor RRHH</span>! 🎉</h2>
-                            <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
-                                El Administrador ha creado tu cuenta como <strong>Gestor de Recursos Humanos</strong> en la plataforma <strong>FLOWMATIC</strong>.
-                            </p>
-
-                            <!-- Credentials Box -->
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-left-width: 4px; border-left-color: #0D9488; border-radius: 6px; padding: 18px 20px; margin: 20px 0;">
-                                <tr>
-                                    <td>
-                                        <p style="margin: 0 0 10px 0; font-size: 13px; color: #0D9488; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Tus Credenciales de Acceso</p>
-                                        <p style="margin: 0 0 8px 0; font-size: 14px; color: #1E293B;">
-                                            <strong>👤 Rol:</strong> <span style="background: #E2E8F0; color: #334155; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 12px;">Gestión de Talento (RRHH)</span>
-                                        </p>
-                                        <p style="margin: 0 0 8px 0; font-size: 14px; color: #1E293B;">
-                                            <strong>📧 Correo (Usuario):</strong> <span th:text="${email}" style="color: #0D9488; font-weight: 600;">rrhh@flowmatic.com</span>
-                                        </p>
-                                        <p style="margin: 0; font-size: 14px; color: #1E293B;">
-                                            <strong>🔑 Contraseña asignada:</strong> <span th:text="${clave}" style="font-family: monospace; background: #FEF3C7; color: #92400E; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 15px; border: 1px solid #FDE68A;">********</span>
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 20px 0 24px 0;">
-                                ⚠️ <strong>Importante:</strong> Tu cuenta se encuentra en estado <strong>Pendiente de Activación</strong>. Para poder iniciar sesión con tus credenciales asignadas, debes activar tu cuenta haciendo clic en el siguiente botón:
-                            </p>
-
-                            <!-- Activation Button -->
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 28px 0;">
-                                <tr>
-                                    <td align="center">
-                                        <a th:href="${enlaceActivacion}" style="background-color: #0D9488; color: #FFFFFF; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(13,148,136,0.3);">
-                                            Activar mi cuenta de RRHH &rarr;
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <p style="color: #64748B; font-size: 12px; line-height: 1.5; margin: 20px 0 8px 0; text-align: center;">
-                                Si el botón no responde, copia y pega este enlace en tu navegador:
-                            </p>
-                            <p style="color: #0D9488; font-size: 12px; text-align: center; word-break: break-all; margin: 0 0 20px 0;" th:text="${enlaceActivacion}"></p>
-
-                            <div style="background-color: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 14px 16px; margin: 20px 0;">
-                                <p style="color: #92400E; font-size: 13px; margin: 0; line-height: 1.5;">
-                                    💡 <strong>Recomendación de seguridad:</strong> Por tu seguridad, te aconsejamos cambiar tu contraseña asignada una vez que ingreses a la plataforma desde tu perfil.
-                                </p>
-                            </div>
-
-                            <div style="border-top: 1px solid #E2E8F0; margin-top: 24px; padding-top: 18px;">
-                                <p style="color: #94A3B8; font-size: 12px; margin: 0 0 6px 0;">
-                                    ⏱ Este enlace de activación expira en 24 horas por motivos de seguridad.
-                                </p>
-                                <p style="color: #94A3B8; font-size: 12px; margin: 0;">
-                                    Si tienes alguna duda o no reconoces este registro, contacta al Administrador del sistema.
-                                </p>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Footer -->
-                    <tr>
-                        <td style="background-color: #F1F5F9; padding: 18px 24px; text-align: center; border-top: 1px solid #E2E8F0;">
-                            <p style="color: #64748B; font-size: 12px; margin: 0;">
-                                &copy; Flowmatic. Portal Corporativo.
-                            </p>
-                        </td>
-                    </tr>
-                </table>
+<body style="margin: 0; padding: 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1E293B;">
+  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F1F5F9; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <!-- Main Email Container -->
+        <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 620px; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);">
+          
+          <!-- Header with FlowMatic Logo -->
+          <tr>
+            <td style="padding: 36px 24px 28px 24px; text-align: center; border-bottom: 1px solid #F1F5F9; background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto;">
+                <tr>
+                  <td valign="middle" style="padding-right: 14px;">
+                    <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                      <circle cx="50" cy="50" r="8" fill="#0D9488" />
+                      <path d="M 50 35 L 50 14 M 35 50 L 14 50 M 50 65 L 50 86 M 65 50 L 86 50" stroke="#0D9488" stroke-width="7" stroke-linecap="round" />
+                      <path d="M 28 28 L 41 41 M 72 28 L 59 41 M 28 72 L 41 59 M 72 72 L 59 59" stroke="#0D9488" stroke-width="6" stroke-linecap="round" />
+                      <circle cx="50" cy="11" r="5.5" fill="#0D9488" />
+                      <circle cx="11" cy="50" r="5.5" fill="#0D9488" />
+                      <circle cx="50" cy="89" r="5.5" fill="#0D9488" />
+                      <circle cx="89" cy="50" r="5.5" fill="#0D9488" />
+                    </svg>
+                  </td>
+                  <td valign="middle" align="left">
+                    <div style="font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: 0.8px; line-height: 1.1;">FLOWMATIC</div>
+                    <div style="font-size: 12px; font-weight: 600; color: #0D9488; letter-spacing: 0.2px; margin-top: 2px;">Intelligent Talent Management</div>
+                  </td>
+                </tr>
+              </table>
             </td>
-        </tr>
-    </table>
+          </tr>
+
+          <!-- Content Body -->
+          <tr>
+            <td style="padding: 36px 32px 28px 32px;">
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <!-- Left Illustration Badge -->
+                  <td width="110" valign="top" style="padding-right: 24px;" class="email-badge-col">
+                    <div style="width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #F0FDFA 0%, #CCFBF1 100%); display: flex; align-items: center; justify-content: center; border: 1px solid #99F6E4;">
+                      <table role="presentation" width="96" height="96" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td align="center" valign="middle">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="12" cy="7" r="4" fill="#0D9488" fill-opacity="0.2" stroke="#0D9488" stroke-width="1.8"/>
+                              <path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2" stroke="#0D9488" stroke-width="1.8" stroke-linecap="round"/>
+                              <circle cx="18" cy="18" r="4" fill="#0D9488" stroke="#FFFFFF" stroke-width="1.5"/>
+                              <polyline points="16.5 18 17.5 19 19.5 17" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+
+                  <!-- Right Text & Action Content -->
+                  <td valign="top">
+                    <h2 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 700; color: #0F172A; line-height: 1.3;">
+                      Bienvenido/a al equipo de RRHH
+                    </h2>
+                    <p style="margin: 0 0 14px 0; font-size: 15px; color: #334155; line-height: 1.5;">
+                      Hola, <span style="color: #0D9488; font-weight: 700;" th:text="${nombre}">Gestor RRHH</span>
+                    </p>
+                    <p style="margin: 0 0 18px 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                      El Administrador ha creado tu cuenta como <strong>Gestor de Recursos Humanos</strong> en la plataforma <strong>FLOWMATIC</strong>.
+                    </p>
+
+                    <!-- Credentials Box -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border-left: 4px solid #0D9488; border-radius: 6px; padding: 14px 16px; margin: 0 0 20px 0;">
+                      <tr>
+                        <td>
+                          <div style="font-size: 11.5px; font-weight: 700; color: #0F766E; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.4px;">Credenciales de Acceso Asignadas</div>
+                          <div style="font-size: 13px; color: #1E293B; margin-bottom: 4px;"><strong>Rol:</strong> <span style="background: #E2E8F0; color: #334155; padding: 2px 6px; border-radius: 4px; font-weight: 600; font-size: 11.5px;">Gestión de Talento (RRHH)</span></div>
+                          <div style="font-size: 13px; color: #1E293B; margin-bottom: 4px;"><strong>Usuario:</strong> <span th:text="${email}" style="color: #0D9488; font-weight: 600;"></span></div>
+                          <div style="font-size: 13px; color: #1E293B;"><strong>Contrase&ntilde;a:</strong> <span th:text="${clave}" style="font-family: monospace; background: #FEF3C7; color: #92400E; padding: 2px 6px; border-radius: 4px; font-weight: 700;"></span></div>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <p style="margin: 0 0 20px 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                      Tu cuenta se encuentra en estado <strong>Pendiente de Activaci&oacute;n</strong>. Para comenzar a utilizar el portal, activa tu cuenta haciendo clic en el siguiente bot&oacute;n:
+                    </p>
+
+                    <!-- Primary CTA Button -->
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 20px 0 24px 0;">
+                      <tr>
+                        <td align="left">
+                          <a th:href="${enlaceActivacion}" style="background-color: #0D9488; color: #FFFFFF; text-decoration: none; padding: 13px 30px; border-radius: 8px; font-weight: 700; font-size: 14.5px; display: inline-block; letter-spacing: 0.2px; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.28);">
+                            Activar mi cuenta de RRHH
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- Fallback Link Instruction -->
+                    <p style="margin: 0 0 8px 0; font-size: 12px; color: #64748B; line-height: 1.4;">
+                      Si el bot&oacute;n no funciona, copia y pega el siguiente enlace en tu navegador:
+                    </p>
+                    
+                    <!-- Fallback Link Box -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F0FDFA; border: 1px solid #CCFBF1; border-radius: 8px; margin: 0 0 22px 0;">
+                      <tr>
+                        <td style="padding: 10px 14px; font-family: Consolas, Monaco, 'Courier New', monospace; font-size: 12px; color: #0D9488; word-break: break-all; line-height: 1.4;" th:text="${enlaceActivacion}">
+                          https://flowmatic.tech/activar-cuenta?token=abc123def456ghi789
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- Security Notice Card -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px;">
+                      <tr>
+                        <td width="36" valign="top" style="padding: 12px 0 12px 14px;">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <polyline points="9 12 11 14 15 10"/>
+                          </svg>
+                        </td>
+                        <td valign="middle" style="padding: 12px 14px 12px 10px;">
+                          <div style="font-size: 12.5px; font-weight: 700; color: #0F172A; margin-bottom: 2px;">Recomendaci&oacute;n de seguridad</div>
+                          <div style="font-size: 12px; color: #64748B; line-height: 1.4;">Te aconsejamos cambiar tu contrase&ntilde;a asignada una vez que ingreses a la plataforma. Este enlace expirar&aacute; en 24 horas.</div>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 26px 24px; background-color: #F8FAFC; border-top: 1px solid #E2E8F0; text-align: center;">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto 12px auto;">
+                <tr>
+                  <td valign="middle" style="padding-right: 8px;">
+                    <svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                      <circle cx="50" cy="50" r="8" fill="#0D9488" />
+                      <path d="M 50 35 L 50 14 M 35 50 L 14 50 M 50 65 L 50 86 M 65 50 L 86 50" stroke="#0D9488" stroke-width="7" stroke-linecap="round" />
+                      <path d="M 28 28 L 41 41 M 72 28 L 59 41 M 28 72 L 41 59 M 72 72 L 59 59" stroke="#0D9488" stroke-width="6" stroke-linecap="round" />
+                      <circle cx="50" cy="11" r="5.5" fill="#0D9488" />
+                      <circle cx="11" cy="50" r="5.5" fill="#0D9488" />
+                      <circle cx="50" cy="89" r="5.5" fill="#0D9488" />
+                      <circle cx="89" cy="50" r="5.5" fill="#0D9488" />
+                    </svg>
+                  </td>
+                  <td valign="middle" align="left">
+                    <div style="font-size: 15px; font-weight: 800; color: #0F172A; letter-spacing: 0.6px; line-height: 1;">FLOWMATIC</div>
+                    <div style="font-size: 9.5px; font-weight: 600; color: #0D9488; line-height: 1; margin-top: 2px;">Intelligent Talent Management</div>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0 0 14px 0; font-size: 11.5px; color: #64748B; line-height: 1.4;">
+                Este es un correo autom&aacute;tico, por favor no respondas a este mensaje.
+              </p>
+              <div style="height: 1px; background-color: #E2E8F0; width: 60%; margin: 0 auto 14px auto;"></div>
+              <p style="margin: 0 0 4px 0; font-size: 11px; color: #94A3B8;">
+                &copy; 2026 FLOWMATIC. Todos los derechos reservados.
+              </p>
+              <p style="margin: 0; font-size: 11px; color: #94A3B8;">
+                Bogot&aacute;, Colombia
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>

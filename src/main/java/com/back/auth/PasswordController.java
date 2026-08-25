@@ -26,7 +26,7 @@ public class PasswordController {
         return "redirect:/forgot-password?success";
     }
 
-    @GetMapping("/reset-password")
+    @GetMapping({"/reset-password", "/recuperar-contrasena"})
     public String mostrarReset(@RequestParam(required = false) String token,
             @RequestParam(required = false) String success,
             Model model) {
@@ -46,7 +46,7 @@ public class PasswordController {
         return "reset-password";
     }
 
-    @PostMapping("/reset-password")
+    @PostMapping({"/reset-password", "/recuperar-contrasena"})
     public String cambiarPassword(@RequestParam String token,
             @RequestParam String password,
             @RequestParam(required = false) String confirmPassword,

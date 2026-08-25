@@ -42,8 +42,8 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/api/seed"))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/registro/**", "/login", "/error", "/css/**", "/forgot-password",
-                                "/reset-password", "/js/**", "/home", "/", "/api/seed", "/videos/**",
+                        .requestMatchers("/registro/**", "/activar-cuenta", "/activar", "/login", "/error", "/css/**", "/forgot-password",
+                                "/reset-password", "/recuperar-contrasena", "/js/**", "/home", "/", "/api/seed", "/videos/**",
                                 "/actuator/health")
                         .permitAll()
                         .requestMatchers("/candidato/**").hasRole("CANDIDATO")

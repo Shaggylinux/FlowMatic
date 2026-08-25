@@ -46,13 +46,13 @@ public class EmailService {
         try {
             logger.info("📧 Preparando email de verificación para: {}", destinatario);
 
-            String enlaceActivacion = appBaseUrl + contextPath + "/registro/candidato/activar?token=" + token;
+            String enlaceActivacion = appBaseUrl + contextPath + "/activar-cuenta?token=" + token;
 
-            String asunto = "✅ Activa tu cuenta y credenciales de acceso — FLOWMATIC";
+            String asunto = "✅ Activa tu cuenta en FLOWMATIC";
             Context context = new Context();
             context.setVariable("nombre", nombre);
             context.setVariable("email", destinatario);
-            context.setVariable("clave", clave != null && !clave.isBlank() ? clave : "Asignada durante tu registro");
+            context.setVariable("clave", clave != null && !clave.isBlank() ? clave : null);
             context.setVariable("enlaceActivacion", enlaceActivacion);
 
             String mensaje = templateEngine.process("emails/email-verificacion", context);
@@ -80,7 +80,7 @@ public class EmailService {
             logger.info("📧 Preparando email de bienvenida RRHH para: {}", destinatario);
 
             String nombreCompleto = nombre + (apellido != null && !apellido.isBlank() ? " " + apellido : "");
-            String enlaceActivacion = appBaseUrl + contextPath + "/registro/candidato/activar?token=" + token;
+            String enlaceActivacion = appBaseUrl + contextPath + "/activar-cuenta?token=" + token;
             String enlaceLogin = appBaseUrl + contextPath + "/login";
 
             String asunto = "🎉 Bienvenido al equipo de RRHH — Activa tu cuenta en FLOWMATIC";
@@ -115,7 +115,7 @@ public class EmailService {
         try {
             logger.info("📧 Preparando email de recuperación para: {}", destinatario);
 
-            String enlace = appBaseUrl + contextPath + "/reset-password?token=" + token;
+            String enlace = appBaseUrl + contextPath + "/recuperar-contrasena?token=" + token;
 
             String asunto = "🔐 Restablece tu contraseña en FLOWMATIC";
             Context context = new Context();

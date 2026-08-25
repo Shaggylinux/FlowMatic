@@ -1,28 +1,163 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recupera tu contraseña en FLOWMATIC</title>
 </head>
-<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa;">
-    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 28px;">FLOWMATIC</h1>
-            <p style="color: #e0e0e0; margin: 10px 0 0 0;">Sistema de Gestión de Candidatos</p>
-        </div>
-        <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px;">
-            <h2 style="color: #333;">¿Olvidaste tu contraseña, <span th:text="${nombre}">Usuario</span>?</h2>
-            <p style="color: #666; line-height: 1.6;">Recibimos una solicitud para restablecer la contraseña de tu cuenta en FLOWMATIC.</p>
-            <p style="color: #666; line-height: 1.6;">Haz clic en el siguiente botón para crear una nueva contraseña:</p>
-            <div style="text-align: center; margin: 30px 0;">
-                <a th:href="${enlace}" style="background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Restablecer contraseña</a>
-            </div>
-            <p style="color: #999; font-size: 12px; text-align: center;">O copia y pega este enlace en tu navegador:</p>
-            <p style="color: #667eea; font-size: 12px; text-align: center; word-break: break-all;" th:text="${enlace}"></p>
-            <p style="color: #999; font-size: 12px; margin-top: 20px;">Este enlace expira en 15 minutos.</p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-            <p style="color: #666; font-size: 12px;">Si no solicitaste el restablecimiento de contraseña, puedes ignorar este correo. Tu contraseña actual seguirá siendo válida.</p>
-            <p style="color: #666; font-size: 12px; margin-top: 20px;">Saludos cordiales,<br><strong>Equipo de FLOWMATIC</strong></p>
-        </div>
-    </div>
+<body style="margin: 0; padding: 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1E293B;">
+  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F1F5F9; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <!-- Main Email Container -->
+        <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 620px; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);">
+          
+          <!-- Header with FlowMatic Logo -->
+          <tr>
+            <td style="padding: 36px 24px 28px 24px; text-align: center; border-bottom: 1px solid #F1F5F9; background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto;">
+                <tr>
+                  <td valign="middle" style="padding-right: 14px;">
+                    <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                      <circle cx="50" cy="50" r="8" fill="#0D9488" />
+                      <path d="M 50 35 L 50 14 M 35 50 L 14 50 M 50 65 L 50 86 M 65 50 L 86 50" stroke="#0D9488" stroke-width="7" stroke-linecap="round" />
+                      <path d="M 28 28 L 41 41 M 72 28 L 59 41 M 28 72 L 41 59 M 72 72 L 59 59" stroke="#0D9488" stroke-width="6" stroke-linecap="round" />
+                      <circle cx="50" cy="11" r="5.5" fill="#0D9488" />
+                      <circle cx="11" cy="50" r="5.5" fill="#0D9488" />
+                      <circle cx="50" cy="89" r="5.5" fill="#0D9488" />
+                      <circle cx="89" cy="50" r="5.5" fill="#0D9488" />
+                    </svg>
+                  </td>
+                  <td valign="middle" align="left">
+                    <div style="font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: 0.8px; line-height: 1.1;">FLOWMATIC</div>
+                    <div style="font-size: 12px; font-weight: 600; color: #0D9488; letter-spacing: 0.2px; margin-top: 2px;">Intelligent Talent Management</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Content Body -->
+          <tr>
+            <td style="padding: 36px 32px 28px 32px;">
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <!-- Left Illustration Badge (Padlock & Reset) -->
+                  <td width="110" valign="top" style="padding-right: 24px;" class="email-badge-col">
+                    <div style="width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #F0FDFA 0%, #CCFBF1 100%); display: flex; align-items: center; justify-content: center; border: 1px solid #99F6E4;">
+                      <table role="presentation" width="96" height="96" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td align="center" valign="middle">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="5" y="10" width="14" height="11" rx="2.5" fill="#0D9488" fill-opacity="0.15" stroke="#0D9488" stroke-width="1.8"/>
+                              <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#0D9488" stroke-width="1.8" stroke-linecap="round"/>
+                              <circle cx="12" cy="15.5" r="1.5" fill="#0D9488"/>
+                              <circle cx="18" cy="18" r="4.5" fill="#0D9488" stroke="#FFFFFF" stroke-width="1.5"/>
+                              <path d="M16.8 17.2a1.8 1.8 0 1 1 0 1.6" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>
+                            </svg>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+
+                  <!-- Right Text & Action Content -->
+                  <td valign="top">
+                    <h2 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 700; color: #0F172A; line-height: 1.3;">
+                      Recupera tu contrase&ntilde;a
+                    </h2>
+                    <p style="margin: 0 0 14px 0; font-size: 15px; color: #334155; line-height: 1.5;">
+                      Hola, <span style="color: #0D9488; font-weight: 700;" th:text="${nombre}">Karen Andrea</span>
+                    </p>
+                    <p style="margin: 0 0 20px 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                      Recibimos una solicitud para restablecer la contrase&ntilde;a de tu cuenta en FLOWMATIC. Haz clic en el bot&oacute;n para crear una nueva contrase&ntilde;a.
+                    </p>
+
+                    <!-- Primary CTA Button -->
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 22px 0 24px 0;">
+                      <tr>
+                        <td align="left">
+                          <a th:href="${enlace}" style="background-color: #0D9488; color: #FFFFFF; text-decoration: none; padding: 13px 30px; border-radius: 8px; font-weight: 700; font-size: 14.5px; display: inline-block; letter-spacing: 0.2px; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.28);">
+                            Restablecer mi contrase&ntilde;a
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- Fallback Link Instruction -->
+                    <p style="margin: 0 0 8px 0; font-size: 12px; color: #64748B; line-height: 1.4;">
+                      Si el bot&oacute;n no funciona, copia y pega el siguiente enlace en tu navegador:
+                    </p>
+                    
+                    <!-- Fallback Link Box -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F0FDFA; border: 1px solid #CCFBF1; border-radius: 8px; margin: 0 0 22px 0;">
+                      <tr>
+                        <td style="padding: 10px 14px; font-family: Consolas, Monaco, 'Courier New', monospace; font-size: 12px; color: #0D9488; word-break: break-all; line-height: 1.4;" th:text="${enlace}">
+                          https://flowmatic.tech/recuperar-contrasena?token=xyz987uvw654rst321
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- Security Notice Card -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px;">
+                      <tr>
+                        <td width="36" valign="top" style="padding: 12px 0 12px 14px;">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                          </svg>
+                        </td>
+                        <td valign="middle" style="padding: 12px 14px 12px 10px;">
+                          <div style="font-size: 12.5px; font-weight: 700; color: #0F172A; margin-bottom: 2px;">&iquest;No solicitaste este cambio?</div>
+                          <div style="font-size: 12px; color: #64748B; line-height: 1.4;">Si no solicitaste restablecer tu contrase&ntilde;a, puedes ignorar este correo. Tu cuenta permanece segura.</div>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 26px 24px; background-color: #F8FAFC; border-top: 1px solid #E2E8F0; text-align: center;">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto 12px auto;">
+                <tr>
+                  <td valign="middle" style="padding-right: 8px;">
+                    <svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                      <circle cx="50" cy="50" r="8" fill="#0D9488" />
+                      <path d="M 50 35 L 50 14 M 35 50 L 14 50 M 50 65 L 50 86 M 65 50 L 86 50" stroke="#0D9488" stroke-width="7" stroke-linecap="round" />
+                      <path d="M 28 28 L 41 41 M 72 28 L 59 41 M 28 72 L 41 59 M 72 72 L 59 59" stroke="#0D9488" stroke-width="6" stroke-linecap="round" />
+                      <circle cx="50" cy="11" r="5.5" fill="#0D9488" />
+                      <circle cx="11" cy="50" r="5.5" fill="#0D9488" />
+                      <circle cx="50" cy="89" r="5.5" fill="#0D9488" />
+                      <circle cx="89" cy="50" r="5.5" fill="#0D9488" />
+                    </svg>
+                  </td>
+                  <td valign="middle" align="left">
+                    <div style="font-size: 15px; font-weight: 800; color: #0F172A; letter-spacing: 0.6px; line-height: 1;">FLOWMATIC</div>
+                    <div style="font-size: 9.5px; font-weight: 600; color: #0D9488; line-height: 1; margin-top: 2px;">Intelligent Talent Management</div>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0 0 14px 0; font-size: 11.5px; color: #64748B; line-height: 1.4;">
+                Este es un correo autom&aacute;tico, por favor no respondas a este mensaje.
+              </p>
+              <div style="height: 1px; background-color: #E2E8F0; width: 60%; margin: 0 auto 14px auto;"></div>
+              <p style="margin: 0 0 4px 0; font-size: 11px; color: #94A3B8;">
+                &copy; 2026 FLOWMATIC. Todos los derechos reservados.
+              </p>
+              <p style="margin: 0; font-size: 11px; color: #94A3B8;">
+                Bogot&aacute;, Colombia
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>

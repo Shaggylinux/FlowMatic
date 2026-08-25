@@ -1,22 +1,152 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso bloqueado temporalmente - FLOWMATIC</title>
 </head>
-<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa;">
-    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 28px;">FLOWMATIC</h1>
-            <p style="color: #e0e0e0; margin: 10px 0 0 0;">Sistema de Gestión de Candidatos</p>
-        </div>
-        <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px;">
-            <h2 style="color: #333;">Hola, <span th:text="${nombre}">Usuario</span></h2>
-            <p style="color: #666; line-height: 1.6;">Hemos detectado varios intentos fallidos de inicio de sesión en tu cuenta de <strong>FLOWMATIC</strong>.</p>
-            <p style="color: #666; line-height: 1.6;">Por seguridad, tu acceso ha sido <strong>bloqueado temporalmente por <span th:text="${minutos}">15</span> minutos</strong>.</p>
-            <p style="color: #666; line-height: 1.6;">Si fuiste tú, espera el tiempo indicado e inténtalo nuevamente. Si no reconoces esta actividad, te recomendamos cambiar tu contraseña.</p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-            <p style="color: #666; font-size: 12px; margin-top: 20px;">Saludos cordiales,<br><strong>Equipo de FLOWMATIC</strong></p>
-        </div>
-    </div>
+<body style="margin: 0; padding: 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1E293B;">
+  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F1F5F9; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <!-- Main Email Container -->
+        <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 620px; background-color: #FFFFFF; border-radius: 16px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);">
+          
+          <!-- Header with FlowMatic Logo -->
+          <tr>
+            <td style="padding: 36px 24px 28px 24px; text-align: center; border-bottom: 1px solid #F1F5F9; background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto;">
+                <tr>
+                  <td valign="middle" style="padding-right: 14px;">
+                    <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                      <circle cx="50" cy="50" r="8" fill="#0D9488" />
+                      <path d="M 50 35 L 50 14 M 35 50 L 14 50 M 50 65 L 50 86 M 65 50 L 86 50" stroke="#0D9488" stroke-width="7" stroke-linecap="round" />
+                      <path d="M 28 28 L 41 41 M 72 28 L 59 41 M 28 72 L 41 59 M 72 72 L 59 59" stroke="#0D9488" stroke-width="6" stroke-linecap="round" />
+                      <circle cx="50" cy="11" r="5.5" fill="#0D9488" />
+                      <circle cx="11" cy="50" r="5.5" fill="#0D9488" />
+                      <circle cx="50" cy="89" r="5.5" fill="#0D9488" />
+                      <circle cx="89" cy="50" r="5.5" fill="#0D9488" />
+                    </svg>
+                  </td>
+                  <td valign="middle" align="left">
+                    <div style="font-size: 24px; font-weight: 800; color: #0F172A; letter-spacing: 0.8px; line-height: 1.1;">FLOWMATIC</div>
+                    <div style="font-size: 12px; font-weight: 600; color: #0D9488; letter-spacing: 0.2px; margin-top: 2px;">Intelligent Talent Management</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Content Body -->
+          <tr>
+            <td style="padding: 36px 32px 28px 32px;">
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <!-- Left Illustration Badge (Amber Shield / Lock) -->
+                  <td width="110" valign="top" style="padding-right: 24px;" class="email-badge-col">
+                    <div style="width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); display: flex; align-items: center; justify-content: center; border: 1px solid #FCD34D;">
+                      <table role="presentation" width="96" height="96" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td align="center" valign="middle">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#D97706" fill-opacity="0.15" stroke="#D97706" stroke-width="1.8"/>
+                              <rect x="9" y="11" width="6" height="5" rx="1" fill="#D97706" stroke="#D97706" stroke-width="1.2"/>
+                              <path d="M10 11V9a2 2 0 1 1 4 0v2" stroke="#D97706" stroke-width="1.4" stroke-linecap="round"/>
+                            </svg>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+
+                  <!-- Right Text & Action Content -->
+                  <td valign="top">
+                    <h2 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 700; color: #0F172A; line-height: 1.3;">
+                      Acceso bloqueado temporalmente
+                    </h2>
+                    <p style="margin: 0 0 14px 0; font-size: 15px; color: #334155; line-height: 1.5;">
+                      Hola, <span style="color: #0D9488; font-weight: 700;" th:text="${nombre}">Usuario</span>
+                    </p>
+                    <p style="margin: 0 0 16px 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                      Hemos detectado varios intentos fallidos de inicio de sesi&oacute;n en tu cuenta de <strong>FLOWMATIC</strong>.
+                    </p>
+
+                    <!-- Alert Box -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #FFFBEB; border: 1px solid #FDE68A; border-left: 4px solid #F59E0B; border-radius: 6px; padding: 14px 16px; margin: 0 0 20px 0;">
+                      <tr>
+                        <td>
+                          <div style="font-size: 13.5px; color: #92400E; line-height: 1.5;">
+                            Por motivos de seguridad, el acceso a tu cuenta ha sido <strong>bloqueado temporalmente por <span th:text="${minutos}">15</span> minutos</strong>.
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <p style="margin: 0 0 20px 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                      Si fuiste t&uacute;, espera a que concluya el tiempo de espera e int&eacute;ntalo de nuevo con tu contrase&ntilde;a correcta.
+                    </p>
+
+                    <!-- Security Notice Card -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px;">
+                      <tr>
+                        <td width="36" valign="top" style="padding: 12px 0 12px 14px;">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                          </svg>
+                        </td>
+                        <td valign="middle" style="padding: 12px 14px 12px 10px;">
+                          <div style="font-size: 12.5px; font-weight: 700; color: #0F172A; margin-bottom: 2px;">&iquest;No reconoces esta actividad?</div>
+                          <div style="font-size: 12px; color: #64748B; line-height: 1.4;">Te recomendamos restablecer tu contrase&ntilde;a de inmediato desde la pantalla de inicio de sesi&oacute;n.</div>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 26px 24px; background-color: #F8FAFC; border-top: 1px solid #E2E8F0; text-align: center;">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto 12px auto;">
+                <tr>
+                  <td valign="middle" style="padding-right: 8px;">
+                    <svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                      <circle cx="50" cy="50" r="8" fill="#0D9488" />
+                      <path d="M 50 35 L 50 14 M 35 50 L 14 50 M 50 65 L 50 86 M 65 50 L 86 50" stroke="#0D9488" stroke-width="7" stroke-linecap="round" />
+                      <path d="M 28 28 L 41 41 M 72 28 L 59 41 M 28 72 L 41 59 M 72 72 L 59 59" stroke="#0D9488" stroke-width="6" stroke-linecap="round" />
+                      <circle cx="50" cy="11" r="5.5" fill="#0D9488" />
+                      <circle cx="11" cy="50" r="5.5" fill="#0D9488" />
+                      <circle cx="50" cy="89" r="5.5" fill="#0D9488" />
+                      <circle cx="89" cy="50" r="5.5" fill="#0D9488" />
+                    </svg>
+                  </td>
+                  <td valign="middle" align="left">
+                    <div style="font-size: 15px; font-weight: 800; color: #0F172A; letter-spacing: 0.6px; line-height: 1;">FLOWMATIC</div>
+                    <div style="font-size: 9.5px; font-weight: 600; color: #0D9488; line-height: 1; margin-top: 2px;">Intelligent Talent Management</div>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0 0 14px 0; font-size: 11.5px; color: #64748B; line-height: 1.4;">
+                Este es un correo autom&aacute;tico, por favor no respondas a este mensaje.
+              </p>
+              <div style="height: 1px; background-color: #E2E8F0; width: 60%; margin: 0 auto 14px auto;"></div>
+              <p style="margin: 0 0 4px 0; font-size: 11px; color: #94A3B8;">
+                &copy; 2026 FLOWMATIC. Todos los derechos reservados.
+              </p>
+              <p style="margin: 0; font-size: 11px; color: #94A3B8;">
+                Bogot&aacute;, Colombia
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
