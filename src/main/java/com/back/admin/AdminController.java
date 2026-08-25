@@ -18,11 +18,9 @@ import com.back.shared.exception.ClaveCortaException;
 import com.back.shared.exception.UsuarioDuplicadoException;
 import com.back.shared.dto.RegistroUsuarioDTO;
 import com.back.auth.Usuario;
-import com.back.auth.UsuarioRepository;
 import com.back.auth.UsuarioService;
-import com.back.candidatos.Candidato;
-import com.back.candidatos.CandidatoRepository;
-import com.back.calendario.EventoRepository;
+import com.back.candidatos.CandidatoService;
+import com.back.calendario.EventoService;
 import com.back.exportacion.ExcelService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,13 +39,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final UsuarioRepository usuarioRepository;
-    private final CandidatoRepository candidatoRepository;
-    private final RRHHRepository rrhhRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
     private final UsuarioService usuarioService;
+    private final CandidatoService candidatoService;
+    private final RRHHService rrhhService;
+    private final EventoService eventoService;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final ExcelService excelService;
-    private final EventoRepository eventoRepository;
     private final AuditoriaService auditoriaService;
     private final ConfiguracionService configuracionService;
 
@@ -56,19 +53,19 @@ public class AdminController {
             @RequestParam(name = "clave_ok", required = false) String claveOk,
             @RequestParam(name = "clave_error", required = false) String claveError,
             @RequestParam(name = "config_ok", required = false) String configOk) {
-        long totalUsuarios = usuarioRepository.count();
-        long totalRRHH = usuarioRepository.countByRol("ROLE_RRHH");
-        long totalBloqueados = usuarioRepository.countByRolAndBloqueado("ROLE_RRHH", true);
-        long totalActivos = usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", true, false);
-        long totalPendientes = usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", false, false);
-        long totalCandidatos = usuarioRepository.countByRol("ROLE_CANDIDATO");
-        long totalAdmins = usuarioRepository.countByRol("ROLE_ADMINISTRADOR");
-        long entrevistasHoy = eventoRepository.countByFecha(LocalDate.now());
+        long totalUsuarios = usuarioService.contar();
+        long totalRRHH = usuarioService.contarPorRol("ROLE_RRHH");
+        long totalBloqueados = usuarioService.contarPorRolYBloqueado("ROLE_RRHH", true);
+        long totalActivos = usuarioService.contarPorRolYActivoYBloqueado("ROLE_RRHH", true, false);
+        long totalPendientes = usuarioService.contarPorRolYActivoYBloqueado("ROLE_RRHH", false, false);
+        long totalCandidatos = usuarioService.contarPorRol("ROLE_CANDIDATO");
+        long totalAdmins = usuarioService.contarPorRol("ROLE_ADMINISTRADOR");
+        long entrevistasHoy = eventoService.contarHoy();
 
         // Nuevas metricas para KPI (Requisito F-10)
         long rrhhActivos = totalActivos;
         long candidatosRegistrados = totalCandidatos;
-        long candidatosPendientes = usuarioRepository.countByRolAndActivo("ROLE_CANDIDATO", false);
+        long candidatosPendientes = usuarioService.contarPorRolYActivo("ROLE_CANDIDATO", false);
 
         List<Map<String, Object>> actividadReciente = buildActividadReciente();
         List<Map<String, Object>> distribucionRoles = buildDistribucionRoles(totalAdmins, totalRRHH, totalCandidatos);
@@ -195,7 +192,7 @@ public class AdminController {
         Page<Usuario> usuariosPage;
 
         // Query multicriterio: busca en email, nombre, apellido y documento; filtra por estado
-        usuariosPage = usuarioRepository.buscarRRHH(
+        usuariosPage = usuarioService.buscarRRHH(
             (buscar != null && !buscar.isBlank()) ? buscar.trim() : null,
             (estado != null && !estado.isBlank()) ? estado.trim() : null,
             pageable
@@ -206,11 +203,11 @@ public class AdminController {
         int startItem = totalItems == 0 ? 0 : page * size + 1;
         int endItem = (int) Math.min((long) page * size + usuariosPage.getNumberOfElements(), totalItems);
 
-        long totalUsuarios = usuarioRepository.count();
-        long totalRRHH = usuarioRepository.countByRol("ROLE_RRHH");
-        long totalBloqueados = usuarioRepository.countByRolAndBloqueado("ROLE_RRHH", true);
-        long totalActivos = usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", true, false);
-        long totalPendientes = usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", false, false);
+        long totalUsuarios = usuarioService.contar();
+        long totalRRHH = usuarioService.contarPorRol("ROLE_RRHH");
+        long totalBloqueados = usuarioService.contarPorRolYBloqueado("ROLE_RRHH", true);
+        long totalActivos = usuarioService.contarPorRolYActivoYBloqueado("ROLE_RRHH", true, false);
+        long totalPendientes = usuarioService.contarPorRolYActivoYBloqueado("ROLE_RRHH", false, false);
 
         List<com.back.admin.dto.UsuarioRRHHDTO> usuariosData = usuariosPage.getContent().stream()
                 .map(this::mapToUsuarioRRHH)
@@ -258,7 +255,7 @@ public class AdminController {
             dto.setEstado(u.isActivo() ? "Activo" : "Pendiente");
         }
 
-        RRHH rrhhInfo = rrhhRepository.findById(u.getId()).orElse(null);
+        RRHH rrhhInfo = rrhhService.buscarPorId(u.getId()).orElse(null);
         if (rrhhInfo != null) {
             dto.setNombre(rrhhInfo.getUsername());
             dto.setApellido(rrhhInfo.getApellido());
@@ -368,10 +365,10 @@ public class AdminController {
 
         // Usa los mismos filtros que la vista para exportar solo lo que el admin ve
         List<Usuario> listaUsuarios = (buscar != null && !buscar.isBlank()) || (estado != null && !estado.isBlank())
-            ? usuarioRepository.buscarRRHHSinPaginacion(
+            ? usuarioService.buscarRRHHSinPaginacion(
                 (buscar != null && !buscar.isBlank()) ? buscar.trim() : null,
                 (estado != null && !estado.isBlank()) ? estado.trim() : null)
-            : usuarioRepository.findAll();
+            : usuarioService.buscarTodos();
 
         String[] cabeceras = {"ID", "Username", "Apellido", "Email", "Rol", "Estado", "Etapa"};
         List<Object[]> datos = listaUsuarios.stream().map(u -> {
@@ -383,14 +380,14 @@ public class AdminController {
             else estadoUsuario = u.isActivo() ? "Activo" : "Pendiente";
 
             if ("ROLE_CANDIDATO".equals(u.getRol())) {
-                com.back.candidatos.Candidato c = candidatoRepository.findById(u.getId()).orElse(null);
+                com.back.candidatos.Candidato c = candidatoService.buscarPorId(u.getId()).orElse(null);
                 if (c != null) {
                     username  = c.getUsername()  != null ? c.getUsername()  : "";
                     apellido  = c.getApellido()  != null ? c.getApellido()  : "";
                     etapa     = c.getEstado()    != null ? c.getEstado()    : "";
                 }
             } else if ("ROLE_RRHH".equals(u.getRol())) {
-                RRHH r = rrhhRepository.findById(u.getId()).orElse(null);
+                RRHH r = rrhhService.buscarPorId(u.getId()).orElse(null);
                 if (r != null) {
                     username = r.getUsername() != null ? r.getUsername() : "";
                     apellido = r.getApellido() != null ? r.getApellido() : "";
@@ -414,13 +411,13 @@ public class AdminController {
         response.setHeader(headerKey, headerValue);
 
         Map<String, Object> metricas = new HashMap<>();
-        metricas.put("totalUsuarios", usuarioRepository.count());
-        metricas.put("totalRRHH", usuarioRepository.countByRol("ROLE_RRHH"));
-        metricas.put("totalActivos", usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", true, false));
-        metricas.put("totalPendientes", usuarioRepository.countByRolAndActivoAndBloqueado("ROLE_RRHH", false, false));
-        metricas.put("totalBloqueados", usuarioRepository.countByRolAndBloqueado("ROLE_RRHH", true));
-        metricas.put("totalCandidatos", usuarioRepository.countByRol("ROLE_CANDIDATO"));
-        metricas.put("totalAdmins", usuarioRepository.countByRol("ROLE_ADMINISTRADOR"));
+        metricas.put("totalUsuarios", usuarioService.contar());
+        metricas.put("totalRRHH", usuarioService.contarPorRol("ROLE_RRHH"));
+        metricas.put("totalActivos", usuarioService.contarPorRolYActivoYBloqueado("ROLE_RRHH", true, false));
+        metricas.put("totalPendientes", usuarioService.contarPorRolYActivoYBloqueado("ROLE_RRHH", false, false));
+        metricas.put("totalBloqueados", usuarioService.contarPorRolYBloqueado("ROLE_RRHH", true));
+        metricas.put("totalCandidatos", usuarioService.contarPorRol("ROLE_CANDIDATO"));
+        metricas.put("totalAdmins", usuarioService.contarPorRol("ROLE_ADMINISTRADOR"));
 
         excelService.exportarReporte(metricas, response);
 
@@ -525,7 +522,7 @@ public class AdminController {
                                @RequestParam String nuevaClave,
                                @RequestParam String confirmarClave) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+        Usuario usuario = usuarioService.buscarPorEmail(email).orElse(null);
 
         if (usuario == null) {
             return "redirect:/admin/dashboard?clave_error";
@@ -544,7 +541,7 @@ public class AdminController {
         }
 
         usuario.setClave(passwordEncoder.encode(nuevaClave));
-        usuarioRepository.save(usuario);
+        usuarioService.guardar(usuario);
 
         auditoriaService.registrar("EDICI\u00d3N",
             "El administrador cambi\u00f3 su contrase\u00f1a", email, "SEGURIDAD");

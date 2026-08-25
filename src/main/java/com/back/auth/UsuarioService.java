@@ -199,6 +199,74 @@ public class UsuarioService implements AuthApi {
         return false;
     }
 
+    public java.util.Optional<Usuario> buscarPorId(Long id) {
+        return usuarioRepository.findById(id);
+    }
+
+    public java.util.Optional<Usuario> buscarPorEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+
+    public boolean existePorEmail(String email) {
+        return usuarioRepository.findByEmail(email).isPresent();
+    }
+
+    public java.util.List<Usuario> buscarTodosPorIds(Iterable<Long> ids) {
+        return usuarioRepository.findAllById(ids);
+    }
+
+    public java.util.Map<Long, Usuario> mapearUsuariosPorIds(Iterable<Long> ids) {
+        return usuarioRepository.findAllById(ids).stream()
+                .collect(java.util.stream.Collectors.toMap(Usuario::getId, u -> u));
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public Usuario guardar(Usuario usuario) {
+        return usuarioRepository.save(usuario);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public void eliminar(Usuario usuario) {
+        usuarioRepository.delete(usuario);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public void eliminarPorId(Long id) {
+        usuarioRepository.deleteById(id);
+    }
+
+    public long contar() {
+        return usuarioRepository.count();
+    }
+
+    public long contarPorRol(String rol) {
+        return usuarioRepository.countByRol(rol);
+    }
+
+    public long contarPorRolYBloqueado(String rol, boolean bloqueado) {
+        return usuarioRepository.countByRolAndBloqueado(rol, bloqueado);
+    }
+
+    public long contarPorRolYActivoYBloqueado(String rol, boolean activo, boolean bloqueado) {
+        return usuarioRepository.countByRolAndActivoAndBloqueado(rol, activo, bloqueado);
+    }
+
+    public long contarPorRolYActivo(String rol, boolean activo) {
+        return usuarioRepository.countByRolAndActivo(rol, activo);
+    }
+
+    public org.springframework.data.domain.Page<Usuario> buscarRRHH(String buscar, String estado, org.springframework.data.domain.Pageable pageable) {
+        return usuarioRepository.buscarRRHH(buscar, estado, pageable);
+    }
+
+    public java.util.List<Usuario> buscarRRHHSinPaginacion(String buscar, String estado) {
+        return usuarioRepository.buscarRRHHSinPaginacion(buscar, estado);
+    }
+
+    public java.util.List<Usuario> buscarTodos() {
+        return usuarioRepository.findAll();
+    }
+
     private String obtenerNombreOApellido(Usuario usuario) {
         String email = usuario.getEmail();
         if (email != null && email.contains("@")) {

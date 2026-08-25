@@ -51,6 +51,10 @@ public class EventoService {
                 .stream().limit(limite).toList();
     }
 
+    public List<Evento> obtenerProximasEntrevistasDesdeHoy(int limite) {
+        return eventoRepository.findTop5ByFechaGreaterThanEqualOrderByFechaAscHoraAsc(LocalDate.now());
+    }
+
     public long contarFecha(LocalDate fecha) {
         return eventoRepository.countByFecha(fecha);
     }
@@ -163,5 +167,22 @@ public class EventoService {
     @EventListener
     public void onRRHHEliminado(RRHHEliminadoEvent event) {
         eventoRepository.deleteByRrhhId(event.rrhhId());
+    }
+
+    public boolean existePorCandidatoFechaHora(Long candidatoId, LocalDate fecha, LocalTime hora) {
+        return eventoRepository.existsByCandidatoIdAndFechaAndHora(candidatoId, fecha, hora);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public Evento guardar(Evento evento) {
+        return eventoRepository.save(evento);
+    }
+
+    public List<Evento> buscarPorCandidatoIdOrdenado(Long candidatoId) {
+        return eventoRepository.findByCandidatoIdOrderByFechaDescHoraDesc(candidatoId);
+    }
+
+    public List<Evento> buscarTodos() {
+        return eventoRepository.findAll();
     }
 }

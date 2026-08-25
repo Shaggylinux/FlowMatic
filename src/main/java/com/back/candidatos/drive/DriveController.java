@@ -12,17 +12,17 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import com.back.auth.Usuario;
-import com.back.auth.UsuarioRepository;
+import com.back.auth.UsuarioService;
 import com.back.candidatos.Candidato;
+import com.back.candidatos.CandidatoService;
 import com.back.drive.Archivos;
-import com.back.drive.ArchivosRepository;
 import com.back.drive.FilesServices;
 import org.springframework.http.HttpHeaders;
 import org.springframework.core.io.Resource;
-import com.back.candidatos.CandidatoRepository;
-import com.back.candidatos.CandidatoService;
 import com.back.notificaciones.NotificacionService;
 import com.back.util.Sanitizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -38,12 +38,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DriveController {
 
+    private static final Logger logger = LoggerFactory.getLogger(DriveController.class);
+
     private final String ROOT_DIR = "superfolder/";
 
-    private final ArchivosRepository filesRepository;
-    private final UsuarioRepository usuarioRepository;
-    private final CandidatoRepository candidatoRepository;
     private final FilesServices filesServices;
+    private final UsuarioService usuarioService;
+    private final CandidatoService candidatoService;
     private final NotificacionService notificacionService;
     private final com.back.shared.HistorialService historialService;
 
@@ -68,21 +69,20 @@ public class DriveController {
         model.addAttribute("estadoError", estadoError);
         model.addAttribute("compartido", compartido);
 
-        Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(loginId).orElse(null);
 
         String emailReal = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
 
         Set<Archivos> conjuntoTodo = new HashSet<>();
         if (usuarioActual != null && "ROLE_RRHH".equals(usuarioActual.getRol())) {
-            List<Archivos> todosArchivos = filesRepository.findAll();
-            List<Candidato> todosCandidatos = candidatoRepository.findAll();
+            List<Archivos> todosArchivos = filesServices.buscarTodos();
+            List<Candidato> todosCandidatos = candidatoService.buscarTodos();
 
             Map<Long, String> rrhhByCandId = new HashMap<>();
             Map<String, String> rrhhByCandEmail = new HashMap<>();
 
             List<Long> candIds = todosCandidatos.stream().map(Candidato::getId).toList();
-            Map<Long, Usuario> candUsers = usuarioRepository.findAllById(candIds).stream()
-                    .collect(Collectors.toMap(Usuario::getId, u -> u));
+            Map<Long, Usuario> candUsers = usuarioService.mapearUsuariosPorIds(candIds);
 
             for (Candidato c : todosCandidatos) {
                 if (c.getRrhhEmail() != null && !c.getRrhhEmail().isBlank()) {
@@ -115,11 +115,11 @@ public class DriveController {
                 }
             }
         } else {
-            List<Archivos> lista = filesRepository.buscarArchivosVisiblesPara(emailReal);
+            List<Archivos> lista = filesServices.buscarArchivosVisiblesPara(emailReal);
             if (lista != null)
                 conjuntoTodo.addAll(lista);
             if (usuarioActual != null && usuarioActual.getEmail() != null && !usuarioActual.getEmail().equalsIgnoreCase(emailReal)) {
-                List<Archivos> listaAlt = filesRepository.buscarArchivosVisiblesPara(usuarioActual.getEmail());
+                List<Archivos> listaAlt = filesServices.buscarArchivosVisiblesPara(usuarioActual.getEmail());
                 if (listaAlt != null)
                     conjuntoTodo.addAll(listaAlt);
             }
@@ -208,7 +208,7 @@ public class DriveController {
             usuarioData.put("activo", usuarioActual.isActivo());
 
             if ("ROLE_CANDIDATO".equals(usuarioActual.getRol())) {
-                Candidato candidato = candidatoRepository.findById(usuarioActual.getId()).orElse(null);
+                Candidato candidato = candidatoService.buscarPorId(usuarioActual.getId()).orElse(null);
                 if (candidato != null) {
                     usuarioData.put("username", candidato.getUsername());
                     usuarioData.put("apellido", candidato.getApellido());
@@ -298,16 +298,16 @@ public class DriveController {
             }
             
             if (a.getCandidato() != null) {
-                Candidato c = candidatoRepository.findById(a.getCandidato().getId()).orElse(null);
+                Candidato c = candidatoService.buscarPorId(a.getCandidato().getId()).orElse(null);
                 if (c != null && c.getUsername() != null) {
                     a.setNombreCandidatoStr(c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : ""));
                 } else {
                     a.setNombreCandidatoStr(a.getCandidato().getEmail());
                 }
             } else {
-                Usuario propietarioUsuario = usuarioRepository.findByEmail(a.getPropietario()).orElse(null);
+                Usuario propietarioUsuario = usuarioService.buscarPorEmail(a.getPropietario()).orElse(null);
                 if (propietarioUsuario != null && "ROLE_CANDIDATO".equals(propietarioUsuario.getRol())) {
-                    Candidato c = candidatoRepository.findById(propietarioUsuario.getId()).orElse(null);
+                    Candidato c = candidatoService.buscarPorId(propietarioUsuario.getId()).orElse(null);
                     if (c != null && c.getUsername() != null) {
                         a.setNombreCandidatoStr(c.getUsername() + " " + (c.getApellido() != null ? c.getApellido() : ""));
                     } else {
@@ -458,7 +458,7 @@ public class DriveController {
         if (loginId == null)
             return "redirect:/login";
 
-        Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(loginId).orElse(null);
         String email = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
 
         if (nombre == null || nombre.trim().isEmpty())
@@ -488,7 +488,7 @@ public class DriveController {
         try {
             filesServices.renombrarCarpeta(oldPath, Sanitizer.sanitizePath(newName));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error al renombrar carpeta: {}", e.getMessage(), e);
         }
         return "redirect:/drive";
     }
@@ -499,13 +499,13 @@ public class DriveController {
         if (email == null)
             return "redirect:/login";
 
-        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(email).orElse(null);
         if (usuarioActual == null)
             return "redirect:/drive";
 
         String normalized = folderPath.replace("\\", "/").replaceAll("^/+|/+$", "");
         Archivos carpetaDb = null;
-        List<Archivos> carpetas = filesRepository.findFoldersByUbicacionStartingWith(normalized);
+        List<Archivos> carpetas = filesServices.buscarCarpetasPorUbicacionPrefijo(normalized);
         for (Archivos a : carpetas) {
             String u = a.getUbicacion().replace("\\", "/").replaceAll("^/+|/+$", "");
             if (u.equals(normalized) || u.equals(normalized + "/")) {
@@ -526,7 +526,7 @@ public class DriveController {
         try {
             filesServices.eliminarCarpetaRecursiva(folderPath);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error al eliminar carpeta: {}", e.getMessage(), e);
         }
         return "redirect:/drive";
     }
@@ -541,11 +541,11 @@ public class DriveController {
         if (loginId == null)
             return "redirect:/login";
 
-        Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(loginId).orElse(null);
         String email = (usuarioActual != null) ? usuarioActual.getEmail() : loginId;
 
         if (fileId != null) {
-            Archivos existente = filesRepository.findById(fileId).orElse(null);
+            Archivos existente = filesServices.buscarPorId(fileId).orElse(null);
             if (existente != null) {
                 try {
                     java.nio.file.Path rutaCompleta = java.nio.file.Paths.get(existente.getUbicacion());
@@ -554,9 +554,9 @@ public class DriveController {
                     existente.setEstadoDocumento("Pendiente");
                     existente.setObservacion(null);
                     existente.setFechaSubida(LocalDateTime.now());
-                    filesRepository.save(existente);
+                    filesServices.guardar(existente);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("Error al sobreescribir archivo existente: {}", e.getMessage(), e);
                 }
                 return "redirect:/drive?folder=" + folder;
             }
@@ -566,11 +566,11 @@ public class DriveController {
         if (usuarioActual != null && "ROLE_CANDIDATO".equals(usuarioActual.getRol())) {
             candidatoVinculado = usuarioActual;
         } else if (candidatoId != null) {
-            candidatoVinculado = usuarioRepository.findById(candidatoId).orElse(null);
+            candidatoVinculado = usuarioService.buscarPorId(candidatoId).orElse(null);
         }
 
         if (candidatoVinculado != null) {
-            Candidato candidatoInfo = candidatoRepository.findById(candidatoVinculado.getId()).orElse(null);
+            Candidato candidatoInfo = candidatoService.buscarPorId(candidatoVinculado.getId()).orElse(null);
             String nombreCandidato = candidatoInfo != null
                     ? (candidatoInfo.getUsername() + " "
                             + (candidatoInfo.getApellido() != null ? candidatoInfo.getApellido() : "")).trim()
@@ -596,7 +596,7 @@ public class DriveController {
             Archivos doc = filesServices.subirArchivoDrive(archivo, folder, email, filename, candidatoVinculado);
             if ("ROLE_RRHH".equals(usuarioActual.getRol())) {
                 doc.setEstadoDocumento("No aplica");
-                filesRepository.save(doc);
+                filesServices.guardar(doc);
             }
         } catch (IOException e) {
             return "redirect:/drive?folder=" + folder;
@@ -608,7 +608,7 @@ public class DriveController {
     private boolean esPropietarioODestinatario(Archivos archivo, String email) {
         if (email == null)
             return false;
-        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(email).orElse(null);
         if (usuarioActual != null && ("ROLE_RRHH".equals(usuarioActual.getRol()) || "ROLE_ADMINISTRADOR".equals(usuarioActual.getRol()))) {
             return true;
         }
@@ -640,7 +640,7 @@ public class DriveController {
     public ResponseEntity<Resource> descargarArchivo(@RequestParam("fileId") Long fileId,
             Principal principal) {
         String email = principal != null ? principal.getName() : null;
-        Optional<Archivos> archivoOpt = filesRepository.findById(fileId);
+        Optional<Archivos> archivoOpt = filesServices.buscarPorId(fileId);
         if (archivoOpt.isEmpty() || !esPropietarioODestinatario(archivoOpt.get(), email)) {
             return ResponseEntity.notFound().build();
         }
@@ -662,7 +662,7 @@ public class DriveController {
             @RequestParam(value = "folder", defaultValue = "") String folder,
             Principal principal) {
         String email = principal != null ? principal.getName() : null;
-        Optional<Archivos> archivoOpt = filesRepository.findById(fileId);
+        Optional<Archivos> archivoOpt = filesServices.buscarPorId(fileId);
         if (archivoOpt.isEmpty() || email == null)
             return "redirect:/drive?folder=" + folder;
         Archivos archivo = archivoOpt.get();
@@ -679,11 +679,11 @@ public class DriveController {
             @RequestParam("emailDestinatario") String destinatario,
             Principal principal) {
         String email = principal != null ? principal.getName() : null;
-        Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
+        Optional<Archivos> archivoOpt = filesServices.buscarPorId(archivoId);
         if (archivoOpt.isEmpty() || email == null)
             return "redirect:/drive";
 
-        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(email).orElse(null);
         boolean esRRHH = usuarioActual != null && ("ROLE_RRHH".equals(usuarioActual.getRol()) || "ROLE_ADMINISTRADOR".equals(usuarioActual.getRol()));
         boolean esPropietario = email.equalsIgnoreCase(archivoOpt.get().getPropietario());
 
@@ -695,13 +695,13 @@ public class DriveController {
         filesServices.compartirArchivo(archivoId, destClean);
 
         if (!destClean.isBlank()) {
-            Usuario destUser = usuarioRepository.findByEmail(destClean).orElse(null);
+            Usuario destUser = usuarioService.buscarPorEmail(destClean).orElse(null);
             if (destUser != null) {
                 if (archivo.getCandidato() == null && "ROLE_CANDIDATO".equals(destUser.getRol())) {
                     archivo.setCandidato(destUser);
-                    filesRepository.save(archivo);
+                    filesServices.guardar(archivo);
                 }
-                Candidato cand = candidatoRepository.findById(destUser.getId()).orElse(null);
+                Candidato cand = candidatoService.buscarPorId(destUser.getId()).orElse(null);
                 String candNombre = cand != null ? (cand.getUsername() + " " + (cand.getApellido() != null ? cand.getApellido() : "")).trim() : destUser.getEmail();
                 try {
                     notificacionService.crear("DOCUMENTO", "Se ha compartido contigo el archivo: " + archivo.getNombre(), destUser.getId(), candNombre, "/drive");
@@ -722,12 +722,12 @@ public class DriveController {
         if (email == null) {
             return "redirect:/drive";
         }
-        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(email).orElse(null);
         if (usuarioActual == null || !"ROLE_RRHH".equals(usuarioActual.getRol())) {
             return "redirect:/drive";
         }
 
-        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        Candidato candidato = candidatoService.buscarPorId(id).orElse(null);
         if (candidato == null)
             return "redirect:/drive";
         if (!CandidatoService.ESTADOS_VALIDOS.contains(estado))
@@ -736,7 +736,7 @@ public class DriveController {
         String estadoAnterior = candidato.getEstado();
         candidato.setEstado(estado);
         candidato.setUltimaActualizacion(LocalDateTime.now());
-        candidatoRepository.save(candidato);
+        candidatoService.guardar(candidato);
 
         if (estadoAnterior == null || !estadoAnterior.equals(estado)) {
             String responsable = principal != null ? principal.getName() : "RRHH";
@@ -755,7 +755,7 @@ public class DriveController {
     @GetMapping("/ver-archivo/{id}")
     public ResponseEntity<Resource> verArchivo(@PathVariable Long id, Principal principal) {
         String email = principal != null ? principal.getName() : null;
-        Optional<Archivos> archivoOpt = filesRepository.findById(id);
+        Optional<Archivos> archivoOpt = filesServices.buscarPorId(id);
         if (archivoOpt.isEmpty() || !esPropietarioODestinatario(archivoOpt.get(), email)) {
             return ResponseEntity.notFound().build();
         }
@@ -787,12 +787,12 @@ public class DriveController {
         if (email == null)
             return "redirect:/drive?folder=" + folder;
 
-        Usuario usuarioActual = usuarioRepository.findByEmail(email).orElse(null);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(email).orElse(null);
         if (usuarioActual == null || !"ROLE_RRHH".equals(usuarioActual.getRol())) {
             return "redirect:/drive?folder=" + folder;
         }
 
-        Optional<Archivos> archivoOpt = filesRepository.findById(archivoId);
+        Optional<Archivos> archivoOpt = filesServices.buscarPorId(archivoId);
         boolean estadoValido = "Aprobado".equals(estado) || "Rechazado".equals(estado);
         boolean observacionObligatoria = "Rechazado".equals(estado) && (observacion == null || observacion.isBlank());
         if (!estadoValido || observacionObligatoria) {
@@ -811,7 +811,7 @@ public class DriveController {
             } else {
                 archivo.setObservacion(null);
             }
-            filesRepository.save(archivo);
+            filesServices.guardar(archivo);
         }
 
         return "redirect:/drive?folder=" + folder;

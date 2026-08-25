@@ -1,7 +1,7 @@
 package com.back.calendario;
 
 import com.back.auth.Usuario;
-import com.back.auth.UsuarioRepository;
+import com.back.auth.UsuarioService;
 import com.back.candidatos.CandidatoService;
 import com.back.exportacion.ExcelService;
 import com.back.shared.dto.EntrevistaEmailDTO;
@@ -39,8 +39,7 @@ public class CalendarioController {
     private static final Logger logger = LoggerFactory.getLogger(CalendarioController.class);
 
     private final EventoService eventoService;
-    private final EventoRepository eventoRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
     private final CandidatoService candidatoService;
     private final ApplicationEventPublisher eventPublisher;
     private final ExcelService excelService;
@@ -160,7 +159,7 @@ public class CalendarioController {
     private Usuario obtenerUsuario(Principal principal) {
         if (principal == null)
             return null;
-        return usuarioRepository.findByEmail(principal.getName()).orElse(null);
+        return usuarioService.buscarPorEmail(principal.getName()).orElse(null);
     }
 
     @PostMapping("/crear")
@@ -235,7 +234,7 @@ public class CalendarioController {
                 EntrevistaEmailDTO eventoDto = new EntrevistaEmailDTO(evento.getFecha(), evento.getHora(), evento.getTipo(), evento.getLugar(), evento.getObservaciones(), evento.getModalidad(), evento.getEntrevistador());
                 eventPublisher.publishEvent(new EntrevistaAgendadaEvent(
                         evento.getId(), candidatoId, candidatoNombre,
-                        usuarioRepository.findById(candidatoId).map(Usuario::getEmail).orElse(null),
+                        usuarioService.buscarPorId(candidatoId).map(Usuario::getEmail).orElse(null),
                         rrhh.getId(), rrhh.getEmail(), eventoDto,
                         tipo != null ? tipo : "Entrevista", fecha.toString()));
             } catch (Exception emailEx) {
@@ -395,7 +394,7 @@ public class CalendarioController {
 
                     if ("CONFIRMADO".equals(estado)) {
                         String rrhhEmail = ev.getRrhhId() != null
-                                ? usuarioRepository.findById(ev.getRrhhId()).map(Usuario::getEmail).orElse(null)
+                                ? usuarioService.buscarPorId(ev.getRrhhId()).map(Usuario::getEmail).orElse(null)
                                 : null;
                         eventPublisher.publishEvent(new AccionCandidatoEntrevistaEvent(
                             ev.getCandidatoId(), candidatoNombre, "CONFIRMACION",
@@ -455,7 +454,7 @@ public class CalendarioController {
 
         try {
             EventoValidator.validate(nuevaFecha, nuevaHora, null, null);
-            if (eventoRepository.existsByCandidatoIdAndFechaAndHora(user.getId(), nuevaFecha, nuevaHora)) {
+            if (eventoService.existePorCandidatoFechaHora(user.getId(), nuevaFecha, nuevaHora)) {
                 response.put("success", false);
                 response.put("error", "Ya tienes una entrevista en esa fecha y hora");
                 return response;
@@ -464,7 +463,7 @@ public class CalendarioController {
             Evento ev = eventoService.actualizarEstado(id, "REPROGRAMADO");
             String observacionMotivo = "Solicitud de reprogramación: " + motivo.trim();
             ev.setObservaciones(observacionMotivo);
-            eventoRepository.save(ev);
+            eventoService.guardar(ev);
 
             String mensaje = "El candidato " + ev.getCandidatoNombre() +
                     " solicita reprogramar la entrevista del " + ev.getFecha() +
@@ -474,7 +473,7 @@ public class CalendarioController {
                     ev.getCandidatoId(), ev.getCandidatoNombre(), "REPROGRAMACION", mensaje));
 
             String rrhhEmail = ev.getRrhhId() != null
-                    ? usuarioRepository.findById(ev.getRrhhId()).map(Usuario::getEmail).orElse(null)
+                    ? usuarioService.buscarPorId(ev.getRrhhId()).map(Usuario::getEmail).orElse(null)
                     : null;
             eventPublisher.publishEvent(new AccionCandidatoEntrevistaEvent(
                     ev.getCandidatoId(), ev.getCandidatoNombre(), "REPROGRAMACION",
@@ -613,10 +612,10 @@ public class CalendarioController {
         boolean esRRHH = "ROLE_RRHH".equals(user.getRol()) || "ROLE_ADMIN".equals(user.getRol());
         if (!esRRHH && !user.getId().equals(id))
             return ResponseEntity.status(403).build();
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
         if (usuario == null)
             return ResponseEntity.notFound().build();
-        List<Evento> eventos = eventoRepository.findByCandidatoIdOrderByFechaDescHoraDesc(id);
+        List<Evento> eventos = eventoService.buscarPorCandidatoIdOrdenado(id);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
         List<EventoCandidatoDTO> list = eventos.stream().map(e -> {
             String tipo = e.getTipo();
@@ -631,15 +630,15 @@ public class CalendarioController {
                     default -> color = "#6366F1";
                 }
             return new EventoCandidatoDTO(
-                    e.getId(),
-                    tipo != null ? tipo : "Entrevista",
-                    e.getFecha() != null ? e.getFecha().format(fmt) : "",
-                    e.getHora() != null ? e.getHora().toString() : "",
-                    e.getEstado() != null ? e.getEstado() : "",
-                    tipo != null ? tipo : "",
-                    e.getLugar() != null ? e.getLugar() : "",
-                    e.getObservaciones() != null ? e.getObservaciones() : "",
-                    color);
+                e.getId(),
+                tipo != null ? tipo : "Entrevista",
+                e.getFecha() != null ? e.getFecha().format(fmt) : "",
+                e.getHora() != null ? e.getHora().toString() : "",
+                e.getEstado() != null ? e.getEstado() : "",
+                tipo != null ? tipo : "",
+                e.getLugar() != null ? e.getLugar() : "",
+                e.getObservaciones() != null ? e.getObservaciones() : "",
+                color);
         }).collect(Collectors.toList());
         return ResponseEntity.ok(list);
     }

@@ -1,13 +1,13 @@
 package com.back.bootstrap;
 
 import com.back.auth.Usuario;
+import com.back.auth.UsuarioService;
 import com.back.candidatos.Candidato;
+import com.back.candidatos.CandidatoService;
 import com.back.admin.Administrador;
-import com.back.admin.AdministradorRepository;
+import com.back.admin.AdministradorService;
 import com.back.admin.RRHH;
-import com.back.auth.UsuarioRepository;
-import com.back.candidatos.CandidatoRepository;
-import com.back.admin.RRHHRepository;
+import com.back.admin.RRHHService;
 import com.back.drive.FilesServices;
 
 import org.springframework.http.ResponseEntity;
@@ -25,10 +25,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SeedController {
 
-    private final UsuarioRepository usuarioRepository;
-    private final CandidatoRepository candidatoRepository;
-    private final RRHHRepository rrhhRepository;
-    private final AdministradorRepository administradorRepository;
+    private final UsuarioService usuarioService;
+    private final CandidatoService candidatoService;
+    private final RRHHService rrhhService;
+    private final AdministradorService administradorService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final FilesServices filesServices;
 
@@ -37,19 +37,19 @@ public class SeedController {
         List<Map<String, Object>> created = new ArrayList<>();
 
         // Create RRHH user if it doesn't exist
-        if (usuarioRepository.findByEmail("rrhh@flowmatic.com").isEmpty()) {
+        if (usuarioService.buscarPorEmail("rrhh@flowmatic.com").isEmpty()) {
             Usuario admin = new Usuario();
             admin.setEmail("rrhh@flowmatic.com");
             admin.setClave(passwordEncoder.encode("Admin1234"));
             admin.setRol("ROLE_RRHH");
             admin.setActivo(true);
-            admin = usuarioRepository.save(admin);
+            admin = usuarioService.guardar(admin);
 
             RRHH rrhh = new RRHH();
             rrhh.setId(admin.getId());
             rrhh.setUsername("Admin");
             rrhh.setApellido("RRHH");
-            rrhhRepository.save(rrhh);
+            rrhhService.guardar(rrhh);
 
             Map<String, Object> m = new LinkedHashMap<>();
             m.put("type", "rrhh");
@@ -58,19 +58,19 @@ public class SeedController {
         }
 
         // Create ADMINISTRADOR user if it doesn't exist
-        if (usuarioRepository.findByEmail("admin@sistema.com").isEmpty()) {
+        if (usuarioService.buscarPorEmail("admin@sistema.com").isEmpty()) {
             Usuario adm = new Usuario();
             adm.setEmail("admin@sistema.com");
             adm.setClave(passwordEncoder.encode("Admin1234"));
             adm.setRol("ROLE_ADMINISTRADOR");
             adm.setActivo(true);
-            adm = usuarioRepository.save(adm);
+            adm = usuarioService.guardar(adm);
 
             Administrador a = new Administrador();
             a.setId(adm.getId());
             a.setUsername("Admin");
             a.setApellido("Sistema");
-            administradorRepository.save(a);
+            administradorService.guardar(a);
 
             Map<String, Object> m = new LinkedHashMap<>();
             m.put("type", "admin");
@@ -79,7 +79,7 @@ public class SeedController {
         }
 
         // Create candidate test data if none exist
-        long candidateCount = usuarioRepository.findByRol("ROLE_CANDIDATO").size();
+        long candidateCount = usuarioService.contarPorRol("ROLE_CANDIDATO");
         if (candidateCount == 0) {
             String[][] data = {
                 {"Ana Mar\u00eda", "L\u00f3pez", "ana.lopez@email.com", "Desarrolladora Full Stack", "Bogot\u00e1", "Java,Spring Boot,React,PostgreSQL,Docker", "Espa\u00f1ol,Ingl\u00e9s,Franc\u00e9s", "5", "Inmediata", "Disponible"},
@@ -93,14 +93,14 @@ public class SeedController {
             };
 
             for (String[] row : data) {
-                if (usuarioRepository.findByEmail(row[2]).isPresent()) continue;
+                if (usuarioService.existePorEmail(row[2])) continue;
 
                 Usuario u = new Usuario();
                 u.setEmail(row[2]);
                 u.setClave(passwordEncoder.encode("Test1234"));
                 u.setRol("ROLE_CANDIDATO");
                 u.setActivo(true);
-                u = usuarioRepository.save(u);
+                u = usuarioService.guardar(u);
 
                 Candidato c = new Candidato();
                 c.setId(u.getId());
@@ -114,7 +114,7 @@ public class SeedController {
                 c.setDisponibilidad(row[8]);
                 c.setEstado(row[9]);
                 c.setUltimaActualizacion(LocalDateTime.now());
-                candidatoRepository.save(c);
+                candidatoService.guardar(c);
 
 
                 Map<String, Object> m = new LinkedHashMap<>();
@@ -126,7 +126,7 @@ public class SeedController {
 
         return ResponseEntity.ok(Map.of(
             "created", created.size(),
-            "total", usuarioRepository.count(),
+            "total", usuarioService.contar(),
             "users", created
         ));
     }

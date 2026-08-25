@@ -1,18 +1,17 @@
 package com.back.candidatos;
 
 import com.back.auth.Usuario;
+import com.back.auth.UsuarioService;
 import com.back.drive.Archivos;
-import com.back.auth.UsuarioRepository;
-import com.back.drive.ArchivosRepository;
+import com.back.drive.FilesServices;
 import com.back.exportacion.CvService;
+import com.back.exportacion.ExcelService;
+import com.back.notificaciones.NotificacionService;
 import com.back.shared.dto.CvDataDTO;
 import com.back.shared.event.CandidatoEliminadoEvent;
-import com.back.exportacion.ExcelService;
-import com.back.drive.FilesServices;
-import org.springframework.context.ApplicationEventPublisher;
-import com.back.notificaciones.NotificacionService;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,9 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class CandidatoController {
 
     private final CandidatoService candidatoService;
-    private final UsuarioRepository usuarioRepository;
-    private final CandidatoRepository candidatoRepository;
-    private final ArchivosRepository archivosRepository;
+    private final UsuarioService usuarioService;
     private final FilesServices filesServices;
     private final ApplicationEventPublisher eventPublisher;
     private final ExcelService excelService;
@@ -114,8 +111,7 @@ public class CandidatoController {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
 
         List<Long> ids = candidatos.getContent().stream().map(Candidato::getId).collect(Collectors.toList());
-        Map<Long, Usuario> usuarioMap = usuarioRepository.findAllById(ids).stream()
-                .collect(Collectors.toMap(Usuario::getId, u -> u));
+        Map<Long, Usuario> usuarioMap = usuarioService.mapearUsuariosPorIds(ids);
 
         List<CandidatoListaDTO> data = candidatos.getContent().stream().map(c -> {
             Usuario u = usuarioMap.get(c.getId());
@@ -146,11 +142,11 @@ public class CandidatoController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<?> detalleCandidato(@PathVariable Long id) {
-        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        Candidato candidato = candidatoService.buscarPorId(id).orElse(null);
         if (candidato == null) {
             return ResponseEntity.notFound().build();
         }
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
 
         int score = MatchScoreCalculator.calcularMatchScore(candidato);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.forLanguageTag("es"));
@@ -178,7 +174,7 @@ public class CandidatoController {
     @PostMapping("/{id}/estado")
     @ResponseBody
     public ResponseEntity<?> actualizarEstado(@PathVariable Long id, @RequestBody Map<String, String> body, java.security.Principal principal) {
-        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        Candidato candidato = candidatoService.buscarPorId(id).orElse(null);
         if (candidato == null) {
             return ResponseEntity.notFound().build();
         }
@@ -193,7 +189,7 @@ public class CandidatoController {
         String estadoAnterior = candidato.getEstado();
         candidato.setEstado(estado);
         candidato.setUltimaActualizacion(LocalDateTime.now());
-        candidatoRepository.save(candidato);
+        candidatoService.guardar(candidato);
 
         if (estadoAnterior == null || !estadoAnterior.equals(estado)) {
             String responsable = principal != null ? principal.getName() : "RRHH";
@@ -218,11 +214,11 @@ public class CandidatoController {
     @PostMapping("/{id}/editar")
     @ResponseBody
     public ResponseEntity<?> editarCandidato(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        Candidato candidato = candidatoService.buscarPorId(id).orElse(null);
         if (candidato == null) {
             return ResponseEntity.notFound().build();
         }
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
 
         String nombre = body.getOrDefault("nombre", "").trim();
         String apellido = body.getOrDefault("apellido", "").trim();
@@ -256,7 +252,7 @@ public class CandidatoController {
         }
 
         if (usuario != null && !email.equalsIgnoreCase(usuario.getEmail())) {
-            boolean emailEnUso = usuarioRepository.findByEmail(email)
+            boolean emailEnUso = usuarioService.buscarPorEmail(email)
                     .map(u -> !u.getId().equals(id))
                     .orElse(false);
             if (emailEnUso) {
@@ -280,11 +276,11 @@ public class CandidatoController {
         candidato.setIdiomas(idiomas.length() > 255 ? idiomas.substring(0, 255) : idiomas);
         candidato.setProcesoActual(procesoActual);
         candidato.setUltimaActualizacion(LocalDateTime.now());
-        candidatoRepository.save(candidato);
+        candidatoService.guardar(candidato);
 
         if (usuario != null && !email.equals(usuario.getEmail())) {
             usuario.setEmail(email);
-            usuarioRepository.save(usuario);
+            usuarioService.guardar(usuario);
         }
 
         String nombreEdit = candidato.getUsername() + " "
@@ -300,14 +296,14 @@ public class CandidatoController {
     @ResponseBody
     @org.springframework.transaction.annotation.Transactional
     public ResponseEntity<?> eliminarCandidato(@PathVariable Long id) {
-        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        Candidato candidato = candidatoService.buscarPorId(id).orElse(null);
         if (candidato == null) {
             return ResponseEntity.notFound().build();
         }
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
         if (usuario != null) {
             String email = usuario.getEmail();
-            List<Archivos> archivosAsociados = archivosRepository.findByCandidatoIdOrEmail(id, email);
+            List<Archivos> archivosAsociados = filesServices.buscarPorCandidatoIdOEmail(id, email);
             for (Archivos doc : archivosAsociados) {
                 try {
                     if (doc.getUbicacion() != null) {
@@ -315,7 +311,7 @@ public class CandidatoController {
                     }
                 } catch (java.io.IOException ignored) {
                 }
-                archivosRepository.delete(doc);
+                filesServices.eliminar(doc);
             }
 
             String nombreCompleto = (candidato.getUsername() + " " + (candidato.getApellido() != null ? candidato.getApellido() : "")).trim();
@@ -323,7 +319,7 @@ public class CandidatoController {
                     "superfolder/Candidatos/" + email,
                     "superfolder/Candidatos/" + nombreCompleto);
             for (String prefix : prefijos) {
-                List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
+                List<Archivos> docs = filesServices.buscarPorUbicacionPrefijo(prefix);
                 for (Archivos doc : docs) {
                     try {
                         if (doc.getUbicacion() != null) {
@@ -331,15 +327,15 @@ public class CandidatoController {
                         }
                     } catch (java.io.IOException ignored) {
                     }
-                    archivosRepository.delete(doc);
+                    filesServices.eliminar(doc);
                 }
             }
         }
         notificacionService.eliminarPorCandidato(id);
         eventPublisher.publishEvent(new CandidatoEliminadoEvent(id));
-        candidatoRepository.delete(candidato);
+        candidatoService.eliminar(candidato);
         if (usuario != null) {
-            usuarioRepository.delete(usuario);
+            usuarioService.eliminar(usuario);
         }
         return ResponseEntity.ok(new EliminarResponseDTO(true));
     }
@@ -349,8 +345,8 @@ public class CandidatoController {
     public Map<String, Object> stats() {
         return Map.of(
                 "total", candidatoService.contarActivos(),
-                "documentos", archivosRepository.count() - archivosRepository.countFolders(),
-                "carpetas", archivosRepository.countFolders(),
+                "documentos", filesServices.contarDocumentos(),
+                "carpetas", filesServices.contarCarpetas(),
                 "entrevistas", 0
         );
     }
@@ -358,12 +354,12 @@ public class CandidatoController {
     @GetMapping("/{id}/documentos")
     @ResponseBody
     public ResponseEntity<?> documentosCandidato(@PathVariable Long id) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
         if (usuario == null)
             return ResponseEntity.notFound().build();
         String email = usuario.getEmail();
         String prefix = "superfolder/Candidatos/" + email;
-        List<Archivos> docs = archivosRepository.findByUbicacionStartingWith(prefix);
+        List<Archivos> docs = filesServices.buscarPorUbicacionPrefijo(prefix);
         List<DocumentoDTO> list = docs.stream().map(d -> new DocumentoDTO(
                 d.getId(),
                 d.getNombre(),
@@ -379,7 +375,7 @@ public class CandidatoController {
     public ResponseEntity<?> subirDocumento(@PathVariable Long id,
             @RequestParam("file") MultipartFile file,
             @RequestParam(required = false) String tipo) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
         if (usuario == null)
             return ResponseEntity.notFound().build();
         String email = usuario.getEmail();
@@ -394,12 +390,12 @@ public class CandidatoController {
 
     @GetMapping("/{id}/cv")
     public void descargarCV(@PathVariable Long id, HttpServletResponse response) throws IOException {
-        Candidato candidato = candidatoRepository.findById(id).orElse(null);
+        Candidato candidato = candidatoService.buscarPorId(id).orElse(null);
         if (candidato == null) {
             response.sendRedirect("/gestion-candidatos");
             return;
         }
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
         String email = usuario != null ? usuario.getEmail() : "";
         CvDataDTO cvData = new CvDataDTO(
             candidato.getUsername(),
@@ -424,7 +420,7 @@ public class CandidatoController {
         response.setHeader("Content-Disposition", "attachment; filename=candidatos_reporte.xlsx");
 
         List<Candidato> candidatos = candidatoService.listarCandidatosSinPaginar(search, estado);
-        Map<Long, String> emails = usuarioRepository.findAllById(candidatos.stream().map(Candidato::getId).toList())
+        Map<Long, String> emails = usuarioService.buscarTodosPorIds(candidatos.stream().map(Candidato::getId).toList())
                 .stream().collect(Collectors.toMap(Usuario::getId, Usuario::getEmail));
         String[] cabeceras = {"ID", "Nombre", "Apellido", "Email", "Tel\u00e9fono", "Cargo", "Ciudad", "Experiencia", "Disponibilidad", "Tecnolog\u00edas", "Idiomas", "Estado", "Proceso"};
         List<Object[]> datos = candidatos.stream()
