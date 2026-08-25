@@ -5,6 +5,8 @@ import com.back.auth.UsuarioService;
 import com.back.notificaciones.Notificacion;
 import com.back.notificaciones.NotificacionService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,8 @@ import java.util.*;
 @Controller
 @RequiredArgsConstructor
 public class PerfilCandidatoController {
+
+    private static final Logger logger = LoggerFactory.getLogger(PerfilCandidatoController.class);
 
     private final UsuarioService usuarioService;
     private final CandidatoService candidatoService;
@@ -245,7 +249,7 @@ public class PerfilCandidatoController {
                 try {
                     c.setFechaNacimiento(java.time.LocalDate.parse(dto.getFechaNacimiento()));
                 } catch (Exception e) {
-                    // Ignorar error de fecha
+                    logger.warn("Formato de fecha de nacimiento inválido '{}' para usuario ID {}", dto.getFechaNacimiento(), u.getId());
                 }
             }
             if (dto.getNacionalidad() != null) c.setNacionalidad(dto.getNacionalidad());

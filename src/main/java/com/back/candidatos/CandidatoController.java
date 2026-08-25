@@ -11,6 +11,8 @@ import com.back.shared.dto.CvDataDTO;
 import com.back.shared.event.CandidatoEliminadoEvent;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/gestion-candidatos")
 @RequiredArgsConstructor
 public class CandidatoController {
+
+    private static final Logger logger = LoggerFactory.getLogger(CandidatoController.class);
 
     private final CandidatoService candidatoService;
     private final UsuarioService usuarioService;
@@ -309,7 +313,8 @@ public class CandidatoController {
                     if (doc.getUbicacion() != null) {
                         java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
                     }
-                } catch (java.io.IOException ignored) {
+                } catch (java.io.IOException e) {
+                    logger.warn("No se pudo eliminar el archivo físico {}: {}", doc.getUbicacion(), e.getMessage());
                 }
                 filesServices.eliminar(doc);
             }
@@ -325,7 +330,8 @@ public class CandidatoController {
                         if (doc.getUbicacion() != null) {
                             java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(doc.getUbicacion()));
                         }
-                    } catch (java.io.IOException ignored) {
+                    } catch (java.io.IOException e) {
+                        logger.warn("No se pudo eliminar el archivo físico en carpeta {}: {}", doc.getUbicacion(), e.getMessage());
                     }
                     filesServices.eliminar(doc);
                 }

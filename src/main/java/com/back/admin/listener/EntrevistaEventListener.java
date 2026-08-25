@@ -1,7 +1,7 @@
 package com.back.admin.listener;
 
 import com.back.admin.RRHH;
-import com.back.admin.RRHHRepository;
+import com.back.admin.RRHHService;
 import com.back.notificaciones.EmailService;
 import com.back.notificaciones.NotificacionService;
 import com.back.shared.event.AccionCandidatoEntrevistaEvent;
@@ -20,7 +20,7 @@ public class EntrevistaEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(EntrevistaEventListener.class);
 
-    private final RRHHRepository rrhhRepository;
+    private final RRHHService rrhhService;
     private final EmailService emailService;
     private final NotificacionService notificacionService;
 
@@ -29,7 +29,7 @@ public class EntrevistaEventListener {
         try {
             String rrhhNombre = event.rrhhEmail();
             if (event.rrhhId() != null) {
-                RRHH rrhhProfile = rrhhRepository.findById(event.rrhhId()).orElse(null);
+                RRHH rrhhProfile = rrhhService.buscarPorId(event.rrhhId()).orElse(null);
                 if (rrhhProfile != null) {
                     rrhhNombre = rrhhProfile.getUsername() + " " + (rrhhProfile.getApellido() != null ? rrhhProfile.getApellido() : "");
                 }
@@ -73,7 +73,7 @@ public class EntrevistaEventListener {
             }
             String rrhhNombre = event.rrhhEmail();
             if (event.rrhhId() != null) {
-                RRHH rrhhProfile = rrhhRepository.findById(event.rrhhId()).orElse(null);
+                RRHH rrhhProfile = rrhhService.buscarPorId(event.rrhhId()).orElse(null);
                 if (rrhhProfile != null) {
                     rrhhNombre = rrhhProfile.getUsername() + " " + (rrhhProfile.getApellido() != null ? rrhhProfile.getApellido() : "");
                 }

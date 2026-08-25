@@ -73,7 +73,11 @@ public class CandidatoService {
                                              String experiencia, String ciudad, int page, int size) {
         Integer expMin = null;
         if (experiencia != null && !experiencia.isBlank()) {
-            try { expMin = Integer.parseInt(experiencia); } catch (NumberFormatException ignored) {}
+            try {
+                expMin = Integer.parseInt(experiencia.trim());
+            } catch (NumberFormatException e) {
+                expMin = null;
+            }
         }
 
         String searchVal = (search != null && !search.isBlank()) ? "%" + search + "%" : null;
@@ -125,6 +129,10 @@ public class CandidatoService {
 
     public List<Candidato> buscarTodosPorIds(Iterable<Long> ids) {
         return candidatoRepository.findAllById(ids);
+    }
+
+    public boolean existePorId(Long id) {
+        return candidatoRepository.existsById(id);
     }
 
     @org.springframework.transaction.annotation.Transactional
