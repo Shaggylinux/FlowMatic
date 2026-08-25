@@ -21,16 +21,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.back.admin.dto.UsuarioRRHHDTO;
 import com.back.auth.Usuario;
-import com.back.auth.UsuarioRepository;
+import com.back.auth.UsuarioService;
 import com.back.shared.event.RRHHEliminadoEvent;
 
 @ExtendWith(MockitoExtension.class)
 class AdminValidacionesTest {
 
     @Mock
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
     @Mock
-    private RRHHRepository rrhhRepository;
+    private RRHHService rrhhService;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
@@ -45,8 +45,8 @@ class AdminValidacionesTest {
     @BeforeEach
     void setUp() {
         controller = new AdminRRHHRestController(
-            usuarioRepository,
-            rrhhRepository,
+            usuarioService,
+            rrhhService,
             passwordEncoder,
             auditoriaService,
             eventPublisher
@@ -61,7 +61,7 @@ class AdminValidacionesTest {
         u.setEmail("ana@empresa.com");
         u.setRol("ROLE_RRHH");
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(u));
+        when(usuarioService.buscarPorId(1L)).thenReturn(Optional.of(u));
 
         UsuarioRRHHDTO dto = new UsuarioRRHHDTO();
         dto.setNombre("Ana");
@@ -73,7 +73,7 @@ class AdminValidacionesTest {
         ResponseEntity<?> response = controller.updateUsuarioRRHH(1L, dto);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        verify(rrhhRepository, never()).save(any());
+        verify(rrhhService, never()).guardar(any());
     }
 
     @Test
@@ -84,7 +84,7 @@ class AdminValidacionesTest {
         u.setEmail("ana@empresa.com");
         u.setRol("ROLE_RRHH");
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(u));
+        when(usuarioService.buscarPorId(1L)).thenReturn(Optional.of(u));
 
         UsuarioRRHHDTO dto = new UsuarioRRHHDTO();
         dto.setNombre("Ana");
@@ -96,7 +96,7 @@ class AdminValidacionesTest {
         ResponseEntity<?> response = controller.updateUsuarioRRHH(1L, dto);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        verify(rrhhRepository, never()).save(any());
+        verify(rrhhService, never()).guardar(any());
     }
 
     @Test
@@ -107,8 +107,8 @@ class AdminValidacionesTest {
         u.setEmail("carlos@empresa.com");
         u.setRol("ROLE_RRHH");
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(u));
-        when(rrhhRepository.findById(1L)).thenReturn(Optional.of(new RRHH()));
+        when(usuarioService.buscarPorId(1L)).thenReturn(Optional.of(u));
+        when(rrhhService.buscarPorId(1L)).thenReturn(Optional.of(new RRHH()));
 
         UsuarioRRHHDTO dto = new UsuarioRRHHDTO();
         dto.setNombre("Carlos");
@@ -121,8 +121,8 @@ class AdminValidacionesTest {
         ResponseEntity<?> response = controller.updateUsuarioRRHH(1L, dto);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verify(usuarioRepository).save(any());
-        verify(rrhhRepository).save(any());
+        verify(usuarioService).guardar(any());
+        verify(rrhhService).guardar(any());
     }
 
     @Test
@@ -133,14 +133,14 @@ class AdminValidacionesTest {
         u.setEmail("eliminar@empresa.com");
         u.setRol("ROLE_RRHH");
 
-        when(usuarioRepository.findById(5L)).thenReturn(Optional.of(u));
+        when(usuarioService.buscarPorId(5L)).thenReturn(Optional.of(u));
         when(principal.getName()).thenReturn("AdminUser");
 
         ResponseEntity<?> response = controller.deleteUsuario(5L, principal);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(eventPublisher).publishEvent(any(RRHHEliminadoEvent.class));
-        verify(rrhhRepository).deleteById(5L);
-        verify(usuarioRepository).delete(u);
+        verify(rrhhService).eliminarPorId(5L);
+        verify(usuarioService).eliminar(u);
     }
 }

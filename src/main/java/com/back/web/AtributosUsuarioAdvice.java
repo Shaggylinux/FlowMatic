@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.back.auth.Usuario;
-import com.back.auth.UsuarioRepository;
+import com.back.auth.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AtributosUsuarioAdvice {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
     @ModelAttribute
     public void agregarUsuarioActual(Model model) {
@@ -37,7 +37,7 @@ public class AtributosUsuarioAdvice {
             return;
         }
 
-        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
+        Usuario usuario = usuarioService.buscarPorEmail(email).orElse(null);
         if (usuario == null) {
             return;
         }

@@ -1,15 +1,15 @@
 package com.back.web;
 
 import com.back.auth.Usuario;
-import com.back.auth.UsuarioRepository;
+import com.back.auth.UsuarioService;
 import com.back.calendario.Evento;
-import com.back.calendario.EventoRepository;
+import com.back.calendario.EventoService;
 import com.back.candidatos.Candidato;
-import com.back.candidatos.CandidatoRepository;
+import com.back.candidatos.CandidatoService;
 import com.back.drive.Archivos;
-import com.back.drive.ArchivosRepository;
+import com.back.drive.FilesServices;
 import com.back.notificaciones.Notificacion;
-import com.back.notificaciones.NotificacionRepository;
+import com.back.notificaciones.NotificacionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -26,11 +26,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CandidatoHomeController {
 
-    private final UsuarioRepository usuarioRepository;
-    private final CandidatoRepository candidatoRepository;
-    private final EventoRepository eventoRepository;
-    private final ArchivosRepository archivosRepository;
-    private final NotificacionRepository notificacionRepository;
+    private final UsuarioService usuarioService;
+    private final CandidatoService candidatoService;
+    private final EventoService eventoService;
+    private final FilesServices filesServices;
+    private final NotificacionService notificacionService;
     private final com.back.shared.HistorialService historialService;
 
     @GetMapping("/candidato/home")
@@ -47,11 +47,11 @@ public class CandidatoHomeController {
         String ultimaActualizacionMensaje = "Sin actualizaciones registradas";
 
         if (email != null) {
-            Optional<Usuario> uOpt = usuarioRepository.findByEmail(email);
+            Optional<Usuario> uOpt = usuarioService.buscarPorEmail(email);
             if (uOpt.isPresent()) {
                 Usuario u = uOpt.get();
                 candidatoId = u.getId();
-                Optional<Candidato> cOpt = candidatoRepository.findById(u.getId());
+                Optional<Candidato> cOpt = candidatoService.buscarPorId(u.getId());
                 if (cOpt.isPresent()) {
                     Candidato c = cOpt.get();
                     if (c.getUsername() != null && !c.getUsername().isBlank()) {
@@ -89,23 +89,23 @@ public class CandidatoHomeController {
         }
 
         // Consultar entrevistas reales
-        List<Evento> entrevistas = candidatoId != null ? eventoRepository.findByCandidatoIdOrderByFechaDescHoraDesc(candidatoId) : Collections.emptyList();
+        List<Evento> entrevistas = candidatoId != null ? eventoService.buscarPorCandidatoIdOrdenado(candidatoId) : Collections.emptyList();
         Evento proximaEntrevista = entrevistas.stream()
                 .filter(e -> e.getFecha() != null && !e.getFecha().isBefore(LocalDate.now()))
                 .findFirst()
                 .orElse(null);
 
         // Consultar archivos / documentos reales
-        List<Archivos> candidatosArchivos = email != null ? archivosRepository.buscarArchivosVisiblesPara(email) : Collections.emptyList();
+        List<Archivos> candidatosArchivos = email != null ? filesServices.buscarArchivosVisiblesPara(email) : Collections.emptyList();
         long archivosTotal = candidatosArchivos.stream().filter(a -> !a.isEsCarpeta()).count();
 
         // Consultar notificaciones reales
         List<Notificacion> notificaciones = candidatoId != null
-                ? notificacionRepository.findTop5ByCandidatoIdOrderByFechaDesc(candidatoId)
-                : notificacionRepository.findTop5ByOrderByFechaDesc();
+                ? notificacionService.obtenerActividadReciente(candidatoId)
+                : notificacionService.obtenerActividadReciente();
         long notificacionesNoLeidas = candidatoId != null
-                ? notificacionRepository.countByLeidaFalseAndCandidatoId(candidatoId)
-                : notificacionRepository.countByLeidaFalseAndCandidatoIdIsNull();
+                ? notificacionService.contarNoLeidasPorCandidato(candidatoId)
+                : notificacionService.contarNoLeidasGlobales();
 
         // Cálculo de etapa y porcentaje según estado real
         int stepIndex = 1;

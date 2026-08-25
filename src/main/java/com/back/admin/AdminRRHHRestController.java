@@ -2,7 +2,7 @@ package com.back.admin;
 
 import com.back.admin.dto.UsuarioRRHHDTO;
 import com.back.auth.Usuario;
-import com.back.auth.UsuarioRepository;
+import com.back.auth.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,15 +16,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AdminRRHHRestController {
 
-    private final UsuarioRepository usuarioRepository;
-    private final RRHHRepository rrhhRepository;
+    private final UsuarioService usuarioService;
+    private final RRHHService rrhhService;
     private final PasswordEncoder passwordEncoder;
     private final AuditoriaService auditoriaService;
     private final org.springframework.context.ApplicationEventPublisher eventPublisher;
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioRRHHDTO> getUsuarioRRHH(@PathVariable Long id) {
-        Usuario u = usuarioRepository.findById(id).orElse(null);
+        Usuario u = usuarioService.buscarPorId(id).orElse(null);
         if (u == null || !"ROLE_RRHH".equals(u.getRol())) {
             return ResponseEntity.notFound().build();
         }
@@ -37,7 +37,7 @@ public class AdminRRHHRestController {
         dto.setBloqueado(u.isBloqueado());
         dto.setEstado(u.isBloqueado() ? "Bloqueado" : (u.isActivo() ? "Activo" : "Pendiente"));
 
-        RRHH rrhh = rrhhRepository.findById(id).orElse(null);
+        RRHH rrhh = rrhhService.buscarPorId(id).orElse(null);
         if (rrhh != null) {
             dto.setNombre(rrhh.getUsername());
             dto.setApellido(rrhh.getApellido());
@@ -50,13 +50,11 @@ public class AdminRRHHRestController {
         return ResponseEntity.ok(dto);
     }
 
-
-
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<?> updateUsuarioRRHH(@PathVariable Long id, @RequestBody UsuarioRRHHDTO request) {
         try {
-            Usuario u = usuarioRepository.findById(id).orElse(null);
+            Usuario u = usuarioService.buscarPorId(id).orElse(null);
             if (u == null) return ResponseEntity.notFound().build();
 
             if (request.getNombre() == null || request.getNombre().isBlank()
@@ -72,7 +70,7 @@ public class AdminRRHHRestController {
             }
 
             if (request.getEmail() != null && !request.getEmail().equalsIgnoreCase(u.getEmail())) {
-                boolean duplicado = usuarioRepository.findByEmail(request.getEmail())
+                boolean duplicado = usuarioService.buscarPorEmail(request.getEmail())
                         .map(existente -> !existente.getId().equals(id))
                         .orElse(false);
                 if (duplicado) {
@@ -108,16 +106,16 @@ public class AdminRRHHRestController {
             if (request.getClave() != null && !request.getClave().isBlank()) {
                 u.setClave(passwordEncoder.encode(request.getClave()));
             }
-            usuarioRepository.save(u);
+            usuarioService.guardar(u);
 
-            RRHH rrhh = rrhhRepository.findById(id).orElse(new RRHH());
+            RRHH rrhh = rrhhService.buscarPorId(id).orElse(new RRHH());
             rrhh.setId(u.getId());
             rrhh.setUsername(request.getNombre());
             rrhh.setApellido(request.getApellido());
             rrhh.setTelefono(request.getTelefono());
             rrhh.setDocumento(request.getDocumento());
             rrhh.setCargo(request.getCargo());
-            rrhhRepository.save(rrhh);
+            rrhhService.guardar(rrhh);
 
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -127,10 +125,10 @@ public class AdminRRHHRestController {
 
     @PutMapping("/{id}/toggle-bloqueo")
     public ResponseEntity<?> toggleBloqueo(@PathVariable Long id) {
-        Usuario u = usuarioRepository.findById(id).orElse(null);
+        Usuario u = usuarioService.buscarPorId(id).orElse(null);
         if (u == null) return ResponseEntity.notFound().build();
         u.setBloqueado(!u.isBloqueado());
-        usuarioRepository.save(u);
+        usuarioService.guardar(u);
         return ResponseEntity.ok(Map.of("bloqueado", u.isBloqueado()));
     }
 
@@ -138,14 +136,14 @@ public class AdminRRHHRestController {
     @Transactional
     public ResponseEntity<?> deleteUsuario(@PathVariable Long id, java.security.Principal principal) {
         try {
-            Usuario u = usuarioRepository.findById(id).orElse(null);
+            Usuario u = usuarioService.buscarPorId(id).orElse(null);
             if (u == null) {
                 return ResponseEntity.notFound().build();
             }
             String email = u.getEmail();
             eventPublisher.publishEvent(new com.back.shared.event.RRHHEliminadoEvent(id));
-            rrhhRepository.deleteById(id);
-            usuarioRepository.delete(u);
+            rrhhService.eliminarPorId(id);
+            usuarioService.eliminar(u);
 
             String actor = principal != null ? principal.getName() : "Administrador";
             auditoriaService.registrar("ELIMINACIÓN", "Usuario RRHH eliminado: " + email, actor, "SEGURIDAD");

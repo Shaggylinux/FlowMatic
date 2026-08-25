@@ -2,6 +2,8 @@ package com.back.drive;
 
 import com.back.util.Sanitizer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.annotation.PostConstruct;
@@ -21,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class FilesServices {
+    private static final Logger logger = LoggerFactory.getLogger(FilesServices.class);
+
     private final ArchivosRepository repository;
 
     private final String rootFolder = "superfolder";
@@ -35,7 +39,7 @@ public class FilesServices {
                 Files.createDirectories(rutaRaiz);
             }
         } catch (IOException e) {
-            System.err.println("Error: No se pudo crear la carpeta ra\u00edz: " + e.getMessage());
+            logger.error("No se pudo crear la carpeta raíz: {}", e.getMessage(), e);
         }
     }
 
@@ -124,7 +128,7 @@ public class FilesServices {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error al asegurar carpeta de candidato: {}", e.getMessage(), e);
         }
     }
 
@@ -226,5 +230,47 @@ public class FilesServices {
             f.setUbicacion(current.replaceFirst("^" + java.util.regex.Pattern.quote(oldPrefix), java.util.regex.Matcher.quoteReplacement(newPrefix)));
         }
         repository.saveAll(subFolders);
+    }
+
+    public List<Archivos> buscarTodos() {
+        return repository.findAll();
+    }
+
+    public java.util.Optional<Archivos> buscarPorId(Long id) {
+        return repository.findById(id);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public Archivos guardar(Archivos archivo) {
+        return repository.save(archivo);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public void eliminar(Archivos doc) {
+        repository.delete(doc);
+    }
+
+    public long contarDocumentos() {
+        return repository.count() - repository.countFolders();
+    }
+
+    public long contarCarpetas() {
+        return repository.countFolders();
+    }
+
+    public List<Archivos> buscarArchivosVisiblesPara(String email) {
+        return repository.buscarArchivosVisiblesPara(email);
+    }
+
+    public List<Archivos> buscarPorCandidatoIdOEmail(Long candidatoId, String email) {
+        return repository.findByCandidatoIdOrEmail(candidatoId, email);
+    }
+
+    public List<Archivos> buscarPorUbicacionPrefijo(String prefix) {
+        return repository.findByUbicacionStartingWith(prefix);
+    }
+
+    public List<Archivos> buscarCarpetasPorUbicacionPrefijo(String prefix) {
+        return repository.findFoldersByUbicacionStartingWith(prefix);
     }
 }

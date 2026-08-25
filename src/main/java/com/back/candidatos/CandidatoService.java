@@ -114,4 +114,43 @@ public class CandidatoService {
             return m;
         }).collect(Collectors.toList());
     }
+
+    public java.util.Optional<Candidato> buscarPorId(Long id) {
+        return candidatoRepository.findById(id);
+    }
+
+    public List<Candidato> buscarTodos() {
+        return candidatoRepository.findAll();
+    }
+
+    public List<Candidato> buscarTodosPorIds(Iterable<Long> ids) {
+        return candidatoRepository.findAllById(ids);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public Candidato guardar(Candidato candidato) {
+        return candidatoRepository.save(candidato);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public void eliminar(Candidato candidato) {
+        candidatoRepository.delete(candidato);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public void eliminarPorId(Long id) {
+        candidatoRepository.deleteById(id);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public boolean actualizarEstado(Long id, String nuevoEstado) {
+        Candidato c = candidatoRepository.findById(id).orElse(null);
+        if (c != null && ESTADOS_VALIDOS.contains(nuevoEstado)) {
+            c.setEstado(nuevoEstado);
+            c.setUltimaActualizacion(LocalDateTime.now());
+            candidatoRepository.save(c);
+            return true;
+        }
+        return false;
+    }
 }

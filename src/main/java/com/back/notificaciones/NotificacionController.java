@@ -1,8 +1,7 @@
 package com.back.notificaciones;
 
-
 import com.back.auth.Usuario;
-import com.back.auth.UsuarioRepository;
+import com.back.auth.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +18,14 @@ import lombok.RequiredArgsConstructor;
 public class NotificacionController {
 
     private final NotificacionService notificacionService;
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
     @GetMapping
     public ResponseEntity<?> obtenerNoLeidas(Principal principal) {
         List<Notificacion> noLeidas;
         long totalNoLeidas;
         String email = principal != null ? principal.getName() : null;
-        Usuario user = email != null ? usuarioRepository.findByEmail(email).orElse(null) : null;
+        Usuario user = email != null ? usuarioService.buscarPorEmail(email).orElse(null) : null;
         boolean esCandidato = user != null && "ROLE_CANDIDATO".equals(user.getRol());
         if (esCandidato) {
             noLeidas = notificacionService.obtenerNoLeidasPorCandidato(user.getId());
@@ -67,6 +66,6 @@ public class NotificacionController {
         if (principal == null) {
             return null;
         }
-        return usuarioRepository.findByEmail(principal.getName()).orElse(null);
+        return usuarioService.buscarPorEmail(principal.getName()).orElse(null);
     }
 }

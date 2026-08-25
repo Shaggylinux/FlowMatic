@@ -3,15 +3,15 @@ package com.back.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.back.auth.Usuario;
+import com.back.auth.UsuarioService;
 import com.back.candidatos.Candidato;
-import com.back.auth.UsuarioRepository;
-import com.back.calendario.EventoRepository;
+import com.back.candidatos.CandidatoService;
+import com.back.calendario.EventoService;
 import com.back.calendario.Evento;
 import com.back.notificaciones.Notificacion;
-import com.back.candidatos.CandidatoRepository;
 import com.back.notificaciones.NotificacionService;
 import com.back.drive.Archivos;
-import com.back.drive.ArchivosRepository;
+import com.back.drive.FilesServices;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
@@ -24,11 +24,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DashboardController {
 
-    private final UsuarioRepository usuarioRepository;
-    private final CandidatoRepository candidatoRepository;
+    private final UsuarioService usuarioService;
+    private final CandidatoService candidatoService;
     private final NotificacionService notificacionService;
-    private final EventoRepository eventoRepository;
-    private final ArchivosRepository filesRepository;
+    private final EventoService eventoService;
+    private final FilesServices filesServices;
 
     @GetMapping
     public String mostrarDashboard(Principal principal, Model model) {
@@ -36,7 +36,7 @@ public class DashboardController {
         if (loginId == null)
             return "redirect:/login";
 
-        Usuario usuarioActual = usuarioRepository.findByEmail(loginId).orElse(null);
+        Usuario usuarioActual = usuarioService.buscarPorEmail(loginId).orElse(null);
         if (usuarioActual == null || !"ROLE_RRHH".equals(usuarioActual.getRol())) {
             return "redirect:/"; // Solo RRHH puede ver el dashboard
         }
@@ -50,7 +50,7 @@ public class DashboardController {
         model.addAttribute("usuarioActualObjeto", usuarioData);
         model.addAttribute("usuarioActual", loginId);
 
-        List<Archivos> todos = filesRepository.findAll();
+        List<Archivos> todos = filesServices.buscarTodos();
         List<Archivos> carpetas = todos.stream()
                 .filter(Archivos::isEsCarpeta)
                 .filter(a -> !a.getNombre().contains("@"))
@@ -62,7 +62,7 @@ public class DashboardController {
         model.addAttribute("carpetas", carpetas);
         model.addAttribute("archivos", archivos);
 
-        List<Candidato> candidatoList = candidatoRepository.findAll();
+        List<Candidato> candidatoList = candidatoService.buscarTodos();
         List<Map<String, Object>> candidatosConEmail = new ArrayList<>();
         Map<String, Integer> pipelineCounts = new HashMap<>();
         pipelineCounts.put("Registrado", 0);
@@ -71,6 +71,9 @@ public class DashboardController {
         pipelineCounts.put("Contratado", 0);
         pipelineCounts.put("No aceptado", 0);
 
+        List<Long> candIds = candidatoList.stream().map(Candidato::getId).toList();
+        Map<Long, Usuario> candUsers = usuarioService.mapearUsuariosPorIds(candIds);
+
         for (Candidato c : candidatoList) {
             Map<String, Object> cm = new HashMap<>();
             cm.put("id", c.getId());
@@ -78,7 +81,10 @@ public class DashboardController {
             cm.put("apellido", c.getApellido());
             String estadoStr = c.getEstado() != null ? c.getEstado() : "Registrado";
             cm.put("estado", estadoStr);
-            usuarioRepository.findById(c.getId()).ifPresent(u -> cm.put("email", u.getEmail()));
+            Usuario u = candUsers.get(c.getId());
+            if (u != null) {
+                cm.put("email", u.getEmail());
+            }
             candidatosConEmail.add(cm);
 
             // Contador pipeline
@@ -95,7 +101,7 @@ public class DashboardController {
         long notificacionesNoLeidas = notificacionService.contarNoLeidas();
         model.addAttribute("notificacionesNoLeidas", notificacionesNoLeidas);
         
-        List<Evento> proximasEntrevistas = eventoRepository.findTop5ByFechaGreaterThanEqualOrderByFechaAscHoraAsc(java.time.LocalDate.now());
+        List<Evento> proximasEntrevistas = eventoService.obtenerProximasEntrevistasDesdeHoy(5);
         model.addAttribute("proximasEntrevistas", proximasEntrevistas);
 
         return "dashboard-rrhh";

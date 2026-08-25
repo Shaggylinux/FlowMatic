@@ -1,9 +1,10 @@
 package com.back.candidatos;
 
 import com.back.auth.Usuario;
-import com.back.auth.UsuarioRepository;
+import com.back.auth.UsuarioService;
 import com.back.notificaciones.Notificacion;
-import com.back.notificaciones.NotificacionRepository;
+import com.back.notificaciones.NotificacionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,19 +16,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
+@RequiredArgsConstructor
 public class PerfilCandidatoController {
 
-    private final UsuarioRepository usuarioRepository;
-    private final CandidatoRepository candidatoRepository;
-    private final NotificacionRepository notificacionRepository;
-
-    public PerfilCandidatoController(UsuarioRepository usuarioRepository,
-                                     CandidatoRepository candidatoRepository,
-                                     NotificacionRepository notificacionRepository) {
-        this.usuarioRepository = usuarioRepository;
-        this.candidatoRepository = candidatoRepository;
-        this.notificacionRepository = notificacionRepository;
-    }
+    private final UsuarioService usuarioService;
+    private final CandidatoService candidatoService;
+    private final NotificacionService notificacionService;
 
     @GetMapping("/candidato/perfil")
     public String vistaPerfil(Authentication auth, Model model) {
@@ -65,49 +59,39 @@ public class PerfilCandidatoController {
         Long candidatoId = null;
 
         if (email != null) {
-            Optional<Usuario> uOpt = usuarioRepository.findByEmail(email);
+            Optional<Usuario> uOpt = usuarioService.buscarPorEmail(email);
             if (uOpt.isPresent()) {
                 Usuario u = uOpt.get();
                 candidatoId = u.getId();
-                Optional<Candidato> cOpt = candidatoRepository.findById(u.getId());
+                Optional<Candidato> cOpt = candidatoService.buscarPorId(u.getId());
                 if (cOpt.isPresent()) {
                     Candidato c = cOpt.get();
                     if (c.getNombres() != null && !c.getNombres().isBlank()) {
                         nombres = c.getNombres();
+                        primerNombre = c.getNombres().split(" ")[0];
                     } else if (c.getUsername() != null && !c.getUsername().isBlank()) {
                         nombres = c.getUsername();
+                        primerNombre = c.getUsername().split(" ")[0];
                     }
-
-                    if (c.getApellido() != null && !c.getApellido().isBlank()) {
-                        apellidos = c.getApellido();
-                    }
-
-                    if (nombres.isBlank()) {
-                        nombres = email.split("@")[0];
-                    }
-
-                    primerNombre = nombres.split(" ")[0];
+                    if (c.getApellido() != null) apellidos = c.getApellido();
                     nombreCompleto = (nombres + " " + apellidos).trim();
-                    
-                    String n1 = !nombres.isEmpty() ? nombres.substring(0, 1).toUpperCase() : "C";
-                    String a1 = !apellidos.isEmpty() ? apellidos.substring(0, 1).toUpperCase() : "";
-                    iniciales = n1 + a1;
 
-                    if (c.getEstado() != null && !c.getEstado().isBlank()) estado = c.getEstado();
+                    if (c.getEstado() != null) estado = c.getEstado();
                     if (c.getCargo() != null) cargo = c.getCargo();
                     if (c.getCiudad() != null) ciudad = c.getCiudad();
                     if (c.getTelefono() != null) telefono = c.getTelefono();
                     if (c.getTelefonoFijo() != null) telefonoFijo = c.getTelefonoFijo();
                     if (c.getDireccion() != null) direccion = c.getDireccion();
-                    if (c.getTipoDocumento() != null && !c.getTipoDocumento().isBlank()) tipoDocumento = c.getTipoDocumento();
+                    if (c.getTipoDocumento() != null) tipoDocumento = c.getTipoDocumento();
                     if (c.getNumeroDocumento() != null) numeroDocumento = c.getNumeroDocumento();
-                    if (c.getGenero() != null && !c.getGenero().isBlank()) genero = c.getGenero();
-                    if (c.getEstadoCivil() != null && !c.getEstadoCivil().isBlank()) estadoCivil = c.getEstadoCivil();
+                    if (c.getGenero() != null) genero = c.getGenero();
+                    if (c.getEstadoCivil() != null) estadoCivil = c.getEstadoCivil();
                     if (c.getFechaNacimiento() != null) {
-                        fechaNacimientoStr = c.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.of("es", "ES")));
+                        DateTimeFormatter fEs = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale.forLanguageTag("es"));
+                        fechaNacimientoStr = c.getFechaNacimiento().format(fEs);
                         fechaNacimientoIso = c.getFechaNacimiento().toString();
                     }
-                    if (c.getNacionalidad() != null && !c.getNacionalidad().isBlank()) nacionalidad = c.getNacionalidad();
+                    if (c.getNacionalidad() != null) nacionalidad = c.getNacionalidad();
                     if (c.getSobreMi() != null) sobreMi = c.getSobreMi();
                     if (c.getTecnologias() != null) tecnologias = c.getTecnologias();
                     if (c.getIdiomas() != null) idiomas = c.getIdiomas();
@@ -129,11 +113,11 @@ public class PerfilCandidatoController {
 
         // Consultar notificaciones reales
         List<Notificacion> notificaciones = candidatoId != null
-                ? notificacionRepository.findTop5ByCandidatoIdOrderByFechaDesc(candidatoId)
-                : notificacionRepository.findTop5ByOrderByFechaDesc();
+                ? notificacionService.obtenerActividadReciente(candidatoId)
+                : notificacionService.obtenerActividadReciente();
         long notificacionesNoLeidas = candidatoId != null
-                ? notificacionRepository.countByLeidaFalseAndCandidatoId(candidatoId)
-                : notificacionRepository.countByLeidaFalseAndCandidatoIdIsNull();
+                ? notificacionService.contarNoLeidasPorCandidato(candidatoId)
+                : notificacionService.contarNoLeidasGlobales();
 
         model.addAttribute("candidatoEmail", email != null ? email : "");
         model.addAttribute("candidatoPrimerNombre", primerNombre);
@@ -183,7 +167,7 @@ public class PerfilCandidatoController {
             return ResponseEntity.status(401).body(resp);
         }
 
-        Optional<Usuario> uOpt = usuarioRepository.findByEmail(email);
+        Optional<Usuario> uOpt = usuarioService.buscarPorEmail(email);
         if (uOpt.isPresent()) {
             Usuario u = uOpt.get();
 
@@ -238,7 +222,7 @@ public class PerfilCandidatoController {
                 return ResponseEntity.badRequest().body(resp);
             }
 
-            Candidato c = candidatoRepository.findById(u.getId()).orElseGet(() -> {
+            Candidato c = candidatoService.buscarPorId(u.getId()).orElseGet(() -> {
                 Candidato nuevo = new Candidato();
                 nuevo.setId(u.getId());
                 nuevo.setUsername(dto.getNombres() != null ? dto.getNombres().trim() : u.getEmail());
@@ -286,7 +270,7 @@ public class PerfilCandidatoController {
             if (dto.getIdiomasJson() != null) c.setIdiomasJson(dto.getIdiomasJson());
 
             c.setUltimaActualizacion(LocalDateTime.now());
-            candidatoRepository.save(c);
+            candidatoService.guardar(c);
 
             resp.put("success", true);
             resp.put("message", "Perfil actualizado correctamente.");
