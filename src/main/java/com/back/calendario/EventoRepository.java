@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface EventoRepository extends JpaRepository<Evento, Long> {
 
+    List<Evento> findByFechaBetweenOrderByFechaAscHoraAsc(LocalDate start, LocalDate end);
+
     List<Evento> findByFechaBetween(LocalDate start, LocalDate end);
 
     List<Evento> findByFechaAfterOrderByFechaAscHoraAsc(LocalDate fecha);

@@ -9,6 +9,8 @@ import com.back.shared.event.AccionCandidatoEntrevistaEvent;
 import com.back.shared.event.EntrevistaAgendadaEvent;
 import com.back.shared.event.EntrevistaNotificacionEvent;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
 import java.util.stream.Collectors;
 import org.springframework.context.ApplicationEventPublisher;
 import org.slf4j.Logger;
@@ -84,7 +86,7 @@ public class CalendarioController {
 
     @GetMapping("/eventos")
     @ResponseBody
-    public List<EventoCalendarioDTO> obtenerEventos(
+    public ResponseEntity<List<EventoCalendarioDTO>> obtenerEventos(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
             @RequestParam(required = false) Long candidatoId,
@@ -92,68 +94,23 @@ public class CalendarioController {
             @RequestParam(required = false) Long rrhhId,
             Principal principal) {
 
-        Usuario user = obtenerUsuario(principal);
-
-        if (user != null && "ROLE_CANDIDATO".equals(user.getRol())) {
-            candidatoId = user.getId();
-        }
-
-        List<Evento> eventos;
-        if (candidatoId != null || estado != null || rrhhId != null) {
-            eventos = eventoService.obtenerEventosFiltrados(start, end, candidatoId, estado, rrhhId);
-        } else {
-            eventos = eventoService.obtenerEventosEnRango(start, end);
-        }
-
-        return eventos.stream().map(e -> {
-            Map<String, Object> props = new HashMap<>();
-            props.put("candidatoId", e.getCandidatoId());
-            props.put("candidatoNombre", e.getCandidatoNombre());
-            props.put("tipo", e.getTipo() != null ? e.getTipo() : "");
-            props.put("estado", e.getEstado() != null ? e.getEstado() : "");
-            props.put("lugar", e.getLugar() != null ? e.getLugar() : "");
-            props.put("vacante", e.getVacante() != null ? e.getVacante() : "");
-            props.put("modalidad", e.getModalidad() != null ? e.getModalidad() : "");
-            props.put("entrevistador", e.getEntrevistador() != null ? e.getEntrevistador() : "");
-            props.put("observaciones", e.getObservaciones() != null ? e.getObservaciones() : "");
-
-            String estadoEvento = e.getEstado() != null ? e.getEstado() : "PENDIENTE";
-            String bgColor, borderColor, textColor;
-            switch (estadoEvento) {
-                case "CONFIRMADO" -> {
-                    bgColor = "#DCFCE7";
-                    borderColor = "#22C55E";
-                    textColor = "#166534";
-                }
-                case "REPROGRAMADO" -> {
-                    bgColor = "#FFEDD5";
-                    borderColor = "#F97316";
-                    textColor = "#9A3412";
-                }
-                case "CANCELADO" -> {
-                    bgColor = "#FEE2E2";
-                    borderColor = "#EF4444";
-                    textColor = "#991B1B";
-                }
-                case "REALIZADA" -> {
-                    bgColor = "#F1F5F9";
-                    borderColor = "#94A3B8";
-                    textColor = "#475569";
-                }
-                default -> {
-                    bgColor = "#DBEAFE";
-                    borderColor = "#2563EB";
-                    textColor = "#1D4ED8";
+        if (principal instanceof Authentication auth) {
+            boolean esCandidato = auth.getAuthorities().stream()
+                    .anyMatch(ga -> "ROLE_CANDIDATO".equals(ga.getAuthority()));
+            if (esCandidato) {
+                Usuario user = usuarioService.buscarPorEmail(auth.getName()).orElse(null);
+                if (user != null) {
+                    candidatoId = user.getId();
                 }
             }
+        }
 
-            return new EventoCalendarioDTO(
-                    e.getId(),
-                    e.getCandidatoNombre() + " — " + e.getHora().toString(),
-                    e.getFecha().toString() + "T" + e.getHora().toString(),
-                    bgColor, borderColor, textColor,
-                    props);
-        }).toList();
+        List<EventoCalendarioDTO> eventos = eventoService.obtenerFeedCalendario(
+                start, end, candidatoId, estado, rrhhId);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CACHE_CONTROL, "private, no-cache, must-revalidate")
+                .body(eventos);
     }
 
     private Usuario obtenerUsuario(Principal principal) {
