@@ -1,4 +1,6 @@
-package com.back.seguridad;
+package com.back.unitarias.seguridad;
+
+import com.back.seguridad.*;
 
 import com.back.auth.Usuario;
 import com.back.auth.UsuarioRepository;

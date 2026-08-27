@@ -1,4 +1,6 @@
-package com.back;
+package com.back.integracion;
+
+import com.back.BackApplication;
 
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Controller;
@@ -69,6 +71,7 @@ class ArchitectureTest {
                             "java..",
                             "jakarta..",
                             "lombok..",
+                            "org.slf4j..",
                             "org.springframework..",
                             "com.fasterxml.jackson.."
                     );

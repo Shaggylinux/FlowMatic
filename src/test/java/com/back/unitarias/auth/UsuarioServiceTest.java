@@ -1,4 +1,6 @@
-package com.back.auth;
+package com.back.unitarias.auth;
+
+import com.back.auth.*;
 
 import com.back.auth.event.PasswordResetSolicitadoEvent;
 import com.back.auth.event.UsuarioRegistradoEvent;

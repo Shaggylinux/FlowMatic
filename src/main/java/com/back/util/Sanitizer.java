@@ -9,6 +9,7 @@ public class Sanitizer {
         return input
             .replace("..", "")
             .replace("\\", "/")
+            .replaceAll("/+", "/")
             .replaceAll("^/+|/+$", "")
             .trim();
     }
