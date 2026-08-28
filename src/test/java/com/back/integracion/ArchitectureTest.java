@@ -73,7 +73,8 @@ class ArchitectureTest {
                             "lombok..",
                             "org.slf4j..",
                             "org.springframework..",
-                            "com.fasterxml.jackson.."
+                            "com.fasterxml.jackson..",
+                            "org.slf4j.."
                     );
 
     // ── Module isolation: seguridad ──────────────────────────────
