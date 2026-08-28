@@ -1,4 +1,6 @@
-package com.back;
+package com.back.integracion;
+
+import com.back.BackApplication;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.modulith.core.ApplicationModules;

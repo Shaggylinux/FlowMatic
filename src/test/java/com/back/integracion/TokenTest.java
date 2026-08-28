@@ -1,4 +1,6 @@
-package com.back;
+package com.back.integracion;
+
+import com.back.BackApplication;
 
 import com.back.auth.Usuario;
 import com.back.auth.UsuarioRepository;

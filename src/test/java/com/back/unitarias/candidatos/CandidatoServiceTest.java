@@ -1,4 +1,6 @@
-package com.back.candidatos;
+package com.back.unitarias.candidatos;
+
+import com.back.candidatos.*;
 
 import com.back.auth.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;

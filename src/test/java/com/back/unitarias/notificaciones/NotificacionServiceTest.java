@@ -1,4 +1,6 @@
-package com.back.notificaciones;
+package com.back.unitarias.notificaciones;
+
+import com.back.notificaciones.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
