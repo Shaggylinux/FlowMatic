@@ -4,8 +4,6 @@ import com.back.auth.Usuario;
 import com.back.auth.UsuarioService;
 import com.back.candidatos.Candidato;
 import com.back.candidatos.CandidatoService;
-import com.back.admin.Administrador;
-import com.back.admin.AdministradorService;
 import com.back.admin.RRHH;
 import com.back.admin.RRHHService;
 import com.back.drive.FilesServices;
@@ -28,7 +26,6 @@ public class SeedController {
     private final UsuarioService usuarioService;
     private final CandidatoService candidatoService;
     private final RRHHService rrhhService;
-    private final AdministradorService administradorService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final FilesServices filesServices;
 
@@ -54,27 +51,6 @@ public class SeedController {
             Map<String, Object> m = new LinkedHashMap<>();
             m.put("type", "rrhh");
             m.put("email", "rrhh@flowmatic.com");
-            created.add(m);
-        }
-
-        // Create ADMINISTRADOR user if it doesn't exist
-        if (usuarioService.buscarPorEmail("admin@sistema.com").isEmpty()) {
-            Usuario adm = new Usuario();
-            adm.setEmail("admin@sistema.com");
-            adm.setClave(passwordEncoder.encode("Admin1234"));
-            adm.setRol("ROLE_ADMINISTRADOR");
-            adm.setActivo(true);
-            adm = usuarioService.guardar(adm);
-
-            Administrador a = new Administrador();
-            a.setId(adm.getId());
-            a.setUsername("Admin");
-            a.setApellido("Sistema");
-            administradorService.guardar(a);
-
-            Map<String, Object> m = new LinkedHashMap<>();
-            m.put("type", "admin");
-            m.put("email", "admin@sistema.com");
             created.add(m);
         }
 
