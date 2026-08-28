@@ -1,4 +1,6 @@
-package com.back.shared;
+package com.back.unitarias.shared;
+
+import com.back.shared.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

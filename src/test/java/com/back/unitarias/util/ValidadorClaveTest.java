@@ -1,4 +1,6 @@
-package com.back.util;
+package com.back.unitarias.util;
+
+import com.back.util.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
