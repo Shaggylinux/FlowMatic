@@ -138,31 +138,82 @@
     var modal = document.getElementById(modalId);
     var form = document.getElementById(formId);
     if (!modal || !form) return;
+
+    // Disparar validaciones nativas HTML5 (required, email, pattern, minlength)
+    if (typeof form.reportValidity === 'function' && !form.reportValidity()) {
+      return;
+    }
+
+    var submitBtn = modal.querySelector('.mr-btn-primary');
+    var originalBtnContent = submitBtn ? submitBtn.innerHTML : '';
+
     var datos = Object.fromEntries(new FormData(form).entries());
 
     if (datos.clave && datos.confirmarClave && datos.clave !== datos.confirmarClave) {
-      alert('Las contraseñas no coinciden');
+      if (typeof window.showToast === 'function') {
+        window.showToast('error', 'Las contraseñas no coinciden');
+      } else {
+        alert('Las contraseñas no coinciden');
+      }
       return;
+    }
+
+    var csrfToken = (window.getCsrfToken && window.getCsrfToken()) ||
+                    (document.querySelector('meta[name="_csrf"]') ? document.querySelector('meta[name="_csrf"]').content : '');
+
+    var headers = { 'Content-Type': 'application/json' };
+    if (csrfToken) {
+      headers['X-XSRF-TOKEN'] = csrfToken;
+      headers['X-CSRF-TOKEN'] = csrfToken;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Registrando...</span>';
     }
 
     fetch('/registro/candidato/api', {
       method: 'POST',
       credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
+      headers: headers,
       body: JSON.stringify(datos)
     }).then(function(res) {
       if (res.ok) {
         modal.style.display = 'none';
         form.reset();
-        alert('Candidato registrado. Se envió un correo de activación.');
-        location.reload();
+        if (typeof window.showToast === 'function') {
+          window.showToast('success', 'Candidato registrado. Se envió un correo de activación.', 6000);
+        } else {
+          alert('Candidato registrado. Se envió un correo de activación.');
+        }
+        setTimeout(function() {
+          if (typeof cargarCandidatos === 'function') {
+            cargarCandidatos(0);
+          } else {
+            location.reload();
+          }
+        }, 1200);
       } else {
         return res.text().then(function(text) {
-          alert(text && text.trim() ? text : 'Error al registrar candidato');
+          var errMsg = (text && text.trim()) ? text : 'Error al registrar candidato';
+          if (typeof window.showToast === 'function') {
+            window.showToast('error', errMsg, 5000);
+          } else {
+            alert(errMsg);
+          }
         });
       }
     }).catch(function() {
-      alert('Error de conexión al registrar candidato');
+      if (typeof window.showToast === 'function') {
+        window.showToast('error', 'Error de conexión al registrar candidato');
+      } else {
+        alert('Error de conexión al registrar candidato');
+      }
+    }).finally(function() {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnContent;
+      }
     });
   }
 </script>

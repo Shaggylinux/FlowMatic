@@ -41,6 +41,12 @@
 
     // ── 2. AUTO-DISMISS DE ALERTAS Y TOASTS EXISTENTES ─────────────────
     autoDismissServerToasts();
+
+    // ── 3. DETECCIÓN AUTOMÁTICA DE PARÁMETROS URL DE ESTADO ───────────
+    handleUrlStatusFeedback();
+
+    // ── 4. LISTENERS GLOBALES DE DESCARGA Y EXPORTACIÓN ───────────────
+    attachDownloadAndExportListeners();
   });
 
   // ── 3. SISTEMA DE TOASTS FLOTANTES UNIFICADO ────────────────────────
@@ -56,6 +62,7 @@
   }
 
   window.showToast = function (tipo, mensaje, duracionMs) {
+    if (!mensaje || !mensaje.trim()) return;
     const container = createToastContainer();
     const duration = duracionMs || 4500;
 
@@ -105,6 +112,114 @@
     // Auto-cierre
     setTimeout(dismiss, duration);
   };
+
+  window.notificarDescarga = function (mensaje) {
+    window.showToast('info', mensaje || 'Iniciando descarga del archivo...', 3500);
+  };
+
+  window.notificarExportacionExcel = function (mensaje) {
+    window.showToast('info', mensaje || 'Generando y descargando reporte en Excel...', 4000);
+  };
+
+  function handleUrlStatusFeedback() {
+    try {
+      const url = new URL(window.location.href);
+      const params = url.searchParams;
+      let handled = false;
+
+      // 1. Registro exitoso / pendiente de activación
+      if (params.has('pendiente')) {
+        window.showToast('success', 'Registro completado. Se ha enviado un correo con las instrucciones de activación.', 6000);
+        params.delete('pendiente');
+        handled = true;
+      }
+
+      // 2. Éxitos comunes
+      if (params.has('exito')) {
+        const exito = params.get('exito');
+        if (exito === 'archivo_subido') {
+          window.showToast('success', 'Archivo subido correctamente.', 4500);
+        } else if (exito === 'carpeta_creada') {
+          window.showToast('success', 'Carpeta creada correctamente.', 4500);
+        } else if (exito === 'carpeta_eliminada') {
+          window.showToast('success', 'Carpeta eliminada correctamente.', 4500);
+        } else if (exito === 'archivo_eliminado') {
+          window.showToast('success', 'Archivo eliminado correctamente.', 4500);
+        } else if (exito === 'estado_actualizado') {
+          window.showToast('success', 'Estado del documento actualizado correctamente.', 4500);
+        } else if (exito === 'compartido') {
+          window.showToast('success', 'Archivo compartido correctamente.', 4500);
+        } else {
+          window.showToast('success', decodeURIComponent(exito), 4500);
+        }
+        params.delete('exito');
+        handled = true;
+      }
+
+      if (params.get('compartido') === 'ok') {
+        window.showToast('success', 'Archivo compartido correctamente.', 4500);
+        params.delete('compartido');
+        handled = true;
+      }
+
+      // 3. Errores comunes
+      if (params.has('error')) {
+        const err = params.get('error');
+        if (err === 'duplicado') {
+          window.showToast('error', 'El correo electrónico ya se encuentra registrado.', 5000);
+        } else if (err === 'clave_corta') {
+          window.showToast('error', 'La contraseña debe tener mínimo 8 caracteres con mayúscula, minúscula, número y símbolo especial.', 6000);
+        } else if (err === 'clave_no_coincide') {
+          window.showToast('error', 'Las contraseñas no coinciden.', 5000);
+        } else if (err === 'nombre_invalido') {
+          window.showToast('error', 'El nombre ingresado no es válido (solo letras y espacios).', 5000);
+        } else if (err === 'apellido_invalido') {
+          window.showToast('error', 'El apellido ingresado no es válido (solo letras y espacios).', 5000);
+        } else if (err === 'telefono_invalido') {
+          window.showToast('error', 'El teléfono debe contener 10 dígitos numéricos.', 5000);
+        } else if (err === 'documento_invalido') {
+          window.showToast('error', 'El documento debe contener solo números (máximo 10 dígitos).', 5000);
+        } else if (err === 'cargo_invalido') {
+          window.showToast('error', 'El cargo debe contener solo letras y espacios.', 5000);
+        } else if (err === 'error_general') {
+          window.showToast('error', 'Ocurrió un error inesperado al procesar la solicitud.', 5000);
+        } else if (err && err.trim()) {
+          window.showToast('error', decodeURIComponent(err), 5000);
+        }
+        params.delete('error');
+        handled = true;
+      }
+
+      // Limpiar parámetros de la URL sin recargar para que F5 no repita el toast
+      if (handled && window.history && window.history.replaceState) {
+        const cleanQuery = params.toString();
+        const cleanUrl = url.pathname + (cleanQuery ? '?' + cleanQuery : '') + url.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    } catch (e) {
+      console.warn('Error procesando parámetros URL de toast:', e);
+    }
+  }
+
+  function attachDownloadAndExportListeners() {
+    document.addEventListener('click', function (e) {
+      const target = e.target.closest('a, button');
+      if (!target) return;
+
+      const href = target.getAttribute('href') || '';
+      const onclickAttr = target.getAttribute('onclick') || '';
+
+      // Descarga de archivos
+      if (target.dataset.toastDownload || href.includes('/descargar') || href.includes('descargar-carpeta-zip')) {
+        window.notificarDescarga('Iniciando descarga del archivo...');
+      }
+
+      // Exportación de excel
+      if (target.dataset.toastExport || href.includes('/exportar') || href.includes('/export?') || onclickAttr.includes('exportar')) {
+        window.notificarExportacionExcel('Generando y descargando reporte en Excel...');
+      }
+    });
+  }
 
   function autoDismissServerToasts() {
     const serverToasts = document.querySelectorAll('.cfg-toast');
