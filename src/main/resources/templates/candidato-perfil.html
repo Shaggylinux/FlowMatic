@@ -672,7 +672,11 @@
     if (counter) counter.textContent = el.value.length;
   }
 
-  function mostrarToast(msg) {
+  function mostrarToast(msg, tipo) {
+    if (typeof window.showToast === 'function') {
+      window.showToast(tipo || 'success', msg);
+      return;
+    }
     const toast = document.getElementById('toastNotif');
     const msgEl = document.getElementById('toastMsg');
     if (msgEl) msgEl.textContent = msg;
