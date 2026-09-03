@@ -18,7 +18,7 @@
             </div>
 
             <!-- Form -->
-            <form th:action="@{/admin/crear-rrhh}" method="post">
+            <form th:action="@{/admin/crear-rrhh}" method="post" onsubmit="return validarModalRRHH(this)">
 
                 <div class="modal-body">
                     <div class="row g-3">
@@ -121,6 +121,21 @@
 
 <script th:src="@{/js/password-toggle.js}"></script>
 <script>
+    function validarModalRRHH(form) {
+        var clave = document.getElementById('adminClaveRRHH').value;
+        var confirmar = document.getElementById('adminConfirmarClaveRRHH').value;
+        if (clave !== confirmar) {
+            if (typeof window.showToast === 'function') {
+                window.showToast('error', 'Las contraseñas no coinciden');
+            } else {
+                alert('Las contraseñas no coinciden');
+            }
+            document.getElementById('adminConfirmarClaveRRHH').focus();
+            return false;
+        }
+        return true;
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         initPasswordMatch('adminClaveRRHH', 'adminConfirmarClaveRRHH', 'matchFeedbackAdminRRHH');
     });

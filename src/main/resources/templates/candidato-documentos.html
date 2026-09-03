@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
   <link rel="stylesheet" th:href="@{/css/tokens.css}">
   <link rel="stylesheet" th:href="@{/css/base.css}">
   <link rel="stylesheet" th:href="@{/css/candidato.css}">
@@ -493,7 +495,19 @@
   function actualizarNombreArchivo(input) {
     const textEl = document.getElementById('dropText');
     if (input.files && input.files[0]) {
-      textEl.textContent = 'Archivo seleccionado: ' + input.files[0].name;
+      const file = input.files[0];
+      if (file.size > 30 * 1024 * 1024) {
+        if (typeof window.showToast === 'function') {
+          window.showToast('error', 'El archivo supera el tamaño máximo permitido de 30 MB');
+        } else {
+          alert('El archivo supera el tamaño máximo permitido de 30 MB');
+        }
+        input.value = '';
+        textEl.textContent = 'Arrastra y suelta tu archivo aquí';
+        textEl.style.color = 'inherit';
+        return;
+      }
+      textEl.textContent = 'Archivo seleccionado: ' + file.name + ' (' + (file.size / (1024 * 1024)).toFixed(2) + ' MB)';
       textEl.style.color = '#0D9488';
     }
   }

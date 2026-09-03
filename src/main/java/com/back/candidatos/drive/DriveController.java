@@ -472,11 +472,10 @@ public class DriveController {
         try {
             filesServices.crearCarpetaDrive(rutaSinSuper, folder, email);
         } catch (IOException e) {
-            model.addAttribute("error", "No se pudo crear la carpeta: " + e.getMessage());
-            return "redirect:/drive";
+            return "redirect:/drive?error=" + URLEncoder.encode("No se pudo crear la carpeta: " + e.getMessage(), StandardCharsets.UTF_8);
         }
         String rutaRelativa = folder.isEmpty() ? rutaSinSuper : folder + "/" + rutaSinSuper;
-        return "redirect:/drive?folder=" + rutaRelativa;
+        return "redirect:/drive?folder=" + rutaRelativa + "&exito=carpeta_creada";
     }
 
     @PostMapping("/renombrar-carpeta")
@@ -527,8 +526,9 @@ public class DriveController {
             filesServices.eliminarCarpetaRecursiva(folderPath);
         } catch (IOException e) {
             logger.error("Error al eliminar carpeta: {}", e.getMessage(), e);
+            return "redirect:/drive?error=" + URLEncoder.encode("Error al eliminar carpeta", StandardCharsets.UTF_8);
         }
-        return "redirect:/drive";
+        return "redirect:/drive?exito=carpeta_eliminada";
     }
 
     @PostMapping("/subir-archivo")
@@ -557,8 +557,9 @@ public class DriveController {
                     filesServices.guardar(existente);
                 } catch (IOException e) {
                     logger.error("Error al sobreescribir archivo existente: {}", e.getMessage(), e);
+                    return "redirect:/drive?folder=" + folder + "&error=" + URLEncoder.encode("Error al actualizar archivo", StandardCharsets.UTF_8);
                 }
-                return "redirect:/drive?folder=" + folder;
+                return "redirect:/drive?folder=" + folder + "&exito=archivo_subido";
             }
         }
 
@@ -584,7 +585,7 @@ public class DriveController {
         folder = Sanitizer.sanitizePath(folder);
         String filename = archivo.getOriginalFilename();
         if (!Sanitizer.isValidFileName(filename)) {
-            return "redirect:/drive?folder=" + folder;
+            return "redirect:/drive?folder=" + folder + "&error=" + URLEncoder.encode("Nombre de archivo inválido", StandardCharsets.UTF_8);
         }
 
         if (archivo.getSize() > 30L * 1024 * 1024) {
@@ -599,10 +600,10 @@ public class DriveController {
                 filesServices.guardar(doc);
             }
         } catch (IOException e) {
-            return "redirect:/drive?folder=" + folder;
+            return "redirect:/drive?folder=" + folder + "&error=" + URLEncoder.encode("Error al subir archivo", StandardCharsets.UTF_8);
         }
 
-        return "redirect:/drive?folder=" + folder;
+        return "redirect:/drive?folder=" + folder + "&exito=archivo_subido";
     }
 
     private boolean esPropietarioODestinatario(Archivos archivo, String email) {
@@ -671,7 +672,7 @@ public class DriveController {
 
         filesServices.eliminarArchivo(archivo);
 
-        return "redirect:/drive?folder=" + folder;
+        return "redirect:/drive?folder=" + folder + "&exito=archivo_eliminado";
     }
 
     @PostMapping("/compartir")
@@ -814,7 +815,7 @@ public class DriveController {
             filesServices.guardar(archivo);
         }
 
-        return "redirect:/drive?folder=" + folder;
+        return "redirect:/drive?folder=" + folder + "&exito=estado_actualizado";
     }
 
     private List<PageItem> getPageItems(int current, int total) {

@@ -7,6 +7,8 @@
   <title>Drive — Flowmatic</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
   <link rel="stylesheet" th:href="@{/css/tokens.css}">
   <link rel="stylesheet" th:href="@{/css/base.css}">
   <link rel="stylesheet" th:href="@{/css/drive.css}">
@@ -946,7 +948,19 @@
     function actualizarNombreArchivoRRHH(input) {
       const textEl = document.getElementById('dropTextRRHH');
       if (textEl && input.files && input.files[0]) {
-        textEl.textContent = 'Archivo seleccionado: ' + input.files[0].name;
+        const file = input.files[0];
+        if (file.size > 30 * 1024 * 1024) {
+          if (typeof window.showToast === 'function') {
+            window.showToast('error', 'El archivo supera el tamaño máximo permitido de 30 MB');
+          } else {
+            alert('El archivo supera el tamaño máximo permitido de 30 MB');
+          }
+          input.value = '';
+          textEl.textContent = 'Arrastra tu archivo aquí o haz clic para explorar';
+          textEl.style.color = '#64748B';
+          return;
+        }
+        textEl.textContent = 'Archivo seleccionado: ' + file.name + ' (' + (file.size / (1024 * 1024)).toFixed(2) + ' MB)';
         textEl.style.color = '#0D9488';
       }
     }
@@ -979,6 +993,7 @@
     });
   </script>
   <script th:src="@{/js/csrf.js}"></script>
+  <script th:src="@{/js/ui-feedback.js}"></script>
   <script th:src="@{/js/i18n.js}"></script>
 </body>
 </html>

@@ -1111,6 +1111,9 @@ function exportarCalendario() {
     params.set('start', view.activeStart.toISOString().split('T')[0]);
     params.set('end', view.activeEnd.toISOString().split('T')[0]);
   }
+  if (typeof window.showToast === 'function') {
+    window.showToast('info', 'Generando y descargando reporte de entrevistas en Excel...', 4000);
+  }
   window.location.href = '/calendario/export?' + params.toString();
 }
 
