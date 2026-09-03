@@ -155,6 +155,6 @@ public class RegistroController {
             return ResponseEntity.status(500).body("Error al procesar el registro");
         }
 
-    return ResponseEntity.ok().build();
+        return ResponseEntity.ok(java.util.Map.of("message", "Candidato registrado exitosamente"));
     }
 }

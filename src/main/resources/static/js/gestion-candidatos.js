@@ -752,28 +752,63 @@ function cambiarEstado(id, nuevoEstado) {
   })
     .then((r) => { if (!r.ok) throw new Error('Error al actualizar'); return r.json(); })
     .then(() => {
+      if (typeof window.showToast === 'function') {
+        window.showToast('success', 'Estado del candidato actualizado a "' + nuevoEstado + '".');
+      }
       loadPage(currentPage);
       if (selectedCandidatoId === id) openDrawer(id);
       loadStats();
     })
-    .catch((err) => { console.error(err); alert('Error al cambiar estado: ' + err.message); });
+    .catch((err) => {
+      console.error(err);
+      if (typeof window.showToast === 'function') {
+        window.showToast('error', 'Error al cambiar estado: ' + err.message);
+      } else {
+        alert('Error al cambiar estado: ' + err.message);
+      }
+    });
 }
 
 // ── ABRIR / GENERAR CV ────────────────────────────────────
 
 function abrirPdfCV(id) {
+  if (typeof window.showToast === 'function') {
+    window.showToast('info', 'Abriendo currículum...');
+  }
   window.open(`/gestion-candidatos/${id}/cv`, '_blank');
 }
 
 function generarCV(id) {
+  if (typeof window.showToast === 'function') {
+    window.showToast('info', 'Generando currículum...');
+  }
   window.open(`/gestion-candidatos/${id}/cv`, '_blank');
 }
 
 function eliminarCandidato(id, nombre) {
   if(confirm(`¿Estás seguro que deseas eliminar a ${nombre}? Esta acción no se puede deshacer y borrará sus documentos y eventos.`)) {
     fetch(`/gestion-candidatos/${id}`, { method: 'DELETE', headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.content } })
-      .then(r => { if(r.ok) { alert('Candidato eliminado'); closeDrawer(); loadPage(currentPage); loadStats(); } else throw new Error('Error al eliminar'); })
-      .catch(e => alert(e.message));
+      .then(r => {
+        if(r.ok) {
+          if (typeof window.showToast === 'function') {
+            window.showToast('success', 'Candidato eliminado correctamente.');
+          } else {
+            alert('Candidato eliminado');
+          }
+          closeDrawer();
+          loadPage(currentPage);
+          loadStats();
+        } else {
+          throw new Error('Error al eliminar');
+        }
+      })
+      .catch(err => {
+        if (typeof window.showToast === 'function') {
+          window.showToast('error', err.message || 'Error al eliminar');
+        } else {
+          alert('Error al eliminar');
+        }
+      });
   }
 }
 
@@ -869,6 +904,9 @@ function exportarExcel() {
   const params = new URLSearchParams();
   if (currentSearch) params.set('search', currentSearch);
   if (currentEstado) params.set('estado', currentEstado);
+  if (typeof window.showToast === 'function') {
+    window.showToast('info', 'Generando y descargando reporte de candidatos en Excel...', 4000);
+  }
   window.open(`/gestion-candidatos/export?${params.toString()}`, '_blank');
 }
 
@@ -923,33 +961,41 @@ function guardarEdicion() {
   const idiomas = document.getElementById('edit-idiomas').value.trim();
   const procesoActual = document.getElementById('edit-procesoActual').value;
 
+  function notify(tipo, msg) {
+    if (typeof window.showToast === 'function') {
+      window.showToast(tipo, msg);
+    } else {
+      alert(msg);
+    }
+  }
+
   if (!nombre || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(nombre)) {
-    alert('El nombre es obligatorio y debe contener solo letras (2 a 50 caracteres)');
+    notify('error', 'El nombre es obligatorio y debe contener solo letras (2 a 50 caracteres)');
     document.getElementById('edit-nombre').focus();
     return;
   }
   if (!apellido || !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(apellido)) {
-    alert('El apellido es obligatorio y debe contener solo letras (2 a 50 caracteres)');
+    notify('error', 'El apellido es obligatorio y debe contener solo letras (2 a 50 caracteres)');
     document.getElementById('edit-apellido').focus();
     return;
   }
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    alert('Ingresa un correo electrónico válido');
+    notify('error', 'Ingresa un correo electrónico válido');
     document.getElementById('edit-email').focus();
     return;
   }
   if (telefono && !/^[0-9]{10}$/.test(telefono)) {
-    alert('El teléfono debe tener exactamente 10 dígitos numéricos');
+    notify('error', 'El teléfono debe tener exactamente 10 dígitos numéricos');
     document.getElementById('edit-telefono').focus();
     return;
   }
   if (cargo && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,100}$/.test(cargo)) {
-    alert('El cargo debe contener solo letras y espacios');
+    notify('error', 'El cargo debe contener solo letras y espacios');
     document.getElementById('edit-cargo').focus();
     return;
   }
   if (ciudad && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(ciudad)) {
-    alert('La ciudad debe contener solo letras y espacios');
+    notify('error', 'La ciudad debe contener solo letras y espacios');
     document.getElementById('edit-ciudad').focus();
     return;
   }
@@ -978,14 +1024,15 @@ function guardarEdicion() {
     .then(res => {
       if (res.success) {
         cerrarModal('modalEditarGc');
+        notify('success', 'Candidato actualizado correctamente.');
         loadPage(currentPage);
         if (selectedCandidatoId == id) openDrawer(id);
         loadStats();
       } else {
-        alert(res.error || 'Error al guardar');
+        notify('error', res.error || 'Error al guardar');
       }
     })
-    .catch(err => alert('Error al guardar: ' + err.message));
+    .catch(err => notify('error', 'Error al guardar: ' + err.message));
 }
 
 // ── MODAL ESTADO ────────────────────────────────
