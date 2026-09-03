@@ -1,0 +1,530 @@
+{
+  "options": {
+    "noColor": false,
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": ""
+  },
+  "state": {
+    "isStdOutTTY": false,
+    "isStdErrTTY": false,
+    "testRunDurationMs": 4507.728453
+  },
+  "metrics": {
+    "checks": {
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 3000,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      },
+      "type": "rate"
+    },
+    "http_req_duration{expected_response:true}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 720.507452,
+        "p(90)": 340.118898,
+        "p(95)": 404.08589414999994,
+        "avg": 111.255179657,
+        "min": 1.690581,
+        "med": 50.7290885
+      }
+    },
+    "iteration_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 454.2079914000001,
+        "p(95)": 527.0187050999999,
+        "avg": 223.29980568099998,
+        "min": 16.043928,
+        "med": 156.6060905,
+        "max": 778.852179
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 0,
+        "max": 0,
+        "p(90)": 0,
+        "p(95)": 0,
+        "avg": 0,
+        "min": 0
+      }
+    },
+    "http_req_receiving": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 88.158442,
+        "p(90)": 16.730962,
+        "p(95)": 26.508914599999983,
+        "avg": 4.843625821000001,
+        "min": 0.01985,
+        "med": 0.1400905
+      }
+    },
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.14097826450000003,
+        "min": 0,
+        "med": 0,
+        "max": 11.745344,
+        "p(90)": 0,
+        "p(95)": 0
+      }
+    },
+    "http_req_failed{status:500}": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate==0.00": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 2000
+      }
+    },
+    "server_5xx_errors": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 1000
+      },
+      "thresholds": {
+        "rate==0.00": {
+          "ok": true
+        }
+      }
+    },
+    "data_received": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 11128000,
+        "rate": 2468649.1469099144
+      }
+    },
+    "data_sent": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 444888,
+        "rate": 98694.49871229853
+      }
+    },
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 12.462215,
+        "p(90)": 0.005291000000000001,
+        "p(95)": 0.011102499999999987,
+        "avg": 0.15105782700000006,
+        "min": 0.00089,
+        "med": 0.00263
+      }
+    },
+    "vus_max": {
+      "values": {
+        "max": 50,
+        "value": 50,
+        "min": 50
+      },
+      "type": "gauge",
+      "contains": "default"
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 2000,
+        "rate": 443.6824491211205
+      }
+    },
+    "vus": {
+      "values": {
+        "value": 50,
+        "min": 50,
+        "max": 50
+      },
+      "type": "gauge",
+      "contains": "default"
+    },
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1000,
+        "rate": 221.84122456056025
+      }
+    },
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 404.08589414999994,
+        "avg": 111.255179657,
+        "min": 1.690581,
+        "med": 50.7290885,
+        "max": 720.507452,
+        "p(90)": 340.118898
+      }
+    },
+    "http_req_sending": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 0.00348,
+        "med": 0.012119499999999998,
+        "max": 7.266669,
+        "p(90)": 0.037112000000000075,
+        "p(95)": 0.13999654999999991,
+        "avg": 0.07717566100000021
+      }
+    },
+    "http_req_waiting": {
+      "contains": "time",
+      "values": {
+        "avg": 106.33437817500001,
+        "min": 0.829951,
+        "med": 45.0555815,
+        "max": 720.316982,
+        "p(90)": 340.0675911,
+        "p(95)": 404.02982815
+      },
+      "type": "trend"
+    }
+  },
+  "root_group": {
+    "name": "",
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [],
+    "checks": [
+      {
+        "name": "Respuesta manejada (302 a error/bloqueo o 200)",
+        "path": "::Respuesta manejada (302 a error/bloqueo o 200)",
+        "id": "c1e17c1c4a974a08f1d44f72c64cb7f3",
+        "passes": 1000,
+        "fails": 0
+      },
+      {
+        "name": "Sin ca\u00edda de servidor 5xx (Tomcat y JVM estables)",
+        "path": "::Sin ca\u00edda de servidor 5xx (Tomcat y JVM estables)",
+        "id": "45e2c97758ffb04124e8383812df3859",
+        "passes": 1000,
+        "fails": 0
+      },
+      {
+        "name": "Defensa activa contra fuerza bruta",
+        "path": "::Defensa activa contra fuerza bruta",
+        "id": "0de0e8dd252a5bbef9b0896852598801",
+        "passes": 1000,
+        "fails": 0
+      }
+    ]
+  },
+  "system_processor_metrics": {
+    "cores_allocated": 2,
+    "sample_count": 24,
+    "duration_sec": 4.83,
+    "app_cpu": {
+      "peak_pct": 144.69,
+      "avg_pct": 113.75,
+      "min_pct": 46.29,
+      "p90_pct": 134.65,
+      "p95_pct": 135.59
+    },
+    "host_cpu": {
+      "peak_pct": 100.0,
+      "avg_pct": 99.08,
+      "min_pct": 90.24
+    },
+    "db_cpu": {
+      "peak_pct": 26.92,
+      "avg_pct": 5.01
+    },
+    "redis_cpu": {
+      "peak_pct": 13.5,
+      "avg_pct": 0.9
+    },
+    "app_memory": {
+      "peak_mb": 560.0,
+      "last_mb": 560.0
+    },
+    "time_series": [
+      {
+        "elapsed_sec": 0.2,
+        "app_cpu_pct": 46.29,
+        "host_cpu_pct": 90.24,
+        "db_cpu_pct": 0.0,
+        "redis_cpu_pct": 0.34,
+        "app_mem_mb": 558.0,
+        "db_mem_mb": 52.6,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 0.4,
+        "app_cpu_pct": 144.69,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 3.35,
+        "redis_cpu_pct": 0.32,
+        "app_mem_mb": 557.9,
+        "db_mem_mb": 52.6,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 0.6,
+        "app_cpu_pct": 125.73,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 3.11,
+        "redis_cpu_pct": 0.34,
+        "app_mem_mb": 557.9,
+        "db_mem_mb": 52.6,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 0.81,
+        "app_cpu_pct": 115.8,
+        "host_cpu_pct": 97.62,
+        "db_cpu_pct": 3.01,
+        "redis_cpu_pct": 0.34,
+        "app_mem_mb": 557.9,
+        "db_mem_mb": 52.6,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 1.01,
+        "app_cpu_pct": 135.59,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 3.4,
+        "redis_cpu_pct": 0.38,
+        "app_mem_mb": 558.0,
+        "db_mem_mb": 52.6,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 1.21,
+        "app_cpu_pct": 109.26,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 7.08,
+        "redis_cpu_pct": 0.36,
+        "app_mem_mb": 558.1,
+        "db_mem_mb": 54.9,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 1.41,
+        "app_cpu_pct": 134.65,
+        "host_cpu_pct": 97.56,
+        "db_cpu_pct": 6.03,
+        "redis_cpu_pct": 0.39,
+        "app_mem_mb": 558.1,
+        "db_mem_mb": 57.0,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 1.61,
+        "app_cpu_pct": 128.44,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 3.47,
+        "redis_cpu_pct": 0.38,
+        "app_mem_mb": 558.1,
+        "db_mem_mb": 57.0,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 1.82,
+        "app_cpu_pct": 123.25,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 3.86,
+        "redis_cpu_pct": 0.4,
+        "app_mem_mb": 558.1,
+        "db_mem_mb": 57.0,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 2.02,
+        "app_cpu_pct": 131.12,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 3.48,
+        "redis_cpu_pct": 0.38,
+        "app_mem_mb": 558.1,
+        "db_mem_mb": 57.0,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 2.22,
+        "app_cpu_pct": 112.94,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 3.59,
+        "redis_cpu_pct": 0.35,
+        "app_mem_mb": 558.2,
+        "db_mem_mb": 57.0,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 2.42,
+        "app_cpu_pct": 131.09,
+        "host_cpu_pct": 97.44,
+        "db_cpu_pct": 6.12,
+        "redis_cpu_pct": 0.31,
+        "app_mem_mb": 558.3,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 2.62,
+        "app_cpu_pct": 130.94,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 4.31,
+        "redis_cpu_pct": 0.34,
+        "app_mem_mb": 558.3,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 2.82,
+        "app_cpu_pct": 80.31,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 14.89,
+        "redis_cpu_pct": 0.3,
+        "app_mem_mb": 558.3,
+        "db_mem_mb": 57.5,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 3.02,
+        "app_cpu_pct": 97.79,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 26.92,
+        "redis_cpu_pct": 0.4,
+        "app_mem_mb": 558.6,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 3.23,
+        "app_cpu_pct": 80.22,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 2.33,
+        "redis_cpu_pct": 13.5,
+        "app_mem_mb": 558.4,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 3.43,
+        "app_cpu_pct": 127.69,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 3.34,
+        "redis_cpu_pct": 0.3,
+        "app_mem_mb": 558.6,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 3.63,
+        "app_cpu_pct": 111.63,
+        "host_cpu_pct": 97.62,
+        "db_cpu_pct": 3.88,
+        "redis_cpu_pct": 0.35,
+        "app_mem_mb": 559.0,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 3.83,
+        "app_cpu_pct": 119.36,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 4.22,
+        "redis_cpu_pct": 0.33,
+        "app_mem_mb": 558.8,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 4.03,
+        "app_cpu_pct": 118.75,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 2.88,
+        "redis_cpu_pct": 0.29,
+        "app_mem_mb": 559.0,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 4.23,
+        "app_cpu_pct": 101.37,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 2.52,
+        "redis_cpu_pct": 0.33,
+        "app_mem_mb": 559.2,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 4.43,
+        "app_cpu_pct": 114.95,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 3.4,
+        "redis_cpu_pct": 0.39,
+        "app_mem_mb": 559.5,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 4.63,
+        "app_cpu_pct": 118.38,
+        "host_cpu_pct": 97.56,
+        "db_cpu_pct": 4.99,
+        "redis_cpu_pct": 0.34,
+        "app_mem_mb": 559.8,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      },
+      {
+        "elapsed_sec": 4.83,
+        "app_cpu_pct": 89.72,
+        "host_cpu_pct": 100.0,
+        "db_cpu_pct": 0.01,
+        "redis_cpu_pct": 0.33,
+        "app_mem_mb": 560.0,
+        "db_mem_mb": 57.2,
+        "redis_mem_mb": 3.9
+      }
+    ]
+  }
+}

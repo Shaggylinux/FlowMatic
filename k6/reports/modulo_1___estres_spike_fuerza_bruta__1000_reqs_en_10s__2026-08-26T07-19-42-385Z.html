@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Rendimiento - Modulo 1 - Estres Spike Fuerza Bruta (1000 reqs en 10s)</title>
+    <style>
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 30px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e0e0e0; padding-bottom: 15px; margin-bottom: 25px; }
+        .title { color: #1e3a8a; margin: 0; font-size: 24px; }
+        .timestamp { color: #666; font-size: 14px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px; text-align: center; }
+        .card .value { font-size: 24px; font-weight: bold; color: #0284c7; margin: 8px 0; }
+        .card .label { font-size: 12px; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background-color: #f1f5f9; color: #475569; font-size: 13px; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .badge-success { background-color: #dcfce7; color: #166534; }
+        .badge-danger { background-color: #fee2e2; color: #991b1b; }
+        .section-title { font-size: 18px; color: #1e293b; margin-top: 25px; margin-bottom: 10px; border-left: 4px solid #0284c7; padding-left: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1 class="title">FlowMatic - Reporte de Pruebas</h1>
+                <div style="font-size: 16px; color: #475569; margin-top: 5px;">Modulo 1 - Estres Spike Fuerza Bruta (1000 reqs en 10s)</div>
+            </div>
+            <div class="timestamp">Generado: 08/26/2026, 07:19:42</div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <div class="label">Total Peticiones</div>
+                <div class="value">1100</div>
+            </div>
+            <div class="card">
+                <div class="label">Throughput (Req/s)</div>
+                <div class="value">73.82</div>
+            </div>
+            <div class="card">
+                <div class="label">Latencia p95</div>
+                <div class="value">4799.77 ms</div>
+            </div>
+            <div class="card">
+                <div class="label">Latencia Promedio</div>
+                <div class="value">659.15 ms</div>
+            </div>
+            <div class="card">
+                <div class="label">Tasa Errores</div>
+                <div class="value" style="color: #dc2626">82.09%</div>
+            </div>
+            <div class="card">
+                <div class="label">Usuarios Virtuales (VUs)</div>
+                <div class="value">100</div>
+            </div>
+        </div>
+
+        <div class="section-title">Validaciones y Criterios de Aceptación (Checks)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Validación / Check</th>
+                    <th>Éxitos</th>
+                    <th>Fallos</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            <tr>
+                <td>Respuesta manejada (302 a error/bloqueo o 200)</td>
+                <td>97</td>
+                <td>903</td>
+                <td><span class="badge badge-danger">FAIL</span></td>
+            </tr>
+            <tr>
+                <td>Sin caída de servidor 5xx</td>
+                <td>997</td>
+                <td>3</td>
+                <td><span class="badge badge-danger">FAIL</span></td>
+            </tr>
+            <tr>
+                <td>Defensa activa (bloqueo o rechazo)</td>
+                <td>97</td>
+                <td>903</td>
+                <td><span class="badge badge-danger">FAIL</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

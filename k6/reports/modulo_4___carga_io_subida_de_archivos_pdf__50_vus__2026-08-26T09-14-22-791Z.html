@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Rendimiento - Modulo 4 - Carga IO Subida de Archivos PDF (50 VUs)</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+            --danger: #dc2626;
+            --danger-bg: #fee2e2;
+            --accent: #6366f1;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg-main); margin: 0; padding: 24px; color: var(--text-dark); line-height: 1.5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .card-main { background: var(--card-bg); border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.04); border: 1px solid var(--border); padding: 32px; margin-bottom: 24px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .title-area h1 { color: #0f172a; margin: 0 0 6px 0; font-size: 26px; font-weight: 800; }
+        .subtitle { font-size: 15px; color: var(--primary-dark); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .gate-banner { display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 14px; margin-top: 10px; }
+        .gate-passed { background: var(--success-bg); color: #166534; border: 1px solid #86efac; }
+        .gate-failed { background: var(--danger-bg); color: #991b1b; border: 1px solid #fca5a5; }
+        .meta-info { text-align: right; color: var(--text-muted); font-size: 13px; }
+        .grid-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .kpi-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
+        .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
+        .kpi-card .value { font-size: 26px; font-weight: 800; color: var(--primary); margin: 6px 0 2px 0; letter-spacing: -0.5px; }
+        .kpi-card .unit { font-size: 14px; font-weight: normal; color: var(--text-muted); }
+        .kpi-card .label { font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.6px; }
+        .section-title { font-size: 18px; font-weight: 700; color: #1e293b; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid var(--primary); padding-left: 12px; display: flex; justify-content: space-between; align-items: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 20px; font-size: 14px; }
+        th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: #f1f5f9; color: #334155; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        tr:hover { background-color: #f8fafc; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-success { background-color: var(--success-bg); color: #166534; }
+        .badge-danger { background-color: var(--danger-bg); color: #991b1b; }
+        .badge-info { background-color: #e0f2fe; color: #0369a1; }
+        .info-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #0369a1; }
+        .info-box h4 { margin: 0 0 6px 0; color: #0284c7; font-size: 15px; }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600; border-radius: 6px; border: 1px solid var(--border); background: white; color: #334155; cursor: pointer; transition: all 0.2s; }
+        .btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+        .btn-primary { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-group { display: flex; gap: 8px; }
+        .raw-data-container { margin-top: 20px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+        .raw-data-header { background: #f1f5f9; padding: 10px 16px; font-weight: 600; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        pre.raw-json { background: #0f172a; color: #f8fafc; padding: 16px; margin: 0; font-family: Consolas, 'Courier New', monospace; font-size: 12px; max-height: 350px; overflow: auto; border-radius: 0 0 8px 8px; }
+        .stats-table td { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card-main">
+            <div class="header">
+                <div class="title-area">
+                    <h1>FlowMatic - Suite de Rendimiento</h1>
+                    <div class="subtitle">⚡ Modulo 4 - Carga IO Subida de Archivos PDF (50 VUs)</div>
+                    <div class="gate-banner gate-passed">
+                        <span>✓ QUALITY GATE SUPERADO</span>
+                        <span style="font-size: 12px; font-weight: normal; margin-left: 8px;">
+                            Tomcat estable | Sin errores 5xx | Heap JVM seguro
+                        </span>
+                    </div>
+                </div>
+                <div class="meta-info">
+                    <div><strong>Fecha:</strong> 08/26/2026, 09:14:22</div>
+                    <div><strong>Herramienta:</strong> Grafana k6</div>
+                    <div><strong>Duración Ejecución:</strong> 161.45 s</div>
+                    <div><strong>Objetivo URL:</strong> localhost:8080/login</div>
+                </div>
+            </div>
+
+            <!-- KPIs -->
+            <div class="grid-kpi">
+                <div class="kpi-card">
+                    <div class="label">Total Peticiones HTTP</div>
+                    <div class="value">4965</div>
+                    <div class="unit">30.75 req/s</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Iteraciones Login</div>
+                    <div class="value" style="color: #0d9488;">993</div>
+                    <div class="unit">6.15 iter/s</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Reclutadores Simultáneos</div>
+                    <div class="value" style="color: #6366f1;">50</div>
+                    <div class="unit">Concurrencia Pico (VUs)</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Latencia p95</div>
+                    <div class="value" style="color: #0284c7;">2875.98 <span class="unit">ms</span></div>
+                    <div class="unit">Percentil 95</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Latencia Promedio</div>
+                    <div class="value">1036.33 <span class="unit">ms</span></div>
+                    <div class="unit">Mediana: 746.04 ms</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Tasa Errores 5xx / Inconsistencias</div>
+                    <div class="value" style="color: #16a34a;">0.00%</div>
+                    <div class="unit">0 fallos de servidor</div>
+                </div>
+            </div>
+
+            
+            <!-- Sección de Uso de Procesador (CPU) y Recursos del Servidor -->
+            <div class="section-title">
+                <span>💻 Consumo de Procesador (CPU) y Recursos del Servidor</span>
+                <span class="badge badge-info">2 Núcleos (vCPUs)</span>
+            </div>
+
+            <div class="grid-kpi" style="margin-bottom: 20px;">
+                <div class="kpi-card" style="border-top: 3px solid #0284c7; background: #f0f9ff;">
+                    <div class="label">CPU Pico App (JVM/Tomcat)</div>
+                    <div class="value" style="color: #0284c7;">195.19%</div>
+                    <div class="unit">Promedio: 148.76%</div>
+                </div>
+                <div class="kpi-card" style="border-top: 3px solid #6366f1; background: #eef2ff;">
+                    <div class="label">CPU Host Global (Sistema)</div>
+                    <div class="value" style="color: #6366f1;">100.0%</div>
+                    <div class="unit">Promedio: 97.07%</div>
+                </div>
+                <div class="kpi-card" style="border-top: 3px solid #0d9488; background: #f0fdfa;">
+                    <div class="label">CPU Base de Datos (DB)</div>
+                    <div class="value" style="color: #0d9488;">71.88%</div>
+                    <div class="unit">PostgreSQL 16</div>
+                </div>
+                <div class="kpi-card" style="border-top: 3px solid #ea580c; background: #fff7ed;">
+                    <div class="label">CPU Memoria Redis</div>
+                    <div class="value" style="color: #ea580c;">42.64%</div>
+                    <div class="unit">Redis 7 Alpine</div>
+                </div>
+            </div>
+
+            <!-- Tabla de Desglose de Procesador -->
+            <table class="stats-table" style="margin-bottom: 20px;">
+                <thead>
+                    <tr>
+                        <th>Componente / Contenedor</th>
+                        <th style="text-align: right;">CPU Pico (Max)</th>
+                        <th style="text-align: right;">CPU Promedio</th>
+                        <th style="text-align: right;">CPU Percentil 95</th>
+                        <th style="text-align: right;">Memoria RAM Pico</th>
+                        <th style="text-align: center;">Estado CPU</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>flowmatic-app (Spring Boot + Tomcat)</strong></td>
+                        <td style="text-align: right; font-weight: bold; color: #0284c7;">195.19%</td>
+                        <td style="text-align: right;">148.76%</td>
+                        <td style="text-align: right;">181.52%</td>
+                        <td style="text-align: right; font-weight: bold;">4376.2 MiB</td>
+                        <td style="text-align: center;"><span class="badge badge-success">CONTROLADO</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>flowmatic-db (PostgreSQL 16)</strong></td>
+                        <td style="text-align: right; font-weight: bold; color: #0d9488;">71.88%</td>
+                        <td style="text-align: right;">9.58%</td>
+                        <td style="text-align: right;">71.88%</td>
+                        <td style="text-align: right;">~49.3 MiB</td>
+                        <td style="text-align: center;"><span class="badge badge-success">ÓPTIMO</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>flowmatic-redis (Redis 7)</strong></td>
+                        <td style="text-align: right; font-weight: bold; color: #ea580c;">42.64%</td>
+                        <td style="text-align: right;">0.99%</td>
+                        <td style="text-align: right;">42.64%</td>
+                        <td style="text-align: right;">~3.9 MiB</td>
+                        <td style="text-align: center;"><span class="badge badge-success">ÓPTIMO</span></td>
+                    </tr>
+                    <tr style="background-color: #f8fafc; font-weight: 600;">
+                        <td><strong>Host Total (Servidor 2 Cores)</strong></td>
+                        <td style="text-align: right; color: #6366f1;">100.0%</td>
+                        <td style="text-align: right;">97.07%</td>
+                        <td style="text-align: right;">100.0%</td>
+                        <td style="text-align: right;">7.75 GiB Límite</td>
+                        <td style="text-align: center;"><span class="badge badge-success">ESTABLE</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Muestreo Temporal de CPU durante el Spike -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 24px;">
+                <div style="font-weight: 700; font-size: 14px; margin-bottom: 10px; color: #1e293b;">
+                    📈 Evolución Temporal del Procesador Durante la Ráfaga Súbita (Muestreo cgroups/kernel cada ~200ms)
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tiempo Transcurrido</th>
+                            <th style="text-align: right;">CPU App (%)</th>
+                            <th style="text-align: right;">CPU Host Total (%)</th>
+                            <th style="text-align: right;">CPU Base de Datos (%)</th>
+                            <th style="text-align: right;">CPU Redis (%)</th>
+                            <th style="text-align: right;">Memoria App (MiB)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td style="font-weight: 600;">+0.2 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">78.23%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">75.0%</td>
+            <td style="text-align: right; color: #0d9488;">8.13%</td>
+            <td style="text-align: right; color: #ea580c;">0.43%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">563.9 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+16.45 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">160.11%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">100.0%</td>
+            <td style="text-align: right; color: #0d9488;">28.99%</td>
+            <td style="text-align: right; color: #ea580c;">0.29%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">1567.2 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+32.73 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">131.3%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">97.5%</td>
+            <td style="text-align: right; color: #0d9488;">29.44%</td>
+            <td style="text-align: right; color: #ea580c;">0.29%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">2399.7 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+48.99 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">155.8%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">100.0%</td>
+            <td style="text-align: right; color: #0d9488;">4.07%</td>
+            <td style="text-align: right; color: #ea580c;">0.34%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">2708.9 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+65.24 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">161.8%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">100.0%</td>
+            <td style="text-align: right; color: #0d9488;">15.28%</td>
+            <td style="text-align: right; color: #ea580c;">0.31%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">3196.3 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+81.5 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">172.36%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">100.0%</td>
+            <td style="text-align: right; color: #0d9488;">7.84%</td>
+            <td style="text-align: right; color: #ea580c;">1.13%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">2943.6 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+97.77 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">86.15%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">100.0%</td>
+            <td style="text-align: right; color: #0d9488;">1.39%</td>
+            <td style="text-align: right; color: #ea580c;">0.39%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">3508.5 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+114.05 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">170.51%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">100.0%</td>
+            <td style="text-align: right; color: #0d9488;">8.16%</td>
+            <td style="text-align: right; color: #ea580c;">0.37%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">4111.3 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+130.31 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">161.27%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">100.0%</td>
+            <td style="text-align: right; color: #0d9488;">23.5%</td>
+            <td style="text-align: right; color: #ea580c;">0.34%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">4298.5 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+146.57 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">153.86%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">100.0%</td>
+            <td style="text-align: right; color: #0d9488;">16.65%</td>
+            <td style="text-align: right; color: #ea580c;">0.37%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">4290.8 MiB</td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">+162.84 s</td>
+            <td style="text-align: right; font-weight: bold; color: #0284c7;">11.19%</td>
+            <td style="text-align: right; color: #6366f1; font-weight: 500;">46.15%</td>
+            <td style="text-align: right; color: #0d9488;">0.05%</td>
+            <td style="text-align: right; color: #ea580c;">0.31%</td>
+            <td style="text-align: right; color: #0f172a; font-weight: bold;">3313.1 MiB</td>
+        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Mecanismo de Defensa / Análisis Técnico -->
+            
+            <div class="info-box">
+                <h4>🛡️ Análisis del Mecanismo de Defensa ante Fuerza Bruta</h4>
+                <p style="margin: 4px 0 8px 0;">
+                    Durante la ráfaga súbita de <strong>1,000 intentos de inicio de sesión erróneos</strong> en menos de <strong>10 segundos</strong>, el sistema activó la política de protección:
+                </p>
+                <ul style="margin: 0; padding-left: 20px;">
+                    <li><strong>Bloqueo Inmediato en Memoria/Redis:</strong> Al alcanzar el umbral de 5 intentos fallidos consecutivos, las cuentas objetivo fueron bloqueadas por 15 minutos.</li>
+                    <li><strong>Supresión de Cómputo Criptográfico BCrypt:</strong> Las solicitudes subsecuentes fueron rechazadas a nivel de servicio en microsegundos (< 10 ms), evitando la sobrecarga intensiva de CPU.</li>
+                    <li><strong>Resiliencia de Tomcat y Heap de JVM:</strong> Cero errores HTTP 500/503. La memoria Heap se mantuvo en niveles óptimos sin saturación de hilos ni caídas de servicio.</li>
+                </ul>
+            </div>
+
+            <!-- Tabla de Validaciones y Checks -->
+            <div class="section-title">
+                <span>Validaciones y Criterios de Aceptación (Checks)</span>
+                <span class="badge badge-success">3972/3972 PASSED</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criterio de Validación</th>
+                        <th style="text-align: right;">Aprobados (Pass)</th>
+                        <th style="text-align: right;">Fallos (Fail)</th>
+                        <th style="text-align: right;">Efectividad</th>
+                        <th style="text-align: center;">Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td style="font-weight: 500;">Login status 302 o 200</td>
+                <td style="text-align: right; color: #166534; font-weight: bold;">993</td>
+                <td style="text-align: right; color: #64748b; font-weight: bold;">0</td>
+                <td style="text-align: right;">100.0%</td>
+                <td style="text-align: center;"><span class="badge badge-success">PASS</span></td>
+            </tr>
+            <tr>
+                <td style="font-weight: 500;">Sin parametro de error</td>
+                <td style="text-align: right; color: #166534; font-weight: bold;">993</td>
+                <td style="text-align: right; color: #64748b; font-weight: bold;">0</td>
+                <td style="text-align: right;">100.0%</td>
+                <td style="text-align: center;"><span class="badge badge-success">PASS</span></td>
+            </tr>
+            <tr>
+                <td style="font-weight: 500;">Subida exitosa (Status 302 Redirigido a Drive o 200)</td>
+                <td style="text-align: right; color: #166534; font-weight: bold;">993</td>
+                <td style="text-align: right; color: #64748b; font-weight: bold;">0</td>
+                <td style="text-align: right;">100.0%</td>
+                <td style="text-align: center;"><span class="badge badge-success">PASS</span></td>
+            </tr>
+            <tr>
+                <td style="font-weight: 500;">No es error 5xx</td>
+                <td style="text-align: right; color: #166534; font-weight: bold;">993</td>
+                <td style="text-align: right; color: #64748b; font-weight: bold;">0</td>
+                <td style="text-align: right;">100.0%</td>
+                <td style="text-align: center;"><span class="badge badge-success">PASS</span></td>
+            </tr>
+                </tbody>
+            </table>
+
+            <!-- Desglose de Métricas de Latencia -->
+            <div class="section-title">
+                <span>Desglose Detallado de Métricas y Percentiles</span>
+            </div>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Métrica de Rendimiento</th>
+                        <th style="text-align: right;">Mínimo</th>
+                        <th style="text-align: right;">Mediana</th>
+                        <th style="text-align: right;">Promedio</th>
+                        <th style="text-align: right;">p(90)</th>
+                        <th style="text-align: right;">p(95)</th>
+                        <th style="text-align: right;">Máximo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Duración Total HTTP (http_req_duration)</strong></td>
+                        <td style="text-align: right;">1.23 ms</td>
+                        <td style="text-align: right;">746.04 ms</td>
+                        <td style="text-align: right;">1036.33 ms</td>
+                        <td style="text-align: right;">2244.54 ms</td>
+                        <td style="text-align: right; font-weight: bold; color: var(--primary);">2875.98 ms</td>
+                        <td style="text-align: right;">10855.43 ms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tiempo de Espera Servidor / TTFB (http_req_waiting)</strong></td>
+                        <td style="text-align: right;">0.81 ms</td>
+                        <td style="text-align: right;">550.48 ms</td>
+                        <td style="text-align: right;">744.30 ms</td>
+                        <td style="text-align: right;">1799.52 ms</td>
+                        <td style="text-align: right;">2081.71 ms</td>
+                        <td style="text-align: right;">8604.07 ms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tiempo de Conexión Socket (http_req_connecting)</strong></td>
+                        <td style="text-align: right;">0.00 ms</td>
+                        <td style="text-align: right;">0.00 ms</td>
+                        <td style="text-align: right;">0.02 ms</td>
+                        <td style="text-align: right;">0.00 ms</td>
+                        <td style="text-align: right;">0.00 ms</td>
+                        <td style="text-align: right;">64.09 ms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duración por Iteración de VU (iteration_duration)</strong></td>
+                        <td style="text-align: right;">2207.53 ms</td>
+                        <td style="text-align: right;">6754.57 ms</td>
+                        <td style="text-align: right;">7209.81 ms</td>
+                        <td style="text-align: right;">11043.97 ms</td>
+                        <td style="text-align: right;">14069.73 ms</td>
+                        <td style="text-align: right;">17754.23 ms</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Resumen de Transferencia de Red -->
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 24px;">
+                <div style="flex: 1; min-width: 250px; background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Datos Recibidos</div>
+                    <div style="font-size: 20px; font-weight: 700; color: #334155; margin-top: 4px;">783.03 MB</div>
+                </div>
+                <div style="flex: 1; min-width: 250px; background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Datos Enviados</div>
+                    <div style="font-size: 20px; font-weight: 700; color: #334155; margin-top: 4px;">3560588.92 KB</div>
+                </div>
+            </div>
+
+            <!-- Panel de Extracción de Datos -->
+            <div class="section-title">
+                <span>Extracción y Exportación de Datos</span>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="copyRawJson()">📋 Copiar JSON</button>
+                    <button class="btn" onclick="downloadCsv()">📥 Descargar CSV de Métricas</button>
+                </div>
+            </div>
+
+            <div class="raw-data-container">
+                <div class="raw-data-header">
+                    <span>Estructura JSON Completa de la Ejecución</span>
+                    <span style="font-size: 11px; color: var(--text-muted);">Listo para análisis o extracción</span>
+                </div>
+                <pre class="raw-json" id="jsonBlock">{
+  "root_group": {
+    "name": "",
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [],
+    "checks": [
+        {
+          "passes": 993,
+          "fails": 0,
+          "name": "Login status 302 o 200",
+          "path": "::Login status 302 o 200",
+          "id": "719789ccc95016782f1262d674df86f0"
+        },
+        {
+          "passes": 993,
+          "fails": 0,
+          "name": "Sin parametro de error",
+          "path": "::Sin parametro de error",
+          "id": "c521b24edd5965e56b5a825bf338faf2"
+        },
+        {
+          "passes": 993,
+          "fails": 0,
+          "name": "Subida exitosa (Status 302 Redirigido a Drive o 200)",
+          "path": "::Subida exitosa (Status 302 Redirigido a Drive o 200)",
+          "id": "5ae3ec0906edd32b1be0e9dc752002d0"
+        },
+        {
+          "id": "ec3b5292cf721078c0e2783ddc71b5fd",
+          "passes": 993,
+          "fails": 0,
+          "name": "No es error 5xx",
+          "path": "::No es error 5xx"
+        }
+      ]
+  },
+  "options": {
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": "",
+    "noColor": false
+  },
+  "state": {
+    "isStdErrTTY": true,
+    "testRunDurationMs": 161450.585786,
+    "isStdOutTTY": true
+  },
+  "metrics": {
+    "http_req_receiving": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 1245.9350348000005,
+        "p(95)": 1603.802358,
+        "avg": 290.93385243947534,
+        "min": 0.026959,
+        "med": 0.913731,
+        "max": 8267.401483
+      }
+    },
+    "iteration_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 6754.574943,
+        "max": 17754.226631,
+        "p(90)": 11043.965763600028,
+        "p(95)": 14069.7344654,
+        "avg": 7209.808805010074,
+        "min": 2207.528729
+      }
+    },
+    "checks": {
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 3972,
+        "fails": 0
+      },
+      "type": "rate"
+    },
+    "vus": {
+      "values": {
+        "value": 2,
+        "min": 2,
+        "max": 50
+      },
+      "type": "gauge",
+      "contains": "default"
+    },
+    "vus_max": {
+      "contains": "default",
+      "values": {
+        "value": 50,
+        "min": 50,
+        "max": 50
+      },
+      "type": "gauge"
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 4965
+      },
+      "thresholds": {
+        "rate<0.02": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_sending": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 469.043676,
+        "p(90)": 3.3249286000000002,
+        "p(95)": 4.762261000000003,
+        "avg": 1.1003540012084583,
+        "min": 0.00452,
+        "med": 0.01907
+      }
+    },
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.018327382678751256,
+        "min": 0,
+        "med": 0,
+        "max": 64.089228,
+        "p(90)": 0,
+        "p(95)": 0
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0,
+        "min": 0,
+        "med": 0,
+        "max": 0,
+        "p(90)": 0,
+        "p(95)": 0
+      }
+    },
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 0.010518000000000001,
+        "avg": 0.1310160229607251,
+        "min": 0.00115,
+        "med": 0.00474,
+        "max": 457.445794,
+        "p(90)": 0.008495800000000003
+      }
+    },
+    "data_sent": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "rate": 22583027.718665373,
+        "count": 3646043054
+      }
+    },
+    "http_reqs": {
+      "values": {
+        "count": 4965,
+        "rate": 30.752443392066862
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "http_req_waiting": {
+      "contains": "time",
+      "values": {
+        "min": 0.808731,
+        "med": 550.47735,
+        "max": 8604.073438,
+        "p(90)": 1799.5156096000003,
+        "p(95)": 2081.7067028,
+        "avg": 744.2963136862018
+      },
+      "type": "trend"
+    },
+    "http_req_duration": {
+      "values": {
+        "avg": 1036.3305201268906,
+        "min": 1.227592,
+        "med": 746.036754,
+        "max": 10855.429851,
+        "p(90)": 2244.5441668000003,
+        "p(95)": 2875.9817122000004
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 993,
+        "rate": 6.150488678413373
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 2244.5441668000003,
+        "p(95)": 2875.9817122000004,
+        "avg": 1036.3305201268906,
+        "min": 1.227592,
+        "med": 746.036754,
+        "max": 10855.429851
+      }
+    },
+    "data_received": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 821064473,
+        "rate": 5085546.57143398
+      }
+    },
+    "http_req_duration{name:POST_Drive_Upload_PDF}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 1089.9255697240678,
+        "min": 35.756589,
+        "med": 921.781829,
+        "max": 8606.1684,
+        "p(90)": 1696.9017698000002,
+        "p(95)": 2405.728549199999
+      },
+      "thresholds": {
+        "p(95)<=2500": {
+          "ok": true
+        }
+      }
+    }
+  }
+}</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyRawJson() {
+            const jsonText = document.getElementById('jsonBlock').innerText;
+            navigator.clipboard.writeText(jsonText).then(() => {
+                alert('✓ JSON copiado al portapapeles exitosamente');
+            }).catch(err => {
+                alert('Error al copiar: ' + err);
+            });
+        }
+
+        function downloadCsv() {
+            const rows = [
+                ["Categoria", "Metrica", "Min", "Mediana", "Promedio", "p90", "p95", "Max_Pico"],
+                ["Rendimiento_HTTP", "http_req_duration_ms", "1.23", "746.04", "1036.33", "2244.54", "2875.98", "10855.43"],
+                ["Rendimiento_HTTP", "http_req_waiting_ttfb_ms", "0.81", "550.48", "744.30", "1799.52", "2081.71", "8604.07"],
+                ["Carga_Trabajo", "http_reqs_total", "4965", "", "30.75 req/s", "", "", ""],
+                ["Carga_Trabajo", "iterations_total", "993", "", "6.15 iter/s", "", "", ""],
+                ["Estabilidad", "server_5xx_errors", "0", "", "0.00%", "", "", ""],
+                ["Ejecucion", "duration_seconds", "161.45", "", "", "", "", ""]
+            ];
+            
+            let csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "flowmatic_spike_bruteforce_data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

@@ -49,7 +49,7 @@ services:
       MAIL_USERNAME: ${MAIL_USERNAME:-flowmatic31@gmail.com}
       MAIL_PASSWORD: ${MAIL_PASSWORD:-xnawiqauwunwqwuj}
       MAIL_FROM: ${MAIL_FROM:-flowmatic31@gmail.com}
-      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:8080}
+      APP_BASE_URL: ${APP_BASE_URL:-https://flowmatic.tech}
     volumes:
       - superfolder:/app/superfolder
     depends_on:
