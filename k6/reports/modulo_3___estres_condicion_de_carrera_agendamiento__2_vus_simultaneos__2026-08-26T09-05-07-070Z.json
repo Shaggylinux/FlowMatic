@@ -1,0 +1,278 @@
+{
+  "root_group": {
+    "name": "",
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [
+      {
+        "path": "::setup",
+        "id": "5c0f8025f7e0b6654089e5b00e950f1a",
+        "groups": [],
+        "checks": [
+            {
+              "name": "Login status 302 o 200",
+              "path": "::setup::Login status 302 o 200",
+              "id": "9e9469b5b8879161cd8bd732d9d01e1e",
+              "passes": 2,
+              "fails": 0
+            },
+            {
+              "fails": 0,
+              "name": "Sin parametro de error",
+              "path": "::setup::Sin parametro de error",
+              "id": "296ca33d7bd60790f6e57f06ca35044b",
+              "passes": 2
+            }
+          ],
+        "name": "setup"
+      }
+    ],
+    "checks": [
+      {
+        "id": "0b56fe417483499ce0c7a4fd92c041af",
+        "passes": 0,
+        "fails": 2,
+        "name": "Status HTTP 200 con respuesta JSON",
+        "path": "::Status HTTP 200 con respuesta JSON"
+      },
+      {
+        "path": "::Respuesta controlada (1 cita creada o 1 rechazo limpio)",
+        "id": "d9d75218ee2db209a63c35ab68a6cabe",
+        "passes": 0,
+        "fails": 2,
+        "name": "Respuesta controlada (1 cita creada o 1 rechazo limpio)"
+      }
+    ]
+  },
+  "options": {
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": "",
+    "noColor": false
+  },
+  "state": {
+    "isStdOutTTY": false,
+    "isStdErrTTY": false,
+    "testRunDurationMs": 582.265081
+  },
+  "metrics": {
+    "data_received": {
+      "values": {
+        "count": 1632352,
+        "rate": 2803451.6464503566
+      },
+      "type": "counter",
+      "contains": "data"
+    },
+    "http_req_sending": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 0.01172,
+        "med": 0.0290745,
+        "max": 0.10853,
+        "p(90)": 0.0820637,
+        "p(95)": 0.09529684999999999,
+        "avg": 0.043367625
+      }
+    },
+    "http_req_waiting": {
+      "contains": "time",
+      "values": {
+        "med": 50.547274,
+        "max": 110.912732,
+        "p(90)": 100.5544673,
+        "p(95)": 105.73359965,
+        "avg": 52.06608875,
+        "min": 4.532357
+      },
+      "type": "trend"
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 8,
+        "rate": 13.739446621563763
+      }
+    },
+    "checks": {
+      "contains": "default",
+      "values": {
+        "passes": 4,
+        "fails": 4,
+        "rate": 0.5
+      },
+      "type": "rate"
+    },
+    "data_sent": {
+      "contains": "data",
+      "values": {
+        "count": 2500,
+        "rate": 4293.577069238676
+      },
+      "type": "counter"
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 0,
+        "p(95)": 0,
+        "avg": 0,
+        "min": 0,
+        "med": 0,
+        "max": 0
+      }
+    },
+    "iteration_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 21.90754505,
+        "avg": 18.7478525,
+        "min": 15.237083,
+        "med": 18.7478525,
+        "max": 22.258622,
+        "p(90)": 21.5564681
+      }
+    },
+    "rejected_bookings": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count==1": {
+          "ok": false
+        }
+      }
+    },
+    "successful_bookings": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count==1": {
+          "ok": false
+        }
+      }
+    },
+    "http_req_duration": {
+      "values": {
+        "avg": 73.348198375,
+        "min": 7.20838,
+        "med": 50.797899,
+        "max": 209.728167,
+        "p(90)": 177.3208844,
+        "p(95)": 193.5245257
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0.25,
+        "passes": 2,
+        "fails": 6
+      },
+      "thresholds": {
+        "rate==0.00": {
+          "ok": false
+        }
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 186.580108,
+        "p(95)": 198.15413750000002,
+        "avg": 92.21946816666666,
+        "min": 7.20838,
+        "med": 82.09535,
+        "max": 209.728167
+      }
+    },
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.473372,
+        "min": 0,
+        "med": 0,
+        "max": 2.730754,
+        "p(90)": 1.4761068999999998,
+        "p(95)": 2.1034304499999994
+      }
+    },
+    "http_req_receiving": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 21.238742000000002,
+        "min": 0.08949,
+        "med": 0.363045,
+        "max": 98.801185,
+        "p(90)": 76.7531394,
+        "p(95)": 87.77716219999999
+      }
+    },
+    "http_req_blocked": {
+      "contains": "time",
+      "values": {
+        "avg": 0.5317706249999999,
+        "min": 0.002899,
+        "med": 0.00412,
+        "max": 2.777084,
+        "p(90)": 1.6900168999999998,
+        "p(95)": 2.233550449999999
+      },
+      "type": "trend"
+    },
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 2,
+        "rate": 3.434861655390941
+      }
+    },
+    "race_handling_success": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 2
+      },
+      "thresholds": {
+        "rate==1.00": {
+          "ok": false
+        }
+      }
+    }
+  },
+  "setup_data": {
+    "entrevistador": "Roberto Evaluador",
+    "fecha": "2026-11-20",
+    "hora": "10:00:00",
+    "session1": "F732CAF8A2468728DEDABB51AD00949D",
+    "session2": "C0BA654AA0434C98C3C72104888382C7",
+    "csrf1": "f9d922a6-4ebf-48d0-bdf7-12f6b266846c",
+    "csrf2": "1ce743cc-23aa-45d3-a775-00ecc921528c"
+  }
+}

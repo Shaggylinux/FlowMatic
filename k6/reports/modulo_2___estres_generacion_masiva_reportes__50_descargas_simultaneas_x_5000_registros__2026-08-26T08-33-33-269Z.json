@@ -1,0 +1,278 @@
+{
+  "state": {
+    "isStdOutTTY": false,
+    "isStdErrTTY": false,
+    "testRunDurationMs": 34719.07794
+  },
+  "metrics": {
+    "iteration_duration": {
+      "contains": "time",
+      "values": {
+        "p(90)": 34514.281405,
+        "p(95)": 34663.85297105,
+        "avg": 31747.363705260002,
+        "min": 12836.333834,
+        "med": 32632.612681,
+        "max": 34683.855841
+      },
+      "type": "trend"
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0.10294117647058823,
+        "passes": 14,
+        "fails": 122
+      },
+      "thresholds": {
+        "rate==0.00": {
+          "ok": false
+        }
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 0,
+        "p(90)": 0,
+        "p(95)": 0,
+        "avg": 0,
+        "min": 0,
+        "med": 0
+      }
+    },
+    "vus": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "value": 6,
+        "min": 6,
+        "max": 50
+      }
+    },
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 5.296631,
+        "p(95)": 6.4572445,
+        "avg": 1.421300316176471,
+        "min": 0,
+        "med": 0,
+        "max": 7.490358
+      }
+    },
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 50,
+        "rate": 1.4401304114817746
+      }
+    },
+    "vus_max": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "value": 50,
+        "min": 50,
+        "max": 50
+      }
+    },
+    "http_req_waiting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 21653.941486,
+        "p(95)": 31469.38058075,
+        "avg": 11257.505119117648,
+        "min": 890.771325,
+        "med": 11563.5431255,
+        "max": 31634.147429
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "values": {
+        "med": 11510.832662,
+        "max": 22139.116584,
+        "p(90)": 20165.8588137,
+        "p(95)": 20258.546921099998,
+        "avg": 9839.407377172132,
+        "min": 905.996143
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "checks": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0.8914728682170543,
+        "passes": 230,
+        "fails": 28
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": false
+        }
+      }
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 136,
+        "rate": 3.917154719230427
+      }
+    },
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 1.5932249558823535,
+        "min": 0.001771,
+        "med": 0.00532,
+        "max": 19.080701,
+        "p(90)": 5.618766,
+        "p(95)": 6.6212297499999995
+      }
+    },
+    "data_sent": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 25978,
+        "rate": 748.2341565894708
+      }
+    },
+    "http_req_receiving": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 411.7269817720588,
+        "min": 0.05265,
+        "med": 31.75332,
+        "max": 1891.867516,
+        "p(90)": 1760.3319835,
+        "p(95)": 1845.7534005
+      }
+    },
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 31662.036841,
+        "p(90)": 21978.004378999998,
+        "p(95)": 31506.714064249998,
+        "avg": 11669.748014845589,
+        "min": 905.996143,
+        "med": 11564.2848665
+      }
+    },
+    "data_received": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 12847988,
+        "rate": 370055.56490305805
+      }
+    },
+    "jvm_oom_errors": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 36
+      },
+      "thresholds": {
+        "rate==0.00": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_sending": {
+      "contains": "time",
+      "values": {
+        "avg": 0.5159139558823533,
+        "min": 0.006129,
+        "med": 0.028626,
+        "max": 9.149869,
+        "p(90)": 1.9223525000000001,
+        "p(95)": 2.26966375
+      },
+      "type": "trend"
+    }
+  },
+  "root_group": {
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [],
+    "checks": [
+        {
+          "fails": 14,
+          "name": "Login status 302 o 200",
+          "path": "::Login status 302 o 200",
+          "id": "719789ccc95016782f1262d674df86f0",
+          "passes": 36
+        },
+        {
+          "name": "Sin parametro de error",
+          "path": "::Sin parametro de error",
+          "id": "c521b24edd5965e56b5a825bf338faf2",
+          "passes": 50,
+          "fails": 0
+        },
+        {
+          "name": "Autenticación exitosa",
+          "path": "::Autenticación exitosa",
+          "id": "4f53ce965011c2cddbdd2e8384256c8d",
+          "passes": 0,
+          "fails": 14
+        },
+        {
+          "name": "Descarga exitosa HTTP 200",
+          "path": "::Descarga exitosa HTTP 200",
+          "id": "275299224d1a0e502e97218c4b08d4fd",
+          "passes": 36,
+          "fails": 0
+        },
+        {
+          "name": "Content-Disposition es adjunto .xlsx",
+          "path": "::Content-Disposition es adjunto .xlsx",
+          "id": "a5e22beacedf5f964f9693b1a5b87d3f",
+          "passes": 36,
+          "fails": 0
+        },
+        {
+          "name": "Tamaño de reporte íntegro (5,000 registros > 100 KB)",
+          "path": "::Tamaño de reporte íntegro (5,000 registros > 100 KB)",
+          "id": "f56122aab415c214852457eb77de7554",
+          "passes": 36,
+          "fails": 0
+        },
+        {
+          "passes": 36,
+          "fails": 0,
+          "name": "Sin OutOfMemoryError en JVM (Heap estable)",
+          "path": "::Sin OutOfMemoryError en JVM (Heap estable)",
+          "id": "6c977b3408da3c837914f4c631743df2"
+        }
+      ],
+    "name": ""
+  },
+  "options": {
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": "",
+    "noColor": false
+  }
+}

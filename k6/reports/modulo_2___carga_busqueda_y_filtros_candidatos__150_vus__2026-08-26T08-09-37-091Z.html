@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Rendimiento - Modulo 2 - Carga Busqueda y Filtros Candidatos (150 VUs)</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+            --danger: #dc2626;
+            --danger-bg: #fee2e2;
+            --accent: #6366f1;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg-main); margin: 0; padding: 24px; color: var(--text-dark); line-height: 1.5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .card-main { background: var(--card-bg); border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.04); border: 1px solid var(--border); padding: 32px; margin-bottom: 24px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        .title-area h1 { color: #0f172a; margin: 0 0 6px 0; font-size: 26px; font-weight: 800; }
+        .subtitle { font-size: 15px; color: var(--primary-dark); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .gate-banner { display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 14px; margin-top: 10px; }
+        .gate-passed { background: var(--success-bg); color: #166534; border: 1px solid #86efac; }
+        .gate-failed { background: var(--danger-bg); color: #991b1b; border: 1px solid #fca5a5; }
+        .meta-info { text-align: right; color: var(--text-muted); font-size: 13px; }
+        .grid-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .kpi-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
+        .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
+        .kpi-card .value { font-size: 26px; font-weight: 800; color: var(--primary); margin: 6px 0 2px 0; letter-spacing: -0.5px; }
+        .kpi-card .unit { font-size: 14px; font-weight: normal; color: var(--text-muted); }
+        .kpi-card .label { font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.6px; }
+        .section-title { font-size: 18px; font-weight: 700; color: #1e293b; margin-top: 32px; margin-bottom: 14px; border-left: 4px solid var(--primary); padding-left: 12px; display: flex; justify-content: space-between; align-items: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 20px; font-size: 14px; }
+        th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: #f1f5f9; color: #334155; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        tr:hover { background-color: #f8fafc; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-success { background-color: var(--success-bg); color: #166534; }
+        .badge-danger { background-color: var(--danger-bg); color: #991b1b; }
+        .badge-info { background-color: #e0f2fe; color: #0369a1; }
+        .info-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: #0369a1; }
+        .info-box h4 { margin: 0 0 6px 0; color: #0284c7; font-size: 15px; }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600; border-radius: 6px; border: 1px solid var(--border); background: white; color: #334155; cursor: pointer; transition: all 0.2s; }
+        .btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+        .btn-primary { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-group { display: flex; gap: 8px; }
+        .raw-data-container { margin-top: 20px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+        .raw-data-header { background: #f1f5f9; padding: 10px 16px; font-weight: 600; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        pre.raw-json { background: #0f172a; color: #f8fafc; padding: 16px; margin: 0; font-family: Consolas, 'Courier New', monospace; font-size: 12px; max-height: 350px; overflow: auto; border-radius: 0 0 8px 8px; }
+        .stats-table td { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card-main">
+            <div class="header">
+                <div class="title-area">
+                    <h1>FlowMatic - Suite de Rendimiento</h1>
+                    <div class="subtitle">⚡ Modulo 2 - Carga Busqueda y Filtros Candidatos (150 VUs)</div>
+                    <div class="gate-banner gate-failed">
+                        <span>✗ QUALITY GATE REPROBADO</span>
+                        <span style="font-size: 12px; font-weight: normal; margin-left: 8px;">
+                            Fallo en umbrales
+                        </span>
+                    </div>
+                </div>
+                <div class="meta-info">
+                    <div><strong>Fecha:</strong> 08/26/2026, 08:09:37</div>
+                    <div><strong>Herramienta:</strong> Grafana k6</div>
+                    <div><strong>Duración Ejecución:</strong> 240.70 s</div>
+                    <div><strong>Objetivo URL:</strong> localhost:8080/login</div>
+                </div>
+            </div>
+
+            <!-- KPIs -->
+            <div class="grid-kpi">
+                <div class="kpi-card">
+                    <div class="label">Total Peticiones HTTP</div>
+                    <div class="value">124676</div>
+                    <div class="unit">517.97 req/s</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Iteraciones Login</div>
+                    <div class="value" style="color: #0d9488;">31170</div>
+                    <div class="unit">129.50 iter/s</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Usuarios Virtuales (VUs)</div>
+                    <div class="value" style="color: #6366f1;">150</div>
+                    <div class="unit">Concurrencia Pico</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Latencia p95</div>
+                    <div class="value" style="color: #0284c7;">12.40 <span class="unit">ms</span></div>
+                    <div class="unit">Percentil 95</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Latencia Promedio</div>
+                    <div class="value">4.16 <span class="unit">ms</span></div>
+                    <div class="unit">Mediana: 2.29 ms</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Tasa Errores 5xx</div>
+                    <div class="value" style="color: #16a34a;">0.00%</div>
+                    <div class="unit">0 fallos de servidor</div>
+                </div>
+            </div>
+
+            <!-- Mecanismo de Defensa -->
+            <div class="info-box">
+                <h4>🛡️ Análisis del Mecanismo de Defensa ante Fuerza Bruta</h4>
+                <p style="margin: 4px 0 8px 0;">
+                    Durante la ráfaga súbita de <strong>1,000 intentos de inicio de sesión erróneos</strong> en menos de <strong>10 segundos</strong>, el sistema activó la política de protección:
+                </p>
+                <ul style="margin: 0; padding-left: 20px;">
+                    <li><strong>Bloqueo Inmediato en Memoria/Redis:</strong> Al alcanzar el umbral de 5 intentos fallidos consecutivos, las cuentas objetivo fueron bloqueadas por 15 minutos.</li>
+                    <li><strong>Supresión de Cómputo Criptográfico BCrypt:</strong> Las solicitudes subsecuentes fueron rechazadas a nivel de servicio en microsegundos (< 10 ms), evitando la sobrecarga intensiva de CPU.</li>
+                    <li><strong>Resiliencia de Tomcat y Heap de JVM:</strong> Cero errores HTTP 500/503. La memoria Heap se mantuvo en niveles óptimos sin saturación de hilos ni caídas de servicio.</li>
+                </ul>
+            </div>
+
+            <!-- Tabla de Validaciones y Checks -->
+            <div class="section-title">
+                <span>Validaciones y Criterios de Aceptación (Checks)</span>
+                <span class="badge badge-danger">155838/155841 PASSED</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criterio de Validación</th>
+                        <th style="text-align: right;">Aprobados (Pass)</th>
+                        <th style="text-align: right;">Fallos (Fail)</th>
+                        <th style="text-align: right;">Efectividad</th>
+                        <th style="text-align: center;">Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td style="font-weight: 500;">Login status 302 o 200</td>
+                <td style="text-align: right; color: #166534; font-weight: bold;">31170</td>
+                <td style="text-align: right; color: #64748b; font-weight: bold;">0</td>
+                <td style="text-align: right;">100.0%</td>
+                <td style="text-align: center;"><span class="badge badge-success">PASS</span></td>
+            </tr>
+            <tr>
+                <td style="font-weight: 500;">Sin parametro de error</td>
+                <td style="text-align: right; color: #166534; font-weight: bold;">31167</td>
+                <td style="text-align: right; color: #991b1b; font-weight: bold;">3</td>
+                <td style="text-align: right;">100.0%</td>
+                <td style="text-align: center;"><span class="badge badge-danger">FAIL</span></td>
+            </tr>
+            <tr>
+                <td style="font-weight: 500;">Status es 200 OK</td>
+                <td style="text-align: right; color: #166534; font-weight: bold;">31167</td>
+                <td style="text-align: right; color: #64748b; font-weight: bold;">0</td>
+                <td style="text-align: right;">100.0%</td>
+                <td style="text-align: center;"><span class="badge badge-success">PASS</span></td>
+            </tr>
+            <tr>
+                <td style="font-weight: 500;">HTML renderiza tabla de candidatos</td>
+                <td style="text-align: right; color: #166534; font-weight: bold;">31167</td>
+                <td style="text-align: right; color: #64748b; font-weight: bold;">0</td>
+                <td style="text-align: right;">100.0%</td>
+                <td style="text-align: center;"><span class="badge badge-success">PASS</span></td>
+            </tr>
+            <tr>
+                <td style="font-weight: 500;">Respuesta no vacía</td>
+                <td style="text-align: right; color: #166534; font-weight: bold;">31167</td>
+                <td style="text-align: right; color: #64748b; font-weight: bold;">0</td>
+                <td style="text-align: right;">100.0%</td>
+                <td style="text-align: center;"><span class="badge badge-success">PASS</span></td>
+            </tr>
+                </tbody>
+            </table>
+
+            <!-- Desglose de Métricas de Latencia -->
+            <div class="section-title">
+                <span>Desglose Detallado de Métricas y Percentiles</span>
+            </div>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Métrica de Rendimiento</th>
+                        <th style="text-align: right;">Mínimo</th>
+                        <th style="text-align: right;">Mediana</th>
+                        <th style="text-align: right;">Promedio</th>
+                        <th style="text-align: right;">p(90)</th>
+                        <th style="text-align: right;">p(95)</th>
+                        <th style="text-align: right;">Máximo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Duración Total HTTP (http_req_duration)</strong></td>
+                        <td style="text-align: right;">0.32 ms</td>
+                        <td style="text-align: right;">2.29 ms</td>
+                        <td style="text-align: right;">4.16 ms</td>
+                        <td style="text-align: right;">8.16 ms</td>
+                        <td style="text-align: right; font-weight: bold; color: var(--primary);">12.40 ms</td>
+                        <td style="text-align: right;">475.88 ms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tiempo de Espera Servidor / TTFB (http_req_waiting)</strong></td>
+                        <td style="text-align: right;">0.27 ms</td>
+                        <td style="text-align: right;">1.93 ms</td>
+                        <td style="text-align: right;">3.75 ms</td>
+                        <td style="text-align: right;">7.45 ms</td>
+                        <td style="text-align: right;">11.47 ms</td>
+                        <td style="text-align: right;">475.84 ms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tiempo de Conexión Socket (http_req_connecting)</strong></td>
+                        <td style="text-align: right;">0.00 ms</td>
+                        <td style="text-align: right;">0.00 ms</td>
+                        <td style="text-align: right;">0.00 ms</td>
+                        <td style="text-align: right;">0.00 ms</td>
+                        <td style="text-align: right;">0.00 ms</td>
+                        <td style="text-align: right;">53.97 ms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duración por Iteración de VU (iteration_duration)</strong></td>
+                        <td style="text-align: right;">1002.90 ms</td>
+                        <td style="text-align: right;">1012.11 ms</td>
+                        <td style="text-align: right;">1017.84 ms</td>
+                        <td style="text-align: right;">1031.02 ms</td>
+                        <td style="text-align: right;">1043.14 ms</td>
+                        <td style="text-align: right;">1620.10 ms</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Resumen de Transferencia de Red -->
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 24px;">
+                <div style="flex: 1; min-width: 250px; background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Datos Recibidos</div>
+                    <div style="font-size: 20px; font-weight: 700; color: #334155; margin-top: 4px;">661.46 MB</div>
+                </div>
+                <div style="flex: 1; min-width: 250px; background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Datos Enviados</div>
+                    <div style="font-size: 20px; font-weight: 700; color: #334155; margin-top: 4px;">27333.61 KB</div>
+                </div>
+            </div>
+
+            <!-- Panel de Extracción de Datos -->
+            <div class="section-title">
+                <span>Extracción y Exportación de Datos</span>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="copyRawJson()">📋 Copiar JSON</button>
+                    <button class="btn" onclick="downloadCsv()">📥 Descargar CSV de Métricas</button>
+                </div>
+            </div>
+
+            <div class="raw-data-container">
+                <div class="raw-data-header">
+                    <span>Estructura JSON Completa de la Ejecución</span>
+                    <span style="font-size: 11px; color: var(--text-muted);">Listo para análisis o extracción</span>
+                </div>
+                <pre class="raw-json" id="jsonBlock">{
+  "root_group": {
+    "name": "",
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [
+      {
+        "name": "setup",
+        "path": "::setup",
+        "id": "5c0f8025f7e0b6654089e5b00e950f1a",
+        "groups": [],
+        "checks": [
+            {
+              "name": "Login status 302 o 200",
+              "path": "::setup::Login status 302 o 200",
+              "id": "9e9469b5b8879161cd8bd732d9d01e1e",
+              "passes": 1,
+              "fails": 0
+            },
+            {
+              "path": "::setup::Sin parametro de error",
+              "id": "296ca33d7bd60790f6e57f06ca35044b",
+              "passes": 0,
+              "fails": 1,
+              "name": "Sin parametro de error"
+            }
+          ]
+      }
+    ],
+    "checks": [
+      {
+        "fails": 0,
+        "name": "Login status 302 o 200",
+        "path": "::Login status 302 o 200",
+        "id": "719789ccc95016782f1262d674df86f0",
+        "passes": 31170
+      },
+      {
+        "name": "Sin parametro de error",
+        "path": "::Sin parametro de error",
+        "id": "c521b24edd5965e56b5a825bf338faf2",
+        "passes": 31167,
+        "fails": 3
+      },
+      {
+        "name": "Status es 200 OK",
+        "path": "::Status es 200 OK",
+        "id": "f92e4b331dee2711e44f773f83ffb113",
+        "passes": 31167,
+        "fails": 0
+      },
+      {
+        "id": "db8e2261560bb419a6d353ee0de82257",
+        "passes": 31167,
+        "fails": 0,
+        "name": "HTML renderiza tabla de candidatos",
+        "path": "::HTML renderiza tabla de candidatos"
+      },
+      {
+        "name": "Respuesta no vacía",
+        "path": "::Respuesta no vacía",
+        "id": "29aeea3dd0430a3eace5b977028682d1",
+        "passes": 31167,
+        "fails": 0
+      }
+    ]
+  },
+  "options": {
+    "noColor": false,
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": ""
+  },
+  "state": {
+    "testRunDurationMs": 240701.701912,
+    "isStdOutTTY": true,
+    "isStdErrTTY": true
+  },
+  "metrics": {
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 0.0057645,
+        "p(95)": 0.0079,
+        "avg": 0.01078819480092495,
+        "min": 0.00067,
+        "med": 0.00249,
+        "max": 59.698066
+      }
+    },
+    "http_req_duration{name:GET_Gestion_Candidatos_Filtro}": {
+      "contains": "time",
+      "values": {
+        "min": 0.31941,
+        "med": 1.570727,
+        "max": 185.808994,
+        "p(90)": 5.238645000000002,
+        "p(95)": 7.738935499999999,
+        "avg": 2.720324894247095
+      },
+      "thresholds": {
+        "p(95)<=1500": {
+          "ok": true
+        }
+      },
+      "type": "trend"
+    },
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 0.31941,
+        "med": 2.2896525,
+        "max": 475.88063,
+        "p(90)": 8.157389,
+        "p(95)": 12.39966725,
+        "avg": 4.164452099770647
+      }
+    },
+    "vus": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "value": 2,
+        "min": 2,
+        "max": 150
+      }
+    },
+    "data_sent": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 27989618,
+        "rate": 116283.42374676246
+      }
+    },
+    "data_received": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 693595000,
+        "rate": 2881554.1996191484
+      }
+    },
+    "vus_max": {
+      "values": {
+        "min": 150,
+        "max": 150,
+        "value": 150
+      },
+      "type": "gauge",
+      "contains": "default"
+    },
+    "iterations": {
+      "values": {
+        "count": 31170,
+        "rate": 129.49638391587143
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "checks": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0.9999743331429708,
+        "passes": 155839,
+        "fails": 4
+      },
+      "thresholds": {
+        "rate>=0.95": {
+          "ok": true
+        }
+      }
+    },
+    "iteration_duration": {
+      "contains": "time",
+      "values": {
+        "max": 1620.102052,
+        "p(90)": 1031.0224679,
+        "p(95)": 1043.14146105,
+        "avg": 1017.8426702162001,
+        "min": 1002.901749,
+        "med": 1012.1078095
+      },
+      "type": "trend"
+    },
+    "http_req_waiting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 475.83634,
+        "p(90)": 7.4478575,
+        "p(95)": 11.4701165,
+        "avg": 3.7498109637861097,
+        "min": 0.271031,
+        "med": 1.932002
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0,
+        "min": 0,
+        "med": 0,
+        "max": 0,
+        "p(90)": 0,
+        "p(95)": 0
+      }
+    },
+    "http_req_connecting": {
+      "values": {
+        "max": 53.96542,
+        "p(90)": 0,
+        "p(95)": 0,
+        "avg": 0.004836676264878569,
+        "min": 0,
+        "med": 0
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "http_req_receiving": {
+      "values": {
+        "avg": 0.39160937396932083,
+        "min": 0.01129,
+        "med": 0.065099,
+        "max": 170.175749,
+        "p(90)": 0.9490609999999999,
+        "p(95)": 1.839447
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 124676,
+        "rate": 517.9689175840612
+      }
+    },
+    "http_req_sending": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.023031762015144928,
+        "min": 0.00229,
+        "med": 0.00949,
+        "max": 39.724726,
+        "p(90)": 0.0252355,
+        "p(95)": 0.042515
+      }
+    },
+    "http_req_failed": {
+      "thresholds": {
+        "rate<0.01": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "passes": 0,
+        "fails": 124676,
+        "rate": 0
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 0.31941,
+        "med": 2.2896525,
+        "max": 475.88063,
+        "p(90)": 8.157389,
+        "p(95)": 12.39966725,
+        "avg": 4.164452099770647
+      }
+    }
+  }
+}</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyRawJson() {
+            const jsonText = document.getElementById('jsonBlock').innerText;
+            navigator.clipboard.writeText(jsonText).then(() => {
+                alert('✓ JSON copiado al portapapeles exitosamente');
+            }).catch(err => {
+                alert('Error al copiar: ' + err);
+            });
+        }
+
+        function downloadCsv() {
+            const rows = [
+                ["Categoria", "Metrica", "Min", "Mediana", "Promedio", "p90", "p95", "Max_Pico"],
+                ["Rendimiento_HTTP", "http_req_duration_ms", "0.32", "2.29", "4.16", "8.16", "12.40", "475.88"],
+                ["Rendimiento_HTTP", "http_req_waiting_ttfb_ms", "0.27", "1.93", "3.75", "7.45", "11.47", "475.84"],
+                ["Carga_Trabajo", "http_reqs_total", "124676", "", "517.97 req/s", "", "", ""],
+                ["Carga_Trabajo", "iterations_total", "31170", "", "129.50 iter/s", "", "", ""],
+                ["Estabilidad", "server_5xx_errors", "0", "", "0.00%", "", "", ""],
+                ["Ejecucion", "duration_seconds", "240.70", "", "", "", "", ""]
+            ];
+            
+            let csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "flowmatic_spike_bruteforce_data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
