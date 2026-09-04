@@ -134,8 +134,19 @@ public class UsuarioService implements AuthApi {
         logger.info("Buscando token de activación: {}", token);
 
         Token t = tokenRepository.findById(token).orElse(null);
-        if (t == null || !"ACTIVACION".equals(t.getTipo())) {
-            logger.warn("Token no encontrado o inválido: {}", token);
+        if (t == null) {
+            logger.warn("Token no encontrado: {}", token);
+            return false;
+        }
+
+        // Idempotencia para iOS Safari / Apple Mail (pre-fetching, link preview, recargas)
+        if ("ACTIVACION_USADA".equals(t.getTipo())) {
+            logger.info("Token de activación ya procesado recientemente (idempotencia activa para iOS): {}", token);
+            return true;
+        }
+
+        if (!"ACTIVACION".equals(t.getTipo())) {
+            logger.warn("Token no corresponde a activación: {}", token);
             return false;
         }
 
@@ -143,7 +154,13 @@ public class UsuarioService implements AuthApi {
         if (usuario != null) {
             usuario.setActivo(true);
             usuarioRepository.saveAndFlush(usuario);
-            tokenRepository.delete(t);
+
+            // Mantener token en estado ACTIVACION_USADA por 10 minutos (600s) en Redis
+            // para evitar que prefetch o doble tap en iPhone arroje 'enlace caducado'
+            t.setTipo("ACTIVACION_USADA");
+            t.setTimeToLive(600L);
+            tokenRepository.save(t);
+
             logger.info("Cuenta activada exitosamente para: {}", usuario.getEmail());
             return true;
         }
