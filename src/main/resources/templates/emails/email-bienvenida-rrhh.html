@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
   <title>Bienvenido al equipo de RRHH en FLOWMATIC</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1E293B;">
@@ -67,16 +69,22 @@
                       Tu cuenta se encuentra en estado <strong>Pendiente de Activaci&oacute;n</strong>. Para comenzar a utilizar el portal, activa tu cuenta haciendo clic en el siguiente bot&oacute;n:
                     </p>
 
-                    <!-- Primary CTA Button -->
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 22px 0 26px 0;">
+                    <!-- Primary CTA Button (Bulletproof iOS / Android / Desktop) -->
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 22px 0 14px 0; border-collapse: separate;">
                       <tr>
-                        <td align="left">
-                          <a th:href="${enlaceActivacion}" style="background-color: #0D9488; color: #FFFFFF; text-decoration: none; padding: 13px 32px; border-radius: 8px; font-weight: 700; font-size: 14.5px; display: inline-block; letter-spacing: 0.2px; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.28);">
-                            Activar mi cuenta de RRHH
+                        <td align="center" bgcolor="#0D9488" style="background-color: #0D9488; border-radius: 8px; -webkit-border-radius: 8px; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.28);">
+                          <a th:href="${enlaceActivacion}" target="_blank" rel="noopener noreferrer" style="background-color: #0D9488; border: 1px solid #0D9488; border-radius: 8px; -webkit-border-radius: 8px; color: #FFFFFF; display: block; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.2px; line-height: 1.2; padding: 14px 32px; text-align: center; text-decoration: none; -webkit-text-size-adjust: none; mso-padding-alt: 0;">
+                            <span style="color: #FFFFFF !important; text-decoration: none;">Activar mi cuenta de RRHH</span>
                           </a>
                         </td>
                       </tr>
                     </table>
+
+                    <!-- Fallback Link para iPhone / clientes de correo -->
+                    <p style="margin: 0 0 22px 0; font-size: 12px; color: #64748B; line-height: 1.5;">
+                      &iquest;Problemas con el bot&oacute;n en tu dispositivo? Abre este enlace directamente:<br>
+                      <a th:href="${enlaceActivacion}" th:text="${enlaceActivacion}" target="_blank" rel="noopener noreferrer" style="color: #0D9488; text-decoration: underline; word-break: break-all; font-size: 12px;">https://...</a>
+                    </p>
 
                     <!-- Security Notice Card -->
                     <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px;">
